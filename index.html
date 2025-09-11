@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veinstone Studios</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="EN İYİ ŞAHESERİM.png" type="image/png">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="EN İYİ ŞAHESERİM.png" alt="Veinstone Studios Logo">
+                <span>Veinstone Studios</span>
+            </div>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#about">Team</a></li>
+                <li><a href="#game1">Games</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="parallax-section">
+            <div class="parallax-bg" style="background-image: url('dklSADNJasjkbdjSDBjabakj.jpg');"></div>
+            <div class="hero-content">
+                <h1>Welcome to Veinstone Studios</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a href="#game1" class="btn">Our Games</a>
+            </div>
+        </section>
+
+        <section id="vision" class="animate-on-scroll parallax-section">
+            <div class="parallax-bg" style="background-image: url('dklSADNJasjkbdjSDBjabakj.jpg');"></div>
+            <div class="container">
+                <h2>Our Vision</h2>
+                <div class="vision-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="animate-on-scroll">
+            <div class="container">
+                <h2>Our Team</h2>
+                <div class="team-grid">
+                    <!-- Team Member 1 -->
+                    <div class="team-member">
+                        <div class="team-member-photo">
+                            <img src="dklSADNJasjkbdjSDBjabakj.jpg" alt="Team Member 1">
+                        </div>
+                        <h3 class="team-member-name">Lorem Ipsum</h3>
+                        <p class="team-member-role">Dolor Sit</p>
+                        <p class="team-member-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                    <!-- Team Member 2 -->
+                    <div class="team-member">
+                        <div class="team-member-photo">
+                            <img src="EN İYİ ŞAHESERİM.png" alt="Team Member 2">
+                        </div>
+                        <h3 class="team-member-name">Lorem Ipsum</h3>
+                        <p class="team-member-role">Dolor Sit</p>
+                        <p class="team-member-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                    <!-- Team Member 3 -->
+                    <div class="team-member">
+                        <div class="team-member-photo">
+                            <img src="dklSADNJasjkbdjSDBjabakj.jpg" alt="Team Member 3">
+                        </div>
+                        <h3 class="team-member-name">Lorem Ipsum</h3>
+                        <p class="team-member-role">Dolor Sit</p>
+                        <p class="team-member-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                    <!-- Team Member 4 -->
+                    <div class="team-member">
+                        <div class="team-member-photo">
+                            <img src="EN İYİ ŞAHESERİM.png" alt="Team Member 4">
+                        </div>
+                        <h3 class="team-member-name">Lorem Ipsum</h3>
+                        <p class="team-member-role">Dolor Sit</p>
+                        <p class="team-member-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="game1" class="animate-on-scroll">
+            <div class="container game-section">
+                <div class="game-info">
+                    <h2>Game Title One</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="game-image">
+                    <img src="dklSADNJasjkbdjSDBjabakj.jpg" alt="Game 1 Screenshot">
+                </div>
+            </div>
+        </section>
+
+        <section id="game2" class="animate-on-scroll">
+            <div class="container game-section game-section-reverse">
+                <div class="game-info">
+                    <h2>Game Title Two</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="game-image">
+                    <img src="EN İYİ ŞAHESERİM.png" alt="Game 2 Screenshot">
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="animate-on-scroll">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <form id="contact-form" action="https://formspree.io/f/xqkvzydb" method="POST">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="_replyto" placeholder="Email" required>
+                    <textarea name="message" placeholder="Message" required></textarea>
+                    <button type="submit" class="btn-animated">
+                        <span>Send</span>
+                        <img src="https://i.cloudup.com/2ZAX3hVsBE-3000x3000.png" height="32" width="32">
+                    </button>
+                </form>
+                <p id="form-status"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Veinstone Studios. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
