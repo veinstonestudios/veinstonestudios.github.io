@@ -224,12 +224,10 @@ section h2::after {
     animation-delay: 0.5s;
 }
 
-.vision-content p::first-letter {
-    font-size: 3rem;
-    color: var(--accent-color);
-    float: left;
-    line-height: 1;
-    margin-right: 10px;
+.drop-cap {
+    font-size: inherit; /* Same size as the rest of the text */
+    color: var(--text-color); /* White */
+    font-weight: 700; /* Bold */
 }
 
 .team-member {
