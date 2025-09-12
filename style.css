@@ -333,39 +333,56 @@ section h2::after {
     background: var(--secondary-color);
 }
 
-#contact form {
-    max-width: 600px;
-    margin: auto;
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.social-icon {
     display: flex;
     flex-direction: column;
-}
-
-#contact input, #contact textarea {
-    background: #2a2a2a;
-    border: none;
-    border-bottom: 2px solid #444;
+    align-items: center;
+    text-decoration: none;
     color: var(--text-color);
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 0;
-    font-family: var(--font-main);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-#contact input:focus, #contact textarea:focus {
-    box-shadow: 0 0 15px rgba(243, 202, 32, 0.5);
-}
-
-#contact input:focus, #contact textarea:focus {
-    outline: none;
-    border-bottom-color: var(--accent-color);
-}
-
-#form-status {
-    text-align: center;
-    margin-top: 1rem;
+.social-icon:hover {
+    transform: scale(1.1);
     color: var(--accent-color);
+}
+
+.social-icon img {
+    height: 60px;
+    width: 60px;
+    border-radius: 15px;
+    margin-bottom: 0.5rem;
+}
+
+.social-icon span {
     font-weight: 700;
+}
+
+.contact-email {
+    text-align: center;
+}
+
+.contact-email p {
+    margin-bottom: 0.5rem;
+}
+
+.contact-email a {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: text-shadow 0.3s ease;
+}
+
+.contact-email a:hover {
+    text-shadow: 0 0 10px var(--accent-color);
 }
 
 footer {
