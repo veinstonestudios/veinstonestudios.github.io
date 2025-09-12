@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
     // Animate elements on scroll
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -58,16 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
     elementsToAnimate.forEach(el => {
         observer.observe(el);
-    });
-
-    // Hero parallax effect (This is for the vertical parallax on the main hero image, not the horizontal ones)
-    // Note: The original hero section does not have the parallax-bg div, so this might not be doing anything.
-    // I'm keeping it in case you want to add a background to the hero section later.
-    const hero = document.querySelector('#hero');
-    window.addEventListener('scroll', () => {
-        const scrollPosition = window.pageYOffset;
-        // This will only work if the hero section has a background image set in CSS
-        hero.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
     });
 
     // Horizontal parallax scrolling for sections
@@ -85,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 trigger: section,
                 start: "top bottom",
                 end: "bottom top",
-                scrub: true // This removes the inertia
+                scrub: true
             }
         });
     });

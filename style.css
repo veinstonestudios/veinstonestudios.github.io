@@ -110,8 +110,11 @@ nav ul li a:hover::after {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: url('https://via.placeholder.com/1920x1080') no-repeat center center/cover;
     position: relative;
+    background-image: url('Photos/Vakvak.gif');
+    background-size: cover;
+    background-position: center 70%; /* Shift the image down */
+    background-attachment: fixed; /* This keeps the full image in view */
 }
 
 #hero::after {
@@ -121,7 +124,7 @@ nav ul li a:hover::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.9));
+    background: rgba(0,0,0,0.3); /* Significantly reduced opacity */
 }
 
 .hero-content {
