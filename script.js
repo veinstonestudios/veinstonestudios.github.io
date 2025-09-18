@@ -1,13 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    // Header scroll effect
+    const scrollContainer = document.getElementById('scroll-container');
+    const customScrollbar = document.getElementById('custom-scrollbar');
     const header = document.querySelector('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
+
+    scrollContainer.addEventListener('scroll', () => {
+        // Header scroll effect
+        if (scrollContainer.scrollTop > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
+
+        // Custom scrollbar update
+        const scrollPercentage = scrollContainer.scrollTop / (scrollContainer.scrollHeight - scrollContainer.clientHeight);
+        customScrollbar.style.setProperty('--scroll-top', `${scrollPercentage * (scrollContainer.clientHeight - 12)}px`); // 12 is the height of the thumb
     });
 
     // Instant navigation links
@@ -20,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (targetSection) {
                 const offsetTop = targetSection.offsetTop - header.offsetHeight;
-                window.scrollTo({
+                scrollContainer.scrollTo({
                     top: offsetTop,
                     behavior: 'auto' // Instant jump
                 });
@@ -37,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (targetSection) {
             const offsetTop = targetSection.offsetTop - header.offsetHeight;
-            window.scrollTo({
+            scrollContainer.scrollTo({
                 top: offsetTop,
                 behavior: 'auto' // Instant jump
             });
@@ -52,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.2 });
+    }, { root: scrollContainer, threshold: 0.2 });
 
     const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
     elementsToAnimate.forEach(el => {
@@ -72,11 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: "none",
             scrollTrigger: {
                 trigger: section,
+                scroller: scrollContainer, // Use the container for scroll trigger
                 start: "top bottom",
                 end: "bottom top",
                 scrub: true
             }
         });
     });
-
 });

@@ -20,6 +20,42 @@ body {
     background-color: var(--primary-color);
     color: var(--text-color);
     line-height: 1.6;
+    overflow: hidden; /* This will hide the scrollbar */
+}
+
+#scroll-container {
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+#scroll-container::-webkit-scrollbar {
+    display: none; /* Hide the default scrollbar */
+}
+
+#custom-scrollbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 4px; /* Made scrollbar smaller */
+    height: 100%;
+    background-color: #000000; /* Black strip */
+    z-index: 1001;
+}
+
+#custom-scrollbar::before {
+    content: '';
+    position: absolute;
+    top: var(--scroll-top, 0);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px; /* Width of the ball */
+    height: 12px; /* Height of the ball */
+    background-color: var(--accent-color); /* Yellow ball */
+    border-radius: 50%; /* Make it a circle */
 }
 
 .container {
