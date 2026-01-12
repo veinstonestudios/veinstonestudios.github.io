@@ -20,17 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('nav ul li a');
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
             const targetId = e.currentTarget.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
             
-            if (targetSection) {
-                const offsetTop = targetSection.offsetTop - header.offsetHeight;
-                scrollContainer.scrollTo({
-                    top: offsetTop,
-                    behavior: 'auto' // Instant jump
-                });
+            // Only handle anchor links (starting with #), allow external links to work normally
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - header.offsetHeight;
+                    scrollContainer.scrollTo({
+                        top: offsetTop,
+                        behavior: 'auto' // Instant jump
+                    });
+                }
             }
+            // External links (like presskit.html) will navigate normally
         });
     });
 
