@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Lato:wght@300;400;700&family=VT323&display=swap');
 
+@font-face {
+    font-family: 'AG Buch';
+    src: url('AG Buch Condensed BQ Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
     --primary-color: #0a0a0a;
     --secondary-color: #1a1a1a;
@@ -13,6 +20,7 @@
     --font-main: 'Lato', sans-serif;
     --font-title: 'Cormorant Garamond', serif;
     --font-mono: 'VT323', monospace;
+    --font-game: 'AG Buch', sans-serif;
 }
 
 * {
@@ -161,7 +169,7 @@ header nav ul li a:hover::after {
 }
 
 .hero-content h1 {
-    font-family: var(--font-title);
+    font-family: var(--font-game);
     font-size: clamp(3rem, 10vw, 7rem);
     font-weight: 700;
     letter-spacing: 0.2em;
@@ -169,15 +177,86 @@ header nav ul li a:hover::after {
     text-shadow: 
         0 0 20px rgba(243, 202, 32, 0.3),
         0 0 40px rgba(243, 202, 32, 0.1);
-    animation: glitch 5s ease-in-out infinite;
+    animation: titleGlitch 4s ease-in-out infinite;
 }
 
-@keyframes glitch {
-    0%, 90%, 100% { transform: translate(0); }
-    91% { transform: translate(-2px, 1px); }
-    92% { transform: translate(2px, -1px); }
-    93% { transform: translate(-1px, 2px); }
-    94% { transform: translate(1px, -2px); }
+@keyframes titleGlitch {
+    0%, 92%, 100% { 
+        transform: translate(0);
+        text-shadow: 
+            0 0 20px rgba(243, 202, 32, 0.3),
+            0 0 40px rgba(243, 202, 32, 0.1);
+    }
+    93% { 
+        transform: translate(-3px, 1px) skewX(0.5deg);
+        text-shadow: 
+            -3px 0 #ff0000,
+            3px 0 #00ffff,
+            0 0 20px rgba(243, 202, 32, 0.5);
+    }
+    94% { 
+        transform: translate(2px, -1px) skewX(-0.5deg);
+        text-shadow: 
+            2px 0 #ff0000,
+            -2px 0 #00ffff,
+            0 0 20px rgba(243, 202, 32, 0.5);
+    }
+    95% { 
+        transform: translate(-1px, 2px);
+        text-shadow: 
+            -2px 0 #ff0000,
+            2px 0 #00ffff,
+            0 0 20px rgba(243, 202, 32, 0.5);
+    }
+    96% { 
+        transform: translate(0);
+        text-shadow: 
+            0 0 20px rgba(243, 202, 32, 0.3),
+            0 0 40px rgba(243, 202, 32, 0.1);
+    }
+}
+
+/* Background glitch effect - intermittent */
+#presskit-hero {
+    position: relative;
+}
+
+#presskit-hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(180deg, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.8) 100%),
+        url('Photos/GameScreenShots/HallSc.PNG') center/cover no-repeat;
+    animation: bgGlitch 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes bgGlitch {
+    0%, 94%, 100% {
+        transform: translate(0);
+        filter: none;
+    }
+    95% {
+        transform: translate(-4px, 0);
+        filter: hue-rotate(5deg);
+    }
+    96% {
+        transform: translate(4px, 0);
+        filter: hue-rotate(-5deg);
+    }
+    97% {
+        transform: translate(-2px, 1px);
+        filter: saturate(1.2);
+    }
+    98% {
+        transform: translate(0);
+        filter: none;
+    }
 }
 
 .tagline {
@@ -731,6 +810,20 @@ section {
     border-radius: 50%;
     border: 4px solid var(--accent-color);
     box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.team-photo-container {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.team-photo {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 12px;
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .studio-details h3 {
