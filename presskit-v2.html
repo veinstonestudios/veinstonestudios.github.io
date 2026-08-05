@@ -31,6 +31,10 @@
   --disp:'Barlow Condensed',sans-serif;
   --body:'Lato',system-ui,sans-serif;
   --maxw:1120px;
+  /* Page gutters. Equal both sides so the rail reads as a margin, not a pin.
+     4vw reaches the 64px cap at ~1600px and holds it on anything wider. */
+  --gut-l:clamp(20px,4vw,64px);
+  --gut-r:clamp(20px,4vw,64px);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -60,6 +64,33 @@ a{color:var(--amber);text-decoration:none}
 }
 .stamp.red{color:#d24b4b;border-color:#7a2020}
 
+/* ---------- two-column shell: sticky fact rail + content ---------- */
+main.shell{
+  max-width:none;margin:0;
+  padding-left:var(--gut-l);padding-right:var(--gut-r);
+  display:grid;grid-template-columns:clamp(250px,20vw,320px) minmax(0,1fr);
+  gap:0 clamp(28px,3.2vw,58px);
+  align-items:start;
+}
+.content{max-width:1300px}
+/* Sections keep their .wrap markup; inside the shell it must not re-constrain. */
+.shell .wrap{max-width:none;padding:0;margin:0}
+.rail{
+  position:sticky;top:22px;padding-top:34px;
+  max-height:calc(100vh - 44px);overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:var(--rule) transparent;
+}
+.rail::-webkit-scrollbar{width:6px}
+.rail::-webkit-scrollbar-thumb{background:var(--rule)}
+.rail .sec{padding:0;border-top:none}
+.rail .sec-head{margin-bottom:16px}
+.rail .sec-title{font-size:1.45rem}
+/* Narrow column - stack each field instead of label-left / value-right. */
+.rail .facts{grid-template-columns:1fr;gap:0}
+.rail .fact{flex-direction:column;align-items:flex-start;gap:0;padding:7px 0}
+.rail .fact .val{text-align:left;font-size:1.05rem}
+.content > section.sec:first-of-type{border-top:none;padding-top:34px}
+
 /* ---------- section headers: themed name + plain subtitle ---------- */
 .sec{padding:56px 0;border-top:1px solid var(--rule)}
 .sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:26px}
@@ -71,23 +102,44 @@ a{color:var(--amber);text-decoration:none}
 
 /* ---------- 1. file header ---------- */
 header.file{
+  position:relative;overflow:hidden;
+  /* The loop is 1170x324 (3.6:1). Keeping the header shortish means object-fit
+     crops less of it horizontally, and keeps the fact sheet near the fold. */
+  min-height:clamp(340px,48vh,470px);
+  display:flex;flex-direction:column;
   border-bottom:2px solid var(--amber);
-  background:
-    linear-gradient(180deg,rgba(243,202,32,.05),transparent 60%),
-    var(--panel);
+  background:var(--panel);
 }
+.file-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.7) contrast(1.1) brightness(.5);
+  z-index:0;
+}
+.file-veil{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(10,10,10,.88) 0%,rgba(10,10,10,.35) 38%,rgba(10,10,10,.94) 100%),
+    radial-gradient(ellipse at 74% 55%,transparent 0%,rgba(10,10,10,.55) 78%);
+}
+/* Header and footer share the shell's gutters so everything lines up edge to edge. */
+header.file > .wrap,footer.wrap{
+  max-width:none;padding-left:var(--gut-l);padding-right:var(--gut-r);margin:0;
+}
+header.file > .wrap{position:relative;z-index:2;display:flex;flex-direction:column;flex:1;width:100%}
 .file-strip{
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   font-family:var(--mono);font-size:1rem;letter-spacing:.16em;color:var(--muted);
-  padding:10px 0;border-bottom:1px solid var(--rule);text-transform:uppercase;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,.14);text-transform:uppercase;
 }
-.file-body{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;
-  align-items:center;padding:38px 0 34px}
-h1{font-family:var(--disp);font-size:clamp(2.8rem,7vw,4.6rem);font-weight:700;
-  line-height:.92;letter-spacing:.03em;text-transform:uppercase}
-h1 .thin{display:block;font-size:.3em;letter-spacing:.35em;color:var(--amber);
-  font-weight:500;margin-bottom:.5em}
-.hook{font-size:1.12rem;color:var(--paper);margin:16px 0 22px;max-width:46ch}
+.file-body{flex:1;display:flex;flex-direction:column;justify-content:center;
+  align-items:flex-end;text-align:right;padding:44px 0 40px;max-width:62ch;margin-left:auto}
+h1{font-family:var(--disp);font-size:clamp(3rem,8vw,5.4rem);font-weight:700;
+  line-height:.9;letter-spacing:.03em;text-transform:uppercase;
+  text-shadow:0 2px 24px rgba(0,0,0,.8)}
+h1 .thin{display:block;font-size:.26em;letter-spacing:.35em;color:var(--amber);
+  font-weight:500;margin-bottom:.6em;text-shadow:none}
+.hook{font-size:1.18rem;color:var(--paper);margin:18px 0 24px;max-width:46ch;
+  text-shadow:0 1px 12px rgba(0,0,0,.9)}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap}
 .btn{
   font-family:var(--disp);font-weight:600;font-size:1rem;letter-spacing:.1em;
@@ -99,28 +151,23 @@ h1 .thin{display:block;font-size:.3em;letter-spacing:.35em;color:var(--amber);
 .btn.solid:hover{background:#fff;border-color:#fff}
 .btn.ghost{border-color:var(--rule);color:var(--text)}
 .btn.ghost:hover{border-color:var(--amber);background:transparent;color:var(--amber)}
-.key-art{border:1px solid var(--rule);position:relative;aspect-ratio:16/10;overflow:hidden}
-.key-art img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) contrast(1.05)}
-.key-art figcaption{
-  position:absolute;left:0;bottom:0;right:0;font-family:var(--mono);font-size:.95rem;
-  letter-spacing:.14em;padding:5px 10px;background:rgba(10,10,10,.85);
-  color:var(--muted);text-transform:uppercase;
-}
-
 /* ---------- 2. fact sheet ---------- */
 .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px}
 .fact{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
   padding:9px 0;border-bottom:1px dotted var(--rule)}
 .fact .val{text-align:right}
 .fact.flag .val{color:var(--amber)}
-.manifest{margin-top:28px;border:1px solid var(--rule);background:var(--panel);padding:16px 18px}
-.manifest-head{display:flex;justify-content:space-between;align-items:center;gap:12px;
-  flex-wrap:wrap;margin-bottom:12px}
-.lang-list{list-style:none;columns:4;column-gap:28px;font-family:var(--mono);
-  font-size:1.05rem;letter-spacing:.06em;color:var(--paper)}
+.manifest{margin-top:18px;border:1px solid var(--rule);background:var(--panel)}
+.manifest-head{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  flex-wrap:wrap;padding:11px 14px;cursor:pointer;list-style:none}
+.manifest-head::-webkit-details-marker{display:none}
+.manifest-head::after{content:'+';font-family:var(--mono);color:var(--amber);flex:none}
+.manifest[open] .manifest-head::after{content:'–'}
+.manifest[open] .manifest-head{border-bottom:1px solid var(--rule)}
+.lang-list{list-style:none;columns:1;column-gap:24px;padding:12px 14px;
+  font-family:var(--mono);font-size:1.02rem;letter-spacing:.06em;color:var(--paper)}
 .lang-list li{break-inside:avoid;padding:1px 0}
 .lang-list li::before{content:'· ';color:var(--amber)}
-@media(max-width:900px){.lang-list{columns:2}}
 
 /* ---------- 3. pitch ---------- */
 .pitch{display:grid;gap:16px}
@@ -167,7 +214,7 @@ h1 .thin{display:block;font-size:.3em;letter-spacing:.35em;color:var(--amber);
 
 /* ---------- 6. terms ---------- */
 .terms{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.demo-bar{margin-top:14px;border:1px dashed var(--rule);background:var(--panel);
+.demo-bar{margin-top:34px;border:1px dashed var(--rule);background:var(--panel);
   padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .demo-bar .n{font-family:var(--disp);font-size:1.15rem;font-weight:600;letter-spacing:.05em;
   text-transform:uppercase}
@@ -198,36 +245,32 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
   flex-direction:column;gap:12px;text-align:center;padding:24px}
 .trailer-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-/* Jump-to-next-section pager */
-#pager{
-  position:fixed;right:20px;bottom:20px;z-index:9998;
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--mono);font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;
-  background:rgba(10,10,10,.92);color:var(--amber);border:1px solid var(--amber);
-  padding:8px 14px;cursor:pointer;transition:background .15s,color .15s,opacity .2s;
-  backdrop-filter:blur(4px);max-width:min(78vw,320px);
-}
-#pager:hover{background:var(--amber);color:var(--ink)}
-#pager .cue{opacity:.62;flex:none}
-#pager .dest{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#pager .arrow{flex:none;transition:transform .15s}
-#pager:hover .arrow{transform:translateY(2px)}
-#pager.up .arrow{transform:rotate(180deg)}
-#pager.up:hover .arrow{transform:rotate(180deg) translateY(2px)}
-@media(prefers-reduced-motion:reduce){#pager .arrow{transition:none}}
-@media(max-width:600px){#pager{right:12px;bottom:12px;font-size:.98rem;padding:7px 11px}
-  #pager .cue{display:none}}
-
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%);
+/* Must clear its own height AND the 24px bottom offset, or a sliver stays on
+   screen. opacity is the belt-and-braces so it can never peek regardless. */
+#toast{position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(calc(100% + 24px));
+  opacity:0;pointer-events:none;visibility:hidden;
   background:var(--amber);color:var(--ink);font-family:var(--disp);font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;padding:10px 22px;transition:.25s;z-index:10000}
-#toast.on{transform:translateX(-50%) translateY(0)}
+  letter-spacing:.1em;text-transform:uppercase;padding:10px 22px;z-index:10000;
+  transition:transform .25s,opacity .25s,visibility 0s .25s}
+#toast.on{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible;
+  transition:transform .25s,opacity .25s,visibility 0s}
 
 @media(max-width:900px){
-  .file-body,.auth{grid-template-columns:1fr}
-  .facts,.loop,.shots,.pack,.terms{grid-template-columns:1fr}
+  main.shell{grid-template-columns:1fr;gap:0}
+  .rail{position:static;max-height:none;overflow:visible;padding-top:30px}
+  .rail .facts{grid-template-columns:repeat(2,1fr);gap:0 32px}
+  .rail .lang-list{columns:2}
+  .content > section.sec:first-of-type{border-top:1px solid var(--rule)}
+  .auth{grid-template-columns:1fr}
+  .loop,.shots,.pack,.terms{grid-template-columns:1fr}
   .phase{border-right:1px solid var(--rule);border-bottom:none}
   .phase:last-child{border-bottom:1px solid var(--rule)}
+  .file-body{max-width:none}
+}
+@media(max-width:560px){
+  .rail .facts{grid-template-columns:1fr}
+  .rail .lang-list{columns:1}
 }
 </style>
 </head>
@@ -235,37 +278,35 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
 
 <!-- ============ 1. FILE HEADER ============ -->
 <header class="file">
+  <!-- Swap the loop by changing this one filename: new gf (1)-(4).webm -->
+  <video class="file-bg" id="file-bg" autoplay muted loop playsinline
+         aria-hidden="true" tabindex="-1" preload="auto">
+    <source src="new gf (4).webm" type="video/webm">
+  </video>
+  <div class="file-veil"></div>
   <div class="wrap">
     <div class="file-strip">
-      <span>Facility 61 // Press Dossier</span>
-      <span>Clearance: Public</span>
-      <span>Rev. <span id="rev">2026.08</span></span>
     </div>
     <div class="file-body">
-      <div>
-        <h1><span class="thin">Veinstone Studios presents</span>The Facility</h1>
-        <p class="hook">Trust no one. Anomalies are hiding among your inmates.</p>
-        <div class="cta-row">
-          <a class="btn solid" href="https://store.steampowered.com/app/3796790/The_Facility/">Steam Page</a>
-          <a class="btn" href="#archive">Download Assets</a>
-          <a class="btn ghost" href="mailto:veinstonestudios@gmail.com">Press Contact</a>
-        </div>
+      <h1>The Facility</h1>
+      <p class="hook">Trust no one. Anomalies are hiding among your inmates.</p>
+      <div class="cta-row">
+        <a class="btn solid" href="https://store.steampowered.com/app/3796790/The_Facility/">Steam Page</a>
+        <a class="btn" href="#archive">Download Assets</a>
+        <a class="btn ghost" href="mailto:veinstonestudios@gmail.com">Press Contact</a>
       </div>
-      <figure class="key-art">
-        <img src="Photos/NewScreenshots/CellInspection.jpg" alt="A warden inspects an inmate through the cell hatch in The Facility">
-        <figcaption>Fig. 01 — Cell inspection</figcaption>
-      </figure>
     </div>
   </div>
 </header>
 
-<main>
+<main class="shell">
 
-<!-- ============ 2. FACT SHEET ============ -->
+<!-- ============ LEFT RAIL — FACT SHEET (sticky) ============ -->
+<aside class="rail">
 <section class="sec" id="facts">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-ref">61-A</span>
+      <span class="sec-ref">58-A</span>
       <h2 class="sec-title">Subject Record</h2>
       <span class="sec-sub">/ fact sheet</span>
     </div>
@@ -273,22 +314,19 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
       <div class="fact"><span class="label">Title</span><span class="val">The Facility</span></div>
       <div class="fact"><span class="label">Developer</span><span class="val">Veinstone Studios</span></div>
       <div class="fact"><span class="label">Genre</span><span class="val">Psychological Horror&nbsp;/&nbsp;Management Sim</span></div>
-      <div class="fact"><span class="label">Publisher</span><span class="val">Self-published</span></div>
       <div class="fact"><span class="label">Platform</span><span class="val">PC — Steam</span></div>
       <div class="fact"><span class="label">Players</span><span class="val">Singleplayer</span></div>
       <div class="fact flag"><span class="label">Release date</span><span class="val">Q4 2026</span></div>
-      <div class="fact flag"><span class="label">Languages</span><span class="val">32 — see below</span></div>
-      <div class="fact"><span class="label">Price</span><span class="val">TBA</span></div>
       <div class="fact"><span class="label">Runtime</span><span class="val">TBA</span></div>
       <div class="fact"><span class="label">Steam</span><span class="val"><a href="https://store.steampowered.com/app/3796790/The_Facility/">store.steampowered.com&nbsp;↗</a></span></div>
       <div class="fact"><span class="label">Press contact</span><span class="val"><a href="mailto:veinstonestudios@gmail.com">veinstonestudios@gmail.com</a></span></div>
     </div>
 
-    <div class="manifest">
-      <div class="manifest-head">
-        <span class="label">Localisation manifest</span>
+    <details class="manifest">
+      <summary class="manifest-head">
+        <span class="label">Localisation</span>
         <span class="stamp">32 languages</span>
-      </div>
+      </summary>
       <ul class="lang-list">
         <li>English</li><li>Turkish</li><li>French</li><li>Italian</li><li>German</li>
         <li>Spanish — Spain</li><li>Spanish — Latin America</li><li>Portuguese — Brazil</li>
@@ -299,22 +337,26 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
         <li>Traditional Chinese</li><li>Japanese</li><li>Korean</li><li>Thai</li>
         <li>Vietnamese</li><li>Indonesian</li>
       </ul>
-    </div>
-
-    <div class="demo-bar">
-      <span class="n">Playable demo</span>
-      <span class="stamp red">Not yet available</span>
-      <p><em class="todo">TODO — replace with the Steam demo link once it's live. Planned for Steam
-        Next Fest, 19–26 October 2026.</em></p>
-    </div>
+    </details>
   </div>
 </section>
+</aside>
 
-<!-- ============ 3. PITCH ============ -->
+<!-- ============ RIGHT COLUMN — CONTENT ============ -->
+<div class="content">
+
+<div class="demo-bar">
+  <span class="n">Playable demo</span>
+  <span class="stamp red">Not yet available</span>
+  <p><em class="todo">TODO — replace with the Steam demo link once it's live. Planned for Steam
+    Next Fest, 19–26 October 2026.</em></p>
+</div>
+
+<!-- ============ PITCH ============ -->
 <section class="sec" id="pitch">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-ref">61-B</span>
+      <span class="sec-ref">58-B</span>
       <h2 class="sec-title">Statement of Purpose</h2>
       <span class="sec-sub">/ descriptions — click to copy</span>
     </div>
@@ -352,7 +394,7 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
 <section class="sec" id="loop">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-ref">61-C</span>
+      <span class="sec-ref">58-C</span>
       <h2 class="sec-title">Duty Roster</h2>
       <span class="sec-sub">/ how it plays</span>
     </div>
@@ -381,7 +423,7 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
 <section class="sec" id="archive">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-ref">61-D</span>
+      <span class="sec-ref">58-D</span>
       <h2 class="sec-title">Media Archive</h2>
       <span class="sec-sub">/ screenshots, video &amp; creator assets</span>
     </div>
@@ -462,7 +504,7 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
 <section class="sec" id="terms">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-ref">61-E</span>
+      <span class="sec-ref">58-E</span>
       <h2 class="sec-title">Terms of Engagement</h2>
       <span class="sec-sub">/ for streamers &amp; video creators</span>
     </div>
@@ -486,7 +528,7 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
 <section class="sec" id="studio">
   <div class="wrap">
     <div class="sec-head">
-      <span class="sec-ref">61-F</span>
+      <span class="sec-ref">58-F</span>
       <h2 class="sec-title">Issuing Authority</h2>
       <span class="sec-sub">/ studio &amp; contact</span>
     </div>
@@ -512,18 +554,11 @@ footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
   </div>
 </section>
 
+</div><!-- /.content -->
 </main>
 
 <footer class="wrap">
-  <span>&copy; 2026 Veinstone Studios</span>
-  <span>The Facility — Press Dossier — End of File</span>
 </footer>
-
-<button id="pager" type="button" aria-label="Jump to next section">
-  <span class="cue">Next</span>
-  <span class="dest">Subject Record</span>
-  <span class="arrow">▼</span>
-</button>
 
 <div id="toast">Copied</div>
 
@@ -542,68 +577,6 @@ document.querySelectorAll('.pitch-block .copy').forEach(btn=>{
 document.getElementById('rev').textContent =
   new Date().toISOString().slice(0,7).replace('-','.');
 
-/* ---- jump-to-next-section pager ---- */
-(function(){
-  const pager = document.getElementById('pager');
-  const dest  = pager.querySelector('.dest');
-  const cue   = pager.querySelector('.cue');
-
-  // Every block the pager can land on, in document order.
-  const blocks = [
-    document.querySelector('header.file'),
-    ...document.querySelectorAll('main section.sec')
-  ].filter(Boolean);
-
-  const nameOf = el => {
-    const ref   = el.querySelector('.sec-ref');
-    const title = el.querySelector('.sec-title');
-    if (!title) return 'Top';
-    return (ref ? ref.textContent.trim() + ' ' : '') + title.textContent.trim();
-  };
-
-  let target = 1;   // index the button will scroll to
-
-  function refresh(){
-    // The block we're currently in: the last one whose top is at or above the
-    // header line. 90px keeps it in sync with what reads as "current" on screen.
-    let current = 0;
-    blocks.forEach((el, i) => {
-      if (el.getBoundingClientRect().top <= 90) current = i;
-    });
-
-    const atEnd = current >= blocks.length - 1 ||
-      // Also treat "bottom of page reached" as the end, since the final block
-      // may be too short to ever cross the 90px line.
-      (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 40;
-
-    if (atEnd){
-      target = 0;
-      pager.classList.add('up');
-      cue.textContent = 'Back to';
-      dest.textContent = 'Top';
-    } else {
-      target = current + 1;
-      pager.classList.remove('up');
-      cue.textContent = 'Next';
-      dest.textContent = nameOf(blocks[target]);
-    }
-  }
-
-  pager.addEventListener('click', () => {
-    const el = blocks[target];
-    if (target === 0) window.scrollTo({top:0, behavior:'smooth'});
-    else el.scrollIntoView({behavior:'smooth', block:'start'});
-  });
-
-  let queued = false;
-  addEventListener('scroll', () => {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(() => { refresh(); queued = false; });
-  }, {passive:true});
-  addEventListener('resize', refresh, {passive:true});
-  refresh();
-})();
 </script>
 </body>
 </html>
