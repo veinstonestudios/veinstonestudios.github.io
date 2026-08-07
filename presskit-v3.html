@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Required by the YouTube embed: without a referer it throws error 153. -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>The Facility — Press Kit | Veinstone Studios</title>
 <meta name="description" content="Press kit for The Facility, a PSX-inspired psychological horror game by Veinstone Studios.">
 
@@ -19,489 +21,299 @@
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Barlow+Condensed:wght@500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="Fulllogo.png" type="image/png">
 
-<style>
-:root{
-  --ink:#0a0a0a; --panel:#131313; --rule:#262626;
-  --amber:#f3ca20; --blood:#8b0000;
-  --text:#e9e7e1; --paper:#cfccc4; --muted:#8b8b85;
-  --mono:'VT323',ui-monospace,monospace;
-  --disp:'Barlow Condensed',sans-serif;
-  --body:'Lato',system-ui,sans-serif;
-  --gut:clamp(20px,4vw,64px);
-  --measure:74ch;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--text);font-family:var(--body);
-  line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:var(--amber);text-decoration:none}
-img,video,iframe{display:block;max-width:100%}
-
-.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gut)}
-
-/* ---------- shared ---------- */
-.eyebrow{font-family:var(--mono);font-size:1.05rem;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--amber);margin-bottom:10px}
-h2{font-family:var(--disp);font-size:clamp(2rem,3.4vw,2.9rem);font-weight:700;
-  letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-bottom:26px}
-h3{font-family:var(--disp);font-size:1.45rem;font-weight:600;letter-spacing:.05em;
-  text-transform:uppercase;margin-bottom:8px}
-p{color:var(--paper)}
-section{padding:clamp(64px,9vw,120px) 0}
-
-.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--disp);
-  font-weight:600;font-size:1.02rem;letter-spacing:.11em;text-transform:uppercase;
-  padding:13px 24px;border:1px solid var(--amber);color:var(--amber);
-  background:transparent;cursor:pointer;transition:background .16s,color .16s}
-.btn:hover{background:var(--amber);color:var(--ink)}
-.btn.solid{background:var(--amber);color:var(--ink)}
-.btn.solid:hover{background:#fff;border-color:#fff}
-.btn.quiet{border-color:var(--rule);color:var(--text)}
-.btn.quiet:hover{background:transparent;border-color:var(--amber);color:var(--amber)}
-.todo{color:#d24b4b;font-style:italic}
-
-/* ================= 1. HEADER ================= */
-header.hero{position:relative;isolation:isolate;overflow:hidden;
-  padding-top:clamp(28px,4vw,52px);padding-bottom:clamp(56px,8vw,96px)}
-.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:saturate(.65) contrast(1.1) brightness(.42);z-index:-2}
-/* Bottom stop is exactly the page colour, so the header melts into the page
-   instead of ending on a line. */
-.hero-veil{position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:
-    linear-gradient(180deg,rgba(10,10,10,.82) 0%,rgba(10,10,10,.42) 26%,
-                    rgba(10,10,10,.86) 72%,var(--ink) 100%)}
-
-.hero-meta{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  font-family:var(--mono);font-size:1.02rem;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--muted);
-  padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
-
-.hero-main{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,64px);
-  align-items:center;padding:clamp(36px,5vw,68px) 0 clamp(30px,4vw,52px)}
-.hero-video{position:relative;aspect-ratio:16/9;background:#000;
-  border:1px solid rgba(255,255,255,.14);box-shadow:0 24px 70px rgba(0,0,0,.6)}
-.hero-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.hero-video .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:14px;text-align:center;padding:26px}
-
-.hero-copy{text-align:right}
-h1{font-family:var(--disp);font-weight:700;text-transform:uppercase;
-  font-size:clamp(3.4rem,8.5vw,7rem);line-height:.86;letter-spacing:.02em;
-  text-shadow:0 3px 30px rgba(0,0,0,.85)}
-.hero-hook{font-size:clamp(1.05rem,1.5vw,1.3rem);color:var(--paper);
-  margin-top:18px;margin-left:auto;max-width:34ch;text-shadow:0 1px 14px rgba(0,0,0,.9)}
-.hero-tags{margin-top:16px;font-family:var(--mono);font-size:1.05rem;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
-
-/* factsheet drawer */
-.sheet{overflow:hidden;max-height:0;transition:max-height .45s cubic-bezier(.4,0,.2,1)}
-.sheet-inner{border-top:1px solid var(--rule);padding-top:30px;margin-top:34px}
-.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:0 44px}
-.fact{display:flex;justify-content:space-between;gap:14px;align-items:baseline;
-  padding:11px 0;border-bottom:1px dotted var(--rule)}
-.fact dt{font-family:var(--mono);font-size:1.05rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted)}
-.fact dd{font-family:var(--disp);font-size:1.12rem;font-weight:600;text-align:right}
-.langs{margin-top:26px;font-family:var(--mono);font-size:1.05rem;letter-spacing:.07em;
-  color:var(--paper);columns:4;column-gap:30px;list-style:none}
-.langs li::before{content:'· ';color:var(--amber)}
-
-/* ================= 2. GALLERY ================= */
-.gallery{padding:clamp(56px,7vw,96px) 0;overflow:hidden}
-.strip{position:relative;padding:5px 0}
-.track{display:flex;gap:16px;width:max-content;
-  animation:slide var(--dur,60s) linear infinite;will-change:transform}
-.track.rev{animation-direction:reverse}
-@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-/* Only the strip under the cursor stops; the other two keep moving. */
-.strip:hover .track{animation-play-state:paused}
-/* .track sets will-change, which makes each strip its own stacking context -
-   so lift the whole strip or an enlarged tile hides behind the next strip. */
-.strip:hover{z-index:5}
-
-.tile{position:relative;flex:none;height:clamp(150px,15vw,215px)}
-.tile img{height:100%;width:auto;object-fit:cover;
-  border:1px solid rgba(255,255,255,.09);
-  filter:saturate(.85) brightness(.82);
-  transition:transform .35s cubic-bezier(.4,0,.2,1),filter .35s,border-color .35s}
-.tile:hover{z-index:6}
-.tile:hover img{transform:scale(1.45);filter:saturate(1.05) brightness(1);
-  border-color:var(--amber)}
-/* Strips sit tight together now, so the caption lands over the next strip -
-   the dark pill keeps it readable wherever it falls. */
-.tile figcaption{position:absolute;left:50%;top:100%;translate:-50% 0;
-  margin-top:14px;white-space:nowrap;font-family:var(--mono);font-size:1.05rem;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--amber);
-  background:rgba(10,10,10,.92);padding:4px 13px;
-  opacity:0;transition:opacity .3s .05s,top .35s cubic-bezier(.4,0,.2,1);
-  pointer-events:none}
-/* Scaling by 1.45 pushes the image 22.5% of its height past the tile box, so
-   the caption drops by the same amount to stay clear of it. */
-.tile:hover figcaption{opacity:1;top:122.5%}
-@media(prefers-reduced-motion:reduce){
-  .track{animation:none}
-  .gallery{overflow-x:auto}
-}
-
-/* ================= 3. ABOUT ================= */
-.about-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(32px,5vw,80px)}
-.about-body p{font-size:1.1rem;max-width:var(--measure)}
-.about-body p + p{margin-top:1.1em}
-.copy-stack{display:flex;flex-direction:column;gap:12px;align-self:start}
-.copy-stack .label{font-family:var(--mono);font-size:1.02rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-.copy-btn{justify-content:space-between;width:100%}
-.copy-btn span:last-child{font-family:var(--mono);opacity:.55;letter-spacing:.1em}
-
-/* ================= 4. HOW TO PLAY ================= */
-.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
-  border:1px solid var(--rule)}
-.phase{background:var(--ink);padding:28px 24px}
-.phase .n{font-family:var(--mono);font-size:1.5rem;color:var(--amber);
-  letter-spacing:.12em;display:block;margin-bottom:6px}
-.phase p{font-size:.96rem;color:var(--muted)}
-.phase.night{background:linear-gradient(170deg,rgba(139,0,0,.22),var(--ink) 70%)}
-.phase.night .n{color:#d85252}
-.detect{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);
-  align-items:center;margin-top:clamp(40px,5vw,72px)}
-.detect p{font-size:1.06rem}
-.detect p + p{margin-top:1em}
-.detect .quiet{color:var(--muted);font-style:italic}
-
-/* ================= 5. NOTICES ================= */
-.notices{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,44px)}
-.notice{border-left:2px solid var(--amber);padding:4px 0 4px 26px}
-.notice.warn{border-left-color:var(--blood)}
-.notice p{font-size:1.04rem}
-
-/* ================= 6. STUDIO ================= */
-.studio{display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,4vw,56px);
-  align-items:center}
-.studio img.mark{width:clamp(110px,11vw,150px);border:1px solid var(--rule)}
-.crew{display:flex;gap:30px;flex-wrap:wrap;margin:20px 0 24px}
-.crew .role{font-family:var(--mono);font-size:1.02rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted)}
-.studio-actions{display:flex;gap:12px;flex-wrap:wrap}
-footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
-  font-size:1.02rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
-  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
-
-#toast{position:fixed;left:50%;bottom:26px;
-  transform:translateX(-50%) translateY(calc(100% + 26px));
-  opacity:0;visibility:hidden;pointer-events:none;
-  background:var(--amber);color:var(--ink);font-family:var(--disp);font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;padding:11px 24px;z-index:100;
-  transition:transform .25s,opacity .25s,visibility 0s .25s}
-#toast.on{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible;
-  transition:transform .25s,opacity .25s,visibility 0s}
-
-@media(max-width:1000px){
-  .hero-main{grid-template-columns:1fr}
-  .hero-copy{text-align:left}
-  .hero-hook{margin-left:0}
-  .hero-actions{justify-content:flex-start}
-  .about-grid,.detect,.notices,.studio{grid-template-columns:1fr}
-  .loop{grid-template-columns:repeat(2,1fr)}
-  .langs{columns:2}
-}
-@media(max-width:600px){
-  .loop{grid-template-columns:1fr}
-  .langs{columns:1}
-  .facts{grid-template-columns:1fr}
-}
-</style>
+<!-- Design lives here -->
+<link rel="stylesheet" href="presskit-v3.css">
+<!-- All editable text and images live here -->
+<script src="presskit-content.js"></script>
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
-<header class="hero">
-  <!-- Swap the loop by changing this filename: new gf (1)-(4).webm -->
-  <video class="hero-bg" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">
-    <source src="new%20gf%20(1).webm" type="video/webm">
-  </video>
-  <div class="hero-veil"></div>
-
-  <div class="wrap">
-    <div class="hero-meta">
-    </div>
-
-    <div class="hero-main">
-      <div class="hero-video">
-        <!-- TODO: replace this block with the YouTube iframe once the teaser is up:
-             <iframe src="https://www.youtube-nocookie.com/embed/VIDEO_ID"
-                     title="The Facility — Teaser Trailer"
-                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                     allowfullscreen loading="lazy"></iframe> -->
-        <div class="placeholder">
-          <p class="todo">TODO — paste the YouTube embed here.</p>
-          <a class="btn quiet" href="https://www.youtube.com/@RealVeinstoneStudios" target="_blank" rel="noopener">YouTube channel ↗</a>
-        </div>
-      </div>
-
-      <div class="hero-copy">
-        <h1>The<br>Facility</h1>
-        <p class="hero-hook">Trust no one. Anomalies are hiding among your inmates.</p>
-        <p class="hero-tags">Psychological Horror</p>
-      </div>
-    </div>
-
-    <div class="hero-actions">
-      <a class="btn solid" href="https://store.steampowered.com/app/3796790/The_Facility/" target="_blank" rel="noopener">Steam Page</a>
-      <!-- Points at the Drive folder from your old press kit. Confirm it's set to
-           "anyone with the link" and actually populated before you send this out. -->
-      <a class="btn" href="https://drive.google.com/drive/folders/1yGicMxLobo0BcA_uS1AugO7LgC0MpXe3?usp=sharing"
-         target="_blank" rel="noopener">Download Asset Kit</a>
-      <button class="btn" id="sheet-toggle" type="button" aria-expanded="false" aria-controls="sheet">
-        Fact Sheet <span aria-hidden="true" id="sheet-caret">+</span>
-      </button>
-    </div>
-
-    <!-- factsheet drawer -->
-    <div class="sheet" id="sheet">
-      <div class="sheet-inner">
-        <dl class="facts">
-          <div class="fact"><dt>Title</dt><dd>The Facility</dd></div>
-          <div class="fact"><dt>Developer</dt><dd>Veinstone Studios</dd></div>
-          <div class="fact"><dt>Genre</dt><dd>Psychological Horror / Management Sim</dd></div>
-          <div class="fact"><dt>Platform</dt><dd>PC — Steam</dd></div>
-          <div class="fact"><dt>Players</dt><dd>Singleplayer</dd></div>
-          <div class="fact"><dt>Release date</dt><dd>Q4 2026</dd></div>
-          <div class="fact"><dt>Runtime</dt><dd>TBA</dd></div>
-          <div class="fact"><dt>Press contact</dt><dd><a href="mailto:veinstonestudios@gmail.com">veinstonestudios@gmail.com</a></dd></div>
-        </dl>
-        <p class="eyebrow" style="margin-top:30px">Localisation — 32 languages</p>
-        <ul class="langs">
-          <li>English</li><li>Turkish</li><li>French</li><li>Italian</li><li>German</li>
-          <li>Spanish — Spain</li><li>Spanish — Latin America</li><li>Portuguese — Brazil</li>
-          <li>Portuguese — Portugal</li><li>Dutch</li><li>Danish</li><li>Norwegian</li>
-          <li>Swedish</li><li>Finnish</li><li>Polish</li><li>Czech</li><li>Hungarian</li>
-          <li>Romanian</li><li>Bulgarian</li><li>Greek</li><li>Croatian</li><li>Serbian</li>
-          <li>Ukrainian</li><li>Russian</li><li>Azerbaijani</li><li>Simplified Chinese</li>
-          <li>Traditional Chinese</li><li>Japanese</li><li>Korean</li><li>Thai</li>
-          <li>Vietnamese</li><li>Indonesian</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- ================= GALLERY ================= -->
-<div class="gallery" id="gallery">
-  <div class="strip">
-    <div class="track" style="--dur:64s">
-      <figure class="tile"><img src="Photos/NewScreenshots/CellInspection.jpg" alt="Inspecting an inmate through the cell hatch"><figcaption>Cell inspection</figcaption></figure>
-      <figure class="tile"><img src="Photos/NewScreenshots/JournalSystem.jpg" alt="The journal used to cross-reference testimony"><figcaption>The journal</figcaption></figure>
-      <figure class="tile"><img src="Photos/NewScreenshots/NpcSelection.jpg" alt="Choosing which inmates to deploy"><figcaption>Selection</figcaption></figure>
-      <figure class="tile"><img src="Photos/NewScreenshots/TapeRecorder.jpg" alt="Reviewing a recorded interrogation"><figcaption>Tape recorder</figcaption></figure>
-    </div>
-  </div>
-  <div class="strip">
-    <div class="track rev" style="--dur:78s">
-      <figure class="tile"><img src="Photos/NewScreenshots/Waking%20Up%20!.jpg" alt="Waking up at the start of a shift"><figcaption>Morning shift</figcaption></figure>
-      <figure class="tile"><img src="newgfff%20(1).jpg" alt="TODO describe this screenshot"><figcaption class="todo">TODO — caption</figcaption></figure>
-      <figure class="tile"><img src="new%20gf%20(1).gif" alt="TODO describe this clip"><figcaption class="todo">TODO — caption</figcaption></figure>
-      <figure class="tile"><img src="Photos/NewScreenshots/Jhnkajbnuin.jpg" alt="TODO describe this screenshot"><figcaption class="todo">TODO — caption</figcaption></figure>
-    </div>
-  </div>
-  <div class="strip">
-    <div class="track" style="--dur:70s">
-      <figure class="tile"><img src="Photos/NewScreenshots/RHAndas%20dasd.jpg" alt="TODO describe this screenshot"><figcaption class="todo">TODO — caption</figcaption></figure>
-      <figure class="tile"><img src="newgfff%20(2).jpg" alt="TODO describe this screenshot"><figcaption class="todo">TODO — caption</figcaption></figure>
-      <figure class="tile"><img src="new%20gf%20(2).gif" alt="TODO describe this clip"><figcaption class="todo">TODO — caption</figcaption></figure>
-      <figure class="tile"><img src="Photos/NewScreenshots/igonmq%3Bx.jpg" alt="TODO describe this screenshot"><figcaption class="todo">TODO — caption</figcaption></figure>
-    </div>
-  </div>
-</div>
-
-<!-- ================= ABOUT ================= -->
-<section id="about">
-  <div class="wrap">
-    <p class="eyebrow">About</p>
-    <h2>What it is</h2>
-    <div class="about-grid">
-      <div class="about-body">
-        <p id="desc-long-a">The Facility is a psychological horror strategy game with a retro PSX aesthetic. Set in a world on the brink of collapse, you play as the newly appointed warden of Facility 61. Your job is to manage a rehabilitation center for subjects required by the State for dangerous reconstruction missions.</p>
-        <p id="desc-long-b">However, not everyone in your custody is human. Hidden among the inmates are Anomalies — mimics capable of disguising themselves as humans. Your survival depends on your ability to identify and contain these threats before they infiltrate the State's workforce.</p>
-      </div>
-      <div class="copy-stack">
-        <span class="label">Copy a description</span>
-        <button class="btn quiet copy-btn" data-copy="one"><span>One line</span><span class="count"></span></button>
-        <button class="btn quiet copy-btn" data-copy="short"><span>Short</span><span class="count"></span></button>
-        <button class="btn quiet copy-btn" data-copy="long"><span>Long</span><span class="count"></span></button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- hidden source text for the copy buttons -->
-<div hidden>
-  <p id="src-one" class="todo">TODO — write one quotable sentence under 15 words that names the genre.</p>
-  <p id="src-short">Trust no one. In this PSX-inspired horror game, anomalies are hiding among your inmates. It is your job to expose them before you accidentally deploy them into the world. Can you tell the difference between a human and an anomaly?</p>
-</div>
-
-<!-- ================= HOW TO PLAY ================= -->
-<section id="play">
-  <div class="wrap">
-    <p class="eyebrow">How to play</p>
-    <h2>One day, four decisions</h2>
-    <div class="loop">
-      <div class="phase">
-        <span class="n">01</span><h3>Orders</h3>
-        <p>The State faxes your quota at dawn. Read it carefully — how many bodies, and for what work.</p>
-      </div>
-      <div class="phase">
-        <span class="n">02</span><h3>Interrogation</h3>
-        <p>Question inmates face to face. Inspect their documents for discrepancies. Watch for what doesn't sit right.</p>
-      </div>
-      <div class="phase">
-        <span class="n">03</span><h3>Selection</h3>
-        <p>Decide who ships out. Sending a human to a death trap wastes a resource. Sending an Anomaly is worse.</p>
-      </div>
-      <div class="phase night">
-        <span class="n">04</span><h3>Night</h3>
-        <p>What you decided comes back. Scripted night events follow your choices. Survive until morning.</p>
-      </div>
-    </div>
-
-    <div class="detect">
-      <div>
-        <h3>Anomaly detection</h3>
-        <p>Investigate inmate files, cross-reference their stories, and look for visual distortions. If you fail to identify an Anomaly and send them on an assignment, the State holds you responsible for the consequences.</p>
-        <p class="quiet">Paranoia is your only friend.</p>
-      </div>
-      <img src="Photos/NewScreenshots/CellInspection.jpg" alt="Inspecting an inmate through the cell hatch" loading="lazy">
-    </div>
-  </div>
-</section>
-
-<!-- ================= NOTICES ================= -->
-<section id="notices">
-  <div class="wrap">
-    <p class="eyebrow">For creators</p>
-    <h2>Before you record</h2>
-    <div class="notices">
-      <div class="notice">
-        <h3>Audio safety</h3>
-        <p>All audio in The Facility is original and stream safe. No DMCA concerns.</p>
-      </div>
-      <div class="notice warn">
-        <h3>Content warnings</h3>
-        <p>The Facility contains flashing lights and body horror.
-          <span class="todo">TODO — finish this sentence; creators use it to judge advertiser-friendliness.</span></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= STUDIO ================= -->
-<section id="studio">
-  <div class="wrap">
-    <p class="eyebrow">Studio</p>
-    <h2>Veinstone Studios</h2>
-    <div class="studio">
-      <img class="mark" src="Logowithbackground.png" alt="Veinstone Studios logo" loading="lazy">
-      <div>
-        <p>An indie team in Ankara, Turkey, currently building <em>The Facility</em>.</p>
-        <div class="crew">
-          <div><div class="role">3D Artist</div>Naz Sökmen</div>
-          <div><div class="role">Developer</div>Huzeyfe Celep</div>
-          <div><div class="role">2D Artist</div>Selin Pektaş</div>
-        </div>
-        <div class="studio-actions">
-          <a class="btn solid" href="mailto:veinstonestudios@gmail.com">veinstonestudios@gmail.com</a>
-          <a class="btn quiet" href="https://www.youtube.com/@RealVeinstoneStudios" target="_blank" rel="noopener">YouTube</a>
-          <a class="btn quiet" href="https://www.instagram.com/veinstonestudios" target="_blank" rel="noopener">Instagram</a>
-          <a class="btn quiet" href="https://www.tiktok.com/@veinstonestudios" target="_blank" rel="noopener">TikTok</a>
-          <a class="btn quiet" href="index.html">Studio site</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="wrap">
-  <span>&copy; 2026 Veinstone Studios</span>
-  <span>The Facility</span>
-</footer>
-
+<div class="topbar" id="topbar"></div>
+<header class="hero" id="hero"></header>
+<div class="gallery" id="gallery"></div>
+<section id="about"></section>
+<section id="play"></section>
+<section id="notices"></section>
+<section id="studio"></section>
+<footer class="wrap" id="footer"></footer>
 <div id="toast">Copied</div>
 
 <script>
-/* Everything below is guarded. This whole file is one <script>, so a single
-   unguarded lookup on a deleted element throws and kills every feature after
-   it - which is exactly what happened when #rev was removed. */
+/* ===========================================================================
+   Renderer. You should not need to touch this file to change content —
+   edit presskit-content.js instead.
+   Every lookup is guarded: a missing or empty field just omits that piece
+   rather than throwing and taking the rest of the page down with it.
+   ========================================================================= */
+(function(){
+'use strict';
+
+var C = window.PRESSKIT;
+if (!C) {
+  document.body.innerHTML =
+    '<p style="padding:60px;font:16px system-ui;color:#d24b4b">' +
+    'presskit-content.js did not load. Check it sits next to this file, and ' +
+    'look in the browser console for a syntax error (usually a missing quote ' +
+    'or comma).</p>';
+  return;
+}
+
+/* ---------- helpers ---------- */
 function $(id){ return document.getElementById(id); }
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+// Filenames may contain spaces, parentheses or semicolons. Encode them so the
+// author can just type the real name in the content file.
+function url(p){ return encodeURI(String(p || '')).replace(/;/g,'%3B'); }
+function has(v){ return v != null && String(v).trim() !== ''; }
+// Marks TODO placeholders red without the author needing to add markup.
+function todo(s){
+  return String(s || '').replace(/TODO[^.]*\.?/g,
+    function(m){ return '<span class="todo">' + m + '</span>'; });
+}
+function set(id, html){ var el = $(id); if (el) el.innerHTML = html; }
 
-/* ---- revision stamp (optional element) ---- */
+// Body text may be one string, a string containing line breaks, or a list of
+// strings. Each line/entry becomes its own paragraph.
+function blocks(v){
+  var arr = Array.isArray(v) ? v : String(v == null ? '' : v).split(/\n+/);
+  return arr.map(function(x){ return String(x).trim(); })
+            .filter(Boolean)
+            .map(function(x){ return '<p>' + todo(esc(x)) + '</p>'; })
+            .join('');
+}
+// Optional bulleted list, e.g. for listing individual content warnings.
+function bullets(v){
+  if (!Array.isArray(v) || !v.length) return '';
+  return '<ul class="bullets">' + v.map(function(x){
+    return '<li>' + todo(esc(x)) + '</li>';
+  }).join('') + '</ul>';
+}
+
+/* ---------- header ---------- */
 (function(){
-  var rev = $('rev');
-  if (!rev) return;
-  rev.textContent = new Date().toISOString().slice(0,7).replace('-','.');
+  var h = C.hero || {};
+  var video = has(h.bgVideo)
+    ? '<video class="hero-bg" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">' +
+      '<source src="' + url(h.bgVideo) + '" type="video/webm"></video>' : '';
+
+  // YouTube refuses to configure the player (error 153) unless it receives a
+  // valid HTTP Referer. referrerpolicy + the <meta name="referrer"> in <head>
+  // supply it. Note this can only ever work over http(s) - opening the page as
+  // a file:// document sends no referer at all and will always show 153.
+  // Swap youtube-nocookie.com for youtube.com below if you prefer.
+  var player = has(h.youtubeId)
+    ? '<iframe src="https://www.youtube-nocookie.com/embed/' + esc(h.youtubeId) + '"' +
+      ' title="' + esc((h.titleLines || []).join(' ')) + ' — Trailer"' +
+      ' frameborder="0" referrerpolicy="strict-origin-when-cross-origin"' +
+      ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;' +
+      ' picture-in-picture" allowfullscreen></iframe>'
+    : '<div class="placeholder"><p class="todo">No trailer yet — add the YouTube ' +
+      'video id to presskit-content.js</p></div>';
+
+  var actions = '';
+  if (has(h.steamUrl))
+    actions += '<a class="btn solid" href="' + esc(h.steamUrl) + '" target="_blank" rel="noopener">Steam Page</a>';
+  if (has(h.assetKitUrl))
+    actions += '<a class="btn" data-role="asset-kit" href="' + esc(h.assetKitUrl) +
+               '" target="_blank" rel="noopener">Download Asset Kit</a>';
+  actions += '<button class="btn" id="sheet-toggle" type="button" aria-expanded="false" ' +
+             'aria-controls="sheet">Fact Sheet <span aria-hidden="true" id="sheet-caret">+</span></button>';
+
+  var facts = (C.facts || []).map(function(f){
+    return '<div class="fact"><dt>' + esc(f.label) + '</dt><dd>' + todo(esc(f.value)) + '</dd></div>';
+  }).join('');
+  if (has(h.pressEmail))
+    facts += '<div class="fact"><dt>Press contact</dt><dd><a href="mailto:' +
+             esc(h.pressEmail) + '">' + esc(h.pressEmail) + '</a></dd></div>';
+
+  var langs = (C.languages || []);
+  var langBlock = langs.length
+    ? '<p class="eyebrow" style="margin-top:30px">Localisation — ' + langs.length + ' languages</p>' +
+      '<ul class="langs">' + langs.map(function(l){ return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>'
+    : '';
+
+  set('hero',
+    video +
+    '<div class="hero-veil"></div>' +
+    '<div class="wrap">' +
+      '<div class="hero-main">' +
+        '<div class="hero-video">' + player + '</div>' +
+        '<div class="hero-copy">' +
+          '<h1>' + (h.titleLines || []).map(esc).join('<br>') + '</h1>' +
+          (has(h.hook)    ? '<p class="hero-hook">' + esc(h.hook) + '</p>' : '') +
+          (has(h.tagline) ? '<p class="hero-tags">' + esc(h.tagline) + '</p>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="hero-actions">' + actions + '</div>' +
+      '<div class="sheet" id="sheet"><div class="sheet-inner">' +
+        '<dl class="facts">' + facts + '</dl>' + langBlock +
+      '</div></div>' +
+    '</div>');
 })();
 
-/* ---- fact sheet drawer ---- */
+/* ---------- sticky topbar ----------
+   Mirrors the three hero buttons. Hidden until the hero's own button row has
+   scrolled out of view, so the actions stay reachable without duplicating
+   them on screen at the same time. */
 (function(){
-  var btn   = $('sheet-toggle');
-  var sheet = $('sheet');
-  var caret = $('sheet-caret');
-  if (!btn || !sheet) return;
-  btn.addEventListener('click', function(){
-    var open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    if (caret) caret.textContent = open ? '+' : '–';
-    // Animate to the real content height, then release so it can reflow.
-    sheet.style.maxHeight = open ? '0px' : sheet.scrollHeight + 'px';
-  });
-  addEventListener('resize', function(){
-    if (btn.getAttribute('aria-expanded') === 'true')
-      sheet.style.maxHeight = sheet.scrollHeight + 'px';
-  }, {passive:true});
+  var tb = $('topbar');
+  if (!tb) return;
+  var h = C.hero || {};
+  var title = (h.titleLines || []).join(' ');
+
+  var links = '';
+  if (has(h.steamUrl))
+    links += '<a class="btn solid" href="' + esc(h.steamUrl) + '" target="_blank" rel="noopener">Steam Page</a>';
+  if (has(h.assetKitUrl))
+    links += '<a class="btn" data-role="asset-kit" href="' + esc(h.assetKitUrl) +
+             '" target="_blank" rel="noopener">Download Asset Kit</a>';
+  links += '<button class="btn" id="topbar-sheet-toggle" type="button" aria-expanded="false" ' +
+           'aria-controls="sheet">Fact Sheet <span aria-hidden="true" id="topbar-sheet-caret">+</span></button>';
+
+  if (!has(title) && !links) return;
+
+  tb.innerHTML =
+    '<div class="wrap topbar-inner">' +
+      (has(title) ? '<span class="topbar-title">' + esc(title) + '</span>' : '<span></span>') +
+      '<div class="topbar-actions">' + links + '</div>' +
+    '</div>';
+
+  // Watch the hero's own action row. Once it scrolls above the viewport
+  // (not just "not yet reached"), reveal the topbar copy of the same buttons.
+  var anchor = document.querySelector('#hero .hero-actions');
+  if (anchor && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      var e = entries[0];
+      tb.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top < 0);
+    }, { threshold: 0 });
+    io.observe(anchor);
+  }
 })();
 
-/* ---- seamless marquee ----
-   Four tiles are narrower than a desktop viewport, which is why the strips
-   showed gaps. Repeat the originals until one pass is comfortably wider than
-   the screen, THEN duplicate that whole pass so translateX(-50%) still lands
-   on an identical frame and loops without a seam. */
+/* ---------- gallery ---------- */
 (function(){
-  var MIN_TILE = 240;   // conservative narrowest a tile ever renders
-  document.querySelectorAll('.track').forEach(function(track){
-    var originals = [].slice.call(track.children);
-    if (!originals.length) return;
+  var items = C.gallery || [];
+  var el = $('gallery');
+  if (!el || !items.length) { if (el) el.remove(); return; }
 
-    // Size against the whole screen, not just the current window - otherwise
-    // loading in a small window and maximising later brings the gaps back.
-    var target  = Math.max(window.innerWidth, (window.screen && screen.width) || 0);
-    var perPass = Math.max(originals.length, Math.ceil(target / MIN_TILE) + 2);
+  var STRIPS = 3, SPEEDS = ['64s','78s','70s'], MIN_TILE = 240;
+  var rows = [[],[],[]];
+  items.forEach(function(it, i){ rows[i % STRIPS].push(it); });
 
-    var fill = document.createDocumentFragment();
-    for (var i = originals.length; i < perPass; i++)
-      fill.appendChild(originals[i % originals.length].cloneNode(true));
-    track.appendChild(fill);
+  function tile(it){
+    return '<figure class="tile"><img src="' + url(it.src) + '" alt="' +
+      esc(it.alt || it.caption || '') + '">' +
+      (has(it.caption) ? '<figcaption>' + todo(esc(it.caption)) + '</figcaption>' : '') +
+      '</figure>';
+  }
 
-    var dup = document.createDocumentFragment();
-    [].slice.call(track.children).forEach(function(n){
-      dup.appendChild(n.cloneNode(true));
+  // One pass must be wider than the screen or the strip shows gaps. Size
+  // against screen.width so maximising the window later can't reintroduce them.
+  var target  = Math.max(window.innerWidth, (window.screen && screen.width) || 0);
+  var perPass = Math.ceil(target / MIN_TILE) + 2;
+
+  var gh = C.galleryHead || {};
+  var head = (has(gh.eyebrow) || has(gh.heading) || has(gh.description))
+    ? '<div class="gallery-head wrap">' +
+        '<div>' +
+          (has(gh.eyebrow) ? '<p class="eyebrow">' + esc(gh.eyebrow) + '</p>' : '') +
+          (has(gh.heading) ? '<h2>' + esc(gh.heading) + '</h2>' : '') +
+        '</div>' +
+        (has(gh.description) ? '<p class="gallery-desc">' + todo(esc(gh.description)) + '</p>' : '') +
+      '</div>'
+    : '';
+
+  var strips = rows.map(function(row, i){
+    if (!row.length) return '';
+    var n = Math.max(row.length, perPass);
+    var pass = '';
+    for (var k = 0; k < n; k++) pass += tile(row[k % row.length]);
+    return '<div class="strip"><div class="track' + (i === 1 ? ' rev' : '') +
+           '" style="--dur:' + SPEEDS[i] + '">' + pass + pass + '</div></div>';
+  }).join('');
+
+  el.innerHTML = head + strips;
+})();
+
+/* ---------- about + copy buttons ---------- */
+(function(){
+  var a = C.about || {}, d = C.descriptions || {};
+  var paras = (a.paragraphs || []);
+  if (!paras.length && !has(d.short)) { var s = $('about'); if (s) s.remove(); return; }
+
+  var longText = has(d.long) ? d.long : paras.join('\n\n');
+  var texts = { one: d.one || '', short: d.short || '', long: longText };
+  var NAMES  = { one: 'One line', short: 'Short', long: 'Long' };
+  var DEFAULT_KEY = 'long';   // shown at rest, and restored when the mouse leaves the buttons
+
+  function label(key){
+    var t = texts[key];
+    var note = !has(t) ? '<span class="count todo">TODO</span>'
+                       : '<span class="count">' + t.split(/\s+/).filter(Boolean).length + ' words</span>';
+    return '<button class="btn quiet copy-btn" data-copy="' + key + '"' +
+           (has(t) ? '' : ' disabled') + '><span>' + NAMES[key] + '</span>' + note + '</button>';
+  }
+
+  set('about',
+    '<div class="wrap">' +
+      (has(a.eyebrow) ? '<p class="eyebrow">' + esc(a.eyebrow) + '</p>' : '') +
+      (has(a.heading) ? '<h2>' + esc(a.heading) + '</h2>' : '') +
+      '<div class="about-grid"><div class="about-body">' +
+        '<p class="preview-tag" id="about-preview-tag">' + NAMES[DEFAULT_KEY] + ' description</p>' +
+        '<div class="preview-text" id="about-preview-text">' +
+          blocks(texts[DEFAULT_KEY]) +
+        '</div>' +
+      '</div><div class="copy-stack">' +
+        '<span class="label">Copy a description</span>' +
+        label('one') + label('short') + label('long') +
+      '</div></div>' +
+    '</div>');
+
+  /* ---- hover/focus preview: show what each button would actually copy ---- */
+  (function(){
+    var tag = $('about-preview-tag'), box = $('about-preview-text');
+    var stack = document.querySelector('.copy-stack');
+    if (!tag || !box || !stack) return;
+
+    // Keep in sync with .preview-text's transition-duration in the CSS.
+    var FADE_MS = 140;
+    var current = DEFAULT_KEY, swapToken = 0;
+
+    function show(key){
+      if (key === current) return;   // skip re-triggering the fade for no reason
+      current = key;
+      var token = ++swapToken;       // lets a later hover cancel an in-flight swap
+      tag.textContent = NAMES[key] + ' description';   // label flips instantly, only the body crossfades
+      box.classList.add('fading');
+      setTimeout(function(){
+        if (token !== swapToken) return;   // superseded by a newer hover mid-fade
+        box.innerHTML = has(texts[key])
+          ? blocks(texts[key])
+          : '<p class="todo">Nothing written yet for the ' + NAMES[key].toLowerCase() +
+            ' description — add it in presskit-content.js.</p>';
+        box.classList.remove('fading');
+      }, FADE_MS);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(b){
+      b.addEventListener('mouseenter', function(){ show(b.dataset.copy); });
+      b.addEventListener('focus',      function(){ show(b.dataset.copy); });
     });
-    track.appendChild(dup);
-  });
-})();
+    // Reverting on the stack's own mouseleave (rather than per-button) means
+    // moving between adjacent buttons doesn't flash back to the default in
+    // between - it only resets once the pointer leaves the whole group.
+    stack.addEventListener('mouseleave', function(){ show(DEFAULT_KEY); });
+    stack.addEventListener('focusout', function(e){
+      if (!stack.contains(e.relatedTarget)) show(DEFAULT_KEY);
+    });
+  })();
 
-/* ---- copy buttons ---- */
-(function(){
-  function txt(id){ var el = $(id); return el ? el.innerText.trim() : ''; }
-  var sources = {
-    one:   function(){ return txt('src-one'); },
-    short: function(){ return txt('src-short'); },
-    long:  function(){ return [txt('desc-long-a'), txt('desc-long-b')]
-                              .filter(Boolean).join('\n\n'); }
-  };
-  var toast = $('toast');
-  var timer;
+  /* clipboard with a fallback — the async API throws on file:// */
+  var toast = $('toast'), timer;
   function flash(msg){
     if (!toast) return;
     toast.textContent = msg;
@@ -509,52 +321,160 @@ function $(id){ return document.getElementById(id); }
     clearTimeout(timer);
     timer = setTimeout(function(){ toast.classList.remove('on'); }, 1800);
   }
-  function words(t){ return t.split(/\s+/).filter(Boolean).length; }
-
-  /* The async Clipboard API throws or rejects on file:// and in unfocused
-     documents, which is why clicking gave no feedback at all. Fall back to a
-     hidden textarea + execCommand, and always report the outcome. */
-  function legacyCopy(text){
+  function legacy(text){
     var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
+    ta.value = text; ta.setAttribute('readonly','');
     ta.style.cssText = 'position:fixed;top:-9999px;opacity:0';
     document.body.appendChild(ta);
-    ta.select();
-    ta.setSelectionRange(0, ta.value.length);
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
     var ok = false;
-    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
     document.body.removeChild(ta);
     return ok;
   }
-
   function copy(text, done){
     try {
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text)
           .then(function(){ done(true); })
-          .catch(function(){ done(legacyCopy(text)); });
+          .catch(function(){ done(legacy(text)); });
         return;
       }
-    } catch (e) { /* fall through */ }
-    done(legacyCopy(text));
+    } catch(e){}
+    done(legacy(text));
   }
-
   document.querySelectorAll('.copy-btn').forEach(function(b){
-    var text  = sources[b.dataset.copy]();
-    var count = b.querySelector('.count');
-    // Derived from the live text, so the labels can never drift out of date.
-    if (/^TODO\b/.test(text)) { count.textContent = 'TODO'; count.classList.add('todo'); }
-    else { count.textContent = words(text) + ' words'; }
-
     b.addEventListener('click', function(){
-      var current = sources[b.dataset.copy]();
-      copy(current, function(ok){
-        flash(ok ? 'Copied — ' + words(current) + ' words'
+      var t = texts[b.dataset.copy];
+      if (!has(t)) return;
+      copy(t, function(ok){
+        flash(ok ? 'Copied — ' + t.split(/\s+/).filter(Boolean).length + ' words'
                  : 'Copy failed — select the text manually');
       });
     });
   });
+})();
+
+/* ---------- how to play ---------- */
+(function(){
+  var p = C.play || {};
+  if (!(p.phases || []).length) { var s = $('play'); if (s) s.remove(); return; }
+  var d = p.detail || {};
+
+  var phases = p.phases.map(function(ph, i){
+    return '<div class="phase">' +
+      '<span class="n">' + ('0' + (i + 1)).slice(-2) + '</span>' +
+      '<h3>' + esc(ph.title) + '</h3>' + blocks(ph.body) + '</div>';
+  }).join('');
+
+  var detail = '';
+  if (has(d.heading) || (d.paragraphs || []).length) {
+    detail = '<div class="detect"><div>' +
+      (has(d.heading) ? '<h3>' + esc(d.heading) + '</h3>' : '') +
+      (d.paragraphs || []).map(function(x){ return '<p>' + todo(esc(x)) + '</p>'; }).join('') +
+      (has(d.aside) ? '<p class="quiet">' + esc(d.aside) + '</p>' : '') +
+      '</div>' +
+      (has(d.image) ? '<img src="' + url(d.image) + '" alt="' + esc(d.imageAlt || '') +
+                      '" loading="lazy">' : '') +
+      '</div>';
+  }
+
+  set('play',
+    '<div class="wrap">' +
+      (has(p.eyebrow) ? '<p class="eyebrow">' + esc(p.eyebrow) + '</p>' : '') +
+      (has(p.heading) ? '<h2>' + esc(p.heading) + '</h2>' : '') +
+      '<div class="loop">' + phases + '</div>' + detail +
+    '</div>');
+})();
+
+/* ---------- notices ---------- */
+(function(){
+  var n = C.notices || {};
+  if (!(n.items || []).length) { var s = $('notices'); if (s) s.remove(); return; }
+  set('notices',
+    '<div class="wrap">' +
+      (has(n.eyebrow) ? '<p class="eyebrow">' + esc(n.eyebrow) + '</p>' : '') +
+      (has(n.heading) ? '<h2>' + esc(n.heading) + '</h2>' : '') +
+      '<div class="notices">' + n.items.map(function(it){
+        return '<div class="notice' + (it.warn ? ' warn' : '') + '">' +
+          '<h3>' + esc(it.title) + '</h3>' + blocks(it.body) + bullets(it.list) + '</div>';
+      }).join('') + '</div>' +
+    '</div>');
+})();
+
+/* ---------- studio ---------- */
+(function(){
+  var s = C.studio || {};
+  if (!has(s.heading) && !(s.crew || []).length) { var el = $('studio'); if (el) el.remove(); return; }
+  var h = C.hero || {};
+
+  var links = '';
+  if (has(h.pressEmail))
+    links += '<a class="btn solid" href="mailto:' + esc(h.pressEmail) + '">' + esc(h.pressEmail) + '</a>';
+  links += (s.links || []).map(function(l){
+    var ext = /^https?:/.test(l.url) ? ' target="_blank" rel="noopener"' : '';
+    return '<a class="btn quiet" href="' + esc(l.url) + '"' + ext + '>' + esc(l.label) + '</a>';
+  }).join('');
+
+  set('studio',
+    '<div class="wrap">' +
+      (has(s.eyebrow) ? '<p class="eyebrow">' + esc(s.eyebrow) + '</p>' : '') +
+      (has(s.heading) ? '<h2>' + esc(s.heading) + '</h2>' : '') +
+      '<div class="studio">' +
+        (has(s.logo) ? '<img class="mark" src="' + url(s.logo) + '" alt="' + esc(s.heading || '') +
+                       ' logo" loading="lazy">' : '') +
+        '<div>' +
+          (has(s.blurb) ? '<p>' + s.blurb + '</p>' : '') +
+          ((s.crew || []).length ? '<div class="crew">' + s.crew.map(function(c){
+            return '<div><div class="role">' + esc(c.role) + '</div>' + esc(c.name) + '</div>';
+          }).join('') + '</div>' : '') +
+          '<div class="studio-actions">' + links + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>');
+})();
+
+/* ---------- footer ---------- */
+(function(){
+  var f = C.footer || {};
+  set('footer', '<span>' + esc(f.left || '') + '</span><span>' + esc(f.right || '') + '</span>');
+})();
+
+/* ---------- fact sheet drawer ----------
+   Two triggers now open the same drawer: the button in the hero, and its
+   twin in the sticky topbar. Both stay in sync (aria-expanded + caret),
+   and opening from the topbar scrolls the drawer into view since it lives
+   further up the page, out of sight once the topbar is showing. */
+(function(){
+  var sheet = $('sheet');
+  if (!sheet) return;
+  var mainBtn = $('sheet-toggle'), mainCaret = $('sheet-caret');
+  var topBtn  = $('topbar-sheet-toggle'), topCaret = $('topbar-sheet-caret');
+  if (!mainBtn && !topBtn) return;
+
+  function isOpen(){
+    return (mainBtn || topBtn).getAttribute('aria-expanded') === 'true';
+  }
+  function apply(open){
+    [mainBtn, topBtn].forEach(function(b){ if (b) b.setAttribute('aria-expanded', String(open)); });
+    [mainCaret, topCaret].forEach(function(c){ if (c) c.textContent = open ? '–' : '+'; });
+    sheet.style.maxHeight = open ? sheet.scrollHeight + 'px' : '0px';
+  }
+  function toggle(fromTopbar){
+    var open = !isOpen();
+    apply(open);
+    if (open && fromTopbar)
+      requestAnimationFrame(function(){ sheet.scrollIntoView({behavior:'smooth', block:'start'}); });
+  }
+
+  if (mainBtn) mainBtn.addEventListener('click', function(){ toggle(false); });
+  if (topBtn)  topBtn.addEventListener('click', function(){ toggle(true); });
+
+  window.addEventListener('resize', function(){
+    if (isOpen()) sheet.style.maxHeight = sheet.scrollHeight + 'px';
+  }, {passive:true});
+})();
+
 })();
 </script>
 </body>
