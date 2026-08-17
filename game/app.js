@@ -1072,8 +1072,8 @@ function showGameOver() {
 // ==========================================
 // SECURITY ACCESS AUTHENTICATION GATE
 // ==========================================
-// SHA-256 hash representation of access key
-const FACILITY_PASS_HASH = "fc989fb5e8c923256f03fb717389b1885ecb57ae9d4aef8453920d6280bc1bb4";
+// SHA-256 hash representation of access key ('muhusena')
+const FACILITY_PASS_HASH = "333bc56bf06b9f599dbe678e5be83a9f58e90e07380319e26799af383c5068c3";
 
 async function computeSha256(text) {
     const encoder = new TextEncoder();
@@ -1084,6 +1084,7 @@ async function computeSha256(text) {
 }
 
 async function verifyAccessKey(inputKey) {
+    if (inputKey === "muhusena") return true;
     const hash = await computeSha256(inputKey);
     return hash === FACILITY_PASS_HASH;
 }
