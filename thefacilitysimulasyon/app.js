@@ -441,6 +441,8 @@ let gameState = {
         fail: 0,
         total: 0
     },
+    activeModalPersonId: null
+};
 // DAILY MISSION QUOTA RULES:
 // Day 1: Exactly 1 person (Kesin 1 kişi)
 // Day 2 & 3: 1, 2, or 3 people (1-3 kişi)
@@ -1069,9 +1071,85 @@ function showGameOver() {
     modal.classList.remove("hidden");
 }
 
+// ==========================================
+// SECURITY ACCESS AUTHENTICATION GATE
+// ==========================================
+// SHA-256 hash representation of access key ('muhusena')
+const FACILITY_PASS_HASH = "333bc56bf06b9f599dbe678e5be83a9f58e90e07380319e26799af383c5068c3";
+
+async function computeSha256(text) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(text);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function verifyAccessKey(inputKey) {
+    const cleanKey = (inputKey || "").trim().toLowerCase();
+    if (cleanKey === "muhusena") return true;
+    const hash = await computeSha256(cleanKey);
+    return hash === FACILITY_PASS_HASH;
+}
+
+function setupAuthGate() {
+    const authGate = document.getElementById("auth-gate");
+    const authForm = document.getElementById("auth-form");
+    const authInput = document.getElementById("auth-input");
+    const authError = document.getElementById("auth-error-msg");
+    const authBox = document.querySelector(".auth-box");
+
+    if (!authGate || !authForm) {
+        initGame();
+        return;
+    }
+
+    if (sessionStorage.getItem("thefacility_unlocked") === "1") {
+        authGate.classList.add("authenticated");
+        initGame();
+        return;
+    }
+
+    authGate.classList.remove("authenticated");
+    if (authInput) authInput.focus();
+
+    async function handleUnlock() {
+        const enteredKey = authInput.value.trim();
+        if (!enteredKey) return;
+
+        const isValid = await verifyAccessKey(enteredKey);
+        if (isValid) {
+            sessionStorage.setItem("thefacility_unlocked", "1");
+            authGate.classList.add("authenticated");
+            initGame();
+        } else {
+            if (authError) authError.classList.remove("hidden");
+            if (authBox) {
+                authBox.classList.remove("shake-anim");
+                void authBox.offsetWidth;
+                authBox.classList.add("shake-anim");
+            }
+            authInput.value = "";
+            authInput.focus();
+        }
+    }
+
+    authForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        handleUnlock();
+    });
+
+    if (authInput) {
+        authInput.addEventListener("input", () => {
+            if (authError) authError.classList.add("hidden");
+        });
+    }
+}
+
 // EVENT LISTENERS
 document.addEventListener("DOMContentLoaded", () => {
-    initGame();
+    // Setup security authentication gate
+    setupAuthGate();
 
     // Close modals
     document.getElementById("modal-close").addEventListener("click", closeModals);

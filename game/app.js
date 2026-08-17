@@ -1086,8 +1086,9 @@ async function computeSha256(text) {
 }
 
 async function verifyAccessKey(inputKey) {
-    if (inputKey === "muhusena") return true;
-    const hash = await computeSha256(inputKey);
+    const cleanKey = (inputKey || "").trim().toLowerCase();
+    if (cleanKey === "muhusena") return true;
+    const hash = await computeSha256(cleanKey);
     return hash === FACILITY_PASS_HASH;
 }
 

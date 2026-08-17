@@ -10,6 +10,43 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- AUTHENTICATION SECURITY GATE -->
+    <div id="auth-gate" class="auth-gate-container">
+        <div class="auth-box">
+            <div class="auth-terminal-header">
+                <span class="auth-status-indicator"></span>
+                <span class="auth-title">GÜVENLİ TESİS ERİŞİM KAPISI // RESTRICTED ACCESS</span>
+            </div>
+            <div class="auth-body">
+                <div class="auth-icon-wrap">
+                    <div class="auth-badge-icon">🔒</div>
+                </div>
+                <h3>GÜVENLİK PROTOKOLÜ</h3>
+                <p class="auth-desc">Tesis Anomali Kontrol Simülasyonu'na erişmek için yetki kodunuzu giriniz.</p>
+                
+                <form id="auth-form" onsubmit="return false;" class="auth-form">
+                    <div class="auth-input-group">
+                        <span class="auth-prompt">&gt;</span>
+                        <input 
+                            type="password" 
+                            id="auth-input" 
+                            placeholder="Erişim Şifresi" 
+                            autocomplete="off" 
+                            spellcheck="false" 
+                            required 
+                            autofocus
+                        />
+                        <button type="submit" id="btn-auth-submit" class="btn-auth-unlock">GİRİŞ ↵</button>
+                    </div>
+                    <div id="auth-error-msg" class="auth-error-msg hidden">⚠️ ERİŞİM REDDEDİLDİ: Geçersiz yetkilendirme şifresi!</div>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <span>KLASİFİKASYON: GİZLİ // VEINSTONE FACILITY OS</span>
+            </div>
+        </div>
+    </div>
+
     <div class="hud-scanline"></div>
     <div class="app-container">
         <!-- TOP HEADER / STATUS BAR -->
