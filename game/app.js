@@ -441,6 +441,8 @@ let gameState = {
         fail: 0,
         total: 0
     },
+    activeModalPersonId: null
+};
 // DAILY MISSION QUOTA RULES:
 // Day 1: Exactly 1 person (Kesin 1 kişi)
 // Day 2 & 3: 1, 2, or 3 people (1-3 kişi)
