@@ -39,9 +39,8 @@ const INITIAL_PERSONNEL = [
 
 // Calculates percentage for an indicator based on calibrated risk tiers:
 // - Kesin Anomali Kadın (Dr. Zeynep: 9) ve Erkek (Murat Çelik: 2): %80 - %90
-// - Genel Anomali (Burak Demir: 5, Derya Aydın: 12 ve rastgele anomaliler): %50 - %75
-// - Kesin İnsanlardan Biri (Dr. Kaya: 1, Asistan Elif: 8): %18 - %22 (~%20)
-// - Genel İnsan: %30 - %50
+// - Kesin İnsan Kadın (Asistan Elif: 8) ve Erkek (Dr. Kaya: 1): %18 - %22 (~%20)
+// - Genel Anomaliler ve Genel İnsanların Hepsi: %30 - %60
 function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personObj) {
     let person = null;
     let isAnomaly = false;
@@ -65,20 +64,20 @@ function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personOb
             percentage = Math.floor(Math.random() * 11) + 80; // %80 - %90
             certaintyType = "Kritik Belirteç";
         } else {
-            // Genel Anomali (Burak Demir: 5, Derya Aydın: 12 ve diğer anomaliler): %50 - %75
-            percentage = Math.floor(Math.random() * 26) + 50; // %50 - %75
-            certaintyType = "Yüksek Kesinlik";
+            // Genel Anomali: %30 - %60
+            percentage = Math.floor(Math.random() * 31) + 30; // %30 - %60
+            certaintyType = "Bulanık Belirteç";
         }
     } else {
         // İnsan
-        // Kesin insanlardan biri ~%20 bandı (Dr. Kaya: 1, Asistan Elif: 8)
+        // Kesin insan (Dr. Kaya: 1, Asistan Elif: 8): ~%20 bandı (%18 - %22)
         const isUltraCleanHuman = personId === 1 || personId === 8;
         if (isUltraCleanHuman) {
             percentage = Math.floor(Math.random() * 5) + 18; // %18 - %22 (~%20)
             certaintyType = "Stabil Kesinlik";
         } else {
-            // Genel İnsan: %30 - %50
-            percentage = Math.floor(Math.random() * 21) + 30; // %30 - %50
+            // Genel İnsan: %30 - %60
+            percentage = Math.floor(Math.random() * 31) + 30; // %30 - %60
             certaintyType = "Standart Kesinlik";
         }
     }
