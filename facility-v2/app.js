@@ -37,35 +37,55 @@ const INITIAL_PERSONNEL = [
 // DUAL ANOMALY INDICATOR PROBABILITY ENGINE
 // ==========================================
 
-// Calculates percentage for an indicator (either highly decisive or ambiguous/noisy)
-function calculateIndicatorProbability(isAnomaly, indicatorIndex) {
-    // 75% decisive reading (very high or very low certainty), 25% ambiguous/noisy
-    const isDecisive = Math.random() < 0.75;
+// Calculates percentage for an indicator based on calibrated risk tiers:
+// - Kesin Anomali Kadın (Dr. Zeynep: 9) ve Erkek (Murat Çelik: 2): %80 - %90
+// - Genel Anomali (Burak Demir: 5, Derya Aydın: 12 ve rastgele anomaliler): %50 - %75
+// - Kesin İnsanlardan Biri (Dr. Kaya: 1, Asistan Elif: 8): %18 - %22 (~%20)
+// - Genel İnsan: %30 - %50
+function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personObj) {
+    let person = null;
+    let isAnomaly = false;
+
+    if (typeof personOrAnomaly === "object" && personOrAnomaly !== null) {
+        person = personOrAnomaly;
+        isAnomaly = Boolean(person.isAnomaly);
+    } else {
+        isAnomaly = Boolean(personOrAnomaly);
+        person = personObj || null;
+    }
+
+    const personId = person ? person.id : null;
     let percentage = 50;
-    let certaintyType = isDecisive ? "Yüksek Kesinlik" : "Düşük Kesinlik / Parazit";
+    let certaintyType = "Standart Teşhis";
 
     if (isAnomaly) {
-        if (isDecisive) {
-            // Anomaly decisive: 88% - 99%
-            percentage = Math.floor(Math.random() * 12) + 88;
+        // Sadece Murat Çelik (2) ve Dr. Zeynep (9): %80 - %90
+        const isHighTierAnomaly = personId === 2 || personId === 9;
+        if (isHighTierAnomaly) {
+            percentage = Math.floor(Math.random() * 11) + 80; // %80 - %90
+            certaintyType = "Kritik Belirteç";
         } else {
-            // Anomaly ambiguous: 52% - 66%
-            percentage = Math.floor(Math.random() * 15) + 52;
+            // Genel Anomali (Burak Demir: 5, Derya Aydın: 12 ve diğer anomaliler): %50 - %75
+            percentage = Math.floor(Math.random() * 26) + 50; // %50 - %75
+            certaintyType = "Yüksek Kesinlik";
         }
     } else {
-        // Human
-        if (isDecisive) {
-            // Human decisive: 1% - 13%
-            percentage = Math.floor(Math.random() * 13) + 1;
+        // İnsan
+        // Kesin insanlardan biri ~%20 bandı (Dr. Kaya: 1, Asistan Elif: 8)
+        const isUltraCleanHuman = personId === 1 || personId === 8;
+        if (isUltraCleanHuman) {
+            percentage = Math.floor(Math.random() * 5) + 18; // %18 - %22 (~%20)
+            certaintyType = "Stabil Kesinlik";
         } else {
-            // Human ambiguous: 36% - 49%
-            percentage = Math.floor(Math.random() * 14) + 36;
+            // Genel İnsan: %30 - %50
+            percentage = Math.floor(Math.random() * 21) + 30; // %30 - %50
+            certaintyType = "Standart Kesinlik";
         }
     }
 
     return {
         prob: percentage,
-        isDecisive,
+        isDecisive: true,
         certaintyType
     };
 }
@@ -99,24 +119,24 @@ function getPersonCombinedRisk(person) {
     };
 }
 
-// PERSONNEL GENERATION (2 Fixed Humans, 2 Fixed Anomalies per gender, Remaining Random)
+// PERSONNEL GENERATION (1 Fixed Human, 1 Fixed Anomaly per gender, Remaining 5 Random)
 function generatePersonnelState() {
     return INITIAL_PERSONNEL.map(p => {
         let isAnomaly;
-        // Erkekler: 2 Kesin İnsan (Dr. Kaya: 1, Can Yılmaz: 3)
-        //          2 Kesin Anomali (Murat Çelik: 2, Burak Demir: 5)
-        //          Kalanlar Rastgele (Dr. Arda: 4, Mert Kurt: 6, Kerem: 7)
-        if (p.id === 1 || p.id === 3) {
+        // Erkekler (7): 1 Kesin İnsan (Dr. Kaya: 1)
+        //               1 Kesin Anomali (Murat Çelik: 2)
+        //               Kalan 5 Rastgele (Can: 3, Dr. Arda: 4, Burak: 5, Mert: 6, Kerem: 7)
+        if (p.id === 1) {
             isAnomaly = false;
-        } else if (p.id === 2 || p.id === 5) {
+        } else if (p.id === 2) {
             isAnomaly = true;
         }
-        // Kızlar: 2 Kesin İnsan (Asistan Elif: 8, Psikolog Merve: 11)
-        //         2 Kesin Anomali (Dr. Zeynep: 9, Derya Aydın: 12)
-        //         Kalanlar Rastgele (Selin: 10, Sinem: 13, Aylin: 14)
-        else if (p.id === 8 || p.id === 11) {
+        // Kadınlar (7): 1 Kesin İnsan (Asistan Elif: 8)
+        //               1 Kesin Anomali (Dr. Zeynep: 9)
+        //               Kalan 5 Rastgele (Selin: 10, Merve: 11, Derya: 12, Sinem: 13, Aylin: 14)
+        else if (p.id === 8) {
             isAnomaly = false;
-        } else if (p.id === 9 || p.id === 12) {
+        } else if (p.id === 9) {
             isAnomaly = true;
         }
         // Kalanlar rastgele %50
@@ -801,7 +821,7 @@ function runIndicatorScan(personId, indicatorIndex) {
     // Spend energy & advance time
     gameState.energy -= scanCost;
     gameState.timeHour += hourAdvance;
-    person[scanProp] = calculateIndicatorProbability(person.isAnomaly, indicatorIndex);
+    person[scanProp] = calculateIndicatorProbability(person, indicatorIndex);
 
     const testName = indicatorIndex === 1 ? "1. Biyometrik Rezonans" : "2. Nöro-Hücresel DNA";
     logEvent(`[TEST] ${person.name} üzerinde ${testName} testi yapıldı (-${scanCost} Enerji, Saat ${formatTime(gameState.timeHour)}) -> Ölçüm: %${person[scanProp].prob} (${person[scanProp].certaintyType})`, "action");
@@ -1472,13 +1492,13 @@ function simulateSingleGame(botType) {
             while (energy >= SCAN1_ENERGY) {
                 const unscanned1 = personnel.find(p => p.isMet && !p.scan1 && isAvailable(p));
                 if (unscanned1 && energy >= SCAN1_ENERGY) {
-                    unscanned1.scan1 = calculateIndicatorProbability(unscanned1.isAnomaly, 1);
+                    unscanned1.scan1 = calculateIndicatorProbability(unscanned1, 1);
                     energy -= SCAN1_ENERGY;
                     continue;
                 }
                 const unscanned2 = personnel.find(p => p.isMet && !p.scan2 && isAvailable(p));
                 if (unscanned2 && energy >= SCAN2_ENERGY) {
-                    unscanned2.scan2 = calculateIndicatorProbability(unscanned2.isAnomaly, 2);
+                    unscanned2.scan2 = calculateIndicatorProbability(unscanned2, 2);
                     energy -= SCAN2_ENERGY;
                     continue;
                 }
@@ -1543,13 +1563,13 @@ function simulateSingleGame(botType) {
             while (energy >= SCAN1_ENERGY) {
                 const target1 = personnel.find(p => p.isMet && !p.scan1 && isAvailable(p));
                 if (target1 && energy >= SCAN1_ENERGY) {
-                    target1.scan1 = calculateIndicatorProbability(target1.isAnomaly, 1);
+                    target1.scan1 = calculateIndicatorProbability(target1, 1);
                     energy -= SCAN1_ENERGY;
                     continue;
                 }
                 const target2 = personnel.find(p => p.isMet && !p.scan2 && isAvailable(p));
                 if (target2 && energy >= SCAN2_ENERGY) {
-                    target2.scan2 = calculateIndicatorProbability(target2.isAnomaly, 2);
+                    target2.scan2 = calculateIndicatorProbability(target2, 2);
                     energy -= SCAN2_ENERGY;
                     continue;
                 }
