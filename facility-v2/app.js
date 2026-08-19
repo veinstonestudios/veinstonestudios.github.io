@@ -898,12 +898,7 @@ function openPersonModal(personId) {
         notMetView.classList.add("hidden");
         metView.classList.remove("hidden");
 
-        // Update daily dialogue
-        const dailyDialogueElem = document.getElementById("modal-dialogue");
-        if (dailyDialogueElem) {
-            const dialogueText = getPersonDailyDialogue(person, gameState.day);
-            dailyDialogueElem.textContent = `"${dialogueText}"`;
-        }
+
 
         // Render Anomaly Indicator Diagnostic Results
         const combinedRisk = getPersonCombinedRisk(person);
