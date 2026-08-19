@@ -40,7 +40,8 @@ const INITIAL_PERSONNEL = [
 // Calculates percentage for an indicator based on calibrated risk tiers:
 // - Kesin Anomali Kadın (Derya Aydın: 12) ve Erkek (Burak Demir: 5): %80 - %90
 // - Kesin İnsan Kadın (Psikolog Merve: 11) ve Erkek (Can Yılmaz: 3): %18 - %22 (~%20)
-// - Genel Anomaliler ve Genel İnsanların Hepsi: %30 - %60
+// - Genel Anomaliler: %40 - %70
+// - Genel İnsanlar: %30 - %60
 function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personObj) {
     let person = null;
     let isAnomaly = false;
@@ -64,8 +65,8 @@ function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personOb
             percentage = Math.floor(Math.random() * 11) + 80; // %80 - %90
             certaintyType = "Kritik Belirteç";
         } else {
-            // Genel Anomali: %30 - %60
-            percentage = Math.floor(Math.random() * 31) + 30; // %30 - %60
+            // Genel Anomali: %40 - %70 (Ortalama daima bu aralıkta kalır)
+            percentage = Math.floor(Math.random() * 31) + 40; // %40 - %70
             certaintyType = "Bulanık Belirteç";
         }
     } else {
@@ -76,7 +77,7 @@ function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personOb
             percentage = Math.floor(Math.random() * 5) + 18; // %18 - %22 (~%20)
             certaintyType = "Stabil Kesinlik";
         } else {
-            // Genel İnsan: %30 - %60
+            // Genel İnsan: %30 - %60 (Ortalama daima bu aralıkta kalır)
             percentage = Math.floor(Math.random() * 31) + 30; // %30 - %60
             certaintyType = "Standart Kesinlik";
         }
