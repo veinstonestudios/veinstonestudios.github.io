@@ -31,15 +31,6 @@ const INITIAL_PERSONNEL = [
     { id: 14, name: "Aylin Koç", gender: "Kız", role: "Veri Analisti", avatar: "👩‍💼" }
 ];
 
-// Dialogue Clues based on nature
-const CLUES = {
-    human: {
-        bio: "Standart biyometrik kayıtlar normal. İnsan sinir sistemi yanıtları olağan."
-    },
-    anomaly: {
-        bio: "Göz bebeklerinde mikro-titremeler var. Deri sıcaklığı şüpheli derecede dalgalanıyor."
-    }
-};
 
 // ==========================================
 // DUAL ANOMALY INDICATOR PROBABILITY ENGINE
@@ -78,9 +69,21 @@ function calculateIndicatorProbability(isAnomaly, indicatorIndex) {
     };
 }
 
-// V2: no risk labels and no colour coding. The player gets the raw number
-// and draws their own conclusion -- reading the readout IS the game.
-const NEUTRAL_READOUT_COLOR = "var(--accent-cyan)";
+function getRiskColor(prob) {
+    if (prob <= 35) return "var(--accent-green)";
+    if (prob <= 65) return "var(--accent-orange)";
+    return "var(--accent-red)";
+}
+
+function getRiskGradient(prob) {
+    if (prob <= 35) {
+        return "linear-gradient(90deg, #238636, #2ea043)";
+    } else if (prob <= 65) {
+        return "linear-gradient(90deg, #2ea043, #d29922)";
+    } else {
+        return "linear-gradient(90deg, #d29922, #da3633)";
+    }
+}
 
 function getPersonCombinedRisk(person) {
     if (!person.scan1 && !person.scan2) return null;
@@ -628,11 +631,12 @@ function renderPersonnel() {
             tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
         }
 
-        // Raw number only -- no colour coding, so the badge never hints at a verdict.
+        // Badge colored by risk
         let probBadgeHtml = "";
         if (combinedRisk && !isDead) {
+            const badgeColor = getRiskColor(combinedRisk.prob);
             probBadgeHtml = `
-                <div class="prob-card-badge" style="color: ${NEUTRAL_READOUT_COLOR};">
+                <div class="prob-card-badge" style="color: ${badgeColor};">
                     %${combinedRisk.prob}
                 </div>
             `;
@@ -868,12 +872,6 @@ function openPersonModal(personId) {
         notMetView.classList.add("hidden");
         metView.classList.remove("hidden");
 
-        const clueSet = person.isAnomaly ? CLUES.anomaly : CLUES.human;
-        document.getElementById("modal-bio").innerHTML = `
-            <strong>Özgeçmiş & Gözlem:</strong><br>
-            ${clueSet.bio}
-        `;
-
         // Update daily dialogue
         const dailyDialogueElem = document.getElementById("modal-dialogue");
         if (dailyDialogueElem) {
@@ -886,17 +884,17 @@ function openPersonModal(personId) {
         if (combinedRisk) {
             let scanItemsHtml = "";
 
-            // Every readout is drawn in the same neutral colour. The number is
-            // the whole message -- the game no longer interprets it for you.
             if (person.scan1) {
+                const s1Color = getRiskColor(person.scan1.prob);
+                const s1Grad = getRiskGradient(person.scan1.prob);
                 scanItemsHtml += `
                     <div class="indicator-result-item">
                         <div class="indicator-header">
                             <span>🔬 1. Biyometrik Rezonans:</span>
-                            <span class="indicator-val" style="color: ${NEUTRAL_READOUT_COLOR};">%${person.scan1.prob}</span>
+                            <span class="indicator-val" style="color: ${s1Color};">%${person.scan1.prob}</span>
                         </div>
                         <div class="prob-meter-track">
-                            <div class="prob-meter-fill" style="width: ${person.scan1.prob}%; background-color: ${NEUTRAL_READOUT_COLOR};"></div>
+                            <div class="prob-meter-fill" style="width: ${person.scan1.prob}%; background: ${s1Grad};"></div>
                         </div>
                         <small style="font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; display: block;">Mod: ${person.scan1.certaintyType}</small>
                     </div>
@@ -904,25 +902,28 @@ function openPersonModal(personId) {
             }
 
             if (person.scan2) {
+                const s2Color = getRiskColor(person.scan2.prob);
+                const s2Grad = getRiskGradient(person.scan2.prob);
                 scanItemsHtml += `
                     <div class="indicator-result-item">
                         <div class="indicator-header">
                             <span>🧬 2. Nöro-Hücresel DNA:</span>
-                            <span class="indicator-val" style="color: ${NEUTRAL_READOUT_COLOR};">%${person.scan2.prob}</span>
+                            <span class="indicator-val" style="color: ${s2Color};">%${person.scan2.prob}</span>
                         </div>
                         <div class="prob-meter-track">
-                            <div class="prob-meter-fill" style="width: ${person.scan2.prob}%; background-color: ${NEUTRAL_READOUT_COLOR};"></div>
+                            <div class="prob-meter-fill" style="width: ${person.scan2.prob}%; background: ${s2Grad};"></div>
                         </div>
                         <small style="font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; display: block;">Mod: ${person.scan2.certaintyType}</small>
                     </div>
                 `;
             }
 
+            const overallColor = getRiskColor(combinedRisk.prob);
             scanBox.innerHTML = `
                 ${scanItemsHtml}
                 <div class="overall-risk-summary">
                     <div class="overall-risk-title">Bileşik Ölçüm Ortalaması (${combinedRisk.scansCount} Belirteç)</div>
-                    <div class="overall-risk-percentage" style="color: ${NEUTRAL_READOUT_COLOR};">%${combinedRisk.prob}</div>
+                    <div class="overall-risk-percentage" style="color: ${overallColor};">%${combinedRisk.prob}</div>
                     <div class="overall-risk-note">Yorum tamamen sana ait.</div>
                 </div>
             `;
