@@ -7,8 +7,8 @@ const MAX_ENERGY = 16; // 16 Total Daily Energy
 const START_HOUR = 9; // 09:00
 const END_HOUR = 17;  // 17:00
 const FATIGUE_DAYS = 1; // 1 day of fatigue -- deaths already thin the roster
-const MEET_ENERGY = 4;  // Meeting costs 4 energy (+2 hours)
-const SCAN1_ENERGY = 2; // Indicator 1 costs 2 energy (+1 hour)
+const MEET_ENERGY = 2;  // Meeting costs 2 energy (+1 hour)
+const SCAN1_ENERGY = 4; // Indicator 1 costs 4 energy (+2 hours)
 const SCAN2_ENERGY = 4; // Indicator 2 costs 4 energy (+2 hours)
 
 // 14 Characters: 7 Male, 7 Female
@@ -55,32 +55,68 @@ function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personOb
     }
 
     const personId = person ? person.id : null;
+    const otherScan = indicatorIndex === 1 ? (person ? person.scan2 : null) : (person ? person.scan1 : null);
     let percentage = 50;
     let certaintyType = "Standart Teşhis";
 
+    // 1. Kesin Anomali Kadın (Derya Aydın: 12) ve Erkek (Burak Demir: 5): %80 - %90
+    const isHighTierAnomaly = isAnomaly && (personId === 5 || personId === 12);
+    if (isHighTierAnomaly) {
+        percentage = Math.floor(Math.random() * 11) + 80;
+        return { prob: percentage, isDecisive: true, certaintyType: "Kritik Belirteç" };
+    }
+
+    // 2. Kesin İnsan Kadın (Psikolog Merve: 11) ve Erkek (Can Yılmaz: 3): %18 - %22 (~%20)
+    const isUltraCleanHuman = !isAnomaly && (personId === 3 || personId === 11);
+    if (isUltraCleanHuman) {
+        percentage = Math.floor(Math.random() * 5) + 18;
+        return { prob: percentage, isDecisive: true, certaintyType: "Stabil Kesinlik" };
+    }
+
+    // 3. SADECE 2 RASTGELE KİŞİ: İki belirteç birbirine ÇOK YAKIN ve 45-55 bandında
+    if (person && person.isClosePair) {
+        if (otherScan) {
+            const offset = Math.floor(Math.random() * 5) - 2; // -2, -1, 0, 1, 2
+            percentage = Math.max(45, Math.min(55, otherScan.prob + offset));
+        } else {
+            percentage = Math.floor(Math.random() * 11) + 45; // 45 - 55%
+        }
+        return { prob: percentage, isDecisive: true, certaintyType: "Bulanık Eşleşme" };
+    }
+
+    // 4. DİĞER HERKES: İki belirteç birbirine ÇOK YAKIN OLMAYACAK (Fark en az 12 puan)
     if (isAnomaly) {
-        // Sadece Burak Demir (5) ve Derya Aydın (12): %80 - %90
-        const isHighTierAnomaly = personId === 5 || personId === 12;
-        if (isHighTierAnomaly) {
-            percentage = Math.floor(Math.random() * 11) + 80; // %80 - %90
-            certaintyType = "Kritik Belirteç";
+        // Genel Anomali: %40 - %70
+        if (otherScan) {
+            let candidate;
+            let attempts = 0;
+            do {
+                candidate = Math.floor(Math.random() * 31) + 40;
+                attempts++;
+            } while (Math.abs(candidate - otherScan.prob) < 12 && attempts < 30);
+            percentage = candidate;
         } else {
-            // Genel Anomali: %40 - %70 (Ortalama daima bu aralıkta kalır)
-            percentage = Math.floor(Math.random() * 31) + 40; // %40 - %70
-            certaintyType = "Bulanık Belirteç";
+            percentage = Math.random() < 0.5 
+                ? Math.floor(Math.random() * 8) + 40   // 40 - 47
+                : Math.floor(Math.random() * 13) + 58; // 58 - 70
         }
+        certaintyType = "Bulanık Belirteç";
     } else {
-        // İnsan
-        // Kesin İnsan (Can Yılmaz: 3, Psikolog Merve: 11): ~%20 bandı (%18 - %22)
-        const isUltraCleanHuman = personId === 3 || personId === 11;
-        if (isUltraCleanHuman) {
-            percentage = Math.floor(Math.random() * 5) + 18; // %18 - %22 (~%20)
-            certaintyType = "Stabil Kesinlik";
+        // Genel İnsan: %30 - %60
+        if (otherScan) {
+            let candidate;
+            let attempts = 0;
+            do {
+                candidate = Math.floor(Math.random() * 31) + 30;
+                attempts++;
+            } while (Math.abs(candidate - otherScan.prob) < 12 && attempts < 30);
+            percentage = candidate;
         } else {
-            // Genel İnsan: %30 - %60 (Ortalama daima bu aralıkta kalır)
-            percentage = Math.floor(Math.random() * 31) + 30; // %30 - %60
-            certaintyType = "Standart Kesinlik";
+            percentage = Math.random() < 0.65 
+                ? Math.floor(Math.random() * 14) + 30  // 30 - 43
+                : Math.floor(Math.random() * 5) + 56;  // 56 - 60
         }
+        certaintyType = "Standart Kesinlik";
     }
 
     return {
@@ -88,6 +124,112 @@ function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personOb
         isDecisive: true,
         certaintyType
     };
+}
+
+function getScratchStage(prob) {
+    if (prob < 26) {
+        return {
+            stage: 1,
+            name: "1. Kare (Pürüzsüz / 0 Çizik)",
+            shortName: "1. Bar: Temiz",
+            color: "var(--accent-green)"
+        };
+    } else if (prob < 43) {
+        return {
+            stage: 2,
+            name: "2. Kare (Hafif / Az Çizik)",
+            shortName: "2. Bar: Az Çizik",
+            color: "#39c5bb"
+        };
+    } else if (prob < 56) {
+        return {
+            stage: 3,
+            name: "3. Kare (Orta Çizik - 1.5x)",
+            shortName: "3. Bar: Orta Çizik",
+            color: "var(--accent-orange)"
+        };
+    } else if (prob < 76) {
+        return {
+            stage: 4,
+            name: "4. Kare (Yoğun Çizik)",
+            shortName: "4. Bar: Yoğun Çizik",
+            color: "#e36209"
+        };
+    } else {
+        return {
+            stage: 5,
+            name: "5. Kare (Kritik / Full Çizik)",
+            shortName: "5. Bar: Full Çizik",
+            color: "var(--accent-red)"
+        };
+    }
+}
+
+function renderScratchBoxesHtml(activeStage) {
+    const svgs = [
+        // 1. Bar: Bomboş
+        `<svg viewBox="0 0 44 44"><rect width="44" height="44" fill="rgba(0,0,0,0.35)" rx="4"/></svg>`,
+        // 2. Bar: Az çizik
+        `<svg viewBox="0 0 44 44"><rect width="44" height="44" fill="rgba(0,0,0,0.35)" rx="4"/><line x1="8" y1="36" x2="36" y2="8" stroke="rgba(230,237,243,0.75)" stroke-width="1.2"/><line x1="14" y1="40" x2="38" y2="16" stroke="rgba(230,237,243,0.5)" stroke-width="1"/><line x1="6" y1="26" x2="26" y2="6" stroke="rgba(230,237,243,0.6)" stroke-width="1"/></svg>`,
+        // 3. Bar: 2. barın 1.5 katı çizik
+        `<svg viewBox="0 0 44 44"><rect width="44" height="44" fill="rgba(0,0,0,0.35)" rx="4"/><line x1="8" y1="36" x2="36" y2="8" stroke="rgba(230,237,243,0.75)" stroke-width="1.2"/><line x1="14" y1="40" x2="38" y2="16" stroke="rgba(230,237,243,0.6)" stroke-width="1"/><line x1="6" y1="26" x2="26" y2="6" stroke="rgba(230,237,243,0.65)" stroke-width="1"/><line x1="4" y1="12" x2="32" y2="40" stroke="rgba(230,237,243,0.55)" stroke-width="1"/><line x1="18" y1="4" x2="42" y2="28" stroke="rgba(230,237,243,0.6)" stroke-width="1.2"/><line x1="20" y1="38" x2="38" y2="20" stroke="rgba(230,237,243,0.45)" stroke-width="1"/></svg>`,
+        // 4. Bar: 3. bardan biraz daha fazla çizik (az bir fark)
+        `<svg viewBox="0 0 44 44"><rect width="44" height="44" fill="rgba(0,0,0,0.35)" rx="4"/><line x1="8" y1="36" x2="36" y2="8" stroke="rgba(230,237,243,0.8)" stroke-width="1.2"/><line x1="14" y1="40" x2="38" y2="16" stroke="rgba(230,237,243,0.65)" stroke-width="1"/><line x1="6" y1="26" x2="26" y2="6" stroke="rgba(230,237,243,0.7)" stroke-width="1"/><line x1="4" y1="12" x2="32" y2="40" stroke="rgba(230,237,243,0.6)" stroke-width="1"/><line x1="18" y1="4" x2="42" y2="28" stroke="rgba(230,237,243,0.65)" stroke-width="1.2"/><line x1="20" y1="38" x2="38" y2="20" stroke="rgba(230,237,243,0.5)" stroke-width="1"/><line x1="2" y1="20" x2="24" y2="42" stroke="rgba(230,237,243,0.65)" stroke-width="1"/><line x1="22" y1="6" x2="40" y2="24" stroke="rgba(230,237,243,0.6)" stroke-width="1.1"/><line x1="10" y1="42" x2="42" y2="10" stroke="rgba(230,237,243,0.7)" stroke-width="1.3"/></svg>`,
+        // 5. Bar: Full çizik
+        `<svg viewBox="0 0 44 44"><rect width="44" height="44" fill="rgba(218,54,51,0.2)" rx="4"/><line x1="2" y1="42" x2="42" y2="2" stroke="rgba(218,54,51,0.95)" stroke-width="1.6"/><line x1="6" y1="44" x2="44" y2="6" stroke="rgba(218,54,51,0.85)" stroke-width="1.4"/><line x1="0" y1="30" x2="30" y2="0" stroke="rgba(218,54,51,0.85)" stroke-width="1.4"/><line x1="0" y1="14" x2="44" y2="30" stroke="rgba(218,54,51,0.85)" stroke-width="1.3"/><line x1="14" y1="0" x2="30" y2="44" stroke="rgba(218,54,51,0.85)" stroke-width="1.3"/><line x1="4" y1="4" x2="40" y2="40" stroke="rgba(218,54,51,0.9)" stroke-width="1.5"/><line x1="2" y1="22" x2="42" y2="22" stroke="rgba(218,54,51,0.8)" stroke-width="1.2"/><line x1="22" y1="2" x2="22" y2="42" stroke="rgba(218,54,51,0.8)" stroke-width="1.2"/><line x1="10" y1="2" x2="42" y2="34" stroke="rgba(218,54,51,0.85)" stroke-width="1.3"/><line x1="2" y1="36" x2="36" y2="2" stroke="rgba(218,54,51,0.9)" stroke-width="1.3"/><line x1="8" y1="42" x2="42" y2="8" stroke="rgba(218,54,51,0.95)" stroke-width="1.4"/></svg>`
+    ];
+
+    let boxesHtml = "";
+    for (let i = 1; i <= 5; i++) {
+        const isActive = activeStage === i;
+        boxesHtml += `
+            <div class="scratch-card-box ${isActive ? 'active-scratch' : ''}">
+                <div class="scratch-svg-wrap">${svgs[i - 1]}</div>
+                <div class="scratch-box-label">${i}. Bar</div>
+            </div>
+        `;
+    }
+    return `<div class="scratch-boxes-grid">${boxesHtml}</div>`;
+}
+
+function renderVoltmeterHtml(prob) {
+    const minRange = Math.max(1, prob - 5);
+    const maxRange = Math.min(99, prob + 5);
+    const baseAngle = -55 + (prob / 100) * 110;
+    const voltColor = getRiskColor(prob);
+
+    return `
+        <div class="voltmeter-meter-box">
+            <svg viewBox="0 0 220 100" class="voltmeter-svg">
+                <!-- Voltmeter Face -->
+                <rect x="5" y="5" width="210" height="90" rx="6" fill="#0d141f" stroke="#273549" stroke-width="1.5"/>
+                
+                <!-- Zone Arcs (Green, Orange, Red) -->
+                <path d="M 38 75 A 80 80 0 0 1 82 25" fill="none" stroke="#2ea043" stroke-width="3.5" opacity="0.85"/>
+                <path d="M 83 25 A 80 80 0 0 1 138 25" fill="none" stroke="#d29922" stroke-width="3.5" opacity="0.85"/>
+                <path d="M 139 25 A 80 80 0 0 1 182 75" fill="none" stroke="#da3633" stroke-width="3.5" opacity="0.85"/>
+                
+                <!-- Scale Numbers & Label -->
+                <text x="34" y="86" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">0</text>
+                <text x="66" y="44" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">25</text>
+                <text x="110" y="28" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">50</text>
+                <text x="154" y="44" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">75</text>
+                <text x="186" y="86" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">100</text>
+                <text x="110" y="58" fill="#57657a" font-size="7" font-family="monospace" text-anchor="middle" letter-spacing="1">ANALOG VOLTMETRE (mV)</text>
+
+                <!-- Jittering Needle (±5% swing) -->
+                <g class="voltmeter-needle-group" style="--needle-angle: ${baseAngle}deg;">
+                    <polygon points="108,85 110,16 112,85" fill="#ff4d4d"/>
+                    <circle cx="110" cy="85" r="6" fill="#1b2434" stroke="#3b4e6b" stroke-width="2"/>
+                    <circle cx="110" cy="85" r="2" fill="#ff4d4d"/>
+                </g>
+            </svg>
+            <div class="voltmeter-footer">
+                <span class="voltmeter-readout" style="color: ${voltColor};">~%${minRange} – %${maxRange}</span>
+                <span class="voltmeter-hint">⚡ Analog İbre (±%5 Dalgalı)</span>
+            </div>
+        </div>
+    `;
 }
 
 function getRiskColor(prob) {
@@ -121,7 +263,7 @@ function getPersonCombinedRisk(person) {
 
 // PERSONNEL GENERATION (1 Fixed Human, 1 Fixed Anomaly per gender, Remaining 5 Random)
 function generatePersonnelState() {
-    return INITIAL_PERSONNEL.map(p => {
+    const personnel = INITIAL_PERSONNEL.map(p => {
         let isAnomaly;
         // Erkekler (7): 1 Kesin İnsan (Can Yılmaz: 3)
         //               1 Kesin Anomali (Burak Demir: 5)
@@ -150,9 +292,20 @@ function generatePersonnelState() {
             isDead: false,
             scan1: null,
             scan2: null,
-            isAnomaly: isAnomaly
+            isAnomaly: isAnomaly,
+            isClosePair: false
         };
     });
+
+    // Sadece 2 rastgele kişiyi (kesin olmayan havuzdan) yakın değerli (45-55) yap
+    const randomPool = personnel.filter(p => p.id !== 3 && p.id !== 5 && p.id !== 11 && p.id !== 12);
+    const shuffled = [...randomPool].sort(() => Math.random() - 0.5);
+    if (shuffled.length >= 2) {
+        shuffled[0].isClosePair = true;
+        shuffled[1].isClosePair = true;
+    }
+
+    return personnel;
 }
 const DAILY_DIALOGUES = {
     1: { // Dr. Kaya
@@ -672,7 +825,7 @@ function renderPersonnel() {
         } else if (person.isMet) {
             hintText = "Çift Tık: Göreve Seç/Çıkar";
         } else {
-            hintText = "Çift Tık: Tanış (-4)";
+            hintText = "Çift Tık: Tanış (-2)";
         }
 
         card.innerHTML = `
@@ -774,7 +927,7 @@ function meetPerson(personId) {
 
     // Spend energy & advance time
     gameState.energy -= MEET_ENERGY;
-    gameState.timeHour += 2;
+    gameState.timeHour += 1;
     person.isMet = true;
 
     logEvent(`${person.name} ile tanışıldı. Rol: ${person.role}. (-${MEET_ENERGY} Enerji, Saat ${formatTime(gameState.timeHour)})`, "action");
@@ -783,7 +936,7 @@ function meetPerson(personId) {
     openPersonModal(personId);
 }
 
-// ACTION: RUN ANOMALY INDICATOR SCAN (-2 Energy, +1 Hour)
+// ACTION: RUN ANOMALY INDICATOR SCAN (-4 Energy, +2 Hours)
 function runIndicatorScan(personId, indicatorIndex) {
     const person = gameState.personnel.find(p => p.id === personId);
     if (!person) return;
@@ -810,8 +963,8 @@ function runIndicatorScan(personId, indicatorIndex) {
         return;
     }
 
-    const scanCost = indicatorIndex === 1 ? SCAN1_ENERGY : SCAN2_ENERGY;
-    const hourAdvance = indicatorIndex === 1 ? 1 : 2;
+    const scanCost = 4;
+    const hourAdvance = 2;
 
     if (gameState.energy < scanCost) {
         alert(`Yeterli enerjin kalmadı! Bu belirteç taraması ${scanCost} enerji gerektirir.`);
@@ -907,34 +1060,32 @@ function openPersonModal(personId) {
             let scanItemsHtml = "";
 
             if (person.scan1) {
-                const s1Color = getRiskColor(person.scan1.prob);
-                const s1Grad = getRiskGradient(person.scan1.prob);
+                const sStage = getScratchStage(person.scan1.prob);
+                const scratchBoxesHtml = renderScratchBoxesHtml(sStage.stage);
                 scanItemsHtml += `
                     <div class="indicator-result-item">
                         <div class="indicator-header">
                             <span>🔬 1. Biyometrik Rezonans:</span>
-                            <span class="indicator-val" style="color: ${s1Color};">%${person.scan1.prob}</span>
+                            <span class="indicator-val" style="color: ${sStage.color};">${sStage.shortName}</span>
                         </div>
-                        <div class="prob-meter-track">
-                            <div class="prob-meter-fill" style="width: ${person.scan1.prob}%; background: ${s1Grad};"></div>
-                        </div>
-                        <small style="font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; display: block;">Mod: ${person.scan1.certaintyType}</small>
+                        ${scratchBoxesHtml}
+                        <small style="font-size: 0.68rem; color: ${sStage.color}; margin-top: 4px; display: block; font-family: var(--font-mono);">${sStage.name}</small>
                     </div>
                 `;
             }
 
             if (person.scan2) {
                 const s2Color = getRiskColor(person.scan2.prob);
-                const s2Grad = getRiskGradient(person.scan2.prob);
+                const minRange = Math.max(1, person.scan2.prob - 5);
+                const maxRange = Math.min(99, person.scan2.prob + 5);
+                const voltmeterHtml = renderVoltmeterHtml(person.scan2.prob);
                 scanItemsHtml += `
                     <div class="indicator-result-item">
                         <div class="indicator-header">
                             <span>🧬 2. Nöro-Hücresel DNA:</span>
-                            <span class="indicator-val" style="color: ${s2Color};">%${person.scan2.prob}</span>
+                            <span class="indicator-val" style="color: ${s2Color};">~%${minRange} – %${maxRange}</span>
                         </div>
-                        <div class="prob-meter-track">
-                            <div class="prob-meter-fill" style="width: ${person.scan2.prob}%; background: ${s2Grad};"></div>
-                        </div>
+                        ${voltmeterHtml}
                         <small style="font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; display: block;">Mod: ${person.scan2.certaintyType}</small>
                     </div>
                 `;
@@ -999,7 +1150,8 @@ function updateModalButtons() {
             scan1Btn.textContent = "💤 Dinleniyor (Test Yapılamaz)";
             scan1Btn.disabled = true;
         } else if (person.scan1) {
-            scan1Btn.textContent = `✅ 1. Belirteç: %${person.scan1.prob} Risk (${person.scan1.certaintyType})`;
+            const sStage = getScratchStage(person.scan1.prob);
+            scan1Btn.textContent = `✅ 1. Belirteç: ${sStage.shortName}`;
             scan1Btn.disabled = true;
         } else {
             scan1Btn.textContent = `🔬 1. Belirteç: Biyometrik Rezonans (-${SCAN1_ENERGY} Enerji)`;
@@ -1016,7 +1168,9 @@ function updateModalButtons() {
             scan2Btn.textContent = "💤 Dinleniyor (Test Yapılamaz)";
             scan2Btn.disabled = true;
         } else if (person.scan2) {
-            scan2Btn.textContent = `✅ 2. Belirteç: %${person.scan2.prob} Risk (${person.scan2.certaintyType})`;
+            const minRange = Math.max(1, person.scan2.prob - 5);
+            const maxRange = Math.min(99, person.scan2.prob + 5);
+            scan2Btn.textContent = `✅ 2. Belirteç: ~%${minRange} – %${maxRange}`;
             scan2Btn.disabled = true;
         } else {
             scan2Btn.textContent = `🧬 2. Belirteç: Nöro-Hücresel DNA (-${SCAN2_ENERGY} Enerji)`;
