@@ -3,12 +3,13 @@
 // and missions can kill the personnel you send.
 
 const TOTAL_DAYS = 7;
-const MAX_ENERGY = 20; // 20 Total Daily Energy
+const MAX_ENERGY = 16; // 16 Total Daily Energy
 const START_HOUR = 9; // 09:00
 const END_HOUR = 17;  // 17:00
 const FATIGUE_DAYS = 1; // 1 day of fatigue -- deaths already thin the roster
 const MEET_ENERGY = 4;  // Meeting costs 4 energy (+2 hours)
-const SCAN_ENERGY = 2;  // Each indicator costs 2 energy (+1 hour)
+const SCAN1_ENERGY = 2; // Indicator 1 costs 2 energy (+1 hour)
+const SCAN2_ENERGY = 4; // Indicator 2 costs 4 energy (+2 hours)
 
 // 14 Characters: 7 Male, 7 Female
 const INITIAL_PERSONNEL = [
@@ -447,15 +448,18 @@ let gameState = {
 };
 // DAILY MISSION QUOTA RULES:
 // Day 1: Exactly 1 person (Kesin 1 kişi)
-// Day 2 & 3: 1, 2, or 3 people (1-3 kişi)
-// Day 4, 5, 6, 7 (Son 4 gün): 2 or 3 people (1 kişilik görev olamaz)
+// Day 2 & 3: 1 or 2 people (1 veya 2 kişi rastgele)
+// Day 4, 5, 6: 2 or 3 people (2 veya 3 kişi rastgele)
+// Day 7 (Son gün): Exactly 3 people (Kesin 3 kişi)
 function getDailyQuotaForDay(day) {
     if (day === 1) {
-        return 1; // İlk gün kesin 1 kişi
-    } else if (day >= 4) {
-        return Math.random() < 0.5 ? 2 : 3; // Son 4 gün sadece 2 veya 3 kişi
+        return 1;
+    } else if (day === 2 || day === 3) {
+        return Math.random() < 0.5 ? 1 : 2;
+    } else if (day >= 4 && day <= 6) {
+        return Math.random() < 0.5 ? 2 : 3;
     } else {
-        return Math.floor(Math.random() * 3) + 1; // Gün 2 ve 3: 1, 2 veya 3 kişi
+        return 3; // Son gün (Gün 7) kesin 3 kişi
     }
 }
 
@@ -786,18 +790,21 @@ function runIndicatorScan(personId, indicatorIndex) {
         return;
     }
 
-    if (gameState.energy < SCAN_ENERGY) {
-        alert(`Yeterli enerjin kalmadı! Belirteç taraması ${SCAN_ENERGY} enerji gerektirir.`);
+    const scanCost = indicatorIndex === 1 ? SCAN1_ENERGY : SCAN2_ENERGY;
+    const hourAdvance = indicatorIndex === 1 ? 1 : 2;
+
+    if (gameState.energy < scanCost) {
+        alert(`Yeterli enerjin kalmadı! Bu belirteç taraması ${scanCost} enerji gerektirir.`);
         return;
     }
 
     // Spend energy & advance time
-    gameState.energy -= SCAN_ENERGY;
-    gameState.timeHour += 1;
+    gameState.energy -= scanCost;
+    gameState.timeHour += hourAdvance;
     person[scanProp] = calculateIndicatorProbability(person.isAnomaly, indicatorIndex);
 
     const testName = indicatorIndex === 1 ? "1. Biyometrik Rezonans" : "2. Nöro-Hücresel DNA";
-    logEvent(`[TEST] ${person.name} üzerinde ${testName} testi yapıldı (-${SCAN_ENERGY} Enerji, Saat ${formatTime(gameState.timeHour)}) -> Ölçüm: %${person[scanProp].prob} (${person[scanProp].certaintyType})`, "action");
+    logEvent(`[TEST] ${person.name} üzerinde ${testName} testi yapıldı (-${scanCost} Enerji, Saat ${formatTime(gameState.timeHour)}) -> Ölçüm: %${person[scanProp].prob} (${person[scanProp].certaintyType})`, "action");
 
     renderAll();
     openPersonModal(personId);
@@ -980,7 +987,7 @@ function updateModalButtons() {
             scan1Btn.textContent = `✅ 1. Belirteç: %${person.scan1.prob} Risk (${person.scan1.certaintyType})`;
             scan1Btn.disabled = true;
         } else {
-            scan1Btn.textContent = `🔬 1. Belirteç: Biyometrik Rezonans (-${SCAN_ENERGY} Enerji)`;
+            scan1Btn.textContent = `🔬 1. Belirteç: Biyometrik Rezonans (-${SCAN1_ENERGY} Enerji)`;
             scan1Btn.disabled = false;
         }
     }
@@ -997,7 +1004,7 @@ function updateModalButtons() {
             scan2Btn.textContent = `✅ 2. Belirteç: %${person.scan2.prob} Risk (${person.scan2.certaintyType})`;
             scan2Btn.disabled = true;
         } else {
-            scan2Btn.textContent = `🧬 2. Belirteç: Nöro-Hücresel DNA (-${SCAN_ENERGY} Enerji)`;
+            scan2Btn.textContent = `🧬 2. Belirteç: Nöro-Hücresel DNA (-${SCAN2_ENERGY} Enerji)`;
             scan2Btn.disabled = false;
         }
     }
@@ -1461,18 +1468,18 @@ function simulateSingleGame(botType) {
                 }
             }
 
-            // Run Indicator 1 & Indicator 2 scans with remaining energy (-2 each)
-            while (energy >= SCAN_ENERGY) {
+            // Run Indicator 1 (-2) & Indicator 2 (-4) scans with remaining energy
+            while (energy >= SCAN1_ENERGY) {
                 const unscanned1 = personnel.find(p => p.isMet && !p.scan1 && isAvailable(p));
-                if (unscanned1) {
+                if (unscanned1 && energy >= SCAN1_ENERGY) {
                     unscanned1.scan1 = calculateIndicatorProbability(unscanned1.isAnomaly, 1);
-                    energy -= SCAN_ENERGY;
+                    energy -= SCAN1_ENERGY;
                     continue;
                 }
                 const unscanned2 = personnel.find(p => p.isMet && !p.scan2 && isAvailable(p));
-                if (unscanned2) {
+                if (unscanned2 && energy >= SCAN2_ENERGY) {
                     unscanned2.scan2 = calculateIndicatorProbability(unscanned2.isAnomaly, 2);
-                    energy -= SCAN_ENERGY;
+                    energy -= SCAN2_ENERGY;
                     continue;
                 }
                 break;
@@ -1533,17 +1540,17 @@ function simulateSingleGame(botType) {
             }
 
             // Perform dual scans on met candidates
-            while (energy >= SCAN_ENERGY) {
+            while (energy >= SCAN1_ENERGY) {
                 const target1 = personnel.find(p => p.isMet && !p.scan1 && isAvailable(p));
-                if (target1) {
+                if (target1 && energy >= SCAN1_ENERGY) {
                     target1.scan1 = calculateIndicatorProbability(target1.isAnomaly, 1);
-                    energy -= SCAN_ENERGY;
+                    energy -= SCAN1_ENERGY;
                     continue;
                 }
                 const target2 = personnel.find(p => p.isMet && !p.scan2 && isAvailable(p));
-                if (target2) {
+                if (target2 && energy >= SCAN2_ENERGY) {
                     target2.scan2 = calculateIndicatorProbability(target2.isAnomaly, 2);
-                    energy -= SCAN_ENERGY;
+                    energy -= SCAN2_ENERGY;
                     continue;
                 }
                 break;
@@ -1787,20 +1794,18 @@ function runLiveAutoPlay(botType = "optimal_rotator") {
             }
         }
 
-        // If we have 2+ energy, do indicator scans
-        if (gameState.energy >= SCAN_ENERGY) {
-            const target1 = gameState.personnel.find(p => p.isMet && !p.scan1 && !p.isDead && !(gameState.tiredMap[p.id] > 0));
-            if (target1) {
-                runIndicatorScan(target1.id, 1);
-                setTimeout(playDayStep, 700);
-                return;
-            }
-            const target2 = gameState.personnel.find(p => p.isMet && !p.scan2 && !p.isDead && !(gameState.tiredMap[p.id] > 0));
-            if (target2) {
-                runIndicatorScan(target2.id, 2);
-                setTimeout(playDayStep, 700);
-                return;
-            }
+        // If we have energy, do indicator scans
+        const target1 = gameState.personnel.find(p => p.isMet && !p.scan1 && !p.isDead && !(gameState.tiredMap[p.id] > 0));
+        if (target1 && gameState.energy >= SCAN1_ENERGY) {
+            runIndicatorScan(target1.id, 1);
+            setTimeout(playDayStep, 700);
+            return;
+        }
+        const target2 = gameState.personnel.find(p => p.isMet && !p.scan2 && !p.isDead && !(gameState.tiredMap[p.id] > 0));
+        if (target2 && gameState.energy >= SCAN2_ENERGY) {
+            runIndicatorScan(target2.id, 2);
+            setTimeout(playDayStep, 700);
+            return;
         }
 
         selectAndDispatch();
