@@ -38,8 +38,8 @@ const INITIAL_PERSONNEL = [
 // ==========================================
 
 // Calculates percentage for an indicator based on calibrated risk tiers:
-// - Kesin Anomali Kadın (Dr. Zeynep: 9) ve Erkek (Murat Çelik: 2): %80 - %90
-// - Kesin İnsan Kadın (Asistan Elif: 8) ve Erkek (Dr. Kaya: 1): %18 - %22 (~%20)
+// - Kesin Anomali Kadın (Derya Aydın: 12) ve Erkek (Burak Demir: 5): %80 - %90
+// - Kesin İnsan Kadın (Psikolog Merve: 11) ve Erkek (Can Yılmaz: 3): %18 - %22 (~%20)
 // - Genel Anomaliler ve Genel İnsanların Hepsi: %30 - %60
 function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personObj) {
     let person = null;
@@ -58,8 +58,8 @@ function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personOb
     let certaintyType = "Standart Teşhis";
 
     if (isAnomaly) {
-        // Sadece Murat Çelik (2) ve Dr. Zeynep (9): %80 - %90
-        const isHighTierAnomaly = personId === 2 || personId === 9;
+        // Sadece Burak Demir (5) ve Derya Aydın (12): %80 - %90
+        const isHighTierAnomaly = personId === 5 || personId === 12;
         if (isHighTierAnomaly) {
             percentage = Math.floor(Math.random() * 11) + 80; // %80 - %90
             certaintyType = "Kritik Belirteç";
@@ -70,8 +70,8 @@ function calculateIndicatorProbability(personOrAnomaly, indicatorIndex, personOb
         }
     } else {
         // İnsan
-        // Kesin insan (Dr. Kaya: 1, Asistan Elif: 8): ~%20 bandı (%18 - %22)
-        const isUltraCleanHuman = personId === 1 || personId === 8;
+        // Kesin İnsan (Can Yılmaz: 3, Psikolog Merve: 11): ~%20 bandı (%18 - %22)
+        const isUltraCleanHuman = personId === 3 || personId === 11;
         if (isUltraCleanHuman) {
             percentage = Math.floor(Math.random() * 5) + 18; // %18 - %22 (~%20)
             certaintyType = "Stabil Kesinlik";
@@ -122,20 +122,20 @@ function getPersonCombinedRisk(person) {
 function generatePersonnelState() {
     return INITIAL_PERSONNEL.map(p => {
         let isAnomaly;
-        // Erkekler (7): 1 Kesin İnsan (Dr. Kaya: 1)
-        //               1 Kesin Anomali (Murat Çelik: 2)
-        //               Kalan 5 Rastgele (Can: 3, Dr. Arda: 4, Burak: 5, Mert: 6, Kerem: 7)
-        if (p.id === 1) {
+        // Erkekler (7): 1 Kesin İnsan (Can Yılmaz: 3)
+        //               1 Kesin Anomali (Burak Demir: 5)
+        //               Kalan 5 Rastgele (Dr. Kaya: 1, Murat: 2, Dr. Arda: 4, Mert: 6, Kerem: 7)
+        if (p.id === 3) {
             isAnomaly = false;
-        } else if (p.id === 2) {
+        } else if (p.id === 5) {
             isAnomaly = true;
         }
-        // Kadınlar (7): 1 Kesin İnsan (Asistan Elif: 8)
-        //               1 Kesin Anomali (Dr. Zeynep: 9)
-        //               Kalan 5 Rastgele (Selin: 10, Merve: 11, Derya: 12, Sinem: 13, Aylin: 14)
-        else if (p.id === 8) {
+        // Kadınlar (7): 1 Kesin İnsan (Psikolog Merve: 11)
+        //               1 Kesin Anomali (Derya Aydın: 12)
+        //               Kalan 5 Rastgele (Asistan Elif: 8, Dr. Zeynep: 9, Selin: 10, Sinem: 13, Aylin: 14)
+        else if (p.id === 11) {
             isAnomaly = false;
-        } else if (p.id === 9) {
+        } else if (p.id === 12) {
             isAnomaly = true;
         }
         // Kalanlar rastgele %50
@@ -1367,6 +1367,38 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("bot-modal").classList.add("hidden");
         });
     }
+
+    // CHEAT / DEBUG SHORTCUT: Shift + L -> Reveal all humans and anomalies
+    document.addEventListener("keydown", (e) => {
+        if (e.shiftKey && (e.key === "L" || e.key === "l" || e.code === "KeyL")) {
+            e.preventDefault();
+            if (!gameState || !gameState.personnel || gameState.personnel.length === 0) return;
+
+            const humans = gameState.personnel.filter(p => !p.isAnomaly);
+            const anomalies = gameState.personnel.filter(p => p.isAnomaly);
+
+            let report = "🕵️ [GİZLİ TEŞHİS PROTOKOLÜ: TÜM LİSTE]\n\n";
+            report += "🟢 İNSANLAR (" + humans.length + " Kişi):\n";
+            humans.forEach(p => {
+                report += ` • ${p.name} (${p.gender} - ${p.role})\n`;
+            });
+
+            report += "\n🔴 ANOMALİLER (" + anomalies.length + " Kişi):\n";
+            anomalies.forEach(p => {
+                report += ` • ${p.name} (${p.gender} - ${p.role})\n`;
+            });
+
+            console.table(gameState.personnel.map(p => ({
+                ID: p.id,
+                İsim: p.name,
+                Cinsiyet: p.gender,
+                Rol: p.role,
+                Durum: p.isAnomaly ? "🔴 ANOMALİ" : "🟢 İNSAN"
+            })));
+
+            alert(report);
+        }
+    });
 
     const btnBotModalCloseAction = document.getElementById("btn-bot-modal-close-action");
     if (btnBotModalCloseAction) {
