@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Facility: Anomali Simülasyonu — Mesai Protokolü</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- AUTHENTICATION SECURITY GATE -->
+    <div id="auth-gate" class="auth-gate-container">
+        <div class="auth-box">
+            <div class="auth-terminal-header">
+                <span class="auth-status-indicator"></span>
+                <span class="auth-title">GÜVENLİ TESİS ERİŞİM KAPISI // RESTRICTED ACCESS</span>
+            </div>
+            <div class="auth-body">
+                <div class="auth-icon-wrap">
+                    <div class="auth-badge-icon">🔒</div>
+                </div>
+                <h3>GÜVENLİK PROTOKOLÜ</h3>
+                <p class="auth-desc">Tesis Anomali Kontrol Simülasyonu'na erişmek için yetki kodunuzu giriniz.</p>
+                
+                <form id="auth-form" onsubmit="return false;" class="auth-form">
+                    <div class="auth-input-group">
+                        <span class="auth-prompt">&gt;</span>
+                        <input 
+                            type="password" 
+                            id="auth-input" 
+                            placeholder="Erişim Şifresi" 
+                            autocomplete="off" 
+                            spellcheck="false" 
+                            required 
+                            autofocus
+                        />
+                        <button type="submit" id="btn-auth-submit" class="btn-auth-unlock">GİRİŞ ↵</button>
+                    </div>
+                    <div id="auth-error-msg" class="auth-error-msg hidden">⚠️ ERİŞİM REDDEDİLDİ: Geçersiz yetkilendirme şifresi!</div>
+                </form>
+            </div>
+            <div class="auth-footer">
+                <span>KLASİFİKASYON: GİZLİ // VEINSTONE FACILITY OS</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hud-scanline"></div>
+    <div class="app-container">
+        <!-- TOP HEADER / STATUS BAR -->
+        <header class="top-bar">
+            <div class="facility-title">
+                <span class="pulse-dot"></span>
+                <strong>TESİS KONTROL MERKEZİ</strong>
+                <span class="sub-badge">V6.0.0</span>
+            </div>
+
+            <div class="stats-group">
+                <div class="stat-box">
+                    <span class="stat-label">GÜN</span>
+                    <span class="stat-value" id="current-day">1 / 7</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">SAAT</span>
+                    <span class="stat-value" id="current-time">09:00</span>
+                </div>
+                <div class="stat-box highlight">
+                    <span class="stat-label">KALAN MESAİ</span>
+                    <span class="stat-value" id="current-hours">8 SAAT</span>
+                    <div class="hour-pips" id="hour-pips"></div>
+                </div>
+                <div class="stat-box score-box">
+                    <span class="stat-label">GÖREV BAŞARISI</span>
+                    <span class="stat-value" id="mission-score">0 Başarılı / 0</span>
+                </div>
+                <button class="btn btn-bot-suite" id="btn-open-bot-modal">
+                    🤖 BOT SİMÜLASYONU (5.000 MAÇ)
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main class="main-content">
+            <!-- LEFT PANEL: PERSONNEL GRID -->
+            <section class="personnel-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Tesis Personeli</h2>
+                        <p class="hint">İpucu: Tek tıkla detay aç. <strong>ÇİFT TIKLA:</strong> Doğrudan görev ekibine ekle/çıkar.</p>
+                    </div>
+                    <div class="filters">
+                        <span class="badge count-badge" id="met-count">Tanışılan: 0/14</span>
+                        <span class="badge count-badge lost-badge" id="lost-count">☠️ Kayıp: 0</span>
+                    </div>
+                </div>
+
+                <div class="personnel-grid" id="personnel-grid">
+                    <!-- 14 circular cards injected via JS -->
+                </div>
+            </section>
+
+            <!-- RIGHT PANEL: DISPATCH / LOGS -->
+            <aside class="sidebar-panel">
+                <!-- MISSION EXPEDITION BOX -->
+                <div class="panel-box expedition-box">
+                    <div class="box-title">
+                        <span class="icon">🚀</span>
+                        <h3>GÜNLÜK GÖREV SEVKİ</h3>
+                    </div>
+                    <p class="box-desc">
+                        Görevi tamamlamak için ekip seç. Gönderilen personeller <strong>1 GÜN YORGUN</strong> kalır ve göreve gidemez.
+                        Saha güvenli değil: <strong>her görevde personel kaybedilebilir.</strong>
+                    </p>
+
+                    <div class="team-selection">
+                        <div class="quota-banner">
+                            <span>GÜNLÜK EKİP İHTİYACI:</span>
+                            <strong id="daily-quota-badge" class="quota-number">1 Kişi</strong>
+                        </div>
+                        <label>Görev Ekibi Seçimi:</label>
+                        <div class="selected-tags" id="selected-team-list">
+                            <span class="empty-text">Henüz kimse seçilmedi. Personel kartından "+" ile ekle.</span>
+                        </div>
+                    </div>
+
+                    <div class="rules-card">
+                        <div class="rule-title">Görev Kuralları:</div>
+                        <ul>
+                            <li><strong>Mesai:</strong> Gün 09:00'da başlar, 17:00'de kapanır. Her iş saat yer: tanışmak 1 saat, her belirteç testi 2 saat.</li>
+                            <li><strong>Tanışma Şartı:</strong> Sadece tanışılan kişiler göreve gidebilir!</li>
+                            <li><strong>Ekip Bileşimi:</strong> Ekipteki insan sayısı arttıkça görevin başarı ihtimali yükselir. Anomaliler operasyonu içeriden çürütür.</li>
+                            <li><strong>Kayıplar:</strong> Saha ölümcül. Görev başarılı olsa bile ekipten biri geri dönmeyebilir ve kadrodan kalıcı olarak düşer.</li>
+                            <li><strong>Kalabalık = Güvenlik:</strong> Kalabalık ekiplerde kayıp riski daha düşüktür.</li>
+                            <li><strong>Belirteçler:</strong> Testler sadece bir ölçüm değeri verir. Yorumu sana ait.</li>
+                            <li><strong>Dinlenme:</strong> Göreve giden 1 gün dinlenir!</li>
+                        </ul>
+                    </div>
+
+                    <button class="btn btn-dispatch" id="btn-dispatch">
+                        GÖREVE GÖNDER VE GÜNÜ BİTİR
+                    </button>
+                </div>
+
+                <!-- LOGS BOX -->
+                <div class="panel-box logs-box">
+                    <div class="box-title">
+                        <span class="icon">📜</span>
+                        <h3>GÜNLÜK SİMÜLASYON KAYITLARI</h3>
+                    </div>
+                    <div class="logs-scroll" id="simulation-logs">
+                        <div class="log-entry system">Tesis simülasyonu başlatıldı. Personelleri incele.</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- MODAL: PERSON PROFILE / TEAM TOGGLE -->
+    <div class="modal-overlay hidden" id="interrogate-modal">
+        <div class="modal-card">
+            <button class="btn-close" id="modal-close">&times;</button>
+            <div class="modal-header">
+                <div class="avatar-large" id="modal-avatar">?</div>
+                <div>
+                    <h3 id="modal-name">Personel Adı</h3>
+                    <div class="modal-badges">
+                        <span class="badge" id="modal-role">Rol</span>
+                        <span class="badge" id="modal-gender">Cinsiyet</span>
+                        <span class="badge" id="modal-status">Durum</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <!-- NOT MET STATE -->
+                <div id="modal-not-met-view">
+                    <div class="alert-box warning">
+                        <strong>Bu kişiyle henüz tanışılmadı.</strong>
+                        <p>Tanışmadığın personeller göreve gönderilemez ve anomali kontrolü yapılamaz.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-direction: column;">
+                        <button class="btn btn-primary" id="btn-modal-meet">
+                            🤝 Tanış (1 Saat)
+                        </button>
+                        <button class="btn btn-secondary" id="btn-modal-toggle-not-met" disabled style="opacity: 0.5; cursor: not-allowed;">
+                            🚫 Tanışmadan Göreve Eklenemez
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MET VIEW -->
+                <div id="modal-met-view" class="hidden">
+
+
+                    <!-- DUAL ANOMALY INDICATORS -->
+                    <div class="indicators-section" style="margin-top: 14px;">
+                        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 6px;">
+                            🔬 ANOMALİ TESPİT BELİRTEÇLERİ (HER BİRİ 2 SAAT):
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-direction: column;">
+                            <button class="btn btn-check" id="btn-scan-1">
+                                🔬 1. Belirteç: Biyometrik Rezonans (2 Saat)
+                            </button>
+                            <button class="btn btn-check" id="btn-scan-2">
+                                🧬 2. Belirteç: Nöro-Hücresel DNA (2 Saat)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SCAN RESULT DISPLAY -->
+                    <div id="scan-result-box" class="scan-result-box hidden" style="margin-top: 12px;"></div>
+
+                    <button class="btn btn-primary" id="btn-toggle-team" style="margin-top: 14px; width: 100%;">
+                        ➕ Görev Ekibine Ekle/Çıkar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAY SUMMARY / MISSION OUTCOME MODAL -->
+    <div class="modal-overlay hidden" id="mission-result-modal">
+        <div class="modal-card result-card">
+            <div class="result-header" id="result-header">
+                <h2 id="result-title">GÖREV RAPORU</h2>
+            </div>
+            <div class="result-body">
+                <div class="mission-outcome-badge" id="result-badge">BAŞARILI</div>
+                <p id="result-desc"></p>
+
+                <div class="team-results-list" id="result-team-breakdown">
+                    <!-- members details -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btn-next-day">SONRAKİ GÜNE GEÇ ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME OVER / VICTORY MODAL -->
+    <div class="modal-overlay hidden" id="game-over-modal">
+        <div class="modal-card game-over-card">
+            <h2 id="game-over-title">7 GÜNLÜK TEST TAMAMLANDI</h2>
+            <div class="game-over-stats" id="game-over-stats"></div>
+            <p id="game-over-verdict"></p>
+            <button class="btn btn-primary" id="btn-restart">YENİDEN BAŞLAT 🔄</button>
+        </div>
+    </div>
+
+    <!-- BOT BENCHMARK SIMULATION MODAL -->
+    <div class="modal-overlay hidden" id="bot-modal">
+        <div class="modal-card benchmark-modal-card">
+            <button class="btn-close" id="bot-modal-close">&times;</button>
+            <div class="modal-header">
+                <div class="avatar-large" style="background: rgba(56, 139, 253, 0.15); border-color: var(--accent-blue);">🤖</div>
+                <div>
+                    <h3>GERÇEK ZAMANLI BOT BENCHMARK SİMÜLASYONU</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">
+                        Tüm kurallar (anomali rastlantısı, 1 gün yorgunluk, saha kayıpları, diyaloglar, mesai saatleri) birebir <strong>5.000 maç</strong> boyunca simüle edilir.
+                    </p>
+                </div>
+            </div>
+
+            <div class="benchmark-controls">
+                <div class="control-row">
+                    <div class="control-field">
+                        <label>Simülasyon Maç Sayısı:</label>
+                        <select id="benchmark-run-count" class="select-input">
+                            <option value="1000">1.000 Maç (Hızlı)</option>
+                            <option value="5000" selected>5.000 Maç (Standart)</option>
+                            <option value="10000">10.000 Maç (Derin İstatistik)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="btn-run-benchmark" style="flex: 1;">
+                        ⚡ 5.000 MAÇI SİMÜLE ET VE ANALİZ ET
+                    </button>
+                </div>
+
+                <!-- PROGRESS BAR -->
+                <div class="benchmark-progress-container hidden" id="benchmark-progress-box">
+                    <div class="progress-label-row">
+                        <span id="benchmark-progress-status">Simülasyon çalışıyor...</span>
+                        <span id="benchmark-progress-percent">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="benchmark-progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULTS CONTAINER -->
+            <div class="benchmark-results-container" id="benchmark-results">
+                <div class="strategy-cards-grid" id="benchmark-strategy-cards">
+                    <!-- Cards injected by JS -->
+                </div>
+
+                <div class="comparison-table-wrapper" id="benchmark-table-wrapper" style="display: none;">
+                    <h4 style="margin: 16px 0 8px 0; font-size: 0.9rem; color: var(--accent-cyan);">DETAYLI METRİK VE ROTASYON ANALİZİ</h4>
+                    <table class="benchmark-table">
+                        <thead>
+                            <tr>
+                                <th>Strateji</th>
+                                <th>Kazanılan Oyun (>=5 Gün)</th>
+                                <th>Günlük Görev Başarısı</th>
+                                <th>Gönderilen Anomali (Ort)</th>
+                                <th>Kayıp Personel (Ort)</th>
+                                <th>Mükemmel Seri (7/7)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="benchmark-table-body">
+                            <!-- Table rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="display: flex; gap: 12px; margin-top: 20px;">
+                <button class="btn btn-secondary" id="btn-live-bot-demo">
+                    🎮 1 Maçı Canlı İzle (Oto-Oynat)
+                </button>
+                <button class="btn btn-secondary" id="btn-bot-modal-close-action">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
