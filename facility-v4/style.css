@@ -1870,3 +1870,371 @@ body {
     background: linear-gradient(135deg, #8b2422, var(--accent-red));
     color: #fff;
 }
+
+
+/* ==========================================
+   V5 -- CHAIR, RIOT, OVERSIGHT
+   ========================================== */
+
+.stat-value.warn   { color: var(--accent-orange); }
+.stat-value.danger { color: var(--accent-red); }
+
+.threat-box { transition: border-color 0.25s ease, background-color 0.25s ease; }
+.threat-box.threat-tense    { border-color: var(--accent-orange); background: rgba(218,153,34,0.08); }
+.threat-box.threat-critical {
+    border-color: var(--accent-red);
+    background: rgba(218,54,51,0.12);
+    animation: threat-throb 1.5s ease-in-out infinite;
+}
+@keyframes threat-throb {
+    0%, 100% { box-shadow: 0 0 0 rgba(218,54,51,0); }
+    50%      { box-shadow: 0 0 14px rgba(218,54,51,0.45); }
+}
+
+/* ---- Execution stage ---- */
+.execution-threat {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 9px;
+    margin-bottom: 14px;
+}
+
+.person-card.is-executable {
+    border-color: var(--accent-red);
+    cursor: pointer;
+}
+.person-card.is-executable:hover {
+    background-color: rgba(218, 54, 51, 0.12);
+    box-shadow: 0 0 14px rgba(218, 54, 51, 0.3);
+}
+
+.person-card.is-executed {
+    opacity: 0.55;
+    filter: none;
+    border-color: var(--accent-purple);
+}
+
+.tag-verified-anomaly {
+    background-color: rgba(218, 54, 51, 0.3);
+    color: #ff8b87;
+    border: 1px solid var(--accent-red);
+    font-weight: bold;
+}
+.tag-verified-human {
+    background-color: rgba(46, 160, 67, 0.3);
+    color: #7ee787;
+    border: 1px solid var(--accent-green);
+    font-weight: bold;
+}
+
+/* ---- Execution reveal ---- */
+.execution-card { text-align: center; max-width: 520px; }
+.execution-chair-icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+    animation: chair-zap 0.7s ease-out;
+}
+@keyframes chair-zap {
+    0%   { transform: scale(0.5); opacity: 0; filter: brightness(3); }
+    40%  { transform: scale(1.25); opacity: 1; filter: brightness(2.2); }
+    100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+}
+
+.execution-verdict {
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    margin: 16px 0 12px;
+    padding: 11px;
+    border-radius: var(--radius-sm);
+}
+.verdict-anomaly {
+    color: #ff8b87;
+    background: rgba(218, 54, 51, 0.16);
+    border: 1px solid var(--accent-red);
+}
+.verdict-human {
+    color: #7ee787;
+    background: rgba(46, 160, 67, 0.16);
+    border: 1px solid var(--accent-green);
+}
+
+#execution-reveal-body p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 10px;
+}
+.execution-consequence {
+    font-family: var(--font-mono);
+    font-size: 0.82rem !important;
+    font-weight: 700;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+}
+.execution-consequence.good { color: #7ee787 !important; background: rgba(46,160,67,0.12); }
+.execution-consequence.bad  { color: #ffa198 !important; background: rgba(218,54,51,0.12); }
+
+#btn-execution-close { width: 100%; margin-top: 14px; }
+
+/* ---- Endings ---- */
+.game-over-card.ending-riot {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 70px rgba(218, 54, 51, 0.3);
+}
+.game-over-card.ending-riot h2 { color: #ff8b87; }
+
+.game-over-card.ending-fired {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 70px rgba(218, 153, 34, 0.26);
+}
+.game-over-card.ending-fired h2 { color: var(--accent-orange); }
+
+.game-over-card.ending-win {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 70px rgba(46, 160, 67, 0.26);
+}
+.game-over-card.ending-win h2 { color: #7ee787; }
+
+@media (prefers-reduced-motion: reduce) {
+    .execution-chair-icon { animation: none; }
+    .threat-box.threat-critical { animation: none; }
+}
+
+
+/* ---- Day 3 briefing pop-up ---- */
+.briefing-card {
+    max-width: 560px;
+    text-align: left;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 50px rgba(218, 153, 34, 0.18);
+}
+
+.briefing-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    color: var(--accent-orange);
+    margin-bottom: 7px;
+}
+
+.briefing-title {
+    margin: 0 0 10px;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+}
+
+.briefing-lede {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.briefing-item {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.briefing-icon {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.briefing-item h4 {
+    margin: 0 0 6px;
+    font-size: 0.84rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.07em;
+    color: var(--accent-cyan);
+}
+
+.briefing-where {
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+.briefing-item p {
+    margin: 0 0 8px;
+    font-size: 0.86rem;
+    line-height: 1.58;
+    color: var(--text-secondary);
+}
+
+.briefing-note {
+    font-family: var(--font-mono);
+    font-size: 0.76rem !important;
+    color: var(--text-muted) !important;
+    border-left: 2px solid var(--border-color);
+    padding-left: 9px;
+}
+.briefing-note.danger {
+    color: #ffa198 !important;
+    border-left-color: var(--accent-red);
+}
+
+.briefing-scale {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 9px 0;
+    flex-wrap: wrap;
+}
+.scale-chip {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+}
+.chip-stable   { color: var(--accent-green); background: rgba(46,160,67,0.12); }
+.chip-tense    { color: var(--accent-orange); background: rgba(218,153,34,0.12); }
+.chip-critical { color: var(--accent-red); background: rgba(218,54,51,0.12); }
+.scale-arrow   { color: var(--text-muted); font-size: 0.8rem; }
+
+#btn-day3-briefing-close { width: 100%; margin-top: 4px; }
+
+
+/* ==========================================
+   RECORDS SECTION (the morgue)
+   ========================================== */
+.records-section {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--rule-strong, var(--border-color));
+}
+.records-section.hidden { display: none; }
+
+.records-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.records-header h3 {
+    margin: 0;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+}
+.records-summary { display: flex; gap: 14px; flex-wrap: wrap; }
+.records-stat {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+}
+.records-stat.anomaly { color: #ff8b87; background: rgba(218,54,51,0.12); }
+.records-stat.human   { color: #7ee787; background: rgba(46,160,67,0.12); }
+
+.records-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 8px;
+}
+
+.record-card {
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    align-items: center;
+    gap: 9px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    opacity: 0.75;
+}
+.record-card.record-anomaly { border-left-color: var(--accent-red); }
+.record-card.record-human   { border-left-color: var(--accent-green); }
+
+.record-avatar { font-size: 1.05rem; text-align: center; filter: grayscale(0.4); }
+.record-body { min-width: 0; }
+.record-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: line-through;
+    text-decoration-color: rgba(255,255,255,0.35);
+}
+.record-meta {
+    display: flex;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+.record-day { opacity: 0.8; }
+
+.record-verdict {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+}
+.verdict-was-anomaly { color: #ff8b87; background: rgba(218,54,51,0.16); }
+.verdict-was-human   { color: #7ee787; background: rgba(46,160,67,0.16); }
+
+/* ---- The hand-off animation ----
+   Cards drop in from above with a flash, staggered, so the player can see
+   exactly who left the roster overnight. */
+.record-card.record-arriving {
+    animation: record-drop 900ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes record-drop {
+    0% {
+        opacity: 0;
+        transform: translateY(-56px) scale(1.06);
+        border-color: var(--accent-cyan);
+        box-shadow: 0 0 26px rgba(57, 197, 187, 0.55);
+    }
+    55% {
+        opacity: 1;
+        transform: translateY(4px) scale(1.01);
+        box-shadow: 0 0 22px rgba(57, 197, 187, 0.4);
+    }
+    75% { transform: translateY(0) scale(1); }
+    100% {
+        opacity: 0.75;
+        transform: translateY(0) scale(1);
+        box-shadow: 0 0 0 rgba(57, 197, 187, 0);
+    }
+}
+
+/* The last day on the active roster: a slow pulse marking them as leaving. */
+.person-card.is-departing {
+    animation: departing-fade 2.2s ease-in-out infinite;
+}
+@keyframes departing-fade {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 0.72; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .record-card.record-arriving { animation: none; opacity: 0.75; }
+    .person-card.is-departing { animation: none; }
+}

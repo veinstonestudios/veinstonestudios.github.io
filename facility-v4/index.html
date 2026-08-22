@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Facility: Anomali Simülasyonu — Aşama Protokolü</title>
+    <title>The Facility: Anomali Simülasyonu — İnfaz Protokolü</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
@@ -97,15 +97,51 @@
                             operasyonu içeriden çürütür.
                         </p>
                         <p class="intro-warn">
-                            Saha ölümcüldür. <strong>Görev başarılı olsa bile ekipten biri geri dönmeyebilir</strong>
-                            ve kadrodan kalıcı olarak düşer. Göreve giden personel <strong>2 gün</strong> dinlenir.
+                            Saha ölümcüldür ve <strong>sadece insanlar ölür</strong> — anomaliler her zaman
+                            geri döner. Göreve giden personel <strong>2 gün</strong> dinlenir.
+                        </p>
+                    </div>
+
+                    <div class="intro-block">
+                        <h4>⚡ ELEKTRİKLİ SANDALYE</h4>
+                        <p>
+                            <strong>3. günden itibaren</strong> her gün bir personeli infaz edebilirsin.
+                            İnfaz, kişinin gerçekten anomali mi insan mı olduğunu kesin olarak gösterir —
+                            bunu öğrenmenin başka yolu yoktur.
+                        </p>
+                        <p class="intro-warn">
+                            Yanlış kişiyi infaz edersen hem bir insanı hem de bir görev personelini
+                            kaybedersin.
+                        </p>
+                    </div>
+
+                    <div class="intro-block">
+                        <h4>🔥 ANOMALİ AYAKLANMASI</h4>
+                        <p>
+                            Anomaliler tesiste <strong>insanlardan fazla olursa ayaklanır</strong> ve tesisi
+                            anında ele geçirir. Oyun orada biter.
+                        </p>
+                        <p class="intro-warn">
+                            Bu yüzden insanları hayatta tutmak sadece görev için değil, <strong>dengeyi
+                            korumak</strong> için de gereklidir. Üst bardaki <em>TESİS DURUMU</em> göstergesini izle.
+                        </p>
+                    </div>
+
+                    <div class="intro-block">
+                        <h4>🏛️ DEVLET DENETİMİ</h4>
+                        <p>
+                            Devlet bu tesisi yakından izliyor. <strong>3 başarısız görev</strong> sonunda
+                            yetkin iptal edilir ve görevden alınırsın.
                         </p>
                     </div>
                 </div>
 
                 <div class="intro-objective">
                     <span class="intro-objective-label">HEDEF</span>
-                    <span><strong>7 gün</strong> içinde en az <strong>5 görevi</strong> başarıyla tamamla.</span>
+                    <span>
+                        <strong>7 gün</strong> içinde en az <strong>5 görevi</strong> başarıyla tamamla —
+                        ayaklanmayı önle ve 3 başarısızlığa ulaşma.
+                    </span>
                 </div>
             </div>
 
@@ -122,7 +158,7 @@
             <div class="facility-title">
                 <span class="pulse-dot"></span>
                 <strong>TESİS KONTROL MERKEZİ</strong>
-                <span class="sub-badge">V7.0.0</span>
+                <span class="sub-badge">V8.0.0</span>
             </div>
 
             <div class="stats-group">
@@ -146,6 +182,14 @@
                 <div class="stat-box score-box">
                     <span class="stat-label">GÖREV BAŞARISI</span>
                     <span class="stat-value" id="mission-score">0 Başarılı / 0</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">BAŞARISIZ</span>
+                    <span class="stat-value" id="failure-count">0 / 3</span>
+                </div>
+                <div class="stat-box threat-box hidden" id="threat-box">
+                    <span class="stat-label">TESİS DURUMU</span>
+                    <span class="stat-value" id="threat-level">İZLENİYOR</span>
                 </div>
                 <button class="btn btn-bot-suite" id="btn-open-bot-modal">
                     🤖 BOT SİMÜLASYONU
@@ -172,6 +216,15 @@
                 <div id="stage-notice" class="stage-notice"></div>
 
                 <div class="personnel-grid" id="personnel-grid"></div>
+
+                <!-- KAYIT / MORGUE -->
+                <section class="records-section hidden" id="records-section">
+                    <div class="records-header">
+                        <h3>⚱️ KAYIT DIŞI PERSONEL</h3>
+                        <div class="records-summary" id="records-summary"></div>
+                    </div>
+                    <div class="records-grid" id="records-grid"></div>
+                </section>
             </section>
 
             <!-- RIGHT PANEL: STAGE CONTROL -->
@@ -224,6 +277,28 @@
                                 <li>Her personel sadece <strong>bir kez</strong> test edilebilir.</li>
                                 <li>Dinlenen personele test yapılamaz.</li>
                                 <li>Düşük ölçüm insana, yüksek ölçüm anomaliye işaret eder.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- EXECUTION -->
+                    <div id="panel-execution" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">⚡</span><h3>ELEKTRİKLİ SANDALYE</h3></div>
+                        <p class="box-desc">
+                            Anomali olduğundan şüphelendiğin bir personeli infaz edebilirsin. Karta tıkla.
+                            <strong>İnfaz kişinin gerçek doğasını açığa çıkarır</strong> — ama geri dönüşü yoktur.
+                        </p>
+                        <div id="execution-threat" class="execution-threat">TESİS DURUMU: —</div>
+                        <div class="stage-metric">
+                            <div><span class="metric-num" id="execution-remaining">1</span><span class="metric-label">Kalan İnfaz</span></div>
+                            <div><span class="metric-num" id="execution-eligible">0</span><span class="metric-label">İnfaz Edilebilir</span></div>
+                        </div>
+                        <div class="rules-card">
+                            <div class="rule-title">Dikkat:</div>
+                            <ul>
+                                <li>Anomali infaz edersen ayaklanma baskısı <strong>azalır</strong>.</li>
+                                <li>İnsan infaz edersen baskı <strong>artar</strong> ve bir görev personeli kaybedersin.</li>
+                                <li>İnfaz zorunlu değildir — atlayabilirsin.</li>
                             </ul>
                         </div>
                     </div>
@@ -298,6 +373,71 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" id="btn-reveal-close">ANLAŞILDI</button>
             </div>
+        </div>
+    </div>
+
+    <!-- DAY 3 BRIEFING -->
+    <div class="modal-overlay hidden" id="day3-briefing-modal">
+        <div class="modal-card briefing-card">
+            <div class="briefing-eyebrow">GÜN 3 // YENİ PROTOKOLLER DEVREDE</div>
+            <h3 class="briefing-title">Tesis Artık Kalabalık</h3>
+            <p class="briefing-lede">
+                Personel sayısı arttı ve iki yeni sistem devreye girdi. İkisi de aynı şeyle ilgili:
+                <strong>tesiste kaç insan kaldığı.</strong>
+            </p>
+
+            <div class="briefing-item">
+                <div class="briefing-icon">🔥</div>
+                <div>
+                    <h4>TESİS DURUMU <span class="briefing-where">(üst barda)</span></h4>
+                    <p>
+                        Anomaliler tesiste <strong>insanlardan fazla olursa ayaklanır</strong> ve oyun
+                        anında biter. Üst bardaki gösterge bu dengeye ne kadar yaklaştığını söyler:
+                    </p>
+                    <div class="briefing-scale">
+                        <span class="scale-chip chip-stable">STABİL</span>
+                        <span class="scale-arrow">→</span>
+                        <span class="scale-chip chip-tense">GERGİN</span>
+                        <span class="scale-arrow">→</span>
+                        <span class="scale-chip chip-critical">KRİTİK</span>
+                    </div>
+                    <p class="briefing-note">
+                        KRİTİK'te bir insan daha kaybetmek ayaklanmayı başlatabilir.
+                    </p>
+                </div>
+            </div>
+
+            <div class="briefing-item">
+                <div class="briefing-icon">⚡</div>
+                <div>
+                    <h4>ELEKTRİKLİ SANDALYE <span class="briefing-where">(test sonrası)</span></h4>
+                    <p>
+                        Bugünden itibaren her gün <strong>bir personeli infaz edebilirsin</strong>.
+                        İnfaz, o kişinin gerçekten anomali mi insan mı olduğunu <strong>kesin olarak</strong>
+                        gösterir — bunu öğrenmenin başka yolu yok.
+                    </p>
+                    <p class="briefing-note danger">
+                        Anomali infaz edersen denge lehine döner. İnsan infaz edersen hem dengeyi
+                        bozarsın hem de bir görev personelini kaybedersin. İnfaz zorunlu değil.
+                    </p>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="btn-day3-briefing-close">ANLAŞILDI ➡️</button>
+        </div>
+    </div>
+
+    <!-- EXECUTION REVEAL MODAL -->
+    <div class="modal-overlay hidden" id="execution-reveal-modal">
+        <div class="modal-card execution-card">
+            <div class="execution-chair-icon">⚡</div>
+            <h3 id="execution-reveal-name">Personel</h3>
+            <div class="modal-badges" style="justify-content:center;">
+                <span class="badge" id="execution-reveal-role">Rol</span>
+            </div>
+            <div class="execution-verdict" id="execution-verdict">—</div>
+            <div id="execution-reveal-body"></div>
+            <button class="btn btn-primary" id="btn-execution-close">KAPAT</button>
         </div>
     </div>
 
@@ -381,6 +521,8 @@
                                 <th>Günlük Görev Başarısı</th>
                                 <th>Gönderilen Anomali (Ort)</th>
                                 <th>Kayıp Personel (Ort)</th>
+                                <th>Ayaklanma</th>
+                                <th>Görevden Alınma</th>
                                 <th>Mükemmel Seri (7/7)</th>
                             </tr>
                         </thead>
