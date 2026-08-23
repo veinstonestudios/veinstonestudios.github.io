@@ -10,7 +10,7 @@
 
 const TOTAL_DAYS = 7;
 const FATIGUE_DAYS = 2;      // two days of rest after a mission
-const ROSTER_SIZE = 14;      // 7 males + 7 females
+const ROSTER_SIZE = 21;      // 10 males + 11 females
 
 // ---- Electric chair -----------------------------------------------------
 const EXECUTION_START_DAY = 3;
@@ -55,7 +55,7 @@ const STAGE_INFO = {
     report:    { label: "GÜN RAPORU",      clock: "18:00", next: null }
 };
 
-// ---- 14 Characters (7 Erkek, 7 Kız) -------------------------------------
+// ---- 21 Characters (10 Erkek, 11 Kız) -----------------------------------
 const INITIAL_PERSONNEL = [
     { id: 1,  name: "Dr. Kaya",         gender: "Erkek", role: "Baş Araştırmacı",       avatar: "👨‍🔬", dialogue: "Araştırmalarım sırasında anomalilerin insanların en çok öfke duygusunu çok iyi taklit ettiklerini öğrendim." },
     { id: 2,  name: "Murat Çelik",      gender: "Erkek", role: "Güvenlik Şefi",         avatar: "👮‍♂️", dialogue: "Küçükken hep pizza kuryesi olmak istemiştim, küçüklük hayallerimi gerçekleştirdiğim için kendimden gurur duyuyorum. Sana bir şey söyleyeyim mi? Ben kariyerim boyunca hiçbir pizzayı geç götürmedim." },
@@ -70,7 +70,15 @@ const INITIAL_PERSONNEL = [
     { id: 11, name: "Psikolog Merve",   gender: "Kız",   role: "Personel Danışmanı",    avatar: "👩‍💼", dialogue: "Anomalilerin varlığı beni tedirgin etmiyor, bence biz onları daha iyi anlayabiliriz ve anlarsak belki de ortak yönlerimizin daha fazla olduğunu öğrenebiliriz. Bu beni heyecanlandırıyor ama halkı neden korkuttuğunu da anlayabiliyorum." },
     { id: 12, name: "Derya Aydın",      gender: "Kız",   role: "Telsiz Operatörü",      avatar: "👩‍💻", dialogue: "İşime son verilmeden 1 ay önce telsizler sürekli başımı ağrıtmaya başlıyordu, sanki başımın içinden kablolar geçiyor da onunla oynuyor gibilerdi." },
     { id: 13, name: "Kimyager Sinem",   gender: "Kız",   role: "Toksikolog",            avatar: "🧑‍🔬", dialogue: "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim." },
-    { id: 14, name: "Aylin Koç",        gender: "Kız",   role: "Veri Analisti",         avatar: "👩‍💼", dialogue: "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz." }
+    { id: 14, name: "Aylin Koç",        gender: "Kız",   role: "Veri Analisti",         avatar: "👩‍💼", dialogue: "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz." },
+    // Yeni 7 Karakter (3 Erkek, 4 Kız)
+    { id: 15, name: "Emre Şahin",       gender: "Erkek", role: "Lojistik Sorumlusu",    avatar: "🧑‍🏭", dialogue: "İnsanlara laf anlatmaktansa anomali denilenlere laf anlatırım la havle." },
+    { id: 16, name: "Tolga Aslan",      gender: "Erkek", role: "Şarap Gurmesi",         avatar: "🍷", dialogue: "Memurcu kadınlar şarabın tam tersidir, bilmem anlatabiliyor muyum?" },
+    { id: 17, name: "Onur Ateş",        gender: "Erkek", role: "Elektrik Teknisyeni",   avatar: "👨‍🔧", dialogue: "İnsanlar genel olarak teknolojiden korkuyorlar fakat prizlerini çekebileceklerini unutuyorlar." },
+    { id: 18, name: "Ceren Yıldız",     gender: "Kız",   role: "Arşiv Sorumlusu",       avatar: "👩‍🏫", dialogue: "3 yıl önce CORE yetkilileri benden 2026-2030 arası tüm belgeleri istedi ve hala getirmediler. Arşiv borçları çok birikti." },
+    { id: 19, name: "Bahar Toprak",     gender: "Kız",   role: "Botanik Uzmanı",        avatar: "👩‍🌾", dialogue: "Anomaliler dedikleri acaba bu cordyceps mantarı gibi bir şey mi yoksa tamamen farklı olan çüküyeris yarraki mi?" },
+    { id: 20, name: "Işıl Demirtaş",    gender: "Kız",   role: "Radyoloji Teknisyeni",  avatar: "👩‍⚕️", dialogue: "Eski işimde bir hastaya röntgen çekerken bir gariplik fark ettik. İş arkadaşım bilmediğim bir acil durum protokolünü aradı, hastane apar topar boşaltıldı ve sonrasında hiçbir hastane beni işe almadı; sektörden tamamen kara listeye alındım." },
+    { id: 21, name: "Deniz Korkmaz",    gender: "Kız",   role: "Güvenlik Analisti",     avatar: "🧑‍💼", dialogue: "Bu tesis harika görünüyor, çok güvenlikli olduğuna eminim. Buradan fareyi bırak, bir fil bile kaçamaz." }
 ];
 
 // ==========================================
@@ -118,44 +126,35 @@ function getReadingColor(reading) {
 // ==========================================
 // ARRIVAL & NATURE GENERATION
 // ==========================================
-// Day 1: 4 | Day 2: 1 | Day 3: 2 | Day 4: 1 | Day 5: 2 | Day 6: 2 | Day 7: 2
+// 21 Personnel: Day 1: 4 | Day 2: 2 | Days 3-7: 3 per day
 const ARRIVAL_SCHEDULE = [
     1, 1, 1, 1,
-    2,
-    3, 3,
-    4,
-    5, 5,
-    6, 6,
-    7, 7
+    2, 2,
+    3, 3, 3,
+    4, 4, 4,
+    5, 5, 5,
+    6, 6, 6,
+    7, 7, 7
 ];
 
+// Kesin Kimlikler:
+// Kesin Anomaliler (8): Murat Çelik (2), Burak Demir (5), Mert Kurt (6), Kerem Aksoy (7), Dr. Zeynep (9), Psikolog Merve (11), Derya Aydın (12), Deniz Korkmaz (21)
+// Kesin İnsanlar (7): Can Yılmaz (3), Selin Şen (10), Kimyager Sinem (13), Aylin Koç (14), Tolga Aslan (16), Onur Ateş (17), Ceren Yıldız (18)
+// Geri Kalanlar (6): Dr. Kaya (1), Dr. Arda (4), Asistan Elif (8), Emre Şahin (15), Bahar Toprak (19), Işıl Demirtaş (20) -> %30 Anomali / %70 İnsan
+const GUARANTEED_ANOMALIES = [2, 5, 6, 7, 9, 11, 12, 21];
+const GUARANTEED_HUMANS = [3, 10, 13, 14, 16, 17, 18];
+
 function assignNatures(characters) {
-    const males = shuffle(characters.filter(p => p.gender === "Erkek"));
-    const females = shuffle(characters.filter(p => p.gender === "Kız"));
-
-    // 7 Males: 2 Anomaly, 1 Human, 4 Random (%30 Anomaly)
-    males.forEach((p, idx) => {
-        if (idx < 2) {
+    return characters.map(p => {
+        if (GUARANTEED_ANOMALIES.includes(p.id)) {
             p.isAnomaly = true;
-        } else if (idx === 2) {
+        } else if (GUARANTEED_HUMANS.includes(p.id)) {
             p.isAnomaly = false;
         } else {
             p.isAnomaly = Math.random() < 0.30;
         }
+        return p;
     });
-
-    // 7 Females: 2 Anomaly, 1 Human, 4 Random (%30 Anomaly)
-    females.forEach((p, idx) => {
-        if (idx < 2) {
-            p.isAnomaly = true;
-        } else if (idx === 2) {
-            p.isAnomaly = false;
-        } else {
-            p.isAnomaly = Math.random() < 0.30;
-        }
-    });
-
-    return [...males, ...females];
 }
 
 function generateManifest() {
@@ -627,10 +626,10 @@ function resolveMission(team) {
         missingPeople.push(lostHuman);
     }
 
-    // Anomalies escaping / going missing (50% chance each)
+    // Anomalies escaping / going missing (60% chance each)
     const anomalies = team.filter(p => p.isAnomaly);
     anomalies.forEach(anomaly => {
-        if (Math.random() < 0.50) {
+        if (Math.random() < 0.60) {
             missingPeople.push(anomaly);
         }
     });
@@ -1720,7 +1719,7 @@ function bandRisk(reading) {
     return 0.00;                         // 0 anomalies, 5 humans
 }
 
-const BASE_ANOMALY_RATE = (4 + 8 * 0.3) / 14;
+const BASE_ANOMALY_RATE = (8 + 6 * 0.3) / 21;
 
 // Legitimate elimination: subtract the anomaly mass already accounted for by
 // tested people from the pool's known total, and spread the rest evenly.
@@ -1786,21 +1785,18 @@ function simulateSingleGame(botType) {
             testable.slice(0, testsForDay(day)).forEach(p => { p.isTested = true; });
         }
 
-        // ---- EXECUTION (day 3+) ----
+        // ---- EXECUTION (Disabled in game) ----
+        /*
         if (day >= EXECUTION_START_DAY && botType !== "random") {
             const candidates = manifest.filter(p => p.arrivalDay <= day && !p.isDead && p.isMet && p.isTested);
             let target = null;
-
-            // Everyone acts on a proven anomaly.
             const proven = candidates.filter(p => p.reading >= 70).sort((a, b) => b.reading - a.reading);
             if (proven.length) {
                 target = proven[0];
             } else if (botType === "counter" && gapOn(day) <= 2) {
-                // Under pressure, gamble on a coin-flip suspect.
                 const suspects = candidates.filter(p => p.reading >= 50).sort((a, b) => b.reading - a.reading);
                 if (suspects.length) target = suspects[0];
             }
-
             if (target) {
                 target.isExecuted = true;
                 target.isDead = true;
@@ -1808,6 +1804,7 @@ function simulateSingleGame(botType) {
                 if (riotOn(day)) { endReason = "riot"; break; }
             }
         }
+        */
 
         // ---- DISPATCH ----
         const deployable = manifest.filter(p => p.arrivalDay <= day && !p.isDead && p.isMet && !rest(p));
