@@ -1,141 +1,191 @@
-// THE FACILITY SIMULATION LOGIC
+// THE FACILITY -- 14 PERSONNEL ROSTER (7 FEMALE / 7 MALE)
+//
+// 14 characters: 7 Erkek, 7 Kız.
+// Each gender group gets guaranteed: 2 Anomalies + 1 Human.
+// Remaining 4 in each group: 30% Anomaly chance.
+// Total starting base: 4 Anomalies + 2 Humans, plus 8 randomized slots.
+//
+// Daily arrival schedule:
+// Day 1: 4 | Day 2: 1 | Day 3: 2 | Day 4: 1 | Day 5: 2 | Day 6: 2 | Day 7: 2 (Total: 14)
 
 const TOTAL_DAYS = 7;
-const MAX_ENERGY = 16; // 16 Total Daily Energy
-const START_HOUR = 9; // 09:00
-const END_HOUR = 17;  // 17:00
-const FATIGUE_DAYS = 2; // 2 days of fatigue
-const MEET_ENERGY = 4;  // Meeting costs 4 energy (+2 hours)
-const SCAN_ENERGY = 2;  // Each indicator costs 2 energy (+1 hour)
+const FATIGUE_DAYS = 2;      // two days of rest after a mission
+const ROSTER_SIZE = 14;      // 7 males + 7 females
 
-// 14 Characters: 7 Male, 7 Female
-const INITIAL_PERSONNEL = [
-    // Men (7)
-    { id: 1, name: "Dr. Kaya", gender: "Erkek", role: "Baş Araştırmacı", avatar: "👨‍🔬" },
-    { id: 2, name: "Murat Çelik", gender: "Erkek", role: "Güvenlik Şefi", avatar: "👮‍♂️" },
-    { id: 3, name: "Can Yılmaz", gender: "Erkek", role: "Sistem Mühendisi", avatar: "👨‍💻" },
-    { id: 4, name: "Dr. Arda", gender: "Erkek", role: "Tıbbi Sorumlu", avatar: "👨‍⚕️" },
-    { id: 5, name: "Burak Demir", gender: "Erkek", role: "Tesis Teknisyeni", avatar: "👷‍♂️" },
-    { id: 6, name: "Mert Kurt", gender: "Erkek", role: "Stajyer Biyolog", avatar: "🧑‍🔬" },
-    { id: 7, name: "Kerem Aksoy", gender: "Erkek", role: "Muhafız", avatar: "💂‍♂️" },
+// ---- Electric chair -----------------------------------------------------
+const EXECUTION_START_DAY = 3;
+const EXECUTIONS_PER_DAY = 1;
 
-    // Women (7)
-    { id: 8, name: "Asistan Elif", gender: "Kız", role: "Laboratuvar Asistanı", avatar: "👩‍🔬" },
-    { id: 9, name: "Dr. Zeynep", gender: "Kız", role: "Genetik Uzmanı", avatar: "👩‍⚕️" },
-    { id: 10, name: "Selin Şen", gender: "Kız", role: "Reaktör Teknisyeni", avatar: "👩‍🔧" },
-    { id: 11, name: "Psikolog Merve", gender: "Kız", role: "Personel Danışmanı", avatar: "👩‍💼" },
-    { id: 12, name: "Derya Aydın", gender: "Kız", role: "Telsiz Operatörü", avatar: "👩‍💻" },
-    { id: 13, name: "Kimyager Sinem", gender: "Kız", role: "Toksikolog", avatar: "🧑‍🔬" },
-    { id: 14, name: "Aylin Koç", gender: "Kız", role: "Veri Analisti", avatar: "👩‍💼" }
-];
+// ---- Anomaly riot -------------------------------------------------------
+const RIOT_START_DAY = 3;
 
-// Dialogue Clues based on nature
-const CLUES = {
-    human: {
-        bio: "Standart biyometrik kayıtlar normal. İnsan sinir sistemi yanıtları olağan."
-    },
-    anomaly: {
-        bio: "Göz bebeklerinde mikro-titremeler var. Deri sıcaklığı şüpheli derecede dalgalanıyor."
-    }
+// ---- Government oversight -----------------------------------------------
+const MAX_MISSION_FAILURES = 3;
+
+// ---- Per-day allowances -------------------------------------------------
+const MEETS_PER_DAY = 3;
+
+function testsForDay(day) {
+    return day === 1 ? 1 : 2;
+}
+
+function dispatchSizeForDay(day) {
+    if (day === 1) return 1;
+    if (day <= 3) return 2;
+    return 3;
+}
+
+// ---- Stage machine ------------------------------------------------------
+const STAGE = {
+    INTRO:     "intro",
+    ARRIVAL:   "arrival",
+    MEETING:   "meeting",
+    TESTING:   "testing",
+    EXECUTION: "execution",
+    DISPATCH:  "dispatch",
+    REPORT:    "report"
 };
 
-// ==========================================
-// DUAL ANOMALY INDICATOR PROBABILITY ENGINE
-// ==========================================
+const STAGE_INFO = {
+    arrival:   { label: "PERSONEL GİRİŞİ", clock: "08:00", next: "TANIŞMA AŞAMASINA GEÇ" },
+    meeting:   { label: "TANIŞMA",         clock: "09:00", next: "TEST AŞAMASINA GEÇ" },
+    testing:   { label: "TEST",            clock: "13:00", next: "GÖREV AŞAMASINA GEÇ" },
+    execution: { label: "İNFAZ",           clock: "15:00", next: "GÖREV AŞAMASINA GEÇ" },
+    dispatch:  { label: "GÖREV SEVKİ",     clock: "16:00", next: null },
+    report:    { label: "GÜN RAPORU",      clock: "18:00", next: null }
+};
 
-// Calculates percentage for an indicator (either highly decisive or ambiguous/noisy)
-function calculateIndicatorProbability(isAnomaly, indicatorIndex) {
-    // 75% decisive reading (very high or very low certainty), 25% ambiguous/noisy
-    const isDecisive = Math.random() < 0.75;
-    let percentage = 50;
-    let certaintyType = isDecisive ? "Yüksek Kesinlik" : "Düşük Kesinlik / Parazit";
+// ---- 14 Characters (7 Erkek, 7 Kız) -------------------------------------
+const INITIAL_PERSONNEL = [
+    { id: 1,  name: "Dr. Kaya",         gender: "Erkek", role: "Baş Araştırmacı",       avatar: "👨‍🔬", dialogue: "Araştırmalarım sırasında anomalilerin insanların en çok öfke duygusunu çok iyi taklit ettiklerini öğrendim." },
+    { id: 2,  name: "Murat Çelik",      gender: "Erkek", role: "Güvenlik Şefi",         avatar: "👮‍♂️", dialogue: "Küçükken hep pizza kuryesi olmak istemiştim, küçüklük hayallerimi gerçekleştirdiğim için kendimden gurur duyuyorum. Sana bir şey söyleyeyim mi? Ben kariyerim boyunca hiçbir pizzayı geç götürmedim." },
+    { id: 3,  name: "Can Yılmaz",       gender: "Erkek", role: "Sistem Mühendisi",      avatar: "👨‍💻", dialogue: "Ben hep güvenlik sistemlerinde çalıştım, kurduğum her güvenlik sistemi %100 güvenlidir. Burayı ben dizayn etmedim ve bu beni tedirgin ediyor." },
+    { id: 4,  name: "Dr. Arda",         gender: "Erkek", role: "Tıbbi Sorumlu",         avatar: "👨‍⚕️", dialogue: "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere." },
+    { id: 5,  name: "Burak Demir",      gender: "Erkek", role: "Tesis Teknisyeni",      avatar: "👷‍♂️", dialogue: "İstesem buradan kaçabilirim ama insanlığımı size kanıtlamak istiyorum. Dolayısıyla kaçmayacağım ama istesem kaçabilirim." },
+    { id: 6,  name: "Mert Kurt",        gender: "Erkek", role: "Stajyer Biyolog",       avatar: "🧑‍🔬", dialogue: "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar." },
+    { id: 7,  name: "Kerem Aksoy",      gender: "Erkek", role: "Muhafız",               avatar: "💂‍♂️", dialogue: "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum." },
+    { id: 8,  name: "Asistan Elif",     gender: "Kız",   role: "Laboratuvar Asistanı",  avatar: "👩‍🔬", dialogue: "..." },
+    { id: 9,  name: "Dr. Zeynep",       gender: "Kız",   role: "Genetik Uzmanı",        avatar: "👩‍⚕️", dialogue: "İnsanlar genetik olarak çok ezik varlıklar ve anomaliler onlardan daha zeki, bir nevi Homo superior oldukları için insanlar onlardan nefret ediyor sanırım." },
+    { id: 10, name: "Selin Şen",        gender: "Kız",   role: "Reaktör Teknisyeni",    avatar: "👩‍🔧", dialogue: "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış." },
+    { id: 11, name: "Psikolog Merve",   gender: "Kız",   role: "Personel Danışmanı",    avatar: "👩‍💼", dialogue: "Anomalilerin varlığı beni tedirgin etmiyor, bence biz onları daha iyi anlayabiliriz ve anlarsak belki de ortak yönlerimizin daha fazla olduğunu öğrenebiliriz. Bu beni heyecanlandırıyor ama halkı neden korkuttuğunu da anlayabiliyorum." },
+    { id: 12, name: "Derya Aydın",      gender: "Kız",   role: "Telsiz Operatörü",      avatar: "👩‍💻", dialogue: "İşime son verilmeden 1 ay önce telsizler sürekli başımı ağrıtmaya başlıyordu, sanki başımın içinden kablolar geçiyor da onunla oynuyor gibilerdi." },
+    { id: 13, name: "Kimyager Sinem",   gender: "Kız",   role: "Toksikolog",            avatar: "🧑‍🔬", dialogue: "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim." },
+    { id: 14, name: "Aylin Koç",        gender: "Kız",   role: "Veri Analisti",         avatar: "👩‍💼", dialogue: "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz." }
+];
 
-    if (isAnomaly) {
-        if (isDecisive) {
-            // Anomaly decisive: 88% - 99%
-            percentage = Math.floor(Math.random() * 12) + 88;
-        } else {
-            // Anomaly ambiguous: 52% - 66%
-            percentage = Math.floor(Math.random() * 15) + 52;
-        }
-    } else {
-        // Human
-        if (isDecisive) {
-            // Human decisive: 1% - 13%
-            percentage = Math.floor(Math.random() * 13) + 1;
-        } else {
-            // Human ambiguous: 36% - 49%
-            percentage = Math.floor(Math.random() * 14) + 36;
-        }
+// ==========================================
+// INDICATOR II -- READING BANDS
+// ==========================================
+const BAND_HIGH   = [70, 99];
+const BAND_MID    = [50, 69];
+const BAND_LOW    = [30, 49];
+const BAND_CLEAR  = [0, 29];
+
+function shuffle(list) {
+    const a = [...list];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
     }
-
-    return {
-        prob: percentage,
-        isDecisive,
-        certaintyType
-    };
+    return a;
 }
 
-function getRiskLabel(prob) {
-    if (prob >= 80) return { text: "YÜKSEK ANOMALİ RİSKİ (KRİTİK)", color: "var(--accent-red)", badgeClass: "anomaly" };
-    if (prob >= 60) return { text: "ŞÜPHELİ (OLASI ANOMALİ)", color: "#ff9800", badgeClass: "warning" };
-    if (prob <= 20) return { text: "GÜVENLİ (KESİN İNSAN)", color: "var(--accent-green)", badgeClass: "human" };
-    if (prob <= 40) return { text: "DÜŞÜK RİSK (MUHTEMEL İNSAN)", color: "#8bc34a", badgeClass: "low-risk" };
-    return { text: "BELİRSİZ (YAKIN GÖZLEM GEREKİR)", color: "var(--accent-cyan)", badgeClass: "neutral" };
+function drawInBand(band) {
+    return band[0] + Math.floor(Math.random() * (band[1] - band[0] + 1));
 }
 
-function getPersonCombinedRisk(person) {
-    if (!person.scan1 && !person.scan2) return null;
-    let combinedProb = 0;
-    let count = 0;
-    if (person.scan1) { combinedProb += person.scan1.prob; count++; }
-    if (person.scan2) { combinedProb += person.scan2.prob; count++; }
-    const avgProb = Math.round(combinedProb / count);
-    return {
-        prob: avgProb,
-        scansCount: count,
-        label: getRiskLabel(avgProb)
-    };
+function drawAnomalyReading() {
+    const r = Math.random();
+    if (r < 0.45) return drawInBand(BAND_HIGH);
+    if (r < 0.80) return drawInBand(BAND_MID);
+    return drawInBand(BAND_LOW);
 }
 
-// PERSONNEL GENERATION (2 Fixed Humans, 2 Fixed Anomalies per gender, Remaining Random)
-function generatePersonnelState() {
-    return INITIAL_PERSONNEL.map(p => {
-        let isAnomaly;
-        // Erkekler: 2 Kesin İnsan (Dr. Kaya: 1, Can Yılmaz: 3)
-        //          2 Kesin Anomali (Murat Çelik: 2, Burak Demir: 5)
-        //          Kalanlar Rastgele (Dr. Arda: 4, Mert Kurt: 6, Kerem: 7)
-        if (p.id === 1 || p.id === 3) {
-            isAnomaly = false;
-        } else if (p.id === 2 || p.id === 5) {
-            isAnomaly = true;
-        }
-        // Kızlar: 2 Kesin İnsan (Asistan Elif: 8, Psikolog Merve: 11)
-        //         2 Kesin Anomali (Dr. Zeynep: 9, Derya Aydın: 12)
-        //         Kalanlar Rastgele (Selin: 10, Sinem: 13, Aylin: 14)
-        else if (p.id === 8 || p.id === 11) {
-            isAnomaly = false;
-        } else if (p.id === 9 || p.id === 12) {
-            isAnomaly = true;
-        }
-        // Kalanlar rastgele %50
-        else {
-            isAnomaly = Math.random() < 0.5;
-        }
+function drawHumanReading() {
+    const r = Math.random();
+    if (r < 0.45) return drawInBand(BAND_CLEAR);
+    if (r < 0.80) return drawInBand(BAND_LOW);
+    return drawInBand(BAND_MID);
+}
 
+function getReadingColor(reading) {
+    if (reading >= 70) return "var(--accent-red)";
+    if (reading >= 50) return "var(--accent-orange)";
+    if (reading >= 30) return "#8bc34a";
+    return "var(--accent-green)";
+}
+
+// ==========================================
+// ARRIVAL & NATURE GENERATION
+// ==========================================
+// Day 1: 4 | Day 2: 1 | Day 3: 2 | Day 4: 1 | Day 5: 2 | Day 6: 2 | Day 7: 2
+const ARRIVAL_SCHEDULE = [
+    1, 1, 1, 1,
+    2,
+    3, 3,
+    4,
+    5, 5,
+    6, 6,
+    7, 7
+];
+
+function assignNatures(characters) {
+    const males = shuffle(characters.filter(p => p.gender === "Erkek"));
+    const females = shuffle(characters.filter(p => p.gender === "Kız"));
+
+    // 7 Males: 2 Anomaly, 1 Human, 4 Random (%30 Anomaly)
+    males.forEach((p, idx) => {
+        if (idx < 2) {
+            p.isAnomaly = true;
+        } else if (idx === 2) {
+            p.isAnomaly = false;
+        } else {
+            p.isAnomaly = Math.random() < 0.30;
+        }
+    });
+
+    // 7 Females: 2 Anomaly, 1 Human, 4 Random (%30 Anomaly)
+    females.forEach((p, idx) => {
+        if (idx < 2) {
+            p.isAnomaly = true;
+        } else if (idx === 2) {
+            p.isAnomaly = false;
+        } else {
+            p.isAnomaly = Math.random() < 0.30;
+        }
+    });
+
+    return [...males, ...females];
+}
+
+function generateManifest() {
+    const characters = assignNatures(INITIAL_PERSONNEL.map(p => ({ ...p })));
+    const shuffledCharacters = shuffle(characters);
+    const shuffledArrivals = shuffle(ARRIVAL_SCHEDULE);
+
+    return shuffledCharacters.map((person, i) => {
         return {
-            ...p,
+            ...person,
+            arrivalDay: shuffledArrivals[i],
+            reading: person.isAnomaly ? drawAnomalyReading() : drawHumanReading(),
             isMet: false,
-            scan1: null,
-            scan2: null,
-            isAnomaly: isAnomaly
+            isTested: false,
+            isDead: false
         };
     });
 }
+
+
+// ==========================================
+// DORMANT: DAILY DIALOGUE LIBRARY
+// ==========================================
+// 196 hand-written lines (14 characters x 2 natures x 7 days). No V4 system
+// reads these yet -- kept intact so the writing is not lost if the dialogue
+// channel is restored. Characters 15-21 have no lines written yet.
 const DAILY_DIALOGUES = {
     1: { // Dr. Kaya
         human: [
-            "Yeni araştırma verileri beklediğimden karmaşık geldi, gece geç saatlere kadar laboratuvardaydım.",
+            "Araştırmalarım sırasında anomalilerin insanların en çok öfke duygusunu çok iyi taklit ettiklerini öğrendim.",
             "Kahve makinesi bozulmuş, bütün sabah konsantre olmakta biraz zorlandım.",
             "Dışarıdaki ailemden gelen eski fotoğraflara baktım, insan özlüyor işte.",
             "Mikroskop başında gözlerim çok yoruldu, biraz temiz hava alsam iyi olacak.",
@@ -164,7 +214,7 @@ const DAILY_DIALOGUES = {
             "Görev süresi biterken güvenlik açığı bırakmamak için son kontrolleri yapıyorum."
         ],
         anomaly: [
-            "Kamera kayıtlarındaki statik karlanmalar aslında çok mantıklı bir örüntü oluşturuyor.",
+            "Küçükken hep pizza kuryesi olmak istemiştim, küçüklük hayallerimi gerçekleştirdiğim için kendimden gurur duyuyorum. Sana bir şey söyleyeyim mi? Ben kariyerim boyunca hiçbir pizzayı geç götürmedim.",
             "Gece 03:00 devriyesinde nefes almayı bıraktığımda her şeyi çok daha net duyabiliyorum.",
             "Tesisin havalandırma kapakları düzenli bir nabız gibi atıyor, fark ettin mi?",
             "Bana üşüyüp üşümediğimi sordular. Sıcaklık kavramı sadece bir sayı dizisi.",
@@ -175,7 +225,7 @@ const DAILY_DIALOGUES = {
     },
     3: { // Can Yılmaz
         human: [
-            "Ana sunuculardaki fan gürültüsü yüzünden sabahtan beri kulağım çınlıyor.",
+            "Ben hep güvenlik sistemlerinde çalıştım, kurduğum her güvenlik sistemi %100 güvenlidir. Burayı ben dizayn etmedim ve bu beni tedirgin ediyor.",
             "Yedekleme kablolarını değiştirdim, tesisin eskiyen altyapısı can sıkıcı.",
             "Ekrana bakmaktan göz numaram büyüdü galiba, yazılar bulanıklaşıyor.",
             "Termal sensörler bugün biraz dengesizdi, yazılımı yeniden başlattım.",
@@ -195,7 +245,7 @@ const DAILY_DIALOGUES = {
     },
     4: { // Dr. Arda
         human: [
-            "Revirdeki tıbbi malzemeleri saydım, antibiyotik stoğumuz azalıyor.",
+            "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere.",
             "Dün gece gelen bir personelin tansiyonu çok yüksekti, stres herkesi vuruyor.",
             "Kendi nabzımı ölçtüm, uykusuzluktan hafif taşikardi başlamış.",
             "Sterilizasyon cihazı ısınmıyordu, teknik ekipten yardım istedim.",
@@ -204,7 +254,7 @@ const DAILY_DIALOGUES = {
             "Tahliye öncesi sağlık raporlarını hazırlıyorum, umarım salimen çıkarız."
         ],
         anomaly: [
-            "İnsan kalbinin dakikada 70 kez atması gereksiz mekanik bir yıpranma.",
+            "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere.",
             "Kan numunelerindeki demir oranını koklayarak ayırt edebiliyorum.",
             "Dün gece bedenimin sıcaklığını 24 dereceye indirdim, çok dengeli hissettirdi.",
             "Hücrelerin ölmesini engellemek çok kolayken insanların yaşlanması garip.",
@@ -224,7 +274,7 @@ const DAILY_DIALOGUES = {
             "Bütün vanalar kapalı, tesisin boru hatları son güne kadar dayanır."
         ],
         anomaly: [
-            "Boruların içindeki titreşim frekansları bana ne yapmam gerektiğini fısıldıyor.",
+            "İstesem buradan kaçabilirim ama insanlığımı size kanıtlamak istiyorum. Dolayısıyla kaçmayacağım ama istesem kaçabilirim.",
             "Ellerimin pas tutması veya kesilmesi önemli değil, altındaki yapı bozulmuyor.",
             "Havalandırma tünellerinde karanlıkta yürümek fener kullanmaktan daha rahat.",
             "Metal alaşımların moleküler yapısını parmak uçlarımla okuyabiliyorum.",
@@ -235,7 +285,7 @@ const DAILY_DIALOGUES = {
     },
     6: { // Mert Kurt
         human: [
-            "İlk haftam ve her şeyden çok korkuyorum, kıdemliler çok sert davranıyor.",
+            "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar.",
             "Petri kaplarını yanlışlıkla deviriyordum, panikten elim ayağım titredi.",
             "Buradaki herkes çok gergin, gece yatakhanede kimse konuşmuyor.",
             "Mikroskop camını temizlerken parmağımı kestim, revire gitmem gerekti.",
@@ -244,7 +294,7 @@ const DAILY_DIALOGUES = {
             "Stajın son günü... Buradan bir an önce ayrılmak istiyorum."
         ],
         anomaly: [
-            "Bana stajyer diyorlar ama bu tesisin kuruluşundan önceki kodları biliyorum.",
+            "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar.",
             "Biyolojik numuneler bana tepki veriyor... Camın ardından bana yöneliyorlar.",
             "Hata yapıyormuş gibi davranmak, insan taklit etmenin en kolay yolu.",
             "Kanımın rengi ışık altında bazen farklı bir dalga boyunda parlıyor.",
@@ -255,7 +305,7 @@ const DAILY_DIALOGUES = {
     },
     7: { // Kerem Aksoy
         human: [
-            "Ağır çelik yelek sırtımı mahvetti, 8 saat ayakta nöbet tutmak çok zor.",
+            "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum.",
             "Telsizden sürekli parazit geliyor, bataryası da çabuk bitiyor.",
             "Dün gece alt koridordan bir tıkırtı geldi, fareymiş ama ödüm koptu.",
             "Silahımın bakımını yaptım, umarım burada onu hiç kullanmak zorunda kalmam.",
@@ -264,7 +314,7 @@ const DAILY_DIALOGUES = {
             "Son nöbet... Kapı açıldığı an arkama bile bakmadan çıkacağım."
         ],
         anomaly: [
-            "Gözlerimi kırpmadan 6 saat boyunca koridorun son noktasına odaklanabiliyorum.",
+            "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum.",
             "Karanlık köşelerde bekleyen şeylerin silüetleri benimle aynı frekansta.",
             "Silah taşımak komik bir formalite... Tehdit algısı içeriden geliyor.",
             "Dün gece nöbet defterine yazdığım saatler gerçek zamanla uyuşmuyor.",
@@ -275,7 +325,7 @@ const DAILY_DIALOGUES = {
     },
     8: { // Asistan Elif
         human: [
-            "Tüp raflarını temizledim, kimyasal kokusundan hafif başım dönüyor.",
+            "...",
             "Dr. Kaya bugün çok gergindi, raporları üç kez baştan kontrol ettirdi.",
             "Yatakhane çok soğuk, gece iki battaniyeyle bile zor ısındım.",
             "Santrifüj cihazı garip sesler çıkarıyor, arıza yapacak diye korkuyorum.",
@@ -304,7 +354,7 @@ const DAILY_DIALOGUES = {
             "Son analizler bitti... Bir an önce dış dünyadaki normal hayatıma dönmeliyim."
         ],
         anomaly: [
-            "İnsan genomundaki kod fazlalıkları temizlendiğinde geriye saf düzen kalıyor.",
+            "İnsanlar genetik olarak çok ezik varlıklar ve anomaliler onlardan daha zeki, bir nevi Homo superior oldukları için insanlar onlardan nefret ediyor sanırım.",
             "Genetik dizilimler bana müzikal bir algoritma gibi görünüyor.",
             "Bedenimdeki hücrelerin yer değiştirdiğini ve yenilendiğini izlemek büyüleyici.",
             "Dün gece kendi saç telimi inceledim... Karbon yerine silikon bağları var.",
@@ -315,7 +365,7 @@ const DAILY_DIALOGUES = {
     },
     10: { // Selin Şen
         human: [
-            "Radyasyon ölçer cihazımın pilini yeniledim, her 10 dakikada bir ötüyor.",
+            "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış.",
             "Soğutma havuzunun sıcaklığı yükselmişti, pompayı manuel açtım.",
             "Kulaklığımı takmadan reaktör katına inmişim, kulaklarım patlayacaktı.",
             "Sıcaktan üniformam sırılsıklam oldu, duş alacak vaktim bile olmadı.",
@@ -324,7 +374,7 @@ const DAILY_DIALOGUES = {
             "Tahliye öncesi ana şebekeyi kilitledim, görevimi tamamladım."
         ],
         anomaly: [
-            "Reaktörün yaydığı radyasyon dalgaları bana enerji veriyor, çok canlı hissediyorum.",
+            "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış.",
             "Soğutma havuzundaki suyun yaydığı mavi ışık (Cherenkov) tam göz rengimde.",
             "Sıcaklık 80 dereceye çıksa bile ter bezlerimin tepki vermemesi harika.",
             "Çekirdeğin içindeki atomik reaksiyonların sesini kelimelere dökebilirim.",
@@ -335,7 +385,7 @@ const DAILY_DIALOGUES = {
     },
     11: { // Psikolog Merve
         human: [
-            "Personelin çoğunda klostrofobi ve paranoya belirtileri tavan yapmış durumda.",
+            "Anomalilerin varlığı beni tedirgin etmiyor, bence biz onları daha iyi anlayabiliriz ve anlarsak belki de ortak yönlerimizin daha fazla olduğunu öğrenebiliriz. Bu beni heyecanlandırıyor ama halkı neden korkuttuğunu da anlayabiliyorum.",
             "Bugün 4 kişiyi dinledim, herkesin derdini dinlemek benim de enerjimi tüketti.",
             "Geceleri yatarken kapımı iki kere kilitliyorum, kendimi güvende hissetmiyorum.",
             "Kahveme şeker atmayı unutmuşum, kafam o kadar dolu ki.",
@@ -364,7 +414,7 @@ const DAILY_DIALOGUES = {
             "Tahliye frekansını açık bıraktım, kapılar açılınca ilk ben çıkacağım."
         ],
         anomaly: [
-            "Telsizdeki cızırtıların arasında bana özel gönderilen şifreli bir frekans var.",
+            "İşime son verilmeden 1 ay önce telsizler sürekli başımı ağrıtmaya başlıyordu, sanki başımın içinden kablolar geçiyor da onunla oynuyor gibilerdi.",
             "Anten olmadan da manyetik sinyalleri kafatasımın içinde duyabiliyorum.",
             "Dış dünyadan gelen sinyaller artık sahte ve anlamsız geliyor.",
             "0.45 MHz bandında tesisin altından gelen sürekli bir yayın var, dinliyorum.",
@@ -375,7 +425,7 @@ const DAILY_DIALOGUES = {
     },
     13: { // Kimyager Sinem
         human: [
-            "Hava filtrelerindeki toksin oranını ölçtüm, hafif bir karbonmonoksit artışı var.",
+            "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim.",
             "Asit tüpünü tutarken eldivenim delindi sandım, yüreğim ağzıma geldi.",
             "Gözlerim kimyasal buhardan yanıyor, koruyucu maskem eskidi galiba.",
             "Reaktif maddeleri soğuk dolaba kilitledim, kaza çıkmaması için dikkat şart.",
@@ -384,7 +434,7 @@ const DAILY_DIALOGUES = {
             "Son numuneleri güvenli kasaya kaldırdım, eve dönünce sadece uyuyacağım."
         ],
         anomaly: [
-            "Siyanür ve cıva bileşenleri koklandığında ferahlatıcı bir his veriyor.",
+            "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim.",
             "Bedenimdeki biyolojik sıvıların pH değeri 2.5 seviyesinde sabitlendi.",
             "Toksik gazların ciğerlerime dolması nefes alma ihtiyacımı ortadan kaldırıyor.",
             "Kimyasal bileşiklerin moleküler yapısını tadarak analiz edebiliyorum.",
@@ -395,7 +445,7 @@ const DAILY_DIALOGUES = {
     },
     14: { // Aylin Koç
         human: [
-            "Günlük personel giriş çıkış tablolarını işledim, excel dosyaları gözümü kör etti.",
+            "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz.",
             "Sırtım sandalyede oturmaktan tutuldu, biraz esneme hareketi yapmam gerek.",
             "Log kayıtlarında bir personelin gece giriş saati kayıptı, sistemsel bir hata sanırım.",
             "Klavyemin bazı tuşları basmıyor, teknik servise haber verdim.",
@@ -404,7 +454,7 @@ const DAILY_DIALOGUES = {
             "Tüm veri yedeklerini harici diske aktardım, görevimi bitirdim."
         ],
         anomaly: [
-            "Veri tablolarındaki sayıların arasında gizli bir koordinat matrisi oluşuyor.",
+            "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz.",
             "Gözlerimi ekrandan ayırmadan saniyede 10 bin satır kodu tarayabiliyorum.",
             "Sistemde silinmiş gibi görünen bazı isimler aslında hiç var olmamış.",
             "İnsanların hesaplama yaparken bu kadar çok hata yapması kabul edilemez.",
@@ -415,556 +465,524 @@ const DAILY_DIALOGUES = {
     }
 };
 
-function getPersonDailyDialogue(person, day) {
-    const dayIndex = Math.max(0, Math.min(6, day - 1));
-    const personDialogues = DAILY_DIALOGUES[person.id];
-    if (!personDialogues) {
-        return person.isAnomaly
-            ? "Tesisin derinliklerinden gelen sesler bugün çok daha belirgin..."
-            : "Bugünkü işlerimi tamamlayıp biraz dinlenmek istiyorum.";
-    }
-    const pool = person.isAnomaly ? personDialogues.anomaly : personDialogues.human;
-    return pool[dayIndex] || pool[0];
-}
 
-// Game State
+// ==========================================
+// GAME STATE
+// ==========================================
 let gameState = {
     day: 1,
-    energy: MAX_ENERGY,
-    timeHour: START_HOUR,
-    dailyRequiredCount: 1, // Randomly 1, 2, or 3
-    personnel: [],
+    stage: STAGE.INTRO,
+    manifest: [],
+    meetsUsed: 0,
+    testsUsed: 0,
+    executionsUsed: 0,
+    endReason: null,
+    day3BriefingShown: false,
     selectedTeam: [],
-    tiredMap: {},       // { personId: remainingDays } -> 2 days fatigue
-    missionStats: {
-        success: 0,
-        fail: 0,
-        total: 0
-    },
-    activeModalPersonId: null
+    tiredMap: {},
+    missionStats: { success: 0, fail: 0, total: 0, deaths: 0 },
+    lastArrivals: [],
+    newlyInterred: [],
+    revealPersonId: null
 };
-// DAILY MISSION QUOTA RULES:
-// Day 1: Exactly 1 person (Kesin 1 kişi)
-// Day 2 & 3: 1, 2, or 3 people (1-3 kişi)
-// Day 4, 5, 6, 7 (Son 4 gün): 2 or 3 people (1 kişilik görev olamaz)
-function getDailyQuotaForDay(day) {
-    if (day === 1) {
-        return 1; // İlk gün kesin 1 kişi
-    } else if (day >= 4) {
-        return Math.random() < 0.5 ? 2 : 3; // Son 4 gün sadece 2 veya 3 kişi
-    } else {
-        return Math.floor(Math.random() * 3) + 1; // Gün 2 ve 3: 1, 2 veya 3 kişi
-    }
+
+// Only people who have already reported to the facility exist as far as the
+// player is concerned.
+function presentPersonnel() {
+    return gameState.manifest.filter(p => p.arrivalDay <= gameState.day);
 }
 
-// INITIALIZE
-function initGame() {
-    const personnel = generatePersonnelState();
-    const firstDayQuota = getDailyQuotaForDay(1);
+function findPerson(personId) {
+    return gameState.manifest.find(p => p.id === personId);
+}
 
+function restDaysLeft(personId) {
+    return gameState.tiredMap[personId] || 0;
+}
+
+function isResting(personId) {
+    return (gameState.tiredMap[personId] || 0) > 0;
+}
+
+function isDeployable(person) {
+    return person.isMet && !person.isDead && !isResting(person.id);
+}
+
+function meetsLeft() {
+    return MEETS_PER_DAY - gameState.meetsUsed;
+}
+
+function testsLeft() {
+    return testsForDay(gameState.day) - gameState.testsUsed;
+}
+
+// ---- Facility balance ---------------------------------------------------
+function livingCounts() {
+    const living = presentPersonnel().filter(p => !p.isDead);
+    const anomalies = living.filter(p => p.isAnomaly).length;
+    return { humans: living.length - anomalies, anomalies, total: living.length };
+}
+
+// The riot fires the instant anomalies outnumber humans among the living.
+function isRiotCondition() {
+    if (gameState.day < RIOT_START_DAY) return false;
+    const c = livingCounts();
+    return c.anomalies > c.humans;
+}
+
+// Coarse threat readout. Deliberately bucketed rather than showing exact
+// counts -- the player must feel the pressure without being handed the roster.
+function threatLevel() {
+    const c = livingCounts();
+    const gap = c.humans - c.anomalies;
+    if (gameState.day < RIOT_START_DAY) return { label: "İZLENİYOR", color: "var(--text-muted)", key: "watch" };
+    if (gap <= 1) return { label: "KRİTİK", color: "var(--accent-red)", key: "critical" };
+    if (gap <= 3) return { label: "GERGİN", color: "var(--accent-orange)", key: "tense" };
+    return { label: "STABİL", color: "var(--accent-green)", key: "stable" };
+}
+
+function executionsLeft() {
+    return EXECUTIONS_PER_DAY - gameState.executionsUsed;
+}
+
+function canExecuteToday() {
+    return false; // Disabled / commented out: gameState.day >= EXECUTION_START_DAY;
+}
+
+// Checked after anything that changes the living roster or the mission record.
+// Returns true when the campaign has ended.
+function checkCatastrophe() {
+    if (gameState.endReason) return true;
+
+    if (isRiotCondition()) {
+        gameState.endReason = "riot";
+        logEvent("⚡ ANOMALİ AYAKLANMASI! Anomaliler insanları sayıca geçti ve tesisi ele geçirdi.", "fail");
+        showGameOver("riot");
+        return true;
+    }
+
+    if (gameState.missionStats.fail >= MAX_MISSION_FAILURES) {
+        gameState.endReason = "fired";
+        logEvent("🏛️ DEVLET MÜDAHALESİ! Üç başarısız görev sonrası görevden alındın.", "fail");
+        showGameOver("fired");
+        return true;
+    }
+
+    return false;
+}
+
+function deployablePersonnel() {
+    return presentPersonnel().filter(isDeployable);
+}
+
+// True when the facility physically cannot field the day's quota. Two days
+// of rest can bench everyone available, so this has to be survivable.
+function isUnderStrength() {
+    return deployablePersonnel().length < requiredTeamSize();
+}
+
+function requiredTeamSize() {
+    // Deaths can in principle outpace arrivals; never ask for more people than
+    // the facility can actually field.
+    const deployable = presentPersonnel().filter(isDeployable).length;
+    return Math.max(1, Math.min(dispatchSizeForDay(gameState.day), Math.max(1, deployable)));
+}
+
+// ==========================================
+// MISSION RESOLUTION (unchanged from V2/V3)
+// ==========================================
+const MISSION_ODDS = {
+    1: {
+        0: { successChance: 1.00, lossChance: 0.40 },
+        1: { successChance: 0.00, lossChance: 0.00 }
+    },
+    2: {
+        0: { successChance: 1.00, lossChance: 0.30 },
+        1: { successChance: 0.66, lossChance: 0.30 },
+        2: { successChance: 0.00, lossChance: 0.00 }
+    },
+    3: {
+        0: { successChance: 1.00, lossChance: 0.20 },
+        1: { successChance: 0.66, lossChance: 0.20 },
+        2: { successChance: 0.33, lossChance: 0.75 },
+        3: { successChance: 0.00, lossChance: 0.00 }
+    }
+};
+
+// Resolves a mission:
+// - Humans can go missing (loss chance).
+// - Anomalies have a 50% chance to escape (reported as missing/kayıplara karıştı).
+function resolveMission(team) {
+    const size = team.length;
+    const anomalyCount = team.filter(p => p.isAnomaly).length;
+    const odds = (MISSION_ODDS[size] && MISSION_ODDS[size][anomalyCount]) || { successChance: 0, lossChance: 0 };
+
+    const isSuccess = Math.random() < odds.successChance;
+    const missingPeople = [];
+
+    // Humans going missing
+    const humans = team.filter(p => !p.isAnomaly);
+    if (humans.length > 0 && Math.random() < odds.lossChance) {
+        const lostHuman = humans[Math.floor(Math.random() * humans.length)];
+        missingPeople.push(lostHuman);
+    }
+
+    // Anomalies escaping / going missing (50% chance each)
+    const anomalies = team.filter(p => p.isAnomaly);
+    anomalies.forEach(anomaly => {
+        if (Math.random() < 0.50) {
+            missingPeople.push(anomaly);
+        }
+    });
+
+    return { isSuccess, missingPeople };
+}
+
+const SUCCESS_REPORTS = [
+    "Ekip hedefe ulaştı ve saha raporu eksiksiz teslim edildi.",
+    "Operasyon tamamlandı, toplanan veriler tesise aktarıldı.",
+    "Görev hedefleri karşılandı ve sektör yeniden mühürlendi."
+];
+
+const FAILURE_REPORTS = [
+    "Saha operasyonu yarıda kaldı, hedeflere ulaşılamadı.",
+    "Görev sırasında koordinasyon koptu ve operasyon çöktü.",
+    "Operasyon başarısız oldu, raporlar eksik teslim edildi."
+];
+
+function pickReport(isSuccess) {
+    const pool = isSuccess ? SUCCESS_REPORTS : FAILURE_REPORTS;
+    return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ==========================================
+// LIFECYCLE
+// ==========================================
+function initGame() {
     gameState = {
         day: 1,
-        energy: MAX_ENERGY,
-        timeHour: START_HOUR,
-        dailyRequiredCount: firstDayQuota,
-        personnel: personnel,
+        stage: STAGE.INTRO,
+        manifest: generateManifest(),
+        meetsUsed: 0,
+        testsUsed: 0,
+        executionsUsed: 0,
+        endReason: null,
+        day3BriefingShown: false,
         selectedTeam: [],
         tiredMap: {},
-        missionStats: { success: 0, fail: 0, total: 0 },
-        activeModalPersonId: null
+        missionStats: { success: 0, fail: 0, total: 0, deaths: 0 },
+        lastArrivals: [],
+        newlyInterred: [],
+        revealPersonId: null
     };
 
+    const logs = document.getElementById("simulation-logs");
+    if (logs) logs.innerHTML = "";
+
+    document.getElementById("intro-overlay").classList.remove("hidden");
     renderAll();
-    logEvent(`Tesis görevi başladı. İlk gün göreve ${gameState.dailyRequiredCount} kişi göndermelisin!`, "system");
 }
 
-// LOGGING HELPER
+function beginCampaign() {
+    document.getElementById("intro-overlay").classList.add("hidden");
+    gameState.stage = STAGE.ARRIVAL;
+    gameState.lastArrivals = gameState.manifest.filter(p => p.arrivalDay === 1).map(p => p.id);
+    logEvent(`Tesis protokolü başladı. ${gameState.lastArrivals.length} personel giriş yaptı.`, "system");
+    renderAll();
+}
+
 function logEvent(message, type = "system") {
     const logsContainer = document.getElementById("simulation-logs");
+    if (!logsContainer) return;
     const entry = document.createElement("div");
     entry.className = `log-entry ${type}`;
-    const timeStr = formatTime(gameState.timeHour);
-    entry.innerHTML = `<small>[GÜN ${gameState.day} - ${timeStr}]</small> ${message}`;
+    entry.innerHTML = `<small>[GÜN ${gameState.day}]</small> ${message}`;
     logsContainer.prepend(entry);
 }
 
-function formatTime(hour) {
-    const hh = String(hour).padStart(2, "0");
-    return `${hh}:00`;
-}
+// ==========================================
+// STAGE FLOW
+// ==========================================
+function advanceStage() {
+    switch (gameState.stage) {
+        case STAGE.ARRIVAL:
+            // Flush the newly-interred queue so the record drop animation fires
+            // on the first morning view and then settles to static styling. Doing
+            // it here stops later re-renders from replaying it all day.
+            gameState.newlyInterred = [];
+            gameState.stage = STAGE.MEETING;
+            logEvent(`Tanışma aşaması açıldı. Bugün ${MEETS_PER_DAY} kişiyle tanışabilirsin.`, "system");
+            break;
 
-// RENDER STATUS BAR
-function renderStatus() {
-    document.getElementById("current-day").textContent = `${gameState.day} / ${TOTAL_DAYS}`;
-    document.getElementById("current-time").textContent = formatTime(gameState.timeHour);
-    document.getElementById("current-energy").textContent = `${gameState.energy} / ${MAX_ENERGY}`;
-    document.getElementById("mission-score").textContent = `${gameState.missionStats.success} Başarılı / ${gameState.missionStats.total}`;
+        case STAGE.MEETING:
+            gameState.stage = STAGE.TESTING;
+            logEvent(`Test aşaması açıldı. Bugün ${testsForDay(gameState.day)} test hakkın var.`, "system");
+            break;
 
-    // Update Daily Quota Badge
-    const quotaElem = document.getElementById("daily-quota-badge");
-    if (quotaElem) {
-        quotaElem.textContent = `${gameState.dailyRequiredCount} Kişi`;
-    }
-
-    // Energy pips (16 Pips)
-    const pipsContainer = document.getElementById("energy-pips");
-    pipsContainer.innerHTML = "";
-    for (let i = 0; i < MAX_ENERGY; i++) {
-        const pip = document.createElement("div");
-        pip.className = `energy-pip ${i < gameState.energy ? "active" : ""}`;
-        pipsContainer.appendChild(pip);
-    }
-
-    // Met count badge
-    const metCount = gameState.personnel.filter(p => p.isMet).length;
-    document.getElementById("met-count").textContent = `Tanışılan: ${metCount}/${gameState.personnel.length}`;
-}
-
-// RENDER PERSONNEL GRID
-function renderPersonnel() {
-    const grid = document.getElementById("personnel-grid");
-    grid.innerHTML = "";
-
-    gameState.personnel.forEach(person => {
-        const tiredDaysLeft = gameState.tiredMap[person.id] || 0;
-        const isTired = tiredDaysLeft > 0;
-        const isSelected = gameState.selectedTeam.includes(person.id);
-        const combinedRisk = getPersonCombinedRisk(person);
-
-        const card = document.createElement("div");
-        card.className = `person-card ${person.isMet ? "is-met" : ""} ${isTired ? "is-tired" : ""} ${isSelected ? "selected-team" : ""}`;
-        card.dataset.id = person.id;
-
-        const genderClass = person.gender === "Erkek" ? "male" : "female";
-        const avatarDisplay = person.isMet ? person.avatar : "❓";
-
-        let tagsHtml = "";
-        if (!person.isMet) {
-            tagsHtml += `<span class="tag tag-not-met">Bilinmiyor</span>`;
-        } else {
-            tagsHtml += `<span class="tag tag-met">Tanışıldı</span>`;
-        }
-
-        if (isTired) {
-            tagsHtml += `<span class="tag tag-tired">💤 Yorgun (${tiredDaysLeft} gün)</span>`;
-        }
-        if (isSelected) {
-            tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
-        }
-
-        let probBadgeHtml = "";
-        if (combinedRisk) {
-            probBadgeHtml = `
-                <div class="prob-card-badge" style="color: ${combinedRisk.label.color};">
-                    %${combinedRisk.prob} Risk
-                </div>
-            `;
-        }
-
-        card.innerHTML = `
-            ${probBadgeHtml}
-            <div class="double-click-hint">${person.isMet ? "Çift Tık: Göreve Seç/Çıkar" : "Çift Tık: Tanış (-4)"}</div>
-            <div class="avatar-circle ${genderClass}">
-                ${avatarDisplay}
-            </div>
-            <div class="person-name">${person.name}</div>
-            <div class="person-role">${person.isMet ? person.role : "???"} (${person.gender})</div>
-            <div class="card-status-tags">
-                ${tagsHtml}
-            </div>
-        `;
-
-        let clickTimeout = null;
-
-        // Click to view modal
-        card.addEventListener("click", () => {
-            if (clickTimeout) clearTimeout(clickTimeout);
-            clickTimeout = setTimeout(() => {
-                openPersonModal(person.id);
-            }, 220);
-        });
-
-        // Double click: Meet if not met (-4), otherwise toggle into team
-        card.addEventListener("dblclick", (e) => {
-            e.stopPropagation();
-            if (clickTimeout) {
-                clearTimeout(clickTimeout);
-                clickTimeout = null;
-            }
-            if (!person.isMet) {
-                meetPerson(person.id);
+        case STAGE.TESTING:
+            /*
+            if (canExecuteToday()) {
+                gameState.stage = STAGE.EXECUTION;
+                logEvent("İnfaz aşaması açıldı. Elektrikli sandalye kullanıma hazır.", "system");
             } else {
-                toggleTeamMember(person.id);
+                gameState.stage = STAGE.DISPATCH;
+                logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
             }
-        });
+            */
+            gameState.stage = STAGE.DISPATCH;
+            logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
+            break;
 
-        grid.appendChild(card);
-    });
+        case STAGE.EXECUTION:
+            gameState.stage = STAGE.DISPATCH;
+            logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
+            break;
+
+        case STAGE.REPORT:
+            nextDay();
+            return;
+
+        default:
+            return;
+    }
+    renderAll();
 }
 
-// RENDER TEAM SELECTION PANEL
-function renderTeamSelection() {
-    const container = document.getElementById("selected-team-list");
-    container.innerHTML = "";
-
-    if (gameState.selectedTeam.length === 0) {
-        container.innerHTML = `<span class="empty-text">Henüz kimse seçilmedi. Personel kartından veya profilinden ekle.</span>`;
-        return;
-    }
-
+function nextDay() {
+    // Survivors who went out rest for 1 or 2 days (50% chance); the dead/escaped need no rest.
     gameState.selectedTeam.forEach(id => {
-        const person = gameState.personnel.find(p => p.id === id);
-        if (!person) return;
-
-        const pill = document.createElement("div");
-        pill.className = "team-member-pill";
-        pill.innerHTML = `
-            <span>${person.avatar} ${person.name}</span>
-            <span class="btn-remove-pill" title="Çıkar">&times;</span>
-        `;
-
-        pill.querySelector(".btn-remove-pill").addEventListener("click", (e) => {
-            e.stopPropagation();
-            toggleTeamMember(person.id);
-        });
-
-        container.appendChild(pill);
+        const member = findPerson(id);
+        if (member && member.isDead) return;
+        gameState.tiredMap[id] = Math.random() < 0.50 ? 2 : 1;
     });
+
+    Object.keys(gameState.tiredMap).forEach(id => {
+        if (!gameState.selectedTeam.includes(Number(id))) {
+            gameState.tiredMap[id] -= 1;
+            if (gameState.tiredMap[id] <= 0) delete gameState.tiredMap[id];
+        }
+    });
+
+    gameState.selectedTeam = [];
+
+    if (gameState.day >= TOTAL_DAYS) {
+        showGameOver();
+        return;
+    }
+
+    gameState.day += 1;
+    gameState.meetsUsed = 0;
+    gameState.testsUsed = 0;
+    gameState.executionsUsed = 0;
+    gameState.stage = STAGE.ARRIVAL;
+    gameState.lastArrivals = gameState.manifest
+        .filter(p => p.arrivalDay === gameState.day)
+        .map(p => p.id);
+
+    // Yesterday's losses are carried down to the records section this morning,
+    // with an animation so the player sees exactly who left the roster.
+    gameState.newlyInterred = gameState.manifest
+        .filter(p => p.isDead && p.diedOnDay === gameState.day - 1)
+        .map(p => p.id);
+
+    logEvent(`--- GÜN ${gameState.day} --- ${gameState.lastArrivals.length} yeni personel tesise giriş yaptı.`, "system");
+    renderAll();
+
+    // New arrivals can themselves tip the balance into a riot.
+    if (checkCatastrophe()) return;
+
+    /*
+    // Day 3 briefing disabled
+    if (gameState.day === RIOT_START_DAY && !gameState.day3BriefingShown) {
+        gameState.day3BriefingShown = true;
+    }
+    */
 }
 
-function renderAll() {
-    renderStatus();
-    renderPersonnel();
-    renderTeamSelection();
+// ==========================================
+// PLAYER ACTIONS
+// ==========================================
+function handleCardClick(personId) {
+    switch (gameState.stage) {
+        case STAGE.MEETING:   meetPerson(personId); break;
+        case STAGE.TESTING:   testPerson(personId); break;
+        // case STAGE.EXECUTION: executePerson(personId); break; // Disabled
+        case STAGE.DISPATCH:  toggleTeamMember(personId); break;
+        default: break;
+    }
 }
 
-// ACTION: MEET PERSON (-4 Energy, +2 Hours)
 function meetPerson(personId) {
-    const person = gameState.personnel.find(p => p.id === personId);
-    if (!person) return;
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay > gameState.day) return;
 
-    if (person.isMet) {
-        openPersonModal(personId);
+    if (gameState.stage !== STAGE.MEETING) return;
+    if (person.isDead) return;
+    if (person.isMet) return;
+
+    if (meetsLeft() <= 0) {
+        flashNotice("Bugünkü tanışma hakkın bitti. Test aşamasına geçebilirsin.");
         return;
     }
 
-    if (gameState.energy < MEET_ENERGY) {
-        alert(`Yeterli enerjin kalmadı! Tanışmak ${MEET_ENERGY} enerji gerektirir. Günlük görevi başlatabilirsin.`);
-        return;
-    }
-
-    // Spend energy & advance time
-    gameState.energy -= MEET_ENERGY;
-    gameState.timeHour += 2;
     person.isMet = true;
+    gameState.meetsUsed += 1;
 
-    logEvent(`${person.name} ile tanışıldı. Rol: ${person.role}. (-${MEET_ENERGY} Enerji, Saat ${formatTime(gameState.timeHour)})`, "action");
-
+    const dialogueText = person.dialogue ? ` — "${person.dialogue}"` : "";
+    logEvent(`💬 ${person.name} ile tanışıldı (${person.role})${dialogueText}`, "action");
     renderAll();
-    openPersonModal(personId);
+
+    if (meetsLeft() <= 0) {
+        flashNotice("Tanışma hakların bitti. Test aşamasına geçebilirsin.");
+    }
 }
 
-// ACTION: RUN ANOMALY INDICATOR SCAN (-2 Energy, +1 Hour)
-function runIndicatorScan(personId, indicatorIndex) {
-    const person = gameState.personnel.find(p => p.id === personId);
-    if (!person) return;
+function testPerson(personId) {
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay > gameState.day) return;
 
+    if (gameState.stage !== STAGE.TESTING) return;
+
+    if (person.isDead) {
+        flashNotice(`${person.name} görevden geri dönmedi.`);
+        return;
+    }
     if (!person.isMet) {
-        alert("Belirteç taraması yapabilmek için önce bu kişiyle tanışmalısın!");
+        flashNotice("Önce bu kişiyle tanışmalısın.");
+        return;
+    }
+    if (person.isTested) {
+        showTestReveal(person);
+        return;
+    }
+    if (isResting(personId)) {
+        flashNotice(`${person.name} dinleniyor (${restDaysLeft(personId)} gün) — test edilemez.`);
+        return;
+    }
+    if (testsLeft() <= 0) {
+        flashNotice("Bugünkü test hakkın bitti. Görev aşamasına geçebilirsin.");
         return;
     }
 
-    const tiredDaysLeft = gameState.tiredMap[personId] || 0;
-    if (tiredDaysLeft > 0) {
-        alert(`${person.name} dinlendiği için şu an test yapılamaz!`);
-        return;
-    }
+    person.isTested = true;
+    gameState.testsUsed += 1;
 
-    const scanProp = "scan" + indicatorIndex;
-    if (person[scanProp]) {
-        openPersonModal(personId);
-        return;
-    }
-
-    if (gameState.energy < SCAN_ENERGY) {
-        alert(`Yeterli enerjin kalmadı! Belirteç taraması ${SCAN_ENERGY} enerji gerektirir.`);
-        return;
-    }
-
-    // Spend energy & advance time
-    gameState.energy -= SCAN_ENERGY;
-    gameState.timeHour += 1;
-    person[scanProp] = calculateIndicatorProbability(person.isAnomaly, indicatorIndex);
-
-    const testName = indicatorIndex === 1 ? "1. Biyometrik Rezonans" : "2. Nöro-Hücresel DNA";
-    logEvent(`[TEST] ${person.name} üzerinde ${testName} testi yapıldı (-${SCAN_ENERGY} Enerji, Saat ${formatTime(gameState.timeHour)}) -> Anomali Olasılığı: %${person[scanProp].prob} (${person[scanProp].certaintyType})`, person[scanProp].prob > 50 ? "fail" : "success");
-
+    logEvent(`[TEST] ${person.name} — Nöro-Hücresel DNA testi tamamlandı. (${gameState.testsUsed}/${testsForDay(gameState.day)})`, "action");
+    showTestReveal(person);
     renderAll();
-    openPersonModal(personId);
 }
 
-// TOGGLE TEAM MEMBER (ONLY MET PERSONNEL CAN BE ADDED)
+// ---- ELECTRIC CHAIR ----------------------------------------------------
+// Kills one person per day from day 3. Removing an anomaly relieves riot
+// pressure; removing a human makes it worse and costs a mission asset.
+function executePerson(personId) {
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay > gameState.day) return;
+    if (gameState.stage !== STAGE.EXECUTION) return;
+
+    if (person.isDead) {
+        flashNotice(`${person.name} zaten kadrodan düştü.`);
+        return;
+    }
+    if (!person.isMet) {
+        flashNotice(`${person.name} ile tanışmadın. Kimliği doğrulanmamış personel infaz edilemez.`);
+        return;
+    }
+    if (executionsLeft() <= 0) {
+        flashNotice("Bugünkü infaz hakkın bitti. Görev aşamasına geçebilirsin.");
+        return;
+    }
+
+    person.isDead = true;
+    person.isExecuted = true;
+    person.diedOnDay = gameState.day;
+    gameState.executionsUsed += 1;
+    gameState.missionStats.executions = (gameState.missionStats.executions || 0) + 1;
+
+    if (person.isAnomaly) {
+        gameState.missionStats.anomaliesPurged = (gameState.missionStats.anomaliesPurged || 0) + 1;
+        logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyeye oturtuldu. Doku çözüldü — ANOMALİ doğrulandı.`, "success");
+    } else {
+        gameState.missionStats.humansExecuted = (gameState.missionStats.humansExecuted || 0) + 1;
+        logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyeye oturtuldu. Tamamen İNSANDI.`, "fail");
+    }
+
+    // Remove them from any pending selection.
+    const idx = gameState.selectedTeam.indexOf(personId);
+    if (idx > -1) gameState.selectedTeam.splice(idx, 1);
+
+    showExecutionReveal(person);
+    renderAll();
+    checkCatastrophe();
+}
+
 function toggleTeamMember(personId) {
-    const person = gameState.personnel.find(p => p.id === personId);
-    if (!person) return;
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay > gameState.day) return;
 
-    if (!person.isMet) {
-        alert(`${person.name} ile henüz tanışmadın! Sadece tanıştığın personelleri göreve gönderebilirsin. Önce bu kişiyle tanışmalısın (-${MEET_ENERGY} Enerji).`);
+    if (gameState.stage !== STAGE.DISPATCH) return;
+
+    if (person.isDead) {
+        flashNotice(`${person.name} görevden geri dönmedi.`);
         return;
     }
-
-    const tiredDaysLeft = gameState.tiredMap[personId] || 0;
-    if (tiredDaysLeft > 0) {
-        alert(`${person.name} görevden yeni döndü ve ${tiredDaysLeft} gün daha YORGUN! Göreve gidemez.`);
+    if (!person.isMet) {
+        flashNotice(`${person.name} ile tanışmadın. Tanışmadığın personel göreve gidemez.`);
+        return;
+    }
+    if (isResting(personId)) {
+        flashNotice(`${person.name} ${restDaysLeft(personId)} gün daha dinlenecek, göreve gidemez.`);
         return;
     }
 
     const index = gameState.selectedTeam.indexOf(personId);
     if (index > -1) {
         gameState.selectedTeam.splice(index, 1);
-        logEvent(`${person.name} görev ekibinden çıkarıldı.`, "system");
     } else {
-        if (gameState.selectedTeam.length >= gameState.dailyRequiredCount) {
-            alert(`Bugünkü görev için tam olarak ${gameState.dailyRequiredCount} kişi seçmelisin! Fazla kişi ekleyemezsin.`);
+        if (gameState.selectedTeam.length >= requiredTeamSize()) {
+            flashNotice(`Bugün tam olarak ${requiredTeamSize()} kişi göndermelisin.`);
             return;
         }
         gameState.selectedTeam.push(personId);
-        logEvent(`${person.name} görev ekibine eklendi. (${gameState.selectedTeam.length}/${gameState.dailyRequiredCount})`, "system");
     }
-
     renderAll();
-    updateModalButtons();
 }
 
-// MODAL HANDLING
-function openPersonModal(personId) {
-    const person = gameState.personnel.find(p => p.id === personId);
-    if (!person) return;
-
-    gameState.activeModalPersonId = personId;
-
-    const tiredDaysLeft = gameState.tiredMap[person.id] || 0;
-
-    document.getElementById("modal-name").textContent = person.name;
-    document.getElementById("modal-role").textContent = person.isMet ? person.role : "Rol Bilinmiyor";
-    document.getElementById("modal-gender").textContent = person.gender;
-    document.getElementById("modal-status").textContent = tiredDaysLeft > 0 ? `💤 Yorgun (${tiredDaysLeft} gün)` : "Aktif";
-    document.getElementById("modal-avatar").textContent = person.isMet ? person.avatar : "❓";
-
-    const notMetView = document.getElementById("modal-not-met-view");
-    const metView = document.getElementById("modal-met-view");
-    const scanBox = document.getElementById("scan-result-box");
-
-    if (!person.isMet) {
-        notMetView.classList.remove("hidden");
-        metView.classList.add("hidden");
-        scanBox.classList.add("hidden");
-    } else {
-        notMetView.classList.add("hidden");
-        metView.classList.remove("hidden");
-
-        const clueSet = person.isAnomaly ? CLUES.anomaly : CLUES.human;
-        document.getElementById("modal-bio").innerHTML = `
-            <strong>Özgeçmiş & Gözlem:</strong><br>
-            ${clueSet.bio}
-        `;
-
-        // Update daily dialogue
-        const dailyDialogueElem = document.getElementById("modal-dialogue");
-        if (dailyDialogueElem) {
-            const dialogueText = getPersonDailyDialogue(person, gameState.day);
-            dailyDialogueElem.textContent = `"${dialogueText}"`;
-        }
-
-        // Render Anomaly Indicator Diagnostic Results
-        const combinedRisk = getPersonCombinedRisk(person);
-        if (combinedRisk) {
-            let scanItemsHtml = "";
-
-            if (person.scan1) {
-                const s1Color = person.scan1.prob > 60 ? "var(--accent-red)" : (person.scan1.prob < 40 ? "var(--accent-green)" : "var(--accent-cyan)");
-                scanItemsHtml += `
-                    <div class="indicator-result-item">
-                        <div class="indicator-header">
-                            <span>🔬 1. Biyometrik Rezonans:</span>
-                            <span class="indicator-val" style="color: ${s1Color};">%${person.scan1.prob} Anomali Riski</span>
-                        </div>
-                        <div class="prob-meter-track">
-                            <div class="prob-meter-fill" style="width: ${person.scan1.prob}%; background-color: ${s1Color};"></div>
-                        </div>
-                        <small style="font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; display: block;">Mod: ${person.scan1.certaintyType}</small>
-                    </div>
-                `;
-            }
-
-            if (person.scan2) {
-                const s2Color = person.scan2.prob > 60 ? "var(--accent-red)" : (person.scan2.prob < 40 ? "var(--accent-green)" : "var(--accent-cyan)");
-                scanItemsHtml += `
-                    <div class="indicator-result-item">
-                        <div class="indicator-header">
-                            <span>🧬 2. Nöro-Hücresel DNA:</span>
-                            <span class="indicator-val" style="color: ${s2Color};">%${person.scan2.prob} Anomali Riski</span>
-                        </div>
-                        <div class="prob-meter-track">
-                            <div class="prob-meter-fill" style="width: ${person.scan2.prob}%; background-color: ${s2Color};"></div>
-                        </div>
-                        <small style="font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; display: block;">Mod: ${person.scan2.certaintyType}</small>
-                    </div>
-                `;
-            }
-
-            scanBox.innerHTML = `
-                ${scanItemsHtml}
-                <div class="overall-risk-summary">
-                    <div class="overall-risk-title">Bileşik Teşhis & Risk Sıralaması (${combinedRisk.scansCount} Belirteç)</div>
-                    <div class="overall-risk-percentage" style="color: ${combinedRisk.label.color};">%${combinedRisk.prob}</div>
-                    <div class="overall-risk-label" style="color: ${combinedRisk.label.color};">${combinedRisk.label.text}</div>
-                </div>
-            `;
-            scanBox.classList.remove("hidden");
-        } else {
-            scanBox.classList.add("hidden");
-        }
-    }
-
-    updateModalButtons();
-    document.getElementById("interrogate-modal").classList.remove("hidden");
-}
-
-function updateModalButtons() {
-    if (!gameState.activeModalPersonId) return;
-    const personId = gameState.activeModalPersonId;
-    const person = gameState.personnel.find(p => p.id === personId);
-    if (!person) return;
-
-    const isSelected = gameState.selectedTeam.includes(personId);
-    const tiredDaysLeft = gameState.tiredMap[personId] || 0;
-
-    // Team Toggle buttons
-    const toggleBtnMet = document.getElementById("btn-toggle-team");
-    const toggleBtnNotMet = document.getElementById("btn-modal-toggle-not-met");
-    const teamButtons = [toggleBtnMet, toggleBtnNotMet].filter(Boolean);
-
-    teamButtons.forEach(btn => {
-        if (tiredDaysLeft > 0) {
-            btn.textContent = `💤 Yorgun (${tiredDaysLeft} Gün Dinleniyor)`;
-            btn.disabled = true;
-        } else if (isSelected) {
-            btn.textContent = "❌ Görev Ekibinden Çıkar";
-            btn.disabled = false;
-        } else {
-            btn.textContent = "➕ Görev Ekibine Ekle";
-            btn.disabled = false;
-        }
-    });
-
-    // Indicator Scan Buttons (1 and 2)
-    const scan1Btn = document.getElementById("btn-scan-1");
-    if (scan1Btn) {
-        if (tiredDaysLeft > 0) {
-            scan1Btn.textContent = "💤 Dinleniyor (Test Yapılamaz)";
-            scan1Btn.disabled = true;
-        } else if (person.scan1) {
-            scan1Btn.textContent = `✅ 1. Belirteç: %${person.scan1.prob} Risk (${person.scan1.certaintyType})`;
-            scan1Btn.disabled = true;
-        } else {
-            scan1Btn.textContent = `🔬 1. Belirteç: Biyometrik Rezonans (-${SCAN_ENERGY} Enerji)`;
-            scan1Btn.disabled = false;
-        }
-    }
-
-    const scan2Btn = document.getElementById("btn-scan-2");
-    if (scan2Btn) {
-        if (tiredDaysLeft > 0) {
-            scan2Btn.textContent = "💤 Dinleniyor (Test Yapılamaz)";
-            scan2Btn.disabled = true;
-        } else if (person.scan2) {
-            scan2Btn.textContent = `✅ 2. Belirteç: %${person.scan2.prob} Risk (${person.scan2.certaintyType})`;
-            scan2Btn.disabled = true;
-        } else {
-            scan2Btn.textContent = `🧬 2. Belirteç: Nöro-Hücresel DNA (-${SCAN_ENERGY} Enerji)`;
-            scan2Btn.disabled = false;
-        }
-    }
-}
-
-function closeModals() {
-    document.getElementById("interrogate-modal").classList.add("hidden");
-    document.getElementById("mission-result-modal").classList.add("hidden");
-    document.getElementById("game-over-modal").classList.add("hidden");
-    gameState.activeModalPersonId = null;
-}
-
-// DISPATCH MISSION RESOLUTION
 function dispatchMission() {
-    if (gameState.selectedTeam.length !== gameState.dailyRequiredCount) {
-        alert(`Bugünkü görev için tam olarak ${gameState.dailyRequiredCount} kişi seçmelisin! (Şu an seçilen: ${gameState.selectedTeam.length})`);
+    if (gameState.stage !== STAGE.DISPATCH) return;
+
+    const needed = requiredTeamSize();
+    const understrength = isUnderStrength();
+
+    if (!understrength && gameState.selectedTeam.length !== needed) {
+        flashNotice(`Tam olarak ${needed} kişi seçmelisin. (Seçili: ${gameState.selectedTeam.length})`);
         return;
     }
 
-    const team = gameState.selectedTeam.map(id => gameState.personnel.find(p => p.id === id));
-    
-    // Check if any member is not met
-    const unmetMembers = team.filter(p => !p.isMet);
-    if (unmetMembers.length > 0) {
-        alert("Tanışmadığın personelleri göreve gönderemezsin! Lütfen önce tanış veya ekibi düzenle.");
-        return;
+    const team = gameState.selectedTeam.map(findPerson);
+
+    let isSuccess;
+    let missingPeople = [];
+    let explanation;
+
+    if (understrength) {
+        // Nobody left to send. The day is lost, but nobody is lost for it.
+        isSuccess = false;
+        explanation = "Sahaya sürecek yeterli personel kalmadı. Görev daha başlamadan başarısız sayıldı.";
+    } else {
+        const outcome = resolveMission(team);
+        isSuccess = outcome.isSuccess;
+        missingPeople = outcome.missingPeople || [];
+        explanation = pickReport(isSuccess);
+
+        missingPeople.forEach(person => {
+            person.isDead = true;
+            person.isMissing = true;
+            person.diedOnDay = gameState.day;
+            explanation += ` 🌫️ ${person.name} operasyon sırasında kayıplara karıştı.`;
+        });
     }
 
-    const anomalyMembers = team.filter(p => p.isAnomaly);
-    const humanMembers = team.filter(p => !p.isAnomaly);
-
-    const teamSize = team.length;
-    let isSuccess = false;
-    let explanation = "";
-
-    // 1 Kişi: İnsan = Başarı, Anomali = Başarısız
-    if (teamSize === 1) {
-        if (anomalyMembers.length === 0) {
-            isSuccess = true;
-            explanation = "Gönderilen personel operasyonu kusursuz şekilde icra etti ve raporu teslim etti.";
-        } else {
-            isSuccess = false;
-            explanation = "Görev esnasında kritik bir sabotaj yaşandı ve operasyon başarısız oldu!";
-        }
-    }
-    // 2 Kişi: İkisi anomali = Başarısız, İkisi insan = Başarılı, 1 i anomaliyse = %50 şans
-    else if (teamSize === 2) {
-        if (anomalyMembers.length === 0) {
-            isSuccess = true;
-            explanation = "Ekip üyeleri tam bir koordinasyon içinde görevi başarıyla tamamladı.";
-        } else if (anomalyMembers.length === 2) {
-            isSuccess = false;
-            explanation = "Görevde kontrol tamamen kaybedildi ve saha operasyonu çöktü!";
-        } else {
-            // 1 Anomali, 1 İnsan -> %50 şans
-            const roll = Math.random() < 0.5;
-            if (roll) {
-                isSuccess = true;
-                explanation = "Saha ekibi yoğun engellere rağmen görevi tamamlamayı başardı.";
-            } else {
-                isSuccess = false;
-                explanation = "Saha ekibi içinde anlaşmazlık ve sabotaj çıktı, görev yarıda kaldı.";
-            }
-        }
-    }
-    // 3 Kişi (veya çoğunluk kuralı)
-    else if (teamSize >= 3) {
-        if (anomalyMembers.length > humanMembers.length) {
-            isSuccess = false;
-            explanation = "Ekip içinde çoğunluk negatif etki gösterdi ve operasyon başarısızlıkla sonuçlandı!";
-        } else if (humanMembers.length > anomalyMembers.length) {
-            isSuccess = true;
-            explanation = "Ekip operasyonel hedeflere ulaştı ve görevi başarıyla tamamladı.";
-        } else {
-            // Beraberlik halinde %50
-            const roll = Math.random() < 0.5;
-            isSuccess = roll;
-            explanation = `Operasyon yüksek belirsizlik altında sonuçlandı: ${isSuccess ? "Başarılı" : "Başarısız"}.`;
-        }
-    }
-
-    // Update stats
     gameState.missionStats.total += 1;
     if (isSuccess) {
         gameState.missionStats.success += 1;
@@ -974,107 +992,580 @@ function dispatchMission() {
         logEvent(`GÜN ${gameState.day} GÖREVİ BAŞARISIZ! ${explanation}`, "fail");
     }
 
-    // Show result modal without revealing true anomaly/human status!
-    showMissionResultModal(isSuccess, explanation, team);
-}
-
-// SHOW RESULT MODAL (DOES NOT SPOIL TRUE NATURE)
-function showMissionResultModal(isSuccess, explanation, team) {
-    const resultModal = document.getElementById("mission-result-modal");
-    const resultTitle = document.getElementById("result-title");
-    const resultBadge = document.getElementById("result-badge");
-    const resultDesc = document.getElementById("result-desc");
-    const breakdownList = document.getElementById("result-team-breakdown");
-
-    resultTitle.textContent = `GÜN ${gameState.day} GÖREV RAPORU`;
-    resultBadge.textContent = isSuccess ? "GÖREV BAŞARILI ✅" : "GÖREV BAŞARISIZ ❌";
-    resultBadge.className = `mission-outcome-badge ${isSuccess ? "success" : "fail"}`;
-    resultDesc.textContent = explanation;
-
-    breakdownList.innerHTML = "";
-    team.forEach(person => {
-        const row = document.createElement("div");
-        row.className = "team-result-row";
-        // Do not reveal if they are anomaly or human!
-        row.innerHTML = `
-            <span>${person.avatar} <strong>${person.name}</strong> (${person.role})</span>
-            <span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Göreve Katıldı</span>
-        `;
-        breakdownList.appendChild(row);
-    });
-
-    resultModal.classList.remove("hidden");
-}
-
-// PROCEED TO NEXT DAY
-function nextDay() {
-    closeModals();
-
-    // Mark sent team as tired for 2 days
-    gameState.selectedTeam.forEach(id => {
-        gameState.tiredMap[id] = FATIGUE_DAYS;
-    });
-
-    // Advance fatigue countdown for everyone
-    Object.keys(gameState.tiredMap).forEach(id => {
-        // If they were NOT in today's sent team, decrease their fatigue by 1 day
-        if (!gameState.selectedTeam.includes(Number(id))) {
-            gameState.tiredMap[id] -= 1;
-            if (gameState.tiredMap[id] <= 0) {
-                delete gameState.tiredMap[id];
-            }
+    missingPeople.forEach(person => {
+        if (person.isAnomaly) {
+            gameState.missionStats.anomaliesMissing = (gameState.missionStats.anomaliesMissing || 0) + 1;
+        } else {
+            gameState.missionStats.humansMissing = (gameState.missionStats.humansMissing || 0) + 1;
         }
+        logEvent(`🌫️ KAYIP: ${person.name} sahada kayıplara karıştı.`, "fail");
     });
 
-    gameState.selectedTeam = [];
+    gameState.lastOutcome = { isSuccess, explanation, team, missingPeople };
+    gameState.stage = STAGE.REPORT;
+    renderAll();
 
-    // Advance day
-    if (gameState.day >= TOTAL_DAYS) {
-        showGameOver();
-        return;
+    // Losing people can tip the balance, and a third failure ends the contract.
+    if (checkCatastrophe()) return;
+
+    showMissionResultModal(isSuccess, explanation, team, missingPeople);
+}
+
+// ==========================================
+// RENDERING
+// ==========================================
+let noticeTimer = null;
+
+function flashNotice(message) {
+    const el = document.getElementById("stage-notice");
+    if (!el) return;
+    el.textContent = message;
+    el.classList.add("visible");
+    if (noticeTimer) clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => el.classList.remove("visible"), 2600);
+}
+
+function renderStatus() {
+    document.getElementById("current-day").textContent = `${gameState.day} / ${TOTAL_DAYS}`;
+
+    const info = STAGE_INFO[gameState.stage];
+    document.getElementById("current-stage").textContent = info ? info.label : "—";
+    document.getElementById("current-time").textContent = info ? info.clock : "—";
+
+    // The allowance box shows whichever budget the current stage actually uses.
+    const allowanceLabel = document.getElementById("allowance-label");
+    const allowanceValue = document.getElementById("allowance-value");
+    const pipsContainer = document.getElementById("allowance-pips");
+    pipsContainer.innerHTML = "";
+
+    let used = 0;
+    let total = 0;
+    if (gameState.stage === STAGE.MEETING) {
+        allowanceLabel.textContent = "TANIŞMA HAKKI";
+        used = gameState.meetsUsed; total = MEETS_PER_DAY;
+    } else if (gameState.stage === STAGE.TESTING) {
+        allowanceLabel.textContent = "TEST HAKKI";
+        used = gameState.testsUsed; total = testsForDay(gameState.day);
+    } else if (gameState.stage === STAGE.EXECUTION) {
+        allowanceLabel.textContent = "İNFAZ HAKKI";
+        used = gameState.executionsUsed; total = EXECUTIONS_PER_DAY;
+    } else if (gameState.stage === STAGE.DISPATCH) {
+        allowanceLabel.textContent = "GÖREV EKİBİ";
+        used = gameState.selectedTeam.length; total = requiredTeamSize();
+    } else {
+        allowanceLabel.textContent = "AŞAMA";
+        used = 0; total = 0;
     }
 
-    gameState.day += 1;
-    gameState.energy = MAX_ENERGY;
-    gameState.timeHour = START_HOUR;
-    // Set daily requirement based on day (Day 1: 1, Days 2-3: 1-3, Days 4-7: 2-3)
-    gameState.dailyRequiredCount = getDailyQuotaForDay(gameState.day);
+    allowanceValue.textContent = total > 0 ? `${used} / ${total}` : "—";
+    for (let i = 0; i < total; i++) {
+        const pip = document.createElement("div");
+        pip.className = `allowance-pip ${i < used ? "spent" : ""}`;
+        pipsContainer.appendChild(pip);
+    }
 
-    logEvent(`--- GÜN ${gameState.day} BAŞLADI --- Enerji ve saat sıfırlandı (09:00). Bugün ${gameState.dailyRequiredCount} kişi gönderilmeli!`, "system");
-    renderAll();
+    document.getElementById("mission-score").textContent =
+        `${gameState.missionStats.success} Başarılı / ${gameState.missionStats.total}`;
+
+    // Failure counter -- three ends the contract.
+    const failEl = document.getElementById("failure-count");
+    const fails = gameState.missionStats.fail;
+    failEl.textContent = `${fails} / ${MAX_MISSION_FAILURES}`;
+    failEl.className = "stat-value " + (fails >= MAX_MISSION_FAILURES - 1 ? "danger" : fails > 0 ? "warn" : "");
+
+    const present = presentPersonnel();
+    const living = present.filter(p => !p.isDead);
+    document.getElementById("met-count").textContent =
+        `Tanışılan: ${living.filter(p => p.isMet).length}/${living.length}`;
+    document.getElementById("tested-count").textContent =
+        `Test Edilen: ${living.filter(p => p.isTested).length}/${living.length}`;
+
+    const lostCount = present.length - living.length;
+    const lostBadge = document.getElementById("lost-count");
+    lostBadge.textContent = `☠️ Kayıp: ${lostCount}`;
+    lostBadge.classList.toggle("has-losses", lostCount > 0);
+
+    document.getElementById("roster-heading").textContent =
+        `Tesis Personeli (${present.length} / ${ROSTER_SIZE})`;
 }
 
-// GAME OVER / VICTORY
-function showGameOver() {
-    const modal = document.getElementById("game-over-modal");
-    const statsElem = document.getElementById("game-over-stats");
-    const verdictElem = document.getElementById("game-over-verdict");
+// A card must carry everything the player has learned, with no clicking.
+// A person stays on the active roster for the remainder of the day they die,
+// so the loss reads in context. They are carried down to the records section
+// the next morning.
+function isInterred(person) {
+    return person.isDead && person.diedOnDay !== undefined && person.diedOnDay < gameState.day;
+}
 
-    const total = gameState.missionStats.total;
-    const success = gameState.missionStats.success;
-    const rate = total > 0 ? Math.round((success / total) * 100) : 0;
+function buildRosterCard(person, stage) {
+    const isDead = person.isDead;
+    const resting = !isDead && isResting(person.id);
+    const isSelected = gameState.selectedTeam.includes(person.id);
+    const isNew = gameState.lastArrivals.includes(person.id);
 
-    statsElem.innerHTML = `
-        Tamamlanan Gün: 7/7<br>
-        Başarılı Görev: ${success} / ${total}<br>
-        Başarı Oranı: %${rate}
+    let actionable = false;
+    if (!isDead) {
+        if (stage === STAGE.MEETING) actionable = !person.isMet && meetsLeft() > 0;
+        else if (stage === STAGE.TESTING) actionable = person.isMet && !person.isTested && !resting && testsLeft() > 0;
+        else if (stage === STAGE.EXECUTION) actionable = person.isMet && executionsLeft() > 0;
+        else if (stage === STAGE.DISPATCH) actionable = person.isMet && !resting;
+    }
+
+    const card = document.createElement("div");
+    card.className = [
+        "person-card",
+        person.isMet ? "is-met" : "",
+        resting ? "is-tired" : "",
+        isSelected ? "selected-team" : "",
+        isDead ? "is-dead" : "",
+        person.isExecuted ? "is-executed" : "",
+        isDead ? "is-departing" : "",
+        actionable ? (stage === STAGE.EXECUTION ? "is-executable" : "is-actionable") : "",
+        isNew && stage === STAGE.ARRIVAL ? "is-arriving" : ""
+    ].filter(Boolean).join(" ");
+    card.dataset.id = person.id;
+
+    const genderClass = person.gender === "Erkek" ? "male" : "female";
+    const avatarDisplay = person.isExecuted ? "⚡" : (isDead ? "☠️" : (person.isMet ? person.avatar : "❓"));
+
+    let readingHtml = "";
+    if (person.isTested && !isDead) {
+        const baseAngle = -55 + (person.reading / 100) * 110;
+        readingHtml = `<div class="reading-badge tested-gauge" title="Ölçüm Kadranını Büyüt">
+            <svg viewBox="0 0 38 22" class="mini-gauge-svg">
+                <path d="M 5 18 A 14 14 0 0 1 33 18" fill="none" stroke="#233144" stroke-width="3"/>
+                <path d="M 5 18 A 14 14 0 0 1 12 7" fill="none" stroke="#2ea043" stroke-width="3"/>
+                <path d="M 12 7 A 14 14 0 0 1 24 7" fill="none" stroke="#d29922" stroke-width="3"/>
+                <path d="M 24 7 A 14 14 0 0 1 33 18" fill="none" stroke="#da3633" stroke-width="3"/>
+                <g style="transform-origin: 19px 18px; transform: rotate(${baseAngle}deg);">
+                    <line x1="19" y1="18" x2="19" y2="4" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
+                </g>
+                <circle cx="19" cy="18" r="2.5" fill="#ff4d4d"/>
+            </svg>
+        </div>`;
+    } else if (!isDead) {
+        readingHtml = `<div class="reading-badge untested" title="Test Edilmedi">—</div>`;
+    }
+
+    let dialogueHtml = "";
+    if (person.isMet && person.dialogue) {
+        dialogueHtml = `<div class="person-dialogue" title="${person.dialogue}">"${person.dialogue}"</div>`;
+    }
+
+    let tagsHtml = "";
+    if (person.isExecuted) {
+        tagsHtml += person.isAnomaly
+            ? `<span class="tag tag-verified-anomaly">⚡ ANOMALİYDİ</span>`
+            : `<span class="tag tag-verified-human">⚡ İNSANDI</span>`;
+    } else if (person.isMissing || isDead) {
+        tagsHtml += `<span class="tag tag-missing">🌫️ Kayıplara Karıştı</span>`;
+    } else if (!person.isMet) {
+        tagsHtml += `<span class="tag tag-not-met">Bilinmiyor</span>`;
+    } else {
+        tagsHtml += `<span class="tag tag-met">Tanışıldı</span>`;
+    }
+    if (resting) tagsHtml += `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
+    if (isSelected) tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
+    if (isNew) tagsHtml += `<span class="tag tag-new">🆕 Yeni</span>`;
+
+    card.innerHTML = `
+        ${readingHtml}
+        <div class="arrival-chip">G${person.arrivalDay}</div>
+        <div class="avatar-circle ${genderClass}">${avatarDisplay}</div>
+        <div class="person-name">${person.name}</div>
+        <div class="person-role">${person.isMet ? person.role : "???"}</div>
+        ${dialogueHtml}
+        <div class="card-status-tags">${tagsHtml}</div>
     `;
 
-    if (success >= 5) {
-        verdictElem.innerHTML = `<strong>Tesis Güvende!</strong> Doğru seçimlerle tesisi kurtardın.`;
-    } else if (success >= 3) {
-        verdictElem.innerHTML = `<strong>Kritik Hayatta Kalma!</strong> Tesis ağır hasar aldı fakat ayakta kaldı.`;
+    const gaugeEl = card.querySelector(".tested-gauge");
+    if (gaugeEl) {
+        gaugeEl.addEventListener("click", (e) => {
+            e.stopPropagation();
+            showTestReveal(person);
+        });
+    }
+
+    card.addEventListener("click", () => handleCardClick(person.id));
+    return card;
+}
+
+// Compact record card -- these are history, not choices.
+function buildRecordCard(person, arrivingIndex) {
+    const card = document.createElement("div");
+    const isArriving = arrivingIndex >= 0;
+
+    card.className = [
+        "record-card",
+        person.isExecuted ? "record-executed" : (person.isMissing ? "record-missing" : "record-lost"),
+        person.isAnomaly ? "record-anomaly" : "record-human",
+        isArriving ? "record-arriving" : ""
+    ].filter(Boolean).join(" ");
+    card.dataset.id = person.id;
+
+    if (isArriving) {
+        // Stagger so multiple losses read one at a time.
+        card.style.animationDelay = `${arrivingIndex * 260}ms`;
+    }
+
+    // Everything down here is confirmed
+    const verdict = person.isAnomaly
+        ? `<span class="record-verdict verdict-was-anomaly">ANOMALİ</span>`
+        : `<span class="record-verdict verdict-was-human">İNSAN</span>`;
+
+    const cause = person.isExecuted
+        ? `<span class="record-cause">⚡ İnfaz</span>`
+        : `<span class="record-cause">🌫️ Kayıp</span>`;
+
+    const avatar = person.isExecuted ? "⚡" : "🌫️";
+
+    card.innerHTML = `
+        <div class="record-avatar">${avatar}</div>
+        <div class="record-body">
+            <div class="record-name">${person.name}</div>
+            <div class="record-meta">${cause}<span class="record-day">G${person.diedOnDay}</span></div>
+        </div>
+        ${verdict}
+    `;
+    return card;
+}
+
+function renderPersonnel() {
+    const grid = document.getElementById("personnel-grid");
+    const records = document.getElementById("records-grid");
+    const recordsSection = document.getElementById("records-section");
+    grid.innerHTML = "";
+    records.innerHTML = "";
+
+    const stage = gameState.stage;
+    const present = presentPersonnel();
+
+    const active = present.filter(p => !isInterred(p));
+    const interred = present.filter(isInterred);
+
+    active.forEach(person => grid.appendChild(buildRosterCard(person, stage)));
+
+    if (interred.length === 0) {
+        recordsSection.classList.add("hidden");
     } else {
-        verdictElem.innerHTML = `<strong>Tesis Düştü!</strong> Operasyonlar başarısız oldu.`;
+        recordsSection.classList.remove("hidden");
+
+        // Newest losses first, so the fresh ones are easy to find.
+        const ordered = [...interred].sort((a, b) => (b.diedOnDay || 0) - (a.diedOnDay || 0));
+        let arrivingSeen = 0;
+        ordered.forEach(person => {
+            const isArriving = gameState.newlyInterred.includes(person.id);
+            const arrivingIndex = isArriving ? arrivingSeen++ : -1;
+            records.appendChild(buildRecordCard(person, arrivingIndex));
+        });
+
+        // Summary chips at the top of the records drawer.
+        const summary = document.getElementById("records-summary");
+        const anomaliesLost = interred.filter(p => p.isAnomaly).length;
+        const humansLost = interred.length - anomaliesLost;
+        summary.innerHTML = `
+            <span class="records-stat anomaly">⚡ ${anomaliesLost} Anomali Çıkarıldı</span>
+            <span class="records-stat human">👤 ${humansLost} İnsan Kaybedildi</span>
+        `;
+    }
+}
+
+function renderStagePanel() {
+    const stage = gameState.stage;
+
+    // Toggle panels
+    const pArrival = document.getElementById("panel-arrival");
+    if (pArrival) pArrival.classList.toggle("hidden", stage !== STAGE.ARRIVAL);
+    const pMeeting = document.getElementById("panel-meeting");
+    if (pMeeting) pMeeting.classList.toggle("hidden", stage !== STAGE.MEETING);
+    const pTesting = document.getElementById("panel-testing");
+    if (pTesting) pTesting.classList.toggle("hidden", stage !== STAGE.TESTING);
+    const pExecution = document.getElementById("panel-execution");
+    if (pExecution) pExecution.classList.toggle("hidden", stage !== STAGE.EXECUTION);
+    const pDispatch = document.getElementById("panel-dispatch");
+    if (pDispatch) pDispatch.classList.toggle("hidden", stage !== STAGE.DISPATCH);
+    const pReport = document.getElementById("panel-report");
+    if (pReport) pReport.classList.toggle("hidden", stage !== STAGE.REPORT);
+
+    // Advance button
+    const advanceBtn = document.getElementById("btn-advance-stage");
+    const nextInfo = STAGE_INFO[stage];
+    if (nextInfo && nextInfo.next) {
+        advanceBtn.classList.remove("hidden");
+        advanceBtn.textContent = nextInfo.next;
+    } else {
+        advanceBtn.classList.add("hidden");
+    }
+
+    // ---- Arrival ----
+    if (stage === STAGE.ARRIVAL) {
+        const arrivals = gameState.manifest.filter(p => p.arrivalDay === gameState.day);
+        document.getElementById("arrival-day").textContent = gameState.day;
+        document.getElementById("arrival-count").textContent = arrivals.length;
+
+        const list = document.getElementById("arrival-list");
+        list.innerHTML = "";
+        arrivals.forEach(person => {
+            const row = document.createElement("div");
+            row.className = "arrival-row";
+            row.innerHTML = `<span class="arrival-avatar">❓</span><span><strong>${person.name}</strong> — Görev ve kimlik henüz bilinmiyor</span>`;
+            list.appendChild(row);
+        });
+    }
+
+    // ---- Meeting ----
+    if (stage === STAGE.MEETING) {
+        document.getElementById("meeting-remaining").textContent = meetsLeft();
+        const unmet = presentPersonnel().filter(p => !p.isMet && !p.isDead).length;
+        document.getElementById("meeting-unmet").textContent = unmet;
+    }
+
+    // ---- Testing ----
+    if (stage === STAGE.TESTING) {
+        document.getElementById("testing-remaining").textContent = testsLeft();
+        const testable = presentPersonnel().filter(p => p.isMet && !p.isTested && !p.isDead && !isResting(p.id)).length;
+        document.getElementById("testing-available").textContent = testable;
+    }
+
+    // ---- Execution ----
+    if (stage === STAGE.EXECUTION) {
+        document.getElementById("execution-remaining").textContent = executionsLeft();
+        const eligible = presentPersonnel().filter(p => p.isMet && !p.isDead).length;
+        document.getElementById("execution-eligible").textContent = eligible;
+    }
+
+    // ---- Dispatch ----
+    if (stage === STAGE.DISPATCH) {
+        const needed = requiredTeamSize();
+        document.getElementById("dispatch-required").textContent = needed;
+        document.getElementById("dispatch-selected").textContent = gameState.selectedTeam.length;
+
+        const container = document.getElementById("selected-team-list");
+        container.innerHTML = "";
+        if (gameState.selectedTeam.length === 0) {
+            container.innerHTML = `<span class="empty-text">Karttan tıklayarak ekip seç.</span>`;
+        } else {
+            gameState.selectedTeam.forEach(id => {
+                const person = findPerson(id);
+                if (!person) return;
+                const pill = document.createElement("div");
+                pill.className = "team-member-pill";
+                const readingText = person.isTested ? "Test Edildi ⚡" : "Test Edilmedi";
+                pill.innerHTML = `<span>${person.avatar} ${person.name}</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
+                const removeBtn = pill.querySelector(".btn-remove-pill");
+                if (removeBtn) {
+                    removeBtn.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        toggleTeamMember(person.id);
+                    });
+                }
+                container.appendChild(pill);
+            });
+        }
+
+        const dispatchBtn = document.getElementById("btn-dispatch");
+        const warnBox = document.getElementById("dispatch-understrength");
+        const understrength = isUnderStrength();
+
+        warnBox.classList.toggle("hidden", !understrength);
+
+        if (understrength) {
+            // Never let a benched roster strand the player with no legal move.
+            dispatchBtn.disabled = false;
+            dispatchBtn.textContent = "PERSONEL YETERSİZ — GÜNÜ KAYBET";
+            dispatchBtn.classList.add("btn-understrength");
+        } else {
+            dispatchBtn.classList.remove("btn-understrength");
+            dispatchBtn.disabled = gameState.selectedTeam.length !== needed;
+            dispatchBtn.textContent = gameState.selectedTeam.length === needed
+                ? "GÖREVE GÖNDER"
+                : `${needed - gameState.selectedTeam.length} KİŞİ DAHA SEÇ`;
+        }
+    }
+
+    // ---- Report ----
+    if (stage === STAGE.REPORT) {
+        const o = gameState.lastOutcome;
+        const badge = document.getElementById("report-badge");
+        const desc = document.getElementById("report-desc");
+        if (o) {
+            badge.textContent = o.isSuccess ? "GÖREV BAŞARILI ✅" : "GÖREV BAŞARISIZ ❌";
+            badge.className = `mission-outcome-badge ${o.isSuccess ? "success" : "fail"}`;
+            desc.textContent = o.explanation;
+        }
+        document.getElementById("btn-next-day-inline").textContent =
+            gameState.day >= TOTAL_DAYS ? "KAMPANYAYI BİTİR" : "SONRAKİ GÜNE GEÇ ➡️";
+    }
+}
+
+function renderAll() {
+    renderStatus();
+    renderPersonnel();
+    renderStagePanel();
+}
+
+// ==========================================
+// TEST REVEAL -- the voltmeter moment
+// ==========================================
+function renderVoltmeterHtml(reading) {
+    const baseAngle = -55 + (reading / 100) * 110;
+
+    return `
+        <div class="voltmeter-meter-box">
+            <svg viewBox="0 0 220 100" class="voltmeter-svg">
+                <rect x="5" y="5" width="210" height="90" rx="6" fill="#0d141f" stroke="#273549" stroke-width="1.5"/>
+                <path d="M 38 75 A 80 80 0 0 1 82 25" fill="none" stroke="#2ea043" stroke-width="3.5" opacity="0.85"/>
+                <path d="M 83 25 A 80 80 0 0 1 138 25" fill="none" stroke="#d29922" stroke-width="3.5" opacity="0.85"/>
+                <path d="M 139 25 A 80 80 0 0 1 182 75" fill="none" stroke="#da3633" stroke-width="3.5" opacity="0.85"/>
+                <text x="34" y="86" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">0</text>
+                <text x="66" y="44" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">25</text>
+                <text x="110" y="28" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">50</text>
+                <text x="154" y="44" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">75</text>
+                <text x="186" y="86" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">100</text>
+                <text x="110" y="58" fill="#57657a" font-size="7" font-family="monospace" text-anchor="middle" letter-spacing="1">NÖRO-HÜCRESEL DNA (mV)</text>
+                <g class="voltmeter-needle-group" style="--needle-angle: ${baseAngle}deg;">
+                    <polygon points="108,85 110,16 112,85" fill="#ff4d4d"/>
+                    <circle cx="110" cy="85" r="6" fill="#1b2434" stroke="#3b4e6b" stroke-width="2"/>
+                    <circle cx="110" cy="85" r="2" fill="#ff4d4d"/>
+                </g>
+            </svg>
+            <div class="voltmeter-footer">
+                <span class="voltmeter-hint">⚡ Analog Kadran Ölçümü</span>
+            </div>
+        </div>
+    `;
+}
+
+function showTestReveal(person) {
+    document.getElementById("reveal-name").textContent = person.name;
+    document.getElementById("reveal-role").textContent = person.role;
+    document.getElementById("reveal-avatar").textContent = person.avatar;
+    const dialogueHtml = (person.isMet && person.dialogue)
+        ? `<div class="reveal-dialogue">💬 "${person.dialogue}"</div>`
+        : "";
+    document.getElementById("reveal-body").innerHTML = dialogueHtml + renderVoltmeterHtml(person.reading);
+    document.getElementById("test-reveal-modal").classList.remove("hidden");
+}
+
+function showExecutionReveal(person) {
+    const modal = document.getElementById("execution-reveal-modal");
+    const verdict = document.getElementById("execution-verdict");
+    const body = document.getElementById("execution-reveal-body");
+
+    document.getElementById("execution-reveal-name").textContent = person.name;
+    document.getElementById("execution-reveal-role").textContent = person.role;
+
+    if (person.isAnomaly) {
+        verdict.textContent = "ANOMALİ DOĞRULANDI";
+        verdict.className = "execution-verdict verdict-anomaly";
+        body.innerHTML = `
+            <p>Akım verildiği anda doku bütünlüğü bozuldu. Deri altındaki yapı insan biyolojisine ait değildi.</p>
+            <p class="execution-consequence good">Tesisteki anomali sayısı bir azaldı.</p>
+        `;
+    } else {
+        verdict.textContent = "İNSANDI";
+        verdict.className = "execution-verdict verdict-human";
+        body.innerHTML = `
+            <p>Hiçbir anormallik yok. ${person.name} tamamen insandı ve tesise sadakatle hizmet ediyordu.</p>
+            <p class="execution-consequence bad">Bir insan kaybettin. Anomali dengesi senin aleyhine kaydı.</p>
+        `;
     }
 
     modal.classList.remove("hidden");
 }
 
+function showMissionResultModal(isSuccess, explanation, team, missingPeople = []) {
+    document.getElementById("result-title").textContent = `GÜN ${gameState.day} GÖREV RAPORU`;
+    const badge = document.getElementById("result-badge");
+    badge.textContent = isSuccess ? "GÖREV BAŞARILI ✅" : "GÖREV BAŞARISIZ ❌";
+    badge.className = `mission-outcome-badge ${isSuccess ? "success" : "fail"}`;
+    document.getElementById("result-desc").textContent = explanation;
+
+    const breakdownList = document.getElementById("result-team-breakdown");
+    breakdownList.innerHTML = "";
+    team.forEach(person => {
+        const isMissing = missingPeople && missingPeople.some(m => m.id === person.id);
+        const row = document.createElement("div");
+        row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
+        const statusBadge = isMissing
+            ? `<span class="badge badge-missing">🌫️ Kayıplara Karıştı</span>`
+            : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü</span>`;
+        row.innerHTML = `<span>${isMissing ? "🌫️" : person.avatar} <strong>${person.name}</strong> (${person.role})</span>${statusBadge}`;
+        breakdownList.appendChild(row);
+    });
+
+    document.getElementById("mission-result-modal").classList.remove("hidden");
+}
+
+function closeModals() {
+    const testModal = document.getElementById("test-reveal-modal");
+    if (testModal) testModal.classList.add("hidden");
+    const resultModal = document.getElementById("mission-result-modal");
+    if (resultModal) resultModal.classList.add("hidden");
+    const execModal = document.getElementById("execution-reveal-modal");
+    if (execModal) execModal.classList.add("hidden");
+}
+
+function showGameOver(reason = "complete") {
+    gameState.endReason = reason;
+
+    const titleElem = document.getElementById("game-over-title");
+    const statsElem = document.getElementById("game-over-stats");
+    const verdictElem = document.getElementById("game-over-verdict");
+    const card = document.querySelector(".game-over-card");
+
+    const total = gameState.missionStats.total;
+    const success = gameState.missionStats.success;
+    const rate = total > 0 ? Math.round((success / total) * 100) : 0;
+    const counts = livingCounts();
+    const purged = gameState.missionStats.anomaliesPurged || 0;
+    const wrongful = gameState.missionStats.humansExecuted || 0;
+    const humansMissing = gameState.missionStats.humansMissing || 0;
+    const anomaliesMissing = gameState.missionStats.anomaliesMissing || 0;
+
+    statsElem.innerHTML = `
+        Ulaşılan Gün: ${gameState.day} / ${TOTAL_DAYS}<br>
+        Başarılı Görev: ${success} / ${total} (%${rate})<br>
+        Başarısız Görev: ${gameState.missionStats.fail} / ${MAX_MISSION_FAILURES}<br>
+        Kayıplara Karışan İnsan: ${humansMissing}<br>
+        Kayıplara Karışan Anomali: ${anomaliesMissing}<br>
+        İnfaz Edilen Anomali: ${purged}<br>
+        İnfaz Edilen İnsan: ${wrongful}<br>
+        Hayatta Kalan: ${counts.humans} insan / ${counts.anomalies} anomali
+    `;
+
+    card.classList.remove("ending-riot", "ending-fired", "ending-win", "ending-loss");
+
+    if (reason === "riot") {
+        titleElem.textContent = "⚡ ANOMALİ AYAKLANMASI";
+        card.classList.add("ending-riot");
+        verdictElem.innerHTML = `<strong>Tesis düştü.</strong> Anomaliler insanları sayıca geçti ve
+            direnecek kimse kalmadı. Kapılar içeriden mühürlendi.`;
+    } else if (reason === "fired") {
+        titleElem.textContent = "🏛️ GÖREVDEN ALINDIN";
+        card.classList.add("ending-fired");
+        verdictElem.innerHTML = `<strong>${MAX_MISSION_FAILURES} başarısız görev.</strong> Devlet denetimi
+            tesise el koydu ve yetkin iptal edildi. Yerine başkası atandı.`;
+    } else if (success >= 5) {
+        titleElem.textContent = "TESİS GÜVENDE";
+        card.classList.add("ending-win");
+        verdictElem.innerHTML = `<strong>Tesis Güvende!</strong> Doğru seçimlerle tesisi kurtardın.`;
+    } else if (success >= 3) {
+        titleElem.textContent = "KRİTİK HAYATTA KALMA";
+        card.classList.add("ending-loss");
+        verdictElem.innerHTML = `<strong>Kritik Hayatta Kalma!</strong> Tesis ağır hasar aldı fakat ayakta kaldı.`;
+    } else {
+        titleElem.textContent = "TESİS DÜŞTÜ";
+        card.classList.add("ending-loss");
+        verdictElem.innerHTML = `<strong>Tesis Düştü!</strong> Operasyonlar başarısız oldu.`;
+    }
+
+    document.getElementById("game-over-modal").classList.remove("hidden");
+}
+
 // ==========================================
 // SECURITY ACCESS AUTHENTICATION GATE
 // ==========================================
-// SHA-256 hash representation of access key ('muhusena')
 const FACILITY_PASS_HASH = "333bc56bf06b9f599dbe678e5be83a9f58e90e07380319e26799af383c5068c3";
 
 async function computeSha256(text) {
@@ -1117,8 +1608,7 @@ function setupAuthGate() {
         const enteredKey = authInput.value.trim();
         if (!enteredKey) return;
 
-        const isValid = await verifyAccessKey(enteredKey);
-        if (isValid) {
+        if (await verifyAccessKey(enteredKey)) {
             sessionStorage.setItem("thefacility_unlocked", "1");
             authGate.classList.add("authenticated");
             initGame();
@@ -1134,11 +1624,7 @@ function setupAuthGate() {
         }
     }
 
-    authForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        handleUnlock();
-    });
-
+    authForm.addEventListener("submit", (e) => { e.preventDefault(); handleUnlock(); });
     if (authInput) {
         authInput.addEventListener("input", () => {
             if (authError) authError.classList.add("hidden");
@@ -1146,347 +1632,240 @@ function setupAuthGate() {
     }
 }
 
+// ==========================================
 // EVENT LISTENERS
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // Setup security authentication gate
     setupAuthGate();
 
-    // Close modals
-    document.getElementById("modal-close").addEventListener("click", closeModals);
+    document.getElementById("btn-begin-campaign").addEventListener("click", beginCampaign);
+    document.getElementById("btn-advance-stage").addEventListener("click", advanceStage);
+    document.getElementById("btn-dispatch").addEventListener("click", dispatchMission);
 
-    // Modal meet button (-4 energy)
-    document.getElementById("btn-modal-meet").addEventListener("click", () => {
-        if (gameState.activeModalPersonId) {
-            meetPerson(gameState.activeModalPersonId);
-        }
+    const btnRevealClose = document.getElementById("btn-reveal-close");
+    if (btnRevealClose) btnRevealClose.addEventListener("click", closeModals);
+    const btnExecClose = document.getElementById("btn-execution-close");
+    if (btnExecClose) btnExecClose.addEventListener("click", closeModals);
+    const btnDay3Close = document.getElementById("btn-day3-briefing-close");
+    if (btnDay3Close) {
+        btnDay3Close.addEventListener("click", () => {
+            const modal = document.getElementById("day3-briefing-modal");
+            if (modal) modal.classList.add("hidden");
+        });
+    }
+    const btnResultContinue = document.getElementById("btn-result-continue");
+    if (btnResultContinue) btnResultContinue.addEventListener("click", closeModals);
+    document.getElementById("btn-next-day-inline").addEventListener("click", () => {
+        closeModals();
+        advanceStage();
     });
 
-    // Indicator 1 Scan button (-2 energy)
-    const scan1Btn = document.getElementById("btn-scan-1");
-    if (scan1Btn) {
-        scan1Btn.addEventListener("click", () => {
-            if (gameState.activeModalPersonId) {
-                runIndicatorScan(gameState.activeModalPersonId, 1);
-            }
-        });
-    }
-
-    // Indicator 2 Scan button (-2 energy)
-    const scan2Btn = document.getElementById("btn-scan-2");
-    if (scan2Btn) {
-        scan2Btn.addEventListener("click", () => {
-            if (gameState.activeModalPersonId) {
-                runIndicatorScan(gameState.activeModalPersonId, 2);
-            }
-        });
-    }
-
-    // Modal toggle team buttons
-    const toggleBtnMet = document.getElementById("btn-toggle-team");
-    if (toggleBtnMet) {
-        toggleBtnMet.addEventListener("click", () => {
-            if (gameState.activeModalPersonId) {
-                toggleTeamMember(gameState.activeModalPersonId);
-            }
-        });
-    }
-
-    const toggleBtnNotMet = document.getElementById("btn-modal-toggle-not-met");
-    if (toggleBtnNotMet) {
-        toggleBtnNotMet.addEventListener("click", () => {
-            if (gameState.activeModalPersonId) {
-                toggleTeamMember(gameState.activeModalPersonId);
-            }
-        });
-    }
-
-    // Dispatch button
-    document.getElementById("btn-dispatch").addEventListener("click", () => {
-        dispatchMission();
-    });
-
-    // Next day button
-    document.getElementById("btn-next-day").addEventListener("click", () => {
-        nextDay();
-    });
-
-    // Restart button
     document.getElementById("btn-restart").addEventListener("click", () => {
+        document.getElementById("game-over-modal").classList.add("hidden");
         closeModals();
         initGame();
     });
 
-    // BOT BENCHMARK MODAL CONTROLS
-    const btnOpenBotModal = document.getElementById("btn-open-bot-modal");
-    if (btnOpenBotModal) {
-        btnOpenBotModal.addEventListener("click", () => {
-            document.getElementById("bot-modal").classList.remove("hidden");
-        });
-    }
-
-    const btnBotModalClose = document.getElementById("bot-modal-close");
-    if (btnBotModalClose) {
-        btnBotModalClose.addEventListener("click", () => {
-            document.getElementById("bot-modal").classList.add("hidden");
-        });
-    }
-
-    const btnBotModalCloseAction = document.getElementById("btn-bot-modal-close-action");
-    if (btnBotModalCloseAction) {
-        btnBotModalCloseAction.addEventListener("click", () => {
-            document.getElementById("bot-modal").classList.add("hidden");
-        });
-    }
-
-    const btnRunBenchmark = document.getElementById("btn-run-benchmark");
-    if (btnRunBenchmark) {
-        btnRunBenchmark.addEventListener("click", () => {
-            const count = parseInt(document.getElementById("benchmark-run-count").value, 10) || 5000;
-            runFullBenchmark(count);
-        });
-    }
-
-    const btnLiveDemo = document.getElementById("btn-live-bot-demo");
-    if (btnLiveDemo) {
-        btnLiveDemo.addEventListener("click", () => {
-            document.getElementById("bot-modal").classList.add("hidden");
-            runLiveAutoPlay("optimal_rotator");
-        });
-    }
+    // Benchmark modal
+    document.getElementById("btn-open-bot-modal").addEventListener("click", () => {
+        document.getElementById("bot-modal").classList.remove("hidden");
+    });
+    document.getElementById("bot-modal-close").addEventListener("click", () => {
+        document.getElementById("bot-modal").classList.add("hidden");
+    });
+    document.getElementById("btn-bot-modal-close-action").addEventListener("click", () => {
+        document.getElementById("bot-modal").classList.add("hidden");
+    });
+    document.getElementById("btn-run-benchmark").addEventListener("click", () => {
+        const count = parseInt(document.getElementById("benchmark-run-count").value, 10) || 5000;
+        runFullBenchmark(count);
+    });
 });
 
 // ==========================================
-// REAL 5,000-RUN BOT BENCHMARK ENGINE
+// BOT BENCHMARK -- rebuilt for the staged day
 // ==========================================
-
-const SUSPICIOUS_KEYWORDS = [
-    "frekans", "uyku", "silikon", "radyasyon", "algoritma", "manyetik",
-    "nabız", "moleküler", "ter bez", "sahte", "simülasyon", "kusursuz",
-    "organik", "karbon", "döngü", "fısıltı", "sayı dizisi", "dönüşüm", "kodlar"
-];
-
 const BOT_STRATEGIES = [
     {
         id: "random",
         name: "Rastgele Seçici (Baseline)",
         tag: "Şans Odaklı",
-        desc: "Gerektiğinde tanışır (-4), test yapmadan rastgele personelleri yollar."
+        desc: "Rastgele tanışır, test yapmaz, sandalyeyi hiç kullanmaz, rastgele yollar."
     },
     {
-        id: "detective",
-        name: "Dedektif Bot (Çift Belirteç Taraması)",
-        tag: "Derin Teşhis",
-        desc: "Personelleri tanışıp 1. ve 2. belirteç testlerine sokar (-2'şer enerji), en düşük anomali risklileri seçer."
+        id: "tester",
+        name: "Test Uzmanı",
+        tag: "Ölçüm Odaklı",
+        desc: "Test hakkını sonuna kadar kullanır, ölçümü 70+ olanları infaz eder, en düşüğü sahaya sürer."
     },
     {
-        id: "dialogue_scout",
-        name: "Diyalog Ajanı (NLP İpucu)",
-        tag: "İpucu Analizi",
-        desc: "Tüm 16 enerjisini tanışmaya harcar (günde 4 kişi), sözlerdeki şüpheli kelimeleri eler."
+        id: "safe_first",
+        name: "Güvenli Çekirdek",
+        tag: "Risk Kaçınan",
+        desc: "Kesin insanları çekirdek yapar; sadece kanıtlanmış anomalileri (70+) infaz eder."
     },
     {
-        id: "optimal_rotator",
-        name: "Hibrit / Optimal Risk Yöneticisi",
+        id: "counter",
+        name: "Sayıcı / Eleme Uzmanı",
         tag: "Gelişmiş Algoritma",
-        desc: "Çift belirteçle düşük riskli insan havuzu kurar, 2 günlük yorgunluğu ve risk yüzdelerini matematiksel optimize eder."
+        desc: "Ayaklanma baskısını izler; baskı yükselince şüphelileri (50+) de infaz etmeyi göze alır."
     }
 ];
 
-function simulateSingleGame(botType) {
-    // 1. Generate personnel with exact fixed and random anomaly assignments
-    const personnel = generatePersonnelState();
+// What a reading is worth, given the fixed pool. A player learns these.
+function bandRisk(reading) {
+    if (reading >= 70) return 1.00;      // 4 anomalies, 0 humans
+    if (reading >= 50) return 0.50;      // 3 anomalies, 3 humans
+    if (reading >= 30) return 1 / 3;     // 2 anomalies, 4 humans
+    return 0.00;                         // 0 anomalies, 5 humans
+}
 
-    let tiredMap = {};
+const BASE_ANOMALY_RATE = (4 + 8 * 0.3) / 14;
+
+// Legitimate elimination: subtract the anomaly mass already accounted for by
+// tested people from the pool's known total, and spread the rest evenly.
+function untestedRisk(manifest) {
+    const tested = manifest.filter(p => p.isTested);
+    const untestedCount = manifest.length - tested.length;
+    if (untestedCount <= 0) return BASE_ANOMALY_RATE;
+    const totalAnomalies = manifest.filter(p => p.isAnomaly).length;
+    const accounted = tested.reduce((sum, p) => sum + bandRisk(p.reading), 0);
+    const remaining = totalAnomalies - accounted;
+    return Math.max(0, Math.min(1, remaining / untestedCount));
+}
+
+function estimatedRisk(person, manifest) {
+    return person.isTested ? bandRisk(person.reading) : untestedRisk(manifest);
+}
+
+function simulateSingleGame(botType) {
+    const manifest = generateManifest();
+    const tiredMap = {};
     let successfulDays = 0;
-    let anomaliesSentCount = 0;
-    let totalMissionsSent = 0;
+    let failures = 0;
+    let anomaliesSent = 0;
+    let deaths = 0;
+    let purged = 0;
+    let wrongfulExecutions = 0;
+    let endReason = "complete";
+    let daysReached = 0;
+
+    const rest = (p) => (tiredMap[p.id] || 0) > 0;
+    const livingOn = (day) => manifest.filter(p => p.arrivalDay <= day && !p.isDead);
+
+    const riotOn = (day) => {
+        if (day < RIOT_START_DAY) return false;
+        const living = livingOn(day);
+        const a = living.filter(p => p.isAnomaly).length;
+        return a > living.length - a;
+    };
+
+    const gapOn = (day) => {
+        const living = livingOn(day);
+        const a = living.filter(p => p.isAnomaly).length;
+        return (living.length - a) - a;
+    };
 
     for (let day = 1; day <= TOTAL_DAYS; day++) {
-        let energy = MAX_ENERGY; // 16 Energy
-        const dailyQuota = getDailyQuotaForDay(day);
+        daysReached = day;
 
-        let selectedTeamIds = [];
+        // Arrivals can themselves tip the balance.
+        if (riotOn(day)) { endReason = "riot"; break; }
 
-        // 1. RANDOM BOT
-        if (botType === "random") {
-            let metRested = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-            while (metRested.length < dailyQuota && energy >= MEET_ENERGY) {
-                const unmet = personnel.find(p => !p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (unmet) {
-                    unmet.isMet = true;
-                    energy -= MEET_ENERGY;
-                    metRested = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                } else {
-                    break;
-                }
+        const present = manifest.filter(p => p.arrivalDay <= day && !p.isDead);
+
+        // ---- MEETING ----
+        let unmet = present.filter(p => !p.isMet);
+        unmet = botType === "random" ? shuffle(unmet) : unmet.sort((a, b) => a.arrivalDay - b.arrivalDay);
+        unmet.slice(0, MEETS_PER_DAY).forEach(p => { p.isMet = true; });
+
+        // ---- TESTING ----
+        if (botType !== "random") {
+            let testable = present.filter(p => p.isMet && !p.isTested && !rest(p));
+            testable = (botType === "tester") ? shuffle(testable) : testable.sort((a, b) => a.arrivalDay - b.arrivalDay);
+            testable.slice(0, testsForDay(day)).forEach(p => { p.isTested = true; });
+        }
+
+        // ---- EXECUTION (day 3+) ----
+        if (day >= EXECUTION_START_DAY && botType !== "random") {
+            const candidates = manifest.filter(p => p.arrivalDay <= day && !p.isDead && p.isMet && p.isTested);
+            let target = null;
+
+            // Everyone acts on a proven anomaly.
+            const proven = candidates.filter(p => p.reading >= 70).sort((a, b) => b.reading - a.reading);
+            if (proven.length) {
+                target = proven[0];
+            } else if (botType === "counter" && gapOn(day) <= 2) {
+                // Under pressure, gamble on a coin-flip suspect.
+                const suspects = candidates.filter(p => p.reading >= 50).sort((a, b) => b.reading - a.reading);
+                if (suspects.length) target = suspects[0];
             }
 
-            if (metRested.length >= dailyQuota) {
-                const shuffled = [...metRested].sort(() => Math.random() - 0.5);
-                selectedTeamIds = shuffled.slice(0, dailyQuota).map(p => p.id);
+            if (target) {
+                target.isExecuted = true;
+                target.isDead = true;
+                if (target.isAnomaly) purged++; else wrongfulExecutions++;
+                if (riotOn(day)) { endReason = "riot"; break; }
             }
         }
-        // 2. DETECTIVE BOT (Meet -4, Scan 1 & Scan 2 -2 each)
-        else if (botType === "detective") {
-            // First ensure we have at least dailyQuota met & rested people
-            let metRested = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-            while (metRested.length < dailyQuota + 1 && energy >= MEET_ENERGY) {
-                const unmet = personnel.find(p => !p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (unmet) {
-                    unmet.isMet = true;
-                    energy -= MEET_ENERGY;
-                    metRested = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                } else {
-                    break;
-                }
-            }
 
-            // Run Indicator 1 & Indicator 2 scans with remaining energy (-2 each)
-            while (energy >= SCAN_ENERGY) {
-                const unscanned1 = personnel.find(p => p.isMet && !p.scan1 && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (unscanned1) {
-                    unscanned1.scan1 = calculateIndicatorProbability(unscanned1.isAnomaly, 1);
-                    energy -= SCAN_ENERGY;
-                    continue;
-                }
-                const unscanned2 = personnel.find(p => p.isMet && !p.scan2 && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (unscanned2) {
-                    unscanned2.scan2 = calculateIndicatorProbability(unscanned2.isAnomaly, 2);
-                    energy -= SCAN_ENERGY;
-                    continue;
-                }
-                break;
-            }
+        // ---- DISPATCH ----
+        const deployable = manifest.filter(p => p.arrivalDay <= day && !p.isDead && p.isMet && !rest(p));
+        const teamSize = Math.max(1, Math.min(dispatchSizeForDay(day), Math.max(1, deployable.length)));
 
-            // Sort met rested candidates by lowest anomaly probability
-            const candidates = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-            candidates.forEach(p => {
-                const risk = getPersonCombinedRisk(p);
-                p._sortRisk = risk ? risk.prob : 50; // unscanned gets default 50%
-            });
-
-            candidates.sort((a, b) => a._sortRisk - b._sortRisk);
-            if (candidates.length >= dailyQuota) {
-                selectedTeamIds = candidates.slice(0, dailyQuota).map(p => p.id);
-            }
-        }
-        // 3. DIALOGUE SCOUT BOT (Spends up to 16 energy on meeting 4 people)
-        else if (botType === "dialogue_scout") {
-            while (energy >= MEET_ENERGY) {
-                const unmet = personnel.find(p => !p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (unmet) {
-                    unmet.isMet = true;
-                    energy -= MEET_ENERGY;
-                } else {
-                    break;
-                }
-            }
-
-            // Score ONLY met and rested personnel
-            const metAvailable = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-            metAvailable.forEach(p => {
-                const line = getPersonDailyDialogue(p, day).toLowerCase();
-                let matchCount = 0;
-                SUSPICIOUS_KEYWORDS.forEach(kw => {
-                    if (line.includes(kw)) matchCount++;
+        let team = [];
+        if (deployable.length >= teamSize) {
+            let ranked;
+            if (botType === "random") {
+                ranked = shuffle(deployable);
+            } else if (botType === "tester") {
+                ranked = [...deployable].sort((a, b) =>
+                    (a.isTested ? a.reading : 50) - (b.isTested ? b.reading : 50));
+            } else if (botType === "safe_first") {
+                ranked = [...deployable].sort((a, b) => {
+                    const ra = a.isTested ? bandRisk(a.reading) : BASE_ANOMALY_RATE;
+                    const rb = b.isTested ? bandRisk(b.reading) : BASE_ANOMALY_RATE;
+                    return ra - rb;
                 });
-                p._suspicion = matchCount;
-            });
-
-            metAvailable.sort((a, b) => a._suspicion - b._suspicion);
-            if (metAvailable.length >= dailyQuota) {
-                selectedTeamIds = metAvailable.slice(0, dailyQuota).map(p => p.id);
+            } else {
+                ranked = [...deployable].sort((a, b) =>
+                    estimatedRisk(a, manifest) - estimatedRisk(b, manifest));
             }
+            team = ranked.slice(0, teamSize);
         }
-        // 4. OPTIMAL ROTATOR BOT (Deep Risk & Fatigue Optimizer)
-        else if (botType === "optimal_rotator") {
-            let metRested = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-            while (metRested.length < dailyQuota + 2 && energy >= MEET_ENERGY) {
-                const unmet = personnel.find(p => !p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (unmet) {
-                    unmet.isMet = true;
-                    energy -= MEET_ENERGY;
-                    metRested = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                } else {
-                    break;
-                }
-            }
-
-            // Perform dual scans on met candidates
-            while (energy >= SCAN_ENERGY) {
-                const target1 = personnel.find(p => p.isMet && !p.scan1 && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (target1) {
-                    target1.scan1 = calculateIndicatorProbability(target1.isAnomaly, 1);
-                    energy -= SCAN_ENERGY;
-                    continue;
-                }
-                const target2 = personnel.find(p => p.isMet && !p.scan2 && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-                if (target2) {
-                    target2.scan2 = calculateIndicatorProbability(target2.isAnomaly, 2);
-                    energy -= SCAN_ENERGY;
-                    continue;
-                }
-                break;
-            }
-
-            // Rank candidates by combining scan percentages & dialogue hints
-            const available = personnel.filter(p => p.isMet && (!tiredMap[p.id] || tiredMap[p.id] <= 0));
-            available.forEach(p => {
-                const risk = getPersonCombinedRisk(p);
-                const baseProb = risk ? risk.prob : 50;
-
-                const line = getPersonDailyDialogue(p, day).toLowerCase();
-                let kwMatches = 0;
-                SUSPICIOUS_KEYWORDS.forEach(kw => {
-                    if (line.includes(kw)) kwMatches++;
-                });
-
-                p._totalRisk = baseProb + (kwMatches * 8);
-            });
-
-            available.sort((a, b) => a._totalRisk - b._totalRisk);
-            if (available.length >= dailyQuota) {
-                selectedTeamIds = available.slice(0, dailyQuota).map(p => p.id);
-            }
-        }
-
-        // Mission Outcome calculation
-        const teamPersonnel = selectedTeamIds.map(id => personnel.find(p => p.id === id)).filter(Boolean);
 
         let isSuccess = false;
+        let missingPeople = [];
 
-        // If bot couldn't fulfill the quota with MET personnel, mission automatically fails
-        if (teamPersonnel.length !== dailyQuota) {
-            isSuccess = false;
+        if (team.length !== teamSize) {
+            isSuccess = false;   // under strength -- automatic loss
         } else {
-            const anomalyCount = teamPersonnel.filter(p => p.isAnomaly).length;
-            const humanCount = teamPersonnel.filter(p => !p.isAnomaly).length;
-            anomaliesSentCount += anomalyCount;
-            totalMissionsSent += teamPersonnel.length;
-
-            if (teamPersonnel.length === 1) {
-                isSuccess = (anomalyCount === 0);
-            } else if (teamPersonnel.length === 2) {
-                if (anomalyCount === 0) isSuccess = true;
-                else if (anomalyCount === 2) isSuccess = false;
-                else isSuccess = (Math.random() < 0.5);
-            } else if (teamPersonnel.length >= 3) {
-                if (humanCount > anomalyCount) isSuccess = true;
-                else if (anomalyCount > humanCount) isSuccess = false;
-                else isSuccess = (Math.random() < 0.5);
-            }
+            anomaliesSent += team.filter(p => p.isAnomaly).length;
+            const outcome = resolveMission(team);
+            isSuccess = outcome.isSuccess;
+            missingPeople = outcome.missingPeople || [];
+            missingPeople.forEach(p => {
+                p.isDead = true;
+                p.isMissing = true;
+                if (!p.isAnomaly) deaths++;
+            });
         }
 
-        if (isSuccess) successfulDays++;
+        if (isSuccess) successfulDays++; else failures++;
 
-        // Mark 2-day fatigue
-        selectedTeamIds.forEach(id => {
-            tiredMap[id] = FATIGUE_DAYS;
+        // Riot check or 3 failures check
+        if (riotOn(day)) { endReason = "riot"; break; }
+        if (failures >= MAX_MISSION_FAILURES) { endReason = "fired"; break; }
+
+        // ---- FATIGUE ----
+        const sentIds = team.map(p => p.id);
+        sentIds.forEach(id => {
+            const m = manifest.find(p => p.id === id);
+            if (m && m.isDead) return;
+            tiredMap[id] = Math.random() < 0.50 ? 2 : 1;
         });
-
-        // Decay fatigue for others
         Object.keys(tiredMap).forEach(id => {
-            if (!selectedTeamIds.includes(Number(id))) {
+            if (!sentIds.includes(Number(id))) {
                 tiredMap[id] -= 1;
                 if (tiredMap[id] <= 0) delete tiredMap[id];
             }
@@ -1494,14 +1873,19 @@ function simulateSingleGame(botType) {
     }
 
     return {
-        wonGame: (successfulDays >= 5),
-        perfectRun: (successfulDays === 7),
+        wonGame: endReason === "complete" && successfulDays >= 5,
+        perfectRun: endReason === "complete" && successfulDays === TOTAL_DAYS,
         successfulDays,
-        anomaliesSentCount
+        failures,
+        anomaliesSentCount: anomaliesSent,
+        deathsCount: deaths,
+        purged,
+        wrongfulExecutions,
+        endReason,
+        daysReached
     };
 }
 
-// ASYNC BATCH BENCHMARK RUNNER (NON-BLOCKING WITH SMOOTH PROGRESS)
 function runFullBenchmark(totalRuns) {
     const progressBox = document.getElementById("benchmark-progress-box");
     const progressBar = document.getElementById("benchmark-progress-bar");
@@ -1514,13 +1898,8 @@ function runFullBenchmark(totalRuns) {
 
     const results = {};
     BOT_STRATEGIES.forEach(b => {
-        results[b.id] = {
-            totalRuns: 0,
-            wonGames: 0,
-            perfectRuns: 0,
-            totalSuccessDays: 0,
-            totalAnomaliesSent: 0
-        };
+        results[b.id] = { totalRuns: 0, wonGames: 0, perfectRuns: 0, totalSuccessDays: 0,
+                          totalAnomaliesSent: 0, totalDeaths: 0, riots: 0, fired: 0, totalPurged: 0 };
     });
 
     let currentStrategyIndex = 0;
@@ -1530,8 +1909,8 @@ function runFullBenchmark(totalRuns) {
     function processBatch() {
         const strat = BOT_STRATEGIES[currentStrategyIndex];
         const res = results[strat.id];
-
         const endRun = Math.min(totalRuns, res.totalRuns + chunkSize);
+
         for (let i = res.totalRuns; i < endRun; i++) {
             const single = simulateSingleGame(strat.id);
             res.totalRuns++;
@@ -1539,6 +1918,10 @@ function runFullBenchmark(totalRuns) {
             if (single.perfectRun) res.perfectRuns++;
             res.totalSuccessDays += single.successfulDays;
             res.totalAnomaliesSent += single.anomaliesSentCount;
+            res.totalDeaths += single.deathsCount;
+            res.totalPurged += single.purged;
+            if (single.endReason === "riot") res.riots++;
+            if (single.endReason === "fired") res.fired++;
             runsDone++;
         }
 
@@ -1555,7 +1938,6 @@ function runFullBenchmark(totalRuns) {
             if (currentStrategyIndex < BOT_STRATEGIES.length) {
                 setTimeout(processBatch, 0);
             } else {
-                // Done!
                 progressStatus.textContent = `Tamamlandı! Toplam ${totalRuns * BOT_STRATEGIES.length} maç simüle edildi.`;
                 runBtn.disabled = false;
                 renderBenchmarkResults(results, totalRuns);
@@ -1574,29 +1956,26 @@ function renderBenchmarkResults(results, totalRuns) {
     cardsGrid.innerHTML = "";
     tableBody.innerHTML = "";
 
-    // Find best strategy by win rate
     let bestId = "";
     let highestWinRate = -1;
-
     BOT_STRATEGIES.forEach(strat => {
-        const r = results[strat.id];
-        const winRate = (r.wonGames / totalRuns) * 100;
-        if (winRate > highestWinRate) {
-            highestWinRate = winRate;
-            bestId = strat.id;
-        }
+        const winRate = (results[strat.id].wonGames / totalRuns) * 100;
+        if (winRate > highestWinRate) { highestWinRate = winRate; bestId = strat.id; }
     });
 
     BOT_STRATEGIES.forEach(strat => {
         const r = results[strat.id];
         const winRate = Math.round((r.wonGames / totalRuns) * 1000) / 10;
-        const dailySuccessRate = Math.round((r.totalSuccessDays / (totalRuns * 7)) * 1000) / 10;
+        const dailySuccessRate = Math.round((r.totalSuccessDays / (totalRuns * TOTAL_DAYS)) * 1000) / 10;
         const avgAnomalies = Math.round((r.totalAnomaliesSent / totalRuns) * 10) / 10;
-        const isBest = (strat.id === bestId);
+        const avgDeaths = Math.round((r.totalDeaths / totalRuns) * 10) / 10;
+        const riotRate = Math.round((r.riots / totalRuns) * 1000) / 10;
+        const firedRate = Math.round((r.fired / totalRuns) * 1000) / 10;
+        const avgPurged = Math.round((r.totalPurged / totalRuns) * 10) / 10;
+        const isBest = strat.id === bestId;
 
-        // Card
         const card = document.createElement("div");
-        card.className = `strategy-card ${isBest ? 'best-strategy' : ''}`;
+        card.className = `strategy-card ${isBest ? "best-strategy" : ""}`;
         card.innerHTML = `
             <div class="strategy-header">
                 <div>
@@ -1604,34 +1983,33 @@ function renderBenchmarkResults(results, totalRuns) {
                     <small style="font-size:0.72rem; color: var(--text-muted);">${strat.desc}</small>
                 </div>
                 <span class="strategy-tag" style="background: rgba(56,139,253,0.15); color: var(--accent-blue);">
-                    ${isBest ? '🏆 EN İYİ' : strat.tag}
+                    ${isBest ? "🏆 EN İYİ" : strat.tag}
                 </span>
             </div>
-
-            <div class="strategy-win-rate">
-                %${winRate} <small>Kazanma Oranı</small>
-            </div>
-
-            <div class="strategy-meter-track">
-                <div class="strategy-meter-fill" style="width: ${winRate}%;"></div>
-            </div>
-
+            <div class="strategy-win-rate">%${winRate} <small>Kazanma Oranı</small></div>
+            <div class="strategy-meter-track"><div class="strategy-meter-fill" style="width: ${winRate}%;"></div></div>
             <div class="strategy-stats-list">
                 <div><span>Kazanılan Kampanya:</span> <strong>${r.wonGames.toLocaleString()} / ${totalRuns.toLocaleString()}</strong></div>
                 <div><span>Günlük Görev Başarısı:</span> <strong>%${dailySuccessRate}</strong></div>
                 <div><span>Maç Başı Anomali (Ort):</span> <strong>${avgAnomalies} kişi</strong></div>
+                <div><span>Maç Başı Kayıp (Ort):</span> <strong>${avgDeaths} kişi</strong></div>
+                <div><span>İnfaz Edilen Anomali (Ort):</span> <strong>${avgPurged} kişi</strong></div>
+                <div><span>Ayaklanma ile Biten:</span> <strong>%${riotRate}</strong></div>
+                <div><span>Görevden Alınma:</span> <strong>%${firedRate}</strong></div>
                 <div><span>Mükemmel Seri (7/7):</span> <strong>${r.perfectRuns.toLocaleString()} maç</strong></div>
             </div>
         `;
         cardsGrid.appendChild(card);
 
-        // Table Row
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td><strong>${strat.name}</strong></td>
             <td style="color: var(--accent-cyan); font-weight:bold;">%${winRate} (${r.wonGames.toLocaleString()})</td>
             <td>%${dailySuccessRate}</td>
-            <td style="color: ${avgAnomalies > 3 ? 'var(--accent-red)' : 'var(--accent-green)'}">${avgAnomalies}</td>
+            <td style="color: ${avgAnomalies > 3 ? "var(--accent-red)" : "var(--accent-green)"}">${avgAnomalies}</td>
+            <td style="color: ${avgDeaths >= 2 ? "var(--accent-red)" : "var(--accent-orange)"}">${avgDeaths}</td>
+            <td style="color: var(--accent-red);">%${riotRate}</td>
+            <td style="color: var(--accent-orange);">%${firedRate}</td>
             <td>${r.perfectRuns.toLocaleString()}</td>
         `;
         tableBody.appendChild(tr);
@@ -1639,80 +2017,3 @@ function renderBenchmarkResults(results, totalRuns) {
 
     tableWrapper.style.display = "block";
 }
-
-// LIVE VISUAL BOT DEMO
-function runLiveAutoPlay(botType = "optimal_rotator") {
-    initGame();
-    logEvent(`[OTO-BOT] ${botType.toUpperCase()} canlı demo oyunu başlatıldı...`, "system");
-
-    function playDayStep() {
-        if (gameState.day > TOTAL_DAYS) {
-            return;
-        }
-
-        // Check if we need to meet more people for daily quota
-        let metRested = gameState.personnel.filter(p => p.isMet && (!gameState.tiredMap[p.id] || gameState.tiredMap[p.id] <= 0));
-        
-        // If not enough met & rested people for today's quota, meet unmet ones (-4 energy)
-        if (metRested.length < gameState.dailyRequiredCount && gameState.energy >= MEET_ENERGY) {
-            const unmet = gameState.personnel.find(p => !p.isMet && (!gameState.tiredMap[p.id] || gameState.tiredMap[p.id] <= 0));
-            if (unmet) {
-                meetPerson(unmet.id);
-                setTimeout(playDayStep, 700);
-                return;
-            }
-        }
-
-        // If we have 2+ energy, do indicator scans
-        if (gameState.energy >= SCAN_ENERGY) {
-            const target1 = gameState.personnel.find(p => p.isMet && !p.scan1 && (!gameState.tiredMap[p.id] || gameState.tiredMap[p.id] <= 0));
-            if (target1) {
-                runIndicatorScan(target1.id, 1);
-                setTimeout(playDayStep, 700);
-                return;
-            }
-            const target2 = gameState.personnel.find(p => p.isMet && !p.scan2 && (!gameState.tiredMap[p.id] || gameState.tiredMap[p.id] <= 0));
-            if (target2) {
-                runIndicatorScan(target2.id, 2);
-                setTimeout(playDayStep, 700);
-                return;
-            }
-        }
-
-        selectAndDispatch();
-    }
-
-    function selectAndDispatch() {
-        // Auto select team ONLY from MET and RESTED personnel based on lowest anomaly risk
-        gameState.selectedTeam = [];
-        const metCandidates = gameState.personnel.filter(p => p.isMet && (!gameState.tiredMap[p.id] || gameState.tiredMap[p.id] <= 0));
-
-        metCandidates.forEach(p => {
-            const risk = getPersonCombinedRisk(p);
-            p._liveSortRisk = risk ? risk.prob : 50;
-        });
-
-        metCandidates.sort((a, b) => a._liveSortRisk - b._liveSortRisk);
-
-        metCandidates.slice(0, gameState.dailyRequiredCount).forEach(p => {
-            gameState.selectedTeam.push(p.id);
-        });
-
-        renderAll();
-
-        setTimeout(() => {
-            dispatchMission();
-            setTimeout(() => {
-                if (gameState.day < TOTAL_DAYS) {
-                    nextDay();
-                    setTimeout(playDayStep, 1000);
-                } else {
-                    nextDay(); // Triggers game over screen
-                }
-            }, 1500);
-        }, 800);
-    }
-
-    setTimeout(playDayStep, 800);
-}
-

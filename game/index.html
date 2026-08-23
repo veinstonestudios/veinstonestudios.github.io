@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Facility: Anomali Simülasyonu</title>
+    <title>The Facility: Anomali Simülasyonu — İnfaz Protokolü</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,19 +23,11 @@
                 </div>
                 <h3>GÜVENLİK PROTOKOLÜ</h3>
                 <p class="auth-desc">Tesis Anomali Kontrol Simülasyonu'na erişmek için yetki kodunuzu giriniz.</p>
-                
+
                 <form id="auth-form" onsubmit="return false;" class="auth-form">
                     <div class="auth-input-group">
                         <span class="auth-prompt">&gt;</span>
-                        <input 
-                            type="password" 
-                            id="auth-input" 
-                            placeholder="Erişim Şifresi" 
-                            autocomplete="off" 
-                            spellcheck="false" 
-                            required 
-                            autofocus
-                        />
+                        <input type="password" id="auth-input" placeholder="Erişim Şifresi" autocomplete="off" spellcheck="false" required autofocus />
                         <button type="submit" id="btn-auth-submit" class="btn-auth-unlock">GİRİŞ ↵</button>
                     </div>
                     <div id="auth-error-msg" class="auth-error-msg hidden">⚠️ ERİŞİM REDDEDİLDİ: Geçersiz yetkilendirme şifresi!</div>
@@ -47,6 +39,119 @@
         </div>
     </div>
 
+    <!-- INTRO / WELCOME BRIEFING -->
+    <div id="intro-overlay" class="intro-overlay hidden">
+        <div class="intro-card">
+            <div class="intro-header">
+                <span class="intro-eyebrow">VEINSTONE FACILITY OS // GÖREV BRİFİNGİ</span>
+                <h1>TESİSE HOŞ GELDİN</h1>
+            </div>
+
+            <div class="intro-body">
+                <p class="intro-lede">
+                    Bu tesiste bir şeyler yanlış. Personelin bir kısmı artık insan değil —
+                    <strong>anomaliler</strong> aramıza karıştı ve tıpatıp bizim gibi görünüyorlar.
+                    Senin işin, her gün sahaya kimi göndereceğine karar vermek.
+                </p>
+
+                <div class="intro-grid">
+                    <div class="intro-block">
+                        <h4>📅 GÜNÜN AŞAMALARI</h4>
+                        <p>Her gün aynı üç aşamadan geçer. Aşamalar sırayla açılır, geri dönüş yoktur.</p>
+                        <ol class="intro-stage-list">
+                            <li><strong>TANIŞMA</strong> — Her gün <strong>3 kişiyle</strong> tanışabilirsin. Tanışmak kişinin kimliğini ve görevini açığa çıkarır.</li>
+                            <li><strong>TEST</strong> — Her gün <strong>2 kişiyi</strong> test edebilirsin (ilk gün sadece 1). Test sadece tanıştığın kişilere yapılır.</li>
+                            <li><strong>GÖREV SEVKİ</strong> — Belirlenen sayıda personeli sahaya gönderirsin.</li>
+                        </ol>
+                    </div>
+
+                    <div class="intro-block">
+                        <h4>🚪 PERSONEL AKIŞI</h4>
+                        <p>
+                            Tesis boş başlamaz ama dolu da değildir. İlk gün <strong>4 kişi</strong> vardır;
+                            sonraki her gün yeni personel giriş yapar. Kampanya sonunda toplam
+                            <strong>14 kişi</strong> olur.
+                        </p>
+                        <p class="intro-warn">
+                            Tanışma hakkın tam olarak personel akışına yetişir. <strong>Boşa harcadığın her
+                            tanışma seni kalıcı olarak geride bırakır.</strong>
+                        </p>
+                    </div>
+
+                    <div class="intro-block">
+                        <h4>🧬 NÖRO-HÜCRESEL DNA TESTİ</h4>
+                        <p>
+                            Test, kişiye ait <strong>%0 ile %99</strong> arasında sabit bir ölçüm değeri verir.
+                            Değer düştükçe insan olma ihtimali artar, yükseldikçe anomali olma ihtimali artar.
+                        </p>
+                        <p class="intro-warn">
+                            Ölçüm bir <em>kanıt</em> değil, bir <em>işarettir</em>. Bazı değerler kesin konuşur,
+                            bazıları hiçbir şey söylemez. Hangisinin hangisi olduğunu kendin öğreneceksin.
+                        </p>
+                    </div>
+
+                    <div class="intro-block">
+                        <h4>🌫️ SAHA GÖREVLERİ</h4>
+                        <p>
+                            Ekipteki insan sayısı arttıkça görev başarı ihtimali yükselir. Anomaliler
+                            operasyonu içeriden çürütür.
+                        </p>
+                        <p class="intro-warn">
+                            Saha tehlikelidir — görev sırasında hem insanlar hem de kaçan anomaliler <strong>kayıplara karışabilir</strong>. Dönen personel ise <strong>1 veya 2 gün dinlenir</strong>.
+                        </p>
+                    </div>
+
+                    <!-- ELEKTRİKLİ SANDALYE (DEVRE DIŞI / COMMENTLENDİ)
+                    <div class="intro-block">
+                        <h4>⚡ ELEKTRİKLİ SANDALYE</h4>
+                        <p>
+                            <strong>3. günden itibaren</strong> her gün bir personeli infaz edebilirsin.
+                            İnfaz, kişinin gerçekten anomali mi insan mı olduğunu kesin olarak gösterir —
+                            bunu öğrenmenin başka yolu yoktur.
+                        </p>
+                        <p class="intro-warn">
+                            Yanlış kişiyi infaz edersen hem bir insanı hem de bir görev personelini
+                            kaybedersin.
+                        </p>
+                    </div>
+                    -->
+
+                    <div class="intro-block">
+                        <h4>🔥 ANOMALİ AYAKLANMASI</h4>
+                        <p>
+                            Anomaliler tesiste <strong>insanlardan fazla olursa ayaklanır</strong> ve tesisi
+                            anında ele geçirir. Oyun orada biter.
+                        </p>
+                        <p class="intro-warn">
+                            Bu yüzden insanları hayatta tutmak sadece görev için değil, <strong>dengeyi
+                            korumak</strong> için de gereklidir.
+                        </p>
+                    </div>
+
+                    <div class="intro-block">
+                        <h4>🏛️ DEVLET DENETİMİ</h4>
+                        <p>
+                            Devlet bu tesisi yakından izliyor. <strong>3 başarısız görev</strong> sonunda
+                            yetkin iptal edilir ve görevden alınırsın.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="intro-objective">
+                    <span class="intro-objective-label">HEDEF</span>
+                    <span>
+                        <strong>7 gün</strong> içinde en az <strong>5 görevi</strong> başarıyla tamamla —
+                        ayaklanmayı önle ve 3 başarısızlığa ulaşma.
+                    </span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-intro-start" id="btn-begin-campaign">
+                GÖREVE BAŞLA ➡️
+            </button>
+        </div>
+    </div>
+
     <div class="hud-scanline"></div>
     <div class="app-container">
         <!-- TOP HEADER / STATUS BAR -->
@@ -54,7 +159,7 @@
             <div class="facility-title">
                 <span class="pulse-dot"></span>
                 <strong>TESİS KONTROL MERKEZİ</strong>
-                <span class="sub-badge">V4.2.0</span>
+                <span class="sub-badge">V8.0.0</span>
             </div>
 
             <div class="stats-group">
@@ -62,21 +167,29 @@
                     <span class="stat-label">GÜN</span>
                     <span class="stat-value" id="current-day">1 / 7</span>
                 </div>
+                <div class="stat-box stage-box">
+                    <span class="stat-label">AŞAMA</span>
+                    <span class="stat-value" id="current-stage">—</span>
+                </div>
                 <div class="stat-box">
                     <span class="stat-label">SAAT</span>
-                    <span class="stat-value" id="current-time">09:00</span>
+                    <span class="stat-value" id="current-time">—</span>
                 </div>
                 <div class="stat-box highlight">
-                    <span class="stat-label">ENERJİ (AKSİYON)</span>
-                    <span class="stat-value" id="current-energy">8 / 8</span>
-                    <div class="energy-pips" id="energy-pips"></div>
+                    <span class="stat-label" id="allowance-label">AŞAMA</span>
+                    <span class="stat-value" id="allowance-value">—</span>
+                    <div class="allowance-pips" id="allowance-pips"></div>
                 </div>
                 <div class="stat-box score-box">
                     <span class="stat-label">GÖREV BAŞARISI</span>
                     <span class="stat-value" id="mission-score">0 Başarılı / 0</span>
                 </div>
+                <div class="stat-box">
+                    <span class="stat-label">BAŞARISIZ</span>
+                    <span class="stat-value" id="failure-count">0 / 3</span>
+                </div>
                 <button class="btn btn-bot-suite" id="btn-open-bot-modal">
-                    🤖 BOT SİMÜLASYONU (5.000 MAÇ)
+                    🤖 BOT SİMÜLASYONU
                 </button>
             </div>
         </header>
@@ -87,143 +200,234 @@
             <section class="personnel-section">
                 <div class="section-header">
                     <div>
-                        <h2>Tesis Personeli (14 Kişi)</h2>
-                        <p class="hint">İpucu: Tek tıkla detay aç. <strong>ÇİFT TIKLA:</strong> Doğrudan görev ekibine ekle/çıkar.</p>
+                        <h2 id="roster-heading">Tesis Personeli</h2>
+                        <p class="hint">Aşamaya göre karta tıkla: <strong>Tanışma</strong> → tanış, <strong>Test</strong> → ölç, <strong>Görev</strong> → ekibe al.</p>
                     </div>
                     <div class="filters">
-                        <span class="badge count-badge" id="met-count">Tanışılan: 0/14</span>
+                        <span class="badge count-badge" id="met-count">Tanışılan: 0/0</span>
+                        <span class="badge count-badge" id="tested-count">Test Edilen: 0/0</span>
+                        <span class="badge count-badge lost-badge" id="lost-count">☠️ Kayıp: 0</span>
                     </div>
                 </div>
 
-                <div class="personnel-grid" id="personnel-grid">
-                    <!-- 14 circular cards injected via JS -->
-                </div>
+                <div id="stage-notice" class="stage-notice"></div>
+
+                <div class="personnel-grid" id="personnel-grid"></div>
+
+                <!-- KAYIT / MORGUE -->
+                <section class="records-section hidden" id="records-section">
+                    <div class="records-header">
+                        <h3>⚱️ KAYIT DIŞI PERSONEL</h3>
+                        <div class="records-summary" id="records-summary"></div>
+                    </div>
+                    <div class="records-grid" id="records-grid"></div>
+                </section>
             </section>
 
-            <!-- RIGHT PANEL: DISPATCH / LOGS -->
+            <!-- RIGHT PANEL: STAGE CONTROL -->
             <aside class="sidebar-panel">
-                <!-- MISSION EXPEDITION BOX -->
-                <div class="panel-box expedition-box">
-                    <div class="box-title">
-                        <span class="icon">🚀</span>
-                        <h3>GÜNLÜK GÖREV SEVKİ</h3>
-                    </div>
-                    <p class="box-desc">
-                        Görevi tamamlamak için ekip seç. Gönderilen personeller <strong>2 GÜN BOYUNCA YORGUN</strong> kalır ve göreve gidemez!
-                    </p>
+                <div class="panel-box stage-panel">
 
-                    <div class="team-selection">
-                        <div class="quota-banner">
-                            <span>GÜNLÜK EKİP İHTİYACI:</span>
-                            <strong id="daily-quota-badge" class="quota-number">1 Kişi</strong>
+                    <!-- ARRIVAL -->
+                    <div id="panel-arrival" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">🚪</span><h3>PERSONEL GİRİŞİ</h3></div>
+                        <p class="box-desc">
+                            <strong>Gün <span id="arrival-day">1</span>:</strong>
+                            <span id="arrival-count">0</span> yeni personel tesise giriş yaptı.
+                            Kimlikleri henüz doğrulanmadı.
+                        </p>
+                        <div class="arrival-list" id="arrival-list"></div>
+                    </div>
+
+                    <!-- MEETING -->
+                    <div id="panel-meeting" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">🤝</span><h3>TANIŞMA AŞAMASI</h3></div>
+                        <p class="box-desc">
+                            Tanışmak istediğin personelin kartına tıkla. Tanışmak kimliğini ve görevini açığa çıkarır.
+                        </p>
+                        <div class="stage-metric">
+                            <div><span class="metric-num" id="meeting-remaining">3</span><span class="metric-label">Kalan Hak</span></div>
+                            <div><span class="metric-num" id="meeting-unmet">0</span><span class="metric-label">Tanışılmamış</span></div>
                         </div>
-                        <label>Görev Ekibi Seçimi:</label>
-                        <div class="selected-tags" id="selected-team-list">
-                            <span class="empty-text">Henüz kimse seçilmedi. Personel kartından "+" ile ekle.</span>
+                        <div class="rules-card">
+                            <div class="rule-title">Unutma:</div>
+                            <ul>
+                                <li>Sadece tanıştığın personel test edilebilir ve göreve gidebilir.</li>
+                                <li>Kullanmadığın hak sonraki güne devretmez.</li>
+                            </ul>
                         </div>
                     </div>
 
-                    <div class="rules-card">
-                        <div class="rule-title">Görev Kuralları:</div>
-                        <ul>
-                            <li><strong>Tanışma Şartı:</strong> Sadece tanışılan kişiler göreve gidebilir!</li>
-                            <li><strong>1 Kişi:</strong> İnsan = Başarı | Anomali = Başarısız</li>
-                            <li><strong>2 Kişi:</strong> İkisi İnsan = Başarı | İkisi Anomali = Başarısız | 1 Anomali = %50</li>
-                            <li><strong>3 Kişi:</strong> Çoğunluk kuralı</li>
-                            <li><strong>Dinlenme:</strong> Göreve giden 2 gün dinlenir!</li>
-                        </ul>
+                    <!-- TESTING -->
+                    <div id="panel-testing" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">🧬</span><h3>TEST AŞAMASI</h3></div>
+                        <p class="box-desc">
+                            Test etmek istediğin personelin kartına tıkla. Nöro-Hücresel DNA ölçümü kalıcıdır ve kartında görünür.
+                        </p>
+                        <div class="stage-metric">
+                            <div><span class="metric-num" id="testing-remaining">1</span><span class="metric-label">Kalan Test</span></div>
+                            <div><span class="metric-num" id="testing-available">0</span><span class="metric-label">Test Edilebilir</span></div>
+                        </div>
+                        <div class="rules-card">
+                            <div class="rule-title">Unutma:</div>
+                            <ul>
+                                <li>Her personel sadece <strong>bir kez</strong> test edilebilir.</li>
+                                <li>Dinlenen personele test yapılamaz.</li>
+                                <li>Düşük ölçüm insana, yüksek ölçüm anomaliye işaret eder.</li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <button class="btn btn-dispatch" id="btn-dispatch">
-                        GÖREVE GÖNDER VE GÜNÜ BİTİR
-                    </button>
+                    <!-- EXECUTION (DEVRE DIŞI / COMMENTLENDİ)
+                    <div id="panel-execution" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">⚡</span><h3>ELEKTRİKLİ SANDALYE</h3></div>
+                        <p class="box-desc">
+                            Anomali olduğundan şüphelendiğin bir personeli infaz edebilirsin. Karta tıkla.
+                            <strong>İnfaz kişinin gerçek doğasını açığa çıkarır</strong> — ama geri dönüşü yoktur.
+                        </p>
+                        <div class="stage-metric">
+                            <div><span class="metric-num" id="execution-remaining">1</span><span class="metric-label">Kalan İnfaz</span></div>
+                            <div><span class="metric-num" id="execution-eligible">0</span><span class="metric-label">İnfaz Edilebilir</span></div>
+                        </div>
+                        <div class="rules-card">
+                            <div class="rule-title">Dikkat:</div>
+                            <ul>
+                                <li>Anomali infaz edersen ayaklanma baskısı <strong>azalır</strong>.</li>
+                                <li>İnsan infaz edersen baskı <strong>artar</strong> ve bir görev personeli kaybedersin.</li>
+                                <li>İnfaz zorunlu değildir — atlayabilirsin.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    -->
+
+                    <!-- DISPATCH -->
+                    <div id="panel-dispatch" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">🚀</span><h3>GÖREV SEVKİ</h3></div>
+                        <p class="box-desc">
+                            Bugün tam olarak <strong id="dispatch-required">1</strong> kişi göndermelisin.
+                            Seçili: <strong id="dispatch-selected">0</strong>
+                        </p>
+                        <div class="team-selection">
+                            <label>Görev Ekibi:</label>
+                            <div class="selected-tags" id="selected-team-list">
+                                <span class="empty-text">Karttan tıklayarak ekip seç.</span>
+                            </div>
+                        </div>
+                        <div id="dispatch-understrength" class="understrength-warn hidden">
+                            ⚠️ Sahaya sürebileceğin personel kalmadı. Herkes ya dinleniyor, ya kayıp,
+                            ya da henüz tanışmadın. Bugünkü görev başarısız sayılacak.
+                        </div>
+
+                        <div class="rules-card">
+                            <div class="rule-title">Görev Kuralları:</div>
+                            <ul>
+                                <li>Ekipteki insan sayısı arttıkça görev başarı ihtimali yükselir.</li>
+                                <li>Saha tehlikeli — insanlar veya kaçan anomaliler <strong>kayıplara karışabilir</strong>.</li>
+                                <li>Görevden dönen personel <strong>1 veya 2 gün</strong> dinlenir ve o süre boyunca test edilemez.</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-dispatch" id="btn-dispatch">GÖREVE GÖNDER</button>
+                    </div>
+
+                    <!-- REPORT -->
+                    <div id="panel-report" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">📋</span><h3>GÜN RAPORU</h3></div>
+                        <div class="mission-outcome-badge" id="report-badge">—</div>
+                        <p class="box-desc" id="report-desc"></p>
+                        <button class="btn btn-primary" id="btn-next-day-inline">SONRAKİ GÜNE GEÇ ➡️</button>
+                    </div>
+
+                    <button class="btn btn-advance" id="btn-advance-stage">DEVAM</button>
                 </div>
 
                 <!-- LOGS BOX -->
                 <div class="panel-box logs-box">
                     <div class="box-title">
                         <span class="icon">📜</span>
-                        <h3>GÜNLÜK SİMÜLASYON KAYITLARI</h3>
+                        <h3>SİMÜLASYON KAYITLARI</h3>
                     </div>
-                    <div class="logs-scroll" id="simulation-logs">
-                        <div class="log-entry system">Tesis simülasyonu başlatıldı. Personelleri incele.</div>
-                    </div>
+                    <div class="logs-scroll" id="simulation-logs"></div>
                 </div>
             </aside>
         </main>
     </div>
 
-    <!-- MODAL: PERSON PROFILE / TEAM TOGGLE -->
-    <div class="modal-overlay hidden" id="interrogate-modal">
+    <!-- TEST REVEAL MODAL -->
+    <div class="modal-overlay hidden" id="test-reveal-modal">
         <div class="modal-card">
-            <button class="btn-close" id="modal-close">&times;</button>
             <div class="modal-header">
-                <div class="avatar-large" id="modal-avatar">?</div>
+                <div class="avatar-large" id="reveal-avatar">🧬</div>
                 <div>
-                    <h3 id="modal-name">Personel Adı</h3>
-                    <div class="modal-badges">
-                        <span class="badge" id="modal-role">Rol</span>
-                        <span class="badge" id="modal-gender">Cinsiyet</span>
-                        <span class="badge" id="modal-status">Durum</span>
-                    </div>
+                    <h3 id="reveal-name">Personel</h3>
+                    <div class="modal-badges"><span class="badge" id="reveal-role">Rol</span></div>
                 </div>
             </div>
-
             <div class="modal-body">
-                <!-- NOT MET STATE -->
-                <div id="modal-not-met-view">
-                    <div class="alert-box warning">
-                        <strong>Bu kişiyle henüz tanışılmadı.</strong>
-                        <p>Tanışmadığın personeller göreve gönderilemez ve anomali kontrolü yapılamaz.</p>
-                    </div>
-                    <div style="display: flex; gap: 10px; flex-direction: column;">
-                        <button class="btn btn-primary" id="btn-modal-meet">
-                            🤝 Tanış (-4 Enerji, +2 Saat)
-                        </button>
-                        <button class="btn btn-secondary" id="btn-modal-toggle-not-met" disabled style="opacity: 0.5; cursor: not-allowed;">
-                            🚫 Tanışmadan Göreve Eklenemez
-                        </button>
-                    </div>
-                </div>
-
-                <!-- MET VIEW -->
-                <div id="modal-met-view" class="hidden">
-                    <div class="daily-dialogue-box">
-                        <span class="dialogue-tag">💬 GÜNLÜK SÖZÜ & GÖZLEMİ:</span>
-                        <p id="modal-dialogue">"..."</p>
-                    </div>
-
-                    <div class="bio-box" id="modal-bio">
-                        Biyografi ve gözlemler yükleniyor...
-                    </div>
-
-                    <!-- DUAL ANOMALY INDICATORS -->
-                    <div class="indicators-section" style="margin-top: 14px;">
-                        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-secondary); margin-bottom: 6px;">
-                            🔬 ANOMALİ TESPİT BELİRTEÇLERİ (HER BİRİ -2 ENERJİ):
-                        </div>
-                        <div style="display: flex; gap: 8px; flex-direction: column;">
-                            <button class="btn btn-check" id="btn-scan-1">
-                                🔬 1. Belirteç: Biyometrik Rezonans (-2 Enerji)
-                            </button>
-                            <button class="btn btn-check" id="btn-scan-2">
-                                🧬 2. Belirteç: Nöro-Hücresel DNA (-2 Enerji)
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- SCAN RESULT DISPLAY -->
-                    <div id="scan-result-box" class="scan-result-box hidden" style="margin-top: 12px;"></div>
-
-                    <button class="btn btn-primary" id="btn-toggle-team" style="margin-top: 14px; width: 100%;">
-                        ➕ Görev Ekibine Ekle/Çıkar
-                    </button>
-                </div>
+                <div id="reveal-body"></div>
+                <p class="reveal-note">Yorum tamamen sana ait.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btn-reveal-close">ANLAŞILDI</button>
             </div>
         </div>
     </div>
 
-    <!-- DAY SUMMARY / MISSION OUTCOME MODAL -->
+    <!-- DAY 3 BRIEFING & EXECUTION REVEAL MODAL (DEVRE DIŞI / COMMENTLENDİ)
+    <div class="modal-overlay hidden" id="day3-briefing-modal">
+        <div class="modal-card briefing-card">
+            <div class="briefing-eyebrow">GÜN 3 // YENİ PROTOKOLLER DEVREDE</div>
+            <h3 class="briefing-title">Tesis Artık Kalabalık</h3>
+            <p class="briefing-lede">
+                Personel sayısı arttı ve iki yeni sistem devreye girdi. İkisi de aynı şeyle ilgili:
+                <strong>tesiste kaç insan kaldığı.</strong>
+            </p>
+
+            <div class="briefing-item">
+                <div class="briefing-icon">🔥</div>
+                <div>
+                    <h4>ANOMALİ AYAKLANMASI</h4>
+                    <p>
+                        Anomaliler tesiste <strong>insanlardan fazla olursa ayaklanır</strong> ve oyun
+                        anında biter. İnsan sayısını korumaya dikkat et.
+                    </p>
+                </div>
+            </div>
+
+            <div class="briefing-item">
+                <div class="briefing-icon">⚡</div>
+                <div>
+                    <h4>ELEKTRİKLİ SANDALYE <span class="briefing-where">(test sonrası)</span></h4>
+                    <p>
+                        Bugünden itibaren her gün <strong>bir personeli infaz edebilirsin</strong>.
+                        İnfaz, o kişinin gerçekten anomali mi insan mı olduğunu <strong>kesin olarak</strong>
+                        gösterir — bunu öğrenmenin başka yolu yok.
+                    </p>
+                    <p class="briefing-note danger">
+                        Anomali infaz edersen denge lehine döner. İnsan infaz edersen hem dengeyi
+                        bozarsın hem de bir görev personelini kaybedersin. İnfaz zorunlu değil.
+                    </p>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="btn-day3-briefing-close">ANLAŞILDI ➡️</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="execution-reveal-modal">
+        <div class="modal-card execution-card">
+            <div class="execution-chair-icon">⚡</div>
+            <h3 id="execution-reveal-name">Personel</h3>
+            <div class="modal-badges" style="justify-content:center;">
+                <span class="badge" id="execution-reveal-role">Rol</span>
+            </div>
+            <div class="execution-verdict" id="execution-verdict">—</div>
+            <div id="execution-reveal-body"></div>
+            <button class="btn btn-primary" id="btn-execution-close">KAPAT</button>
+        </div>
+    </div>
+    -->
+
+    <!-- MISSION RESULT MODAL -->
     <div class="modal-overlay hidden" id="mission-result-modal">
         <div class="modal-card result-card">
             <div class="result-header" id="result-header">
@@ -232,18 +436,15 @@
             <div class="result-body">
                 <div class="mission-outcome-badge" id="result-badge">BAŞARILI</div>
                 <p id="result-desc"></p>
-
-                <div class="team-results-list" id="result-team-breakdown">
-                    <!-- members details -->
-                </div>
+                <div class="team-results-list" id="result-team-breakdown"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="btn-next-day">SONRAKİ GÜNE GEÇ ➡️</button>
+                <button class="btn btn-primary" id="btn-result-continue">KAPAT</button>
             </div>
         </div>
     </div>
 
-    <!-- GAME OVER / VICTORY MODAL -->
+    <!-- GAME OVER MODAL -->
     <div class="modal-overlay hidden" id="game-over-modal">
         <div class="modal-card game-over-card">
             <h2 id="game-over-title">7 GÜNLÜK TEST TAMAMLANDI</h2>
@@ -253,16 +454,16 @@
         </div>
     </div>
 
-    <!-- BOT BENCHMARK SIMULATION MODAL -->
+    <!-- BOT BENCHMARK MODAL -->
     <div class="modal-overlay hidden" id="bot-modal">
         <div class="modal-card benchmark-modal-card">
             <button class="btn-close" id="bot-modal-close">&times;</button>
             <div class="modal-header">
                 <div class="avatar-large" style="background: rgba(56, 139, 253, 0.15); border-color: var(--accent-blue);">🤖</div>
                 <div>
-                    <h3>GERÇEK ZAMANLI BOT BENCHMARK SİMÜLASYONU</h3>
+                    <h3>BOT BENCHMARK SİMÜLASYONU</h3>
                     <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">
-                        Tüm kurallar (anomali rastlantısı, 2 gün yorgunluk, diyaloglar, aksiyon enerjisi) birebir <strong>5.000 maç</strong> boyunca simüle edilir.
+                        Tüm V4 kuralları (aşamalı gün, kademeli personel girişi, sabit ölçüm havuzu, saha kayıpları) birebir simüle edilir.
                     </p>
                 </div>
             </div>
@@ -278,11 +479,10 @@
                         </select>
                     </div>
                     <button class="btn btn-primary" id="btn-run-benchmark" style="flex: 1;">
-                        ⚡ 5.000 MAÇI SİMÜLE ET VE ANALİZ ET
+                        ⚡ SİMÜLE ET VE ANALİZ ET
                     </button>
                 </div>
 
-                <!-- PROGRESS BAR -->
                 <div class="benchmark-progress-container hidden" id="benchmark-progress-box">
                     <div class="progress-label-row">
                         <span id="benchmark-progress-status">Simülasyon çalışıyor...</span>
@@ -294,35 +494,30 @@
                 </div>
             </div>
 
-            <!-- RESULTS CONTAINER -->
             <div class="benchmark-results-container" id="benchmark-results">
-                <div class="strategy-cards-grid" id="benchmark-strategy-cards">
-                    <!-- Cards injected by JS -->
-                </div>
+                <div class="strategy-cards-grid" id="benchmark-strategy-cards"></div>
 
                 <div class="comparison-table-wrapper" id="benchmark-table-wrapper" style="display: none;">
-                    <h4 style="margin: 16px 0 8px 0; font-size: 0.9rem; color: var(--accent-cyan);">DETAYLI METRİK VE ROTASYON ANALİZİ</h4>
+                    <h4 style="margin: 16px 0 8px 0; font-size: 0.9rem; color: var(--accent-cyan);">DETAYLI METRİK ANALİZİ</h4>
                     <table class="benchmark-table">
                         <thead>
                             <tr>
                                 <th>Strateji</th>
-                                <th>Kazanılan Oyun (>=5 Gün)</th>
+                                <th>Kazanılan Oyun (&gt;=5 Gün)</th>
                                 <th>Günlük Görev Başarısı</th>
                                 <th>Gönderilen Anomali (Ort)</th>
+                                <th>Kayıp Personel (Ort)</th>
+                                <th>Ayaklanma</th>
+                                <th>Görevden Alınma</th>
                                 <th>Mükemmel Seri (7/7)</th>
                             </tr>
                         </thead>
-                        <tbody id="benchmark-table-body">
-                            <!-- Table rows injected by JS -->
-                        </tbody>
+                        <tbody id="benchmark-table-body"></tbody>
                     </table>
                 </div>
             </div>
 
             <div class="modal-footer" style="display: flex; gap: 12px; margin-top: 20px;">
-                <button class="btn btn-secondary" id="btn-live-bot-demo">
-                    🎮 1 Maçı Canlı İzle (Oto-Oynat)
-                </button>
                 <button class="btn btn-secondary" id="btn-bot-modal-close-action">Kapat</button>
             </div>
         </div>

@@ -135,7 +135,7 @@ function generatePersonnelState() {
 const DAILY_DIALOGUES = {
     1: { // Dr. Kaya
         human: [
-            "Yeni araştırma verileri beklediğimden karmaşık geldi, gece geç saatlere kadar laboratuvardaydım.",
+            "Araştırmalarım sırasında anomalilerin insanların en çok öfke duygusunu çok iyi taklit ettiklerini öğrendim.",
             "Kahve makinesi bozulmuş, bütün sabah konsantre olmakta biraz zorlandım.",
             "Dışarıdaki ailemden gelen eski fotoğraflara baktım, insan özlüyor işte.",
             "Mikroskop başında gözlerim çok yoruldu, biraz temiz hava alsam iyi olacak.",
@@ -164,7 +164,7 @@ const DAILY_DIALOGUES = {
             "Görev süresi biterken güvenlik açığı bırakmamak için son kontrolleri yapıyorum."
         ],
         anomaly: [
-            "Kamera kayıtlarındaki statik karlanmalar aslında çok mantıklı bir örüntü oluşturuyor.",
+            "Küçükken hep pizza kuryesi olmak istemiştim, küçüklük hayallerimi gerçekleştirdiğim için kendimden gurur duyuyorum. Sana bir şey söyleyeyim mi? Ben kariyerim boyunca hiçbir pizzayı geç götürmedim.",
             "Gece 03:00 devriyesinde nefes almayı bıraktığımda her şeyi çok daha net duyabiliyorum.",
             "Tesisin havalandırma kapakları düzenli bir nabız gibi atıyor, fark ettin mi?",
             "Bana üşüyüp üşümediğimi sordular. Sıcaklık kavramı sadece bir sayı dizisi.",
@@ -175,7 +175,7 @@ const DAILY_DIALOGUES = {
     },
     3: { // Can Yılmaz
         human: [
-            "Ana sunuculardaki fan gürültüsü yüzünden sabahtan beri kulağım çınlıyor.",
+            "Ben hep güvenlik sistemlerinde çalıştım, kurduğum her güvenlik sistemi %100 güvenlidir. Burayı ben dizayn etmedim ve bu beni tedirgin ediyor.",
             "Yedekleme kablolarını değiştirdim, tesisin eskiyen altyapısı can sıkıcı.",
             "Ekrana bakmaktan göz numaram büyüdü galiba, yazılar bulanıklaşıyor.",
             "Termal sensörler bugün biraz dengesizdi, yazılımı yeniden başlattım.",
@@ -195,7 +195,7 @@ const DAILY_DIALOGUES = {
     },
     4: { // Dr. Arda
         human: [
-            "Revirdeki tıbbi malzemeleri saydım, antibiyotik stoğumuz azalıyor.",
+            "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere.",
             "Dün gece gelen bir personelin tansiyonu çok yüksekti, stres herkesi vuruyor.",
             "Kendi nabzımı ölçtüm, uykusuzluktan hafif taşikardi başlamış.",
             "Sterilizasyon cihazı ısınmıyordu, teknik ekipten yardım istedim.",
@@ -204,7 +204,7 @@ const DAILY_DIALOGUES = {
             "Tahliye öncesi sağlık raporlarını hazırlıyorum, umarım salimen çıkarız."
         ],
         anomaly: [
-            "İnsan kalbinin dakikada 70 kez atması gereksiz mekanik bir yıpranma.",
+            "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere.",
             "Kan numunelerindeki demir oranını koklayarak ayırt edebiliyorum.",
             "Dün gece bedenimin sıcaklığını 24 dereceye indirdim, çok dengeli hissettirdi.",
             "Hücrelerin ölmesini engellemek çok kolayken insanların yaşlanması garip.",
@@ -224,7 +224,7 @@ const DAILY_DIALOGUES = {
             "Bütün vanalar kapalı, tesisin boru hatları son güne kadar dayanır."
         ],
         anomaly: [
-            "Boruların içindeki titreşim frekansları bana ne yapmam gerektiğini fısıldıyor.",
+            "İstesem buradan kaçabilirim ama insanlığımı size kanıtlamak istiyorum. Dolayısıyla kaçmayacağım ama istesem kaçabilirim.",
             "Ellerimin pas tutması veya kesilmesi önemli değil, altındaki yapı bozulmuyor.",
             "Havalandırma tünellerinde karanlıkta yürümek fener kullanmaktan daha rahat.",
             "Metal alaşımların moleküler yapısını parmak uçlarımla okuyabiliyorum.",
@@ -235,7 +235,7 @@ const DAILY_DIALOGUES = {
     },
     6: { // Mert Kurt
         human: [
-            "İlk haftam ve her şeyden çok korkuyorum, kıdemliler çok sert davranıyor.",
+            "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar.",
             "Petri kaplarını yanlışlıkla deviriyordum, panikten elim ayağım titredi.",
             "Buradaki herkes çok gergin, gece yatakhanede kimse konuşmuyor.",
             "Mikroskop camını temizlerken parmağımı kestim, revire gitmem gerekti.",
@@ -244,7 +244,7 @@ const DAILY_DIALOGUES = {
             "Stajın son günü... Buradan bir an önce ayrılmak istiyorum."
         ],
         anomaly: [
-            "Bana stajyer diyorlar ama bu tesisin kuruluşundan önceki kodları biliyorum.",
+            "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar.",
             "Biyolojik numuneler bana tepki veriyor... Camın ardından bana yöneliyorlar.",
             "Hata yapıyormuş gibi davranmak, insan taklit etmenin en kolay yolu.",
             "Kanımın rengi ışık altında bazen farklı bir dalga boyunda parlıyor.",
@@ -255,7 +255,7 @@ const DAILY_DIALOGUES = {
     },
     7: { // Kerem Aksoy
         human: [
-            "Ağır çelik yelek sırtımı mahvetti, 8 saat ayakta nöbet tutmak çok zor.",
+            "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum.",
             "Telsizden sürekli parazit geliyor, bataryası da çabuk bitiyor.",
             "Dün gece alt koridordan bir tıkırtı geldi, fareymiş ama ödüm koptu.",
             "Silahımın bakımını yaptım, umarım burada onu hiç kullanmak zorunda kalmam.",
@@ -264,7 +264,7 @@ const DAILY_DIALOGUES = {
             "Son nöbet... Kapı açıldığı an arkama bile bakmadan çıkacağım."
         ],
         anomaly: [
-            "Gözlerimi kırpmadan 6 saat boyunca koridorun son noktasına odaklanabiliyorum.",
+            "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum.",
             "Karanlık köşelerde bekleyen şeylerin silüetleri benimle aynı frekansta.",
             "Silah taşımak komik bir formalite... Tehdit algısı içeriden geliyor.",
             "Dün gece nöbet defterine yazdığım saatler gerçek zamanla uyuşmuyor.",
@@ -275,7 +275,7 @@ const DAILY_DIALOGUES = {
     },
     8: { // Asistan Elif
         human: [
-            "Tüp raflarını temizledim, kimyasal kokusundan hafif başım dönüyor.",
+            "...",
             "Dr. Kaya bugün çok gergindi, raporları üç kez baştan kontrol ettirdi.",
             "Yatakhane çok soğuk, gece iki battaniyeyle bile zor ısındım.",
             "Santrifüj cihazı garip sesler çıkarıyor, arıza yapacak diye korkuyorum.",
@@ -304,7 +304,7 @@ const DAILY_DIALOGUES = {
             "Son analizler bitti... Bir an önce dış dünyadaki normal hayatıma dönmeliyim."
         ],
         anomaly: [
-            "İnsan genomundaki kod fazlalıkları temizlendiğinde geriye saf düzen kalıyor.",
+            "İnsanlar genetik olarak çok ezik varlıklar ve anomaliler onlardan daha zeki, bir nevi Homo superior oldukları için insanlar onlardan nefret ediyor sanırım.",
             "Genetik dizilimler bana müzikal bir algoritma gibi görünüyor.",
             "Bedenimdeki hücrelerin yer değiştirdiğini ve yenilendiğini izlemek büyüleyici.",
             "Dün gece kendi saç telimi inceledim... Karbon yerine silikon bağları var.",
@@ -315,7 +315,7 @@ const DAILY_DIALOGUES = {
     },
     10: { // Selin Şen
         human: [
-            "Radyasyon ölçer cihazımın pilini yeniledim, her 10 dakikada bir ötüyor.",
+            "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış.",
             "Soğutma havuzunun sıcaklığı yükselmişti, pompayı manuel açtım.",
             "Kulaklığımı takmadan reaktör katına inmişim, kulaklarım patlayacaktı.",
             "Sıcaktan üniformam sırılsıklam oldu, duş alacak vaktim bile olmadı.",
@@ -324,7 +324,7 @@ const DAILY_DIALOGUES = {
             "Tahliye öncesi ana şebekeyi kilitledim, görevimi tamamladım."
         ],
         anomaly: [
-            "Reaktörün yaydığı radyasyon dalgaları bana enerji veriyor, çok canlı hissediyorum.",
+            "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış.",
             "Soğutma havuzundaki suyun yaydığı mavi ışık (Cherenkov) tam göz rengimde.",
             "Sıcaklık 80 dereceye çıksa bile ter bezlerimin tepki vermemesi harika.",
             "Çekirdeğin içindeki atomik reaksiyonların sesini kelimelere dökebilirim.",
@@ -335,7 +335,7 @@ const DAILY_DIALOGUES = {
     },
     11: { // Psikolog Merve
         human: [
-            "Personelin çoğunda klostrofobi ve paranoya belirtileri tavan yapmış durumda.",
+            "Anomalilerin varlığı beni tedirgin etmiyor, bence biz onları daha iyi anlayabiliriz ve anlarsak belki de ortak yönlerimizin daha fazla olduğunu öğrenebiliriz. Bu beni heyecanlandırıyor ama halkı neden korkuttuğunu da anlayabiliyorum.",
             "Bugün 4 kişiyi dinledim, herkesin derdini dinlemek benim de enerjimi tüketti.",
             "Geceleri yatarken kapımı iki kere kilitliyorum, kendimi güvende hissetmiyorum.",
             "Kahveme şeker atmayı unutmuşum, kafam o kadar dolu ki.",
@@ -364,7 +364,7 @@ const DAILY_DIALOGUES = {
             "Tahliye frekansını açık bıraktım, kapılar açılınca ilk ben çıkacağım."
         ],
         anomaly: [
-            "Telsizdeki cızırtıların arasında bana özel gönderilen şifreli bir frekans var.",
+            "İşime son verilmeden 1 ay önce telsizler sürekli başımı ağrıtmaya başlıyordu, sanki başımın içinden kablolar geçiyor da onunla oynuyor gibilerdi.",
             "Anten olmadan da manyetik sinyalleri kafatasımın içinde duyabiliyorum.",
             "Dış dünyadan gelen sinyaller artık sahte ve anlamsız geliyor.",
             "0.45 MHz bandında tesisin altından gelen sürekli bir yayın var, dinliyorum.",
@@ -375,7 +375,7 @@ const DAILY_DIALOGUES = {
     },
     13: { // Kimyager Sinem
         human: [
-            "Hava filtrelerindeki toksin oranını ölçtüm, hafif bir karbonmonoksit artışı var.",
+            "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim.",
             "Asit tüpünü tutarken eldivenim delindi sandım, yüreğim ağzıma geldi.",
             "Gözlerim kimyasal buhardan yanıyor, koruyucu maskem eskidi galiba.",
             "Reaktif maddeleri soğuk dolaba kilitledim, kaza çıkmaması için dikkat şart.",
@@ -384,7 +384,7 @@ const DAILY_DIALOGUES = {
             "Son numuneleri güvenli kasaya kaldırdım, eve dönünce sadece uyuyacağım."
         ],
         anomaly: [
-            "Siyanür ve cıva bileşenleri koklandığında ferahlatıcı bir his veriyor.",
+            "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim.",
             "Bedenimdeki biyolojik sıvıların pH değeri 2.5 seviyesinde sabitlendi.",
             "Toksik gazların ciğerlerime dolması nefes alma ihtiyacımı ortadan kaldırıyor.",
             "Kimyasal bileşiklerin moleküler yapısını tadarak analiz edebiliyorum.",
@@ -395,7 +395,7 @@ const DAILY_DIALOGUES = {
     },
     14: { // Aylin Koç
         human: [
-            "Günlük personel giriş çıkış tablolarını işledim, excel dosyaları gözümü kör etti.",
+            "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz.",
             "Sırtım sandalyede oturmaktan tutuldu, biraz esneme hareketi yapmam gerek.",
             "Log kayıtlarında bir personelin gece giriş saati kayıptı, sistemsel bir hata sanırım.",
             "Klavyemin bazı tuşları basmıyor, teknik servise haber verdim.",
@@ -404,7 +404,7 @@ const DAILY_DIALOGUES = {
             "Tüm veri yedeklerini harici diske aktardım, görevimi bitirdim."
         ],
         anomaly: [
-            "Veri tablolarındaki sayıların arasında gizli bir koordinat matrisi oluşuyor.",
+            "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz.",
             "Gözlerimi ekrandan ayırmadan saniyede 10 bin satır kodu tarayabiliyorum.",
             "Sistemde silinmiş gibi görünen bazı isimler aslında hiç var olmamış.",
             "İnsanların hesaplama yaparken bu kadar çok hata yapması kabul edilemez.",
