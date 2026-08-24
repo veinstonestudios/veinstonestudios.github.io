@@ -13,7 +13,7 @@ const FATIGUE_DAYS = 2;      // two days of rest after a mission
 const ROSTER_SIZE = 21;      // 10 males + 11 females
 
 // ---- Electric chair -----------------------------------------------------
-const EXECUTION_START_DAY = 3;
+const EXECUTION_START_DAY = 2;
 const EXECUTIONS_PER_DAY = 1;
 
 // ---- Anomaly riot -------------------------------------------------------
@@ -126,16 +126,8 @@ function getReadingColor(reading) {
 // ==========================================
 // ARRIVAL & NATURE GENERATION
 // ==========================================
-// 21 Personnel: Day 1: 4 | Day 2: 2 | Days 3-7: 3 per day
-const ARRIVAL_SCHEDULE = [
-    1, 1, 1, 1,
-    2, 2,
-    3, 3, 3,
-    4, 4, 4,
-    5, 5, 5,
-    6, 6, 6,
-    7, 7, 7
-];
+// 21 Personnel Pool (Bench: 21, Active Facility Cap: 14)
+const DAILY_ARRIVAL_QUOTA = { 1: 4, 2: 2, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3 };
 
 // Kesin Kimlikler:
 // Kesin Anomaliler (8): Murat Çelik (2), Burak Demir (5), Mert Kurt (6), Kerem Aksoy (7), Dr. Zeynep (9), Psikolog Merve (11), Derya Aydın (12), Deniz Korkmaz (21)
@@ -151,7 +143,7 @@ function assignNatures(characters) {
         } else if (GUARANTEED_HUMANS.includes(p.id)) {
             p.isAnomaly = false;
         } else {
-            p.isAnomaly = Math.random() < 0.30;
+            p.isAnomaly = Math.random() < 0.50;
         }
         return p;
     });
@@ -159,13 +151,10 @@ function assignNatures(characters) {
 
 function generateManifest() {
     const characters = assignNatures(INITIAL_PERSONNEL.map(p => ({ ...p })));
-    const shuffledCharacters = shuffle(characters);
-    const shuffledArrivals = shuffle(ARRIVAL_SCHEDULE);
-
-    return shuffledCharacters.map((person, i) => {
+    return characters.map(person => {
         return {
             ...person,
-            arrivalDay: shuffledArrivals[i],
+            arrivalDay: null,
             reading: person.isAnomaly ? drawAnomalyReading() : drawHumanReading(),
             isMet: false,
             isTested: false,
@@ -488,7 +477,7 @@ let gameState = {
 // Only people who have already reported to the facility exist as far as the
 // player is concerned.
 function presentPersonnel() {
-    return gameState.manifest.filter(p => p.arrivalDay <= gameState.day);
+    return gameState.manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= gameState.day);
 }
 
 function findPerson(personId) {
@@ -545,7 +534,7 @@ function executionsLeft() {
 }
 
 function canExecuteToday() {
-    return false; // Disabled / commented out: gameState.day >= EXECUTION_START_DAY;
+    return gameState.day >= EXECUTION_START_DAY;
 }
 
 // Checked after anything that changes the living roster or the mission record.
@@ -658,10 +647,16 @@ function pickReport(isSuccess) {
 // LIFECYCLE
 // ==========================================
 function initGame() {
+    const rawManifest = generateManifest();
+    const pool = shuffle([...rawManifest]);
+    pool.slice(0, 4).forEach(p => { p.arrivalDay = 1; });
+    const benchIds = pool.slice(4).map(p => p.id);
+
     gameState = {
         day: 1,
         stage: STAGE.INTRO,
-        manifest: generateManifest(),
+        manifest: rawManifest,
+        bench: benchIds,
         meetsUsed: 0,
         testsUsed: 0,
         executionsUsed: 0,
@@ -669,8 +664,8 @@ function initGame() {
         day3BriefingShown: false,
         selectedTeam: [],
         tiredMap: {},
-        missionStats: { success: 0, fail: 0, total: 0, deaths: 0 },
-        lastArrivals: [],
+        missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
+        lastArrivals: pool.slice(0, 4).map(p => p.id),
         newlyInterred: [],
         revealPersonId: null
     };
@@ -719,7 +714,6 @@ function advanceStage() {
             break;
 
         case STAGE.TESTING:
-            /*
             if (canExecuteToday()) {
                 gameState.stage = STAGE.EXECUTION;
                 logEvent("İnfaz aşaması açıldı. Elektrikli sandalye kullanıma hazır.", "system");
@@ -727,9 +721,6 @@ function advanceStage() {
                 gameState.stage = STAGE.DISPATCH;
                 logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
             }
-            */
-            gameState.stage = STAGE.DISPATCH;
-            logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
             break;
 
         case STAGE.EXECUTION:
@@ -774,9 +765,18 @@ function nextDay() {
     gameState.testsUsed = 0;
     gameState.executionsUsed = 0;
     gameState.stage = STAGE.ARRIVAL;
-    gameState.lastArrivals = gameState.manifest
-        .filter(p => p.arrivalDay === gameState.day)
-        .map(p => p.id);
+
+    // Refill up to 14 active living capacity in the facility from the 21-person bench
+    const livingCount = gameState.manifest.filter(p => p.arrivalDay && !p.isDead).length;
+    const freeSlots = Math.max(0, 14 - livingCount);
+    const quota = DAILY_ARRIVAL_QUOTA[gameState.day] || 3;
+    const bringCount = Math.min(quota, freeSlots, gameState.bench.length);
+    const newArrivalIds = gameState.bench.splice(0, bringCount);
+    newArrivalIds.forEach(id => {
+        const p = findPerson(id);
+        if (p) p.arrivalDay = gameState.day;
+    });
+    gameState.lastArrivals = newArrivalIds;
 
     // Yesterday's losses are carried down to the records section this morning,
     // with an animation so the player sees exactly who left the roster.
@@ -790,12 +790,11 @@ function nextDay() {
     // New arrivals can themselves tip the balance into a riot.
     if (checkCatastrophe()) return;
 
-    /*
-    // Day 3 briefing disabled
-    if (gameState.day === RIOT_START_DAY && !gameState.day3BriefingShown) {
+    if (gameState.day === EXECUTION_START_DAY && !gameState.day3BriefingShown) {
         gameState.day3BriefingShown = true;
+        const briefingModal = document.getElementById("day3-briefing-modal");
+        if (briefingModal) briefingModal.classList.remove("hidden");
     }
-    */
 }
 
 // ==========================================
@@ -805,7 +804,7 @@ function handleCardClick(personId) {
     switch (gameState.stage) {
         case STAGE.MEETING:   meetPerson(personId); break;
         case STAGE.TESTING:   testPerson(personId); break;
-        // case STAGE.EXECUTION: executePerson(personId); break; // Disabled
+        case STAGE.EXECUTION: executePerson(personId); break;
         case STAGE.DISPATCH:  toggleTeamMember(personId); break;
         default: break;
     }
@@ -813,7 +812,7 @@ function handleCardClick(personId) {
 
 function meetPerson(personId) {
     const person = findPerson(personId);
-    if (!person || person.arrivalDay > gameState.day) return;
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
 
     if (gameState.stage !== STAGE.MEETING) return;
     if (person.isDead) return;
@@ -838,7 +837,7 @@ function meetPerson(personId) {
 
 function testPerson(personId) {
     const person = findPerson(personId);
-    if (!person || person.arrivalDay > gameState.day) return;
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
 
     if (gameState.stage !== STAGE.TESTING) return;
 
@@ -876,7 +875,7 @@ function testPerson(personId) {
 // pressure; removing a human makes it worse and costs a mission asset.
 function executePerson(personId) {
     const person = findPerson(personId);
-    if (!person || person.arrivalDay > gameState.day) return;
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
     if (gameState.stage !== STAGE.EXECUTION) return;
 
     if (person.isDead) {
@@ -900,11 +899,11 @@ function executePerson(personId) {
 
     if (person.isAnomaly) {
         gameState.missionStats.anomaliesPurged = (gameState.missionStats.anomaliesPurged || 0) + 1;
-        logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyeye oturtuldu. Doku çözüldü — ANOMALİ doğrulandı.`, "success");
     } else {
         gameState.missionStats.humansExecuted = (gameState.missionStats.humansExecuted || 0) + 1;
-        logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyeye oturtuldu. Tamamen İNSANDI.`, "fail");
     }
+
+    logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyede infaz edildi. (Gerçek kimliği gizli kaldı)`, "action");
 
     // Remove them from any pending selection.
     const idx = gameState.selectedTeam.indexOf(personId);
@@ -917,7 +916,7 @@ function executePerson(personId) {
 
 function toggleTeamMember(personId) {
     const person = findPerson(personId);
-    if (!person || person.arrivalDay > gameState.day) return;
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
 
     if (gameState.stage !== STAGE.DISPATCH) return;
 
@@ -1125,7 +1124,7 @@ function buildRosterCard(person, stage) {
     card.dataset.id = person.id;
 
     const genderClass = person.gender === "Erkek" ? "male" : "female";
-    const avatarDisplay = person.isExecuted ? "⚡" : (isDead ? "☠️" : (person.isMet ? person.avatar : "❓"));
+    const avatarDisplay = person.isExecuted ? "⚡" : (isDead ? "🌫️" : (person.isMet ? person.avatar : "❓"));
 
     let readingHtml = "";
     if (person.isTested && !isDead) {
@@ -1153,9 +1152,7 @@ function buildRosterCard(person, stage) {
 
     let tagsHtml = "";
     if (person.isExecuted) {
-        tagsHtml += person.isAnomaly
-            ? `<span class="tag tag-verified-anomaly">⚡ ANOMALİYDİ</span>`
-            : `<span class="tag tag-verified-human">⚡ İNSANDI</span>`;
+        tagsHtml += `<span class="tag tag-executed">⚡ İnfaz Edildi</span>`;
     } else if (person.isMissing || isDead) {
         tagsHtml += `<span class="tag tag-missing">🌫️ Kayıplara Karıştı</span>`;
     } else if (!person.isMet) {
@@ -1197,7 +1194,6 @@ function buildRecordCard(person, arrivingIndex) {
     card.className = [
         "record-card",
         person.isExecuted ? "record-executed" : (person.isMissing ? "record-missing" : "record-lost"),
-        person.isAnomaly ? "record-anomaly" : "record-human",
         isArriving ? "record-arriving" : ""
     ].filter(Boolean).join(" ");
     card.dataset.id = person.id;
@@ -1207,11 +1203,8 @@ function buildRecordCard(person, arrivingIndex) {
         card.style.animationDelay = `${arrivingIndex * 260}ms`;
     }
 
-    // Everything down here is confirmed
-    const verdict = person.isAnomaly
-        ? `<span class="record-verdict verdict-was-anomaly">ANOMALİ</span>`
-        : `<span class="record-verdict verdict-was-human">İNSAN</span>`;
-
+    // Keep true identity hidden in records drawer
+    const verdict = `<span class="record-verdict verdict-hidden">GİZLİ</span>`;
     const cause = person.isExecuted
         ? `<span class="record-cause">⚡ İnfaz</span>`
         : `<span class="record-cause">🌫️ Kayıp</span>`;
@@ -1258,13 +1251,13 @@ function renderPersonnel() {
             records.appendChild(buildRecordCard(person, arrivingIndex));
         });
 
-        // Summary chips at the top of the records drawer.
+        // Summary chips at the top of the records drawer (nature neutral).
         const summary = document.getElementById("records-summary");
-        const anomaliesLost = interred.filter(p => p.isAnomaly).length;
-        const humansLost = interred.length - anomaliesLost;
+        const executedCount = interred.filter(p => p.isExecuted).length;
+        const missingCount = interred.length - executedCount;
         summary.innerHTML = `
-            <span class="records-stat anomaly">⚡ ${anomaliesLost} Anomali Çıkarıldı</span>
-            <span class="records-stat human">👤 ${humansLost} İnsan Kaybedildi</span>
+            <span class="records-stat">⚡ ${executedCount} İnfaz</span>
+            <span class="records-stat">🌫️ ${missingCount} Kayıp</span>
         `;
     }
 }
@@ -1288,10 +1281,17 @@ function renderStagePanel() {
 
     // Advance button
     const advanceBtn = document.getElementById("btn-advance-stage");
-    const nextInfo = STAGE_INFO[stage];
-    if (nextInfo && nextInfo.next) {
+    let nextText = null;
+    if (stage === STAGE.TESTING) {
+        nextText = canExecuteToday() ? "İNFAZ AŞAMASINA GEÇ" : "GÖREV AŞAMASINA GEÇ";
+    } else {
+        const nextInfo = STAGE_INFO[stage];
+        nextText = nextInfo ? nextInfo.next : null;
+    }
+
+    if (nextText) {
         advanceBtn.classList.remove("hidden");
-        advanceBtn.textContent = nextInfo.next;
+        advanceBtn.textContent = nextText;
     } else {
         advanceBtn.classList.add("hidden");
     }
@@ -1454,21 +1454,14 @@ function showExecutionReveal(person) {
     document.getElementById("execution-reveal-name").textContent = person.name;
     document.getElementById("execution-reveal-role").textContent = person.role;
 
-    if (person.isAnomaly) {
-        verdict.textContent = "ANOMALİ DOĞRULANDI";
-        verdict.className = "execution-verdict verdict-anomaly";
-        body.innerHTML = `
-            <p>Akım verildiği anda doku bütünlüğü bozuldu. Deri altındaki yapı insan biyolojisine ait değildi.</p>
-            <p class="execution-consequence good">Tesisteki anomali sayısı bir azaldı.</p>
-        `;
-    } else {
-        verdict.textContent = "İNSANDI";
-        verdict.className = "execution-verdict verdict-human";
-        body.innerHTML = `
-            <p>Hiçbir anormallik yok. ${person.name} tamamen insandı ve tesise sadakatle hizmet ediyordu.</p>
-            <p class="execution-consequence bad">Bir insan kaybettin. Anomali dengesi senin aleyhine kaydı.</p>
-        `;
-    }
+    verdict.textContent = "⚡ İNFAZ EDİLDİ";
+    verdict.className = "execution-verdict verdict-executed";
+    body.innerHTML = `
+        <p>Personelin tesis protokolü sonlandırıldı ve kadrodan düşürüldü.</p>
+        <p class="execution-consequence" style="color: var(--text-muted);">
+            ❓ Kimlik Gizli: Anomali mi yoksa insan mı olduğu açıklanmadı.
+        </p>
+    `;
 
     modal.classList.remove("hidden");
 }
@@ -1719,7 +1712,7 @@ function bandRisk(reading) {
     return 0.00;                         // 0 anomalies, 5 humans
 }
 
-const BASE_ANOMALY_RATE = (8 + 6 * 0.3) / 21;
+const BASE_ANOMALY_RATE = (8 + 6 * 0.5) / 21;
 
 // Legitimate elimination: subtract the anomaly mass already accounted for by
 // tested people from the pool's known total, and spread the rest evenly.
@@ -1750,7 +1743,7 @@ function simulateSingleGame(botType) {
     let daysReached = 0;
 
     const rest = (p) => (tiredMap[p.id] || 0) > 0;
-    const livingOn = (day) => manifest.filter(p => p.arrivalDay <= day && !p.isDead);
+    const livingOn = (day) => manifest.filter(p => p.arrivalDay && p.arrivalDay <= day && !p.isDead);
 
     const riotOn = (day) => {
         if (day < RIOT_START_DAY) return false;
@@ -1765,30 +1758,46 @@ function simulateSingleGame(botType) {
         return (living.length - a) - a;
     };
 
+    // Initialize bench (21 total, Day 1: 4, Max active in facility: 14)
+    const pool = shuffle([...manifest]);
+    pool.slice(0, 4).forEach(p => { p.arrivalDay = 1; });
+    const bench = pool.slice(4).map(p => p.id);
+
     for (let day = 1; day <= TOTAL_DAYS; day++) {
         daysReached = day;
+
+        if (day > 1) {
+            const living = manifest.filter(p => p.arrivalDay && !p.isDead).length;
+            const freeSlots = Math.max(0, 14 - living);
+            const quota = DAILY_ARRIVAL_QUOTA[day] || 3;
+            const bringCount = Math.min(quota, freeSlots, bench.length);
+            const incoming = bench.splice(0, bringCount);
+            incoming.forEach(id => {
+                const p = manifest.find(x => x.id === id);
+                if (p) p.arrivalDay = day;
+            });
+        }
 
         // Arrivals can themselves tip the balance.
         if (riotOn(day)) { endReason = "riot"; break; }
 
-        const present = manifest.filter(p => p.arrivalDay <= day && !p.isDead);
+        const present = manifest.filter(p => p.arrivalDay && p.arrivalDay <= day && !p.isDead);
 
         // ---- MEETING ----
         let unmet = present.filter(p => !p.isMet);
-        unmet = botType === "random" ? shuffle(unmet) : unmet.sort((a, b) => a.arrivalDay - b.arrivalDay);
+        unmet = botType === "random" ? shuffle(unmet) : unmet.sort((a, b) => (a.arrivalDay || 1) - (b.arrivalDay || 1));
         unmet.slice(0, MEETS_PER_DAY).forEach(p => { p.isMet = true; });
 
         // ---- TESTING ----
         if (botType !== "random") {
             let testable = present.filter(p => p.isMet && !p.isTested && !rest(p));
-            testable = (botType === "tester") ? shuffle(testable) : testable.sort((a, b) => a.arrivalDay - b.arrivalDay);
+            testable = (botType === "tester") ? shuffle(testable) : testable.sort((a, b) => (a.arrivalDay || 1) - (b.arrivalDay || 1));
             testable.slice(0, testsForDay(day)).forEach(p => { p.isTested = true; });
         }
 
-        // ---- EXECUTION (Disabled in game) ----
-        /*
+        // ---- EXECUTION (Day 2+) ----
         if (day >= EXECUTION_START_DAY && botType !== "random") {
-            const candidates = manifest.filter(p => p.arrivalDay <= day && !p.isDead && p.isMet && p.isTested);
+            const candidates = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.isMet && p.isTested);
             let target = null;
             const proven = candidates.filter(p => p.reading >= 70).sort((a, b) => b.reading - a.reading);
             if (proven.length) {
@@ -1804,10 +1813,9 @@ function simulateSingleGame(botType) {
                 if (riotOn(day)) { endReason = "riot"; break; }
             }
         }
-        */
 
         // ---- DISPATCH ----
-        const deployable = manifest.filter(p => p.arrivalDay <= day && !p.isDead && p.isMet && !rest(p));
+        const deployable = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.isMet && !rest(p));
         const teamSize = Math.max(1, Math.min(dispatchSizeForDay(day), Math.max(1, deployable.length)));
 
         let team = [];

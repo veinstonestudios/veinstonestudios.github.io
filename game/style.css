@@ -2024,6 +2024,22 @@ body {
     padding: 11px;
     border-radius: var(--radius-sm);
 }
+.verdict-executed {
+    color: #e6edf3;
+    background: rgba(136, 153, 175, 0.16);
+    border: 1px solid var(--accent-cyan);
+}
+.tag-executed {
+    background-color: rgba(136, 153, 175, 0.2);
+    color: #cbd5e1;
+    border: 1px solid rgba(136, 153, 175, 0.4);
+    font-weight: 700;
+}
+.verdict-hidden {
+    color: var(--text-muted);
+    background: rgba(136, 153, 175, 0.1);
+    border: 1px solid rgba(136, 153, 175, 0.3);
+}
 .verdict-anomaly {
     color: #ff8b87;
     background: rgba(218, 54, 51, 0.16);
