@@ -137,13 +137,18 @@ const GUARANTEED_ANOMALIES = [2, 5, 6, 7, 9, 11, 12, 21];
 const GUARANTEED_HUMANS = [3, 10, 13, 14, 16, 17, 18];
 
 function assignNatures(characters) {
+    // 8 fixed anomalies, 7 fixed humans, 6 random characters
+    // To ensure Days 4-7 never have 3 anomalies in a 3-person batch, at least 3 randoms are humans
+    const randomChoices = shuffle([false, false, false, Math.random() < 0.5, Math.random() < 0.5, Math.random() < 0.5]);
+    let rIdx = 0;
+
     return characters.map(p => {
         if (GUARANTEED_ANOMALIES.includes(p.id)) {
             p.isAnomaly = true;
         } else if (GUARANTEED_HUMANS.includes(p.id)) {
             p.isAnomaly = false;
         } else {
-            p.isAnomaly = Math.random() < 0.50;
+            p.isAnomaly = randomChoices[rIdx++];
         }
         return p;
     });
@@ -598,30 +603,40 @@ const MISSION_ODDS = {
 };
 
 // Resolves a mission:
-// - Humans can go missing (loss chance).
-// - Anomalies have a 50% chance to escape (reported as missing/kayıplara karıştı).
+// - Humans can be lost (loss chance). If any human dies/lost, mission is an automatic FAILURE.
+// - Anomalies have a 60% chance to escape (reported as haber alınamadı).
+// - If all team members are lost, mission is an automatic FAILURE.
 function resolveMission(team) {
     const size = team.length;
     const anomalyCount = team.filter(p => p.isAnomaly).length;
     const odds = (MISSION_ODDS[size] && MISSION_ODDS[size][anomalyCount]) || { successChance: 0, lossChance: 0 };
 
-    const isSuccess = Math.random() < odds.successChance;
     const missingPeople = [];
 
-    // Humans going missing
+    // 1. Calculate human loss risk first
     const humans = team.filter(p => !p.isAnomaly);
+    let humanLost = false;
     if (humans.length > 0 && Math.random() < odds.lossChance) {
         const lostHuman = humans[Math.floor(Math.random() * humans.length)];
         missingPeople.push(lostHuman);
+        humanLost = true;
     }
 
-    // Anomalies escaping / going missing (60% chance each)
+    // 2. Anomalies escaping (60% chance each)
     const anomalies = team.filter(p => p.isAnomaly);
     anomalies.forEach(anomaly => {
         if (Math.random() < 0.60) {
             missingPeople.push(anomaly);
         }
     });
+
+    // 3. Determine success: if human lost or all team lost -> FAIL; otherwise roll successChance
+    let isSuccess = false;
+    if (humanLost || missingPeople.length === team.length) {
+        isSuccess = false;
+    } else {
+        isSuccess = Math.random() < odds.successChance;
+    }
 
     return { isSuccess, missingPeople };
 }
@@ -644,18 +659,70 @@ function pickReport(isSuccess) {
 }
 
 // ==========================================
+// ARRIVAL SCRIPTING & BENCH MANAGEMENT
+// ==========================================
+// Day 1: 3 Humans, 1 Anomaly (4 Total)
+// Day 2: 2 Anomalies (2 Total)
+// Day 3: 3 Humans (3 Total)
+// Days 4-7: Max 2 anomalies per 3-person batch (never 3 anomalies together)
+function setupArrivalPools(rawManifest) {
+    const humans = shuffle(rawManifest.filter(p => !p.isAnomaly));
+    const anomalies = shuffle(rawManifest.filter(p => p.isAnomaly));
+
+    // Day 1: 3 Humans, 1 Anomaly
+    const day1 = [humans.pop(), humans.pop(), humans.pop(), anomalies.pop()];
+    shuffle(day1).forEach(p => { p.arrivalDay = 1; });
+
+    // Day 2: 2 Anomalies
+    const day2 = [anomalies.pop(), anomalies.pop()];
+
+    // Day 3: 3 Humans
+    const day3 = [humans.pop(), humans.pop(), humans.pop()];
+
+    // Days 4-7 batches (each up to 3 people)
+    const remainingHumans = [...humans];
+    const remainingAnomalies = [...anomalies];
+    const dayBatches = [[], [], [], []];
+
+    // Guarantee at least 1 human in each batch as long as humans remain (never 3 anomalies)
+    for (let b = 0; b < 4; b++) {
+        if (remainingHumans.length > 0) {
+            dayBatches[b].push(remainingHumans.pop());
+        }
+    }
+
+    // Fill remaining slots in batches with leftover pool
+    const leftover = shuffle([...remainingHumans, ...remainingAnomalies]);
+    for (let b = 0; b < 4; b++) {
+        while (dayBatches[b].length < 3 && leftover.length > 0) {
+            dayBatches[b].push(leftover.pop());
+        }
+    }
+
+    const benchQueue = [
+        ...shuffle(day2),
+        ...shuffle(day3),
+        ...dayBatches.flatMap(batch => shuffle(batch))
+    ];
+
+    return {
+        manifest: rawManifest,
+        day1Ids: day1.map(p => p.id),
+        benchIds: benchQueue.map(p => p.id)
+    };
+}
+
+// ==========================================
 // LIFECYCLE
 // ==========================================
 function initGame() {
     const rawManifest = generateManifest();
-    const pool = shuffle([...rawManifest]);
-    pool.slice(0, 4).forEach(p => { p.arrivalDay = 1; });
-    const benchIds = pool.slice(4).map(p => p.id);
+    const { manifest, day1Ids, benchIds } = setupArrivalPools(rawManifest);
 
     gameState = {
         day: 1,
         stage: STAGE.INTRO,
-        manifest: rawManifest,
+        manifest: manifest,
         bench: benchIds,
         meetsUsed: 0,
         testsUsed: 0,
@@ -665,7 +732,7 @@ function initGame() {
         selectedTeam: [],
         tiredMap: {},
         missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
-        lastArrivals: pool.slice(0, 4).map(p => p.id),
+        lastArrivals: day1Ids,
         newlyInterred: [],
         revealPersonId: null
     };
@@ -977,7 +1044,7 @@ function dispatchMission() {
             person.isDead = true;
             person.isMissing = true;
             person.diedOnDay = gameState.day;
-            explanation += ` 🌫️ ${person.name} operasyon sırasında kayıplara karıştı.`;
+            explanation += ` 🌫️ ${person.name} operasyon sırasında kayboldu (haber alınamadı).`;
         });
     }
 
@@ -996,7 +1063,7 @@ function dispatchMission() {
         } else {
             gameState.missionStats.humansMissing = (gameState.missionStats.humansMissing || 0) + 1;
         }
-        logEvent(`🌫️ KAYIP: ${person.name} sahada kayıplara karıştı.`, "fail");
+        logEvent(`🌫️ KAYIP: ${person.name} adlı personelden haber alınamadı.`, "fail");
     });
 
     gameState.lastOutcome = { isSuccess, explanation, team, missingPeople };
@@ -1154,7 +1221,7 @@ function buildRosterCard(person, stage) {
     if (person.isExecuted) {
         tagsHtml += `<span class="tag tag-executed">⚡ İnfaz Edildi</span>`;
     } else if (person.isMissing || isDead) {
-        tagsHtml += `<span class="tag tag-missing">🌫️ Kayıplara Karıştı</span>`;
+        tagsHtml += `<span class="tag tag-missing">🌫️ Haber Alınamadı</span>`;
     } else if (!person.isMet) {
         tagsHtml += `<span class="tag tag-not-met">Bilinmiyor</span>`;
     } else {
@@ -1480,7 +1547,7 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
         const row = document.createElement("div");
         row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
         const statusBadge = isMissing
-            ? `<span class="badge badge-missing">🌫️ Kayıplara Karıştı</span>`
+            ? `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`
             : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü</span>`;
         row.innerHTML = `<span>${isMissing ? "🌫️" : person.avatar} <strong>${person.name}</strong> (${person.role})</span>${statusBadge}`;
         breakdownList.appendChild(row);
@@ -1519,8 +1586,8 @@ function showGameOver(reason = "complete") {
         Ulaşılan Gün: ${gameState.day} / ${TOTAL_DAYS}<br>
         Başarılı Görev: ${success} / ${total} (%${rate})<br>
         Başarısız Görev: ${gameState.missionStats.fail} / ${MAX_MISSION_FAILURES}<br>
-        Kayıplara Karışan İnsan: ${humansMissing}<br>
-        Kayıplara Karışan Anomali: ${anomaliesMissing}<br>
+        Haber Alınamayan İnsan: ${humansMissing}<br>
+        Haber Alınamayan Anomali: ${anomaliesMissing}<br>
         İnfaz Edilen Anomali: ${purged}<br>
         İnfaz Edilen İnsan: ${wrongful}<br>
         Hayatta Kalan: ${counts.humans} insan / ${counts.anomalies} anomali
@@ -1758,10 +1825,9 @@ function simulateSingleGame(botType) {
         return (living.length - a) - a;
     };
 
-    // Initialize bench (21 total, Day 1: 4, Max active in facility: 14)
-    const pool = shuffle([...manifest]);
-    pool.slice(0, 4).forEach(p => { p.arrivalDay = 1; });
-    const bench = pool.slice(4).map(p => p.id);
+    // Initialize scripted arrivals and bench (21 total, Day 1: 4, Max active in facility: 14)
+    const { benchIds } = setupArrivalPools(manifest);
+    const bench = [...benchIds];
 
     for (let day = 1; day <= TOTAL_DAYS; day++) {
         daysReached = day;
