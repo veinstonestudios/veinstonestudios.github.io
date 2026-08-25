@@ -58,27 +58,27 @@ const STAGE_INFO = {
 // ---- 21 Characters (10 Erkek, 11 Kız) -----------------------------------
 const INITIAL_PERSONNEL = [
     { id: 1,  name: "Dr. Kaya",         gender: "Erkek", role: "Baş Araştırmacı",       avatar: "👨‍🔬", dialogue: "Araştırmalarım sırasında anomalilerin insanların en çok öfke duygusunu çok iyi taklit ettiklerini öğrendim." },
-    { id: 2,  name: "Murat Çelik",      gender: "Erkek", role: "Güvenlik Şefi",         avatar: "👮‍♂️", dialogue: "Küçükken hep pizza kuryesi olmak istemiştim, küçüklük hayallerimi gerçekleştirdiğim için kendimden gurur duyuyorum. Sana bir şey söyleyeyim mi? Ben kariyerim boyunca hiçbir pizzayı geç götürmedim." },
-    { id: 3,  name: "Can Yılmaz",       gender: "Erkek", role: "Sistem Mühendisi",      avatar: "👨‍💻", dialogue: "Ben hep güvenlik sistemlerinde çalıştım, kurduğum her güvenlik sistemi %100 güvenlidir. Burayı ben dizayn etmedim ve bu beni tedirgin ediyor." },
+    { id: 2,  name: "Murat Çelik",      gender: "Erkek", role: "Güvenlik Şefi",         avatar: "👮‍♂️", dialogue: "Rüyamda, gökyüzünden yağan siyah balıkların altında çocukluğumun evini sırtında taşıyan dev bir kediyi takip ediyordum." },
+    { id: 3,  name: "Can Yılmaz",       gender: "Erkek", role: "Sistem Mühendisi",      avatar: "👨‍💻", dialogue: "Ailemden uzakta çalışmak beni çok üzüyor. Ama onları doyurmak için bunu yapmak zorundayım." },
     { id: 4,  name: "Dr. Arda",         gender: "Erkek", role: "Tıbbi Sorumlu",         avatar: "👨‍⚕️", dialogue: "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere." },
-    { id: 5,  name: "Burak Demir",      gender: "Erkek", role: "Tesis Teknisyeni",      avatar: "👷‍♂️", dialogue: "İstesem buradan kaçabilirim ama insanlığımı size kanıtlamak istiyorum. Dolayısıyla kaçmayacağım ama istesem kaçabilirim." },
+    { id: 5,  name: "Burak Demir",      gender: "Erkek", role: "Tesis Teknisyeni",      avatar: "👷‍♂️", dialogue: "Bütün gün insanların yarım kalmış fikirlerini dinleyip, onlar daha anlatmadan ne demek istediklerini anlamaya çalıştım." },
     { id: 6,  name: "Mert Kurt",        gender: "Erkek", role: "Stajyer Biyolog",       avatar: "🧑‍🔬", dialogue: "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar." },
-    { id: 7,  name: "Kerem Aksoy",      gender: "Erkek", role: "Muhafız",               avatar: "💂‍♂️", dialogue: "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum." },
+    { id: 7,  name: "Kerem Aksoy",      gender: "Erkek", role: "Muhafız",               avatar: "💂‍♂️", dialogue: "Bütün gün insanlarla konuştum, ama bütün biraz fazla bütün… gün insanlarla, insanlarla… konuştum mu, yoksa konuşmak beni mi söyledi?" },
     { id: 8,  name: "Asistan Elif",     gender: "Kız",   role: "Laboratuvar Asistanı",  avatar: "👩‍🔬", dialogue: "..." },
-    { id: 9,  name: "Dr. Zeynep",       gender: "Kız",   role: "Genetik Uzmanı",        avatar: "👩‍⚕️", dialogue: "İnsanlar genetik olarak çok ezik varlıklar ve anomaliler onlardan daha zeki, bir nevi Homo superior oldukları için insanlar onlardan nefret ediyor sanırım." },
-    { id: 10, name: "Selin Şen",        gender: "Kız",   role: "Reaktör Teknisyeni",    avatar: "👩‍🔧", dialogue: "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış." },
-    { id: 11, name: "Psikolog Merve",   gender: "Kız",   role: "Personel Danışmanı",    avatar: "👩‍💼", dialogue: "Anomalilerin varlığı beni tedirgin etmiyor, bence biz onları daha iyi anlayabiliriz ve anlarsak belki de ortak yönlerimizin daha fazla olduğunu öğrenebiliriz. Bu beni heyecanlandırıyor ama halkı neden korkuttuğunu da anlayabiliyorum." },
-    { id: 12, name: "Derya Aydın",      gender: "Kız",   role: "Telsiz Operatörü",      avatar: "👩‍💻", dialogue: "İşime son verilmeden 1 ay önce telsizler sürekli başımı ağrıtmaya başlıyordu, sanki başımın içinden kablolar geçiyor da onunla oynuyor gibilerdi." },
+    { id: 9,  name: "Dr. Zeynep",       gender: "Kız",   role: "Genetik Uzmanı",        avatar: "👩‍⚕️", dialogue: "Bugün banyoda düşündüğümden daha fazla vakit geçirdim. Ayna karşısında ne kadar durdum hatırlamıyorum." },
+    { id: 10, name: "Selin Şen",        gender: "Kız",   role: "Reaktör Teknisyeni",    avatar: "👩‍🔧", dialogue: "Kimseyle konuşmak istemiyorum. Rahat bırak beni." },
+    { id: 11, name: "Psikolog Merve",   gender: "Kız",   role: "Personel Danışmanı",    avatar: "👩‍💼", dialogue: "Geçen hafta kronik depresyona sahip bir hastam intihara teşebbüs etti. Eğer üstüne bu kadar düşmeseydim hayatını kaybedecekti." },
+    { id: 12, name: "Derya Aydın",      gender: "Kız",   role: "Telsiz Operatörü",      avatar: "👩‍💻", dialogue: "Çok dobra olduğumu ve daha enkati olmamı söylediler. Enkat...i? Emtaki miydi yoksa emptai mi?" },
     { id: 13, name: "Kimyager Sinem",   gender: "Kız",   role: "Toksikolog",            avatar: "🧑‍🔬", dialogue: "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim." },
     { id: 14, name: "Aylin Koç",        gender: "Kız",   role: "Veri Analisti",         avatar: "👩‍💼", dialogue: "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz." },
     // Yeni 7 Karakter (3 Erkek, 4 Kız)
     { id: 15, name: "Emre Şahin",       gender: "Erkek", role: "Lojistik Sorumlusu",    avatar: "🧑‍🏭", dialogue: "İnsanlara laf anlatmaktansa anomali denilenlere laf anlatırım la havle." },
-    { id: 16, name: "Tolga Aslan",      gender: "Erkek", role: "Şarap Gurmesi",         avatar: "🍷", dialogue: "Memurcu kadınlar şarabın tam tersidir, bilmem anlatabiliyor muyum?" },
-    { id: 17, name: "Onur Ateş",        gender: "Erkek", role: "Elektrik Teknisyeni",   avatar: "👨‍🔧", dialogue: "İnsanlar genel olarak teknolojiden korkuyorlar fakat prizlerini çekebileceklerini unutuyorlar." },
+    { id: 16, name: "Tolga Aslan",      gender: "Erkek", role: "Şarap Gurmesi",         avatar: "🍷", dialogue: "B-bana kan kırmızısı bir ş-şarap getir; tek bir y-yudumda hangi üzümün, hangi f-fıçıda ne kadar beklediğini s-söyleyeyim." },
+    { id: 17, name: "Onur Ateş",        gender: "Erkek", role: "Elektrik Teknisyeni",   avatar: "👨‍🔧", dialogue: "serçe parmağımı trafo arızası gidermeye çalışırken kaybettim. elektrik akımı elimi yaktı. Teknolojik eksiklik bizi mahvetti." },
     { id: 18, name: "Ceren Yıldız",     gender: "Kız",   role: "Arşiv Sorumlusu",       avatar: "👩‍🏫", dialogue: "3 yıl önce CORE yetkilileri benden 2026-2030 arası tüm belgeleri istedi ve hala getirmediler. Arşiv borçları çok birikti." },
     { id: 19, name: "Bahar Toprak",     gender: "Kız",   role: "Botanik Uzmanı",        avatar: "👩‍🌾", dialogue: "Anomaliler dedikleri acaba bu cordyceps mantarı gibi bir şey mi yoksa tamamen farklı olan çüküyeris yarraki mi?" },
     { id: 20, name: "Işıl Demirtaş",    gender: "Kız",   role: "Radyoloji Teknisyeni",  avatar: "👩‍⚕️", dialogue: "Eski işimde bir hastaya röntgen çekerken bir gariplik fark ettik. İş arkadaşım bilmediğim bir acil durum protokolünü aradı, hastane apar topar boşaltıldı ve sonrasında hiçbir hastane beni işe almadı; sektörden tamamen kara listeye alındım." },
-    { id: 21, name: "Deniz Korkmaz",    gender: "Kız",   role: "Güvenlik Analisti",     avatar: "🧑‍💼", dialogue: "15 yıldır güvenlik işlerinde çalışıyorum. Bu konuda bir problem olursa bana sorabilirsiniz." }
+    { id: 21, name: "Deniz Korkmaz",    gender: "Kız",   role: "Güvenlik Analisti",     avatar: "🧑‍💼", dialogue: "Asgari ücrete çalışmak beni çok yoruyor. Kendime ve sevdiklerime vakit ayıramıyorum. Artık hiçbir şey için vakit yok." }
 ];
 
 // ==========================================
