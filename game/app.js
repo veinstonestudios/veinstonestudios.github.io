@@ -13,7 +13,7 @@ const FATIGUE_DAYS = 2;      // two days of rest after a mission
 const ROSTER_SIZE = 21;      // 10 males + 11 females
 
 // ---- Electric chair -----------------------------------------------------
-const EXECUTION_START_DAY = 2;
+const EXECUTION_START_DAY = 3;
 const EXECUTIONS_PER_DAY = 1;
 
 // ---- Anomaly riot -------------------------------------------------------
@@ -82,12 +82,29 @@ const INITIAL_PERSONNEL = [
 ];
 
 // ==========================================
-// INDICATOR II -- READING BANDS
+// INDICATOR II -- READING ASSIGNMENT
 // ==========================================
-const BAND_HIGH   = [70, 99];
-const BAND_MID    = [50, 69];
-const BAND_LOW    = [30, 49];
-const BAND_CLEAR  = [0, 29];
+// Sabit Karakterlerin Özel Test Değerleri:
+const FIXED_READINGS = {
+    // Kesin Anomaliler
+    2: 90,   // Murat Çelik
+    5: 60,   // Burak Demir
+    6: 68,   // Mert Kurt
+    7: 95,   // Kerem Aksoy
+    9: 100,  // Dr. Zeynep
+    11: 60,  // Psikolog Merve
+    12: 49,  // Derya Aydın (Anomali olmasına rağmen %49 - Özel İstisna)
+    21: 75,  // Deniz Korkmaz
+
+    // Kesin İnsanlar
+    3: 20,   // Can Yılmaz
+    10: 1,   // Selin Şen
+    13: 25,  // Kimyager Sinem
+    14: 35,  // Aylin Koç
+    16: 40,  // Tolga Aslan
+    17: 5,   // Onur Ateş
+    18: 7    // Ceren Yıldız
+};
 
 function shuffle(list) {
     const a = [...list];
@@ -98,22 +115,22 @@ function shuffle(list) {
     return a;
 }
 
-function drawInBand(band) {
-    return band[0] + Math.floor(Math.random() * (band[1] - band[0] + 1));
+// Rastgele Karakterler için Değer Üretimi:
+// Anomali ise %50'nin üstü (%51 - %99)
+function drawRandomAnomalyReading() {
+    return Math.floor(Math.random() * 49) + 51;
 }
 
-function drawAnomalyReading() {
-    const r = Math.random();
-    if (r < 0.45) return drawInBand(BAND_HIGH);
-    if (r < 0.80) return drawInBand(BAND_MID);
-    return drawInBand(BAND_LOW);
+// İnsan ise %50'nin altı (%1 - %49)
+function drawRandomHumanReading() {
+    return Math.floor(Math.random() * 49) + 1;
 }
 
-function drawHumanReading() {
-    const r = Math.random();
-    if (r < 0.45) return drawInBand(BAND_CLEAR);
-    if (r < 0.80) return drawInBand(BAND_LOW);
-    return drawInBand(BAND_MID);
+function getCharacterReading(person) {
+    if (FIXED_READINGS[person.id] !== undefined) {
+        return FIXED_READINGS[person.id];
+    }
+    return person.isAnomaly ? drawRandomAnomalyReading() : drawRandomHumanReading();
 }
 
 function getReadingColor(reading) {
@@ -160,7 +177,7 @@ function generateManifest() {
         return {
             ...person,
             arrivalDay: null,
-            reading: person.isAnomaly ? drawAnomalyReading() : drawHumanReading(),
+            reading: getCharacterReading(person),
             isMet: false,
             isTested: false,
             isDead: false
@@ -630,9 +647,14 @@ function resolveMission(team) {
         }
     });
 
-    // 3. Determine success: if human lost or all team lost -> FAIL; otherwise roll successChance
+    // 3. Determine success:
+    // - Tek kişilik görevlerde insan gönderilmişse, ölüp ölmemesine bakılmaksızın her zaman BAŞARILIDIR.
+    // - Tüm ekip kaybolduysa/öldüyse (kimse dönemezse) BAŞARISIZDIR.
+    // - İnsan kaybolsa bile görev başarısı ekibin başarı şansına (successChance) göre bağımsız hesaplanır.
     let isSuccess = false;
-    if (humanLost || missingPeople.length === team.length) {
+    if (size === 1 && humans.length === 1) {
+        isSuccess = true;
+    } else if (missingPeople.length === team.length) {
         isSuccess = false;
     } else {
         isSuccess = Math.random() < odds.successChance;
