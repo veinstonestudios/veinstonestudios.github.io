@@ -1160,6 +1160,24 @@ function renderStatus() {
     failEl.textContent = `${fails} / ${MAX_MISSION_FAILURES}`;
     failEl.className = "stat-value " + (fails >= MAX_MISSION_FAILURES - 1 ? "danger" : fails > 0 ? "warn" : "");
 
+    // Riot pressure -- bucketed, never exact counts. Hidden entirely before
+    // day 3, since riots cannot happen yet and an inert gauge only confuses.
+    const threatBox = document.getElementById("threat-box");
+    if (threatBox) {
+        if (gameState.day < RIOT_START_DAY) {
+            threatBox.classList.add("hidden");
+        } else {
+            threatBox.classList.remove("hidden");
+            const threat = threatLevel();
+            const threatEl = document.getElementById("threat-level");
+            if (threatEl) {
+                threatEl.textContent = threat.label;
+                threatEl.style.color = threat.color;
+            }
+            threatBox.className = "stat-box threat-box threat-" + threat.key;
+        }
+    }
+
     const present = presentPersonnel();
     const living = present.filter(p => !p.isDead);
     document.getElementById("met-count").textContent =
@@ -1420,6 +1438,14 @@ function renderStagePanel() {
         document.getElementById("execution-remaining").textContent = executionsLeft();
         const eligible = presentPersonnel().filter(p => p.isMet && !p.isDead).length;
         document.getElementById("execution-eligible").textContent = eligible;
+
+        const threat = threatLevel();
+        const box = document.getElementById("execution-threat");
+        if (box) {
+            box.textContent = `TESİS DURUMU: ${threat.label}`;
+            box.style.color = threat.color;
+            box.style.borderColor = threat.color;
+        }
     }
 
     // ---- Dispatch ----
