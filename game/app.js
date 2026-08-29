@@ -1,16 +1,19 @@
-// THE FACILITY -- 14 PERSONNEL ROSTER (7 FEMALE / 7 MALE)
+// THE FACILITY 61 -- 14 PERSONNEL ROSTER
 //
-// 14 characters: 7 Erkek, 7 Kız.
-// Each gender group gets guaranteed: 2 Anomalies + 1 Human.
-// Remaining 4 in each group: 30% Anomaly chance.
-// Total starting base: 4 Anomalies + 2 Humans, plus 8 randomized slots.
+// 14 Fixed Characters:
+// 7 Human, 5 Corrupted, 2 Random (50% Human / 50% Corrupted at new game)
 //
-// Daily arrival schedule:
-// Day 1: 4 | Day 2: 1 | Day 3: 2 | Day 4: 1 | Day 5: 2 | Day 6: 2 | Day 7: 2 (Total: 14)
+// Henry's Interview Unlock Schedule:
+// Day 1: Ted Karinsky (5), M. Cole Morgan (8), Alicia Winston (12), Bob (1)   [4 Total]
+// Day 2: Evie Hill (2), Dakota Ahmadii (3)                                    [2 Total]
+// Day 3: Hasan Kahveci (4), Katarina Jovanovic (6)                            [2 Total]
+// Day 4: Shane Smith (7), Milena Markic (9)                                   [2 Total]
+// Day 5: Paul H. Simmons (10), Sergio Galvez II. (11)                         [2 Total]
+// Day 6: PERSONEL-13 (13), PERSONEL-14 (14)                                   [2 Total]
+// Day 7: No new characters unlocked                                           [0 Total]
 
 const TOTAL_DAYS = 7;
-const FATIGUE_DAYS = 2;      // two days of rest after a mission
-const ROSTER_SIZE = 21;      // 10 males + 11 females
+const ROSTER_SIZE = 14;      // Exactly 14 Facility 61 personnel
 
 // ---- Electric chair -----------------------------------------------------
 const EXECUTION_START_DAY = 3;
@@ -47,63 +50,43 @@ const STAGE = {
 };
 
 const STAGE_INFO = {
-    arrival:   { label: "PERSONEL GİRİŞİ", clock: "08:00", next: "TANIŞMA AŞAMASINA GEÇ" },
-    meeting:   { label: "TANIŞMA",         clock: "09:00", next: "TEST AŞAMASINA GEÇ" },
-    testing:   { label: "TEST",            clock: "13:00", next: "GÖREV AŞAMASINA GEÇ" },
-    execution: { label: "İNFAZ",           clock: "15:00", next: "GÖREV AŞAMASINA GEÇ" },
-    dispatch:  { label: "GÖREV SEVKİ",     clock: "16:00", next: null },
-    report:    { label: "GÜN RAPORU",      clock: "18:00", next: null }
+    arrival:   { label: "GÖRÜŞME PROGRAMI", clock: "08:00", next: "TANIŞMA AŞAMASINA GEÇ" },
+    meeting:   { label: "TANIŞMA",          clock: "09:00", next: "TEST AŞAMASINA GEÇ" },
+    testing:   { label: "TEST",             clock: "13:00", next: "GÖREV AŞAMASINA GEÇ" },
+    execution: { label: "İNFAZ",            clock: "15:00", next: "GÖREV AŞAMASINA GEÇ" },
+    dispatch:  { label: "GÖREV SEVKİ",      clock: "16:00", next: null },
+    report:    { label: "GÜN RAPORU",       clock: "18:00", next: null }
 };
 
-// ---- 21 Characters (10 Erkek, 11 Kız) -----------------------------------
-const INITIAL_PERSONNEL = [
-    { id: 1,  name: "Dr. Kaya",         gender: "Erkek", role: "Baş Araştırmacı",       avatar: "👨‍🔬", dialogue: "Araştırmalarım sırasında anomalilerin insanların en çok öfke duygusunu çok iyi taklit ettiklerini öğrendim." },
-    { id: 2,  name: "Murat Çelik",      gender: "Erkek", role: "Güvenlik Şefi",         avatar: "👮‍♂️", dialogue: "Rüyamda, gökyüzünden yağan siyah balıkların altında çocukluğumun evini sırtında taşıyan dev bir kediyi takip ediyordum." },
-    { id: 3,  name: "Can Yılmaz",       gender: "Erkek", role: "Sistem Mühendisi",      avatar: "👨‍💻", dialogue: "Ailemden uzakta çalışmak beni çok üzüyor. Ama onları doyurmak için bunu yapmak zorundayım." },
-    { id: 4,  name: "Dr. Arda",         gender: "Erkek", role: "Tıbbi Sorumlu",         avatar: "👨‍⚕️", dialogue: "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere." },
-    { id: 5,  name: "Burak Demir",      gender: "Erkek", role: "Tesis Teknisyeni",      avatar: "👷‍♂️", dialogue: "Bütün gün insanların yarım kalmış fikirlerini dinleyip, onlar daha anlatmadan ne demek istediklerini anlamaya çalıştım." },
-    { id: 6,  name: "Mert Kurt",        gender: "Erkek", role: "Stajyer Biyolog",       avatar: "🧑‍🔬", dialogue: "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar." },
-    { id: 7,  name: "Kerem Aksoy",      gender: "Erkek", role: "Muhafız",               avatar: "💂‍♂️", dialogue: "Bütün gün insanlarla konuştum, ama bütün biraz fazla bütün… gün insanlarla, insanlarla… konuştum mu, yoksa konuşmak beni mi söyledi?" },
-    { id: 8,  name: "Asistan Elif",     gender: "Kız",   role: "Laboratuvar Asistanı",  avatar: "👩‍🔬", dialogue: "..." },
-    { id: 9,  name: "Dr. Zeynep",       gender: "Kız",   role: "Genetik Uzmanı",        avatar: "👩‍⚕️", dialogue: "Bugün banyoda düşündüğümden daha fazla vakit geçirdim. Ayna karşısında ne kadar durdum hatırlamıyorum." },
-    { id: 10, name: "Selin Şen",        gender: "Kız",   role: "Reaktör Teknisyeni",    avatar: "👩‍🔧", dialogue: "Kimseyle konuşmak istemiyorum. Rahat bırak beni." },
-    { id: 11, name: "Psikolog Merve",   gender: "Kız",   role: "Personel Danışmanı",    avatar: "👩‍💼", dialogue: "Geçen hafta kronik depresyona sahip bir hastam intihara teşebbüs etti. Eğer üstüne bu kadar düşmeseydim hayatını kaybedecekti." },
-    { id: 12, name: "Derya Aydın",      gender: "Kız",   role: "Telsiz Operatörü",      avatar: "👩‍💻", dialogue: "Çok dobra olduğumu ve daha enkati olmamı söylediler. Enkat...i? Emtaki miydi yoksa emptai mi?" },
-    { id: 13, name: "Kimyager Sinem",   gender: "Kız",   role: "Toksikolog",            avatar: "🧑‍🔬", dialogue: "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim." },
-    { id: 14, name: "Aylin Koç",        gender: "Kız",   role: "Veri Analisti",         avatar: "👩‍💼", dialogue: "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz." },
-    // Yeni 7 Karakter (3 Erkek, 4 Kız)
-    { id: 15, name: "Emre Şahin",       gender: "Erkek", role: "Lojistik Sorumlusu",    avatar: "🧑‍🏭", dialogue: "İnsanlara laf anlatmaktansa anomali denilenlere laf anlatırım la havle." },
-    { id: 16, name: "Tolga Aslan",      gender: "Erkek", role: "Şarap Gurmesi",         avatar: "🍷", dialogue: "B-bana kan kırmızısı bir ş-şarap getir; tek bir y-yudumda hangi üzümün, hangi f-fıçıda ne kadar beklediğini s-söyleyeyim." },
-    { id: 17, name: "Onur Ateş",        gender: "Erkek", role: "Elektrik Teknisyeni",   avatar: "👨‍🔧", dialogue: "serçe parmağımı trafo arızası gidermeye çalışırken kaybettim. elektrik akımı elimi yaktı. Teknolojik eksiklik bizi mahvetti." },
-    { id: 18, name: "Ceren Yıldız",     gender: "Kız",   role: "Arşiv Sorumlusu",       avatar: "👩‍🏫", dialogue: "3 yıl önce CORE yetkilileri benden 2026-2030 arası tüm belgeleri istedi ve hala getirmediler. Arşiv borçları çok birikti." },
-    { id: 19, name: "Bahar Toprak",     gender: "Kız",   role: "Botanik Uzmanı",        avatar: "👩‍🌾", dialogue: "Anomaliler dedikleri acaba bu cordyceps mantarı gibi bir şey mi yoksa tamamen farklı olan çüküyeris yarraki mi?" },
-    { id: 20, name: "Işıl Demirtaş",    gender: "Kız",   role: "Radyoloji Teknisyeni",  avatar: "👩‍⚕️", dialogue: "Eski işimde bir hastaya röntgen çekerken bir gariplik fark ettik. İş arkadaşım bilmediğim bir acil durum protokolünü aradı, hastane apar topar boşaltıldı ve sonrasında hiçbir hastane beni işe almadı; sektörden tamamen kara listeye alındım." },
-    { id: 21, name: "Deniz Korkmaz",    gender: "Kız",   role: "Güvenlik Analisti",     avatar: "🧑‍💼", dialogue: "Asgari ücrete çalışmak beni çok yoruyor. Kendime ve sevdiklerime vakit ayıramıyorum. Artık hiçbir şey için vakit yok." }
+// ---- FACILITY 61: 14 Fixed Characters -----------------------------------
+// Secret identities:
+// Green: Human (7) | Red: Corrupted (5) | Yellow: Random (2)
+const FACILITY_61_ROSTER = [
+    { id: 1,  name: "Bob",                 secretIdentity: "Human",     gender: "Erkek", role: "Tesis Teknisyeni",          avatar: "👨‍🔧", reading: 16, dialogue: "Tesisin boruları geceleri garip sesler çıkarıyor, ama bu sadece genleşme." },
+    { id: 2,  name: "Evie Hill",            secretIdentity: "Corrupted", gender: "Kız",   role: "İdari Koordinatör",         avatar: "👩‍💼", reading: 86, dialogue: "Her şey kontrol altında. Endişelenecek hiçbir şey yok, kesinlikle hiçbir şey." },
+    { id: 3,  name: "Dakota Ahmadii",       secretIdentity: "Random",    gender: "Erkek", role: "Ağ Güvenlik Uzmanı",        avatar: "🧑‍💻", reading: null, dialogue: "Sistem loglarında açıklayamadığım veri anomalileri var." },
+    { id: 4,  name: "Hasan Kahveci",        secretIdentity: "Human",     gender: "Erkek", role: "Lojistik & İaşe Sorumlusu", avatar: "👨‍🍳", reading: 19, dialogue: "Bugün sıcak çorba çıkardım. İnsan olmanın kıymetini bilmek lazım." },
+    { id: 5,  name: "Ted Karinsky",         secretIdentity: "Corrupted", gender: "Erkek", role: "Güvenlik Amiri",             avatar: "👮‍♂️", reading: 92, dialogue: "Kapılar kapalı kaldığı sürece hepimiz güvendeyiz. İçeridekiler dahil." },
+    { id: 6,  name: "Katarina Jovanovic",   secretIdentity: "Human",     gender: "Kız",   role: "Baş Biyolog",               avatar: "👩‍🔬", reading: 28, dialogue: "Hücre örneklerinde hücresel bozulma belirtileri arıyorum." },
+    { id: 7,  name: "Shane Smith",          secretIdentity: "Corrupted", gender: "Erkek", role: "Ağır Muhafız",              avatar: "💂‍♂️", reading: 78, dialogue: "Bana verilen emirleri sorgulamam. Sadece uygularım." },
+    { id: 8,  name: "M. Cole Morgan",       secretIdentity: "Human",     gender: "Erkek", role: "Arşiv Sorumlusu",           avatar: "👨‍🏫", reading: 32, dialogue: "Eski kayıtlara göre bu tesis ilk inşa edildiğinde çok daha farklıydı." },
+    { id: 9,  name: "Milena Markic",        secretIdentity: "Human",     gender: "Kız",   role: "Tesis Hekimi",              avatar: "👩‍⚕️", reading: 8,  dialogue: "Nabızları dinlerken bazen normal ritmin dışında bir şeyler duyuyorum." },
+    { id: 10, name: "Paul H. Simmons",      secretIdentity: "Corrupted", gender: "Erkek", role: "Sistem Denetçisi",          avatar: "🧑‍💼", reading: 88, dialogue: "Tesisin verimliliği her şeyden önce gelir. Duygular sadece gecikmeye yol açar." },
+    { id: 11, name: "Sergio Galvez II.",    secretIdentity: "Human",     gender: "Erkek", role: "Reaktör Operatörü",         avatar: "👨‍🔧", reading: 42, dialogue: "Çekirdekteki basınç dengede, vardiyamı sağ salim bitirmek istiyorum." },
+    { id: 12, name: "Alicia Winston",       secretIdentity: "Random",    gender: "Kız",   role: "İletişim Subayı",           avatar: "👩‍💻", reading: null, dialogue: "Dış dünyadan gelen frekanslar giderek zayıflıyor." },
+    { id: 13, name: "PERSONEL-13",          secretIdentity: "Human",     gender: "Erkek", role: "Gözlemci Birim",            avatar: "🧑‍💼", reading: 12, dialogue: "Kayıtlar güncellendi. Gözlerim üzerinizde." },
+    { id: 14, name: "PERSONEL-14",          secretIdentity: "Corrupted", gender: "Kız",   role: "Reaktif Birim",             avatar: "👤", reading: 96, dialogue: "..." }
 ];
 
-// ==========================================
-// INDICATOR II -- READING ASSIGNMENT
-// ==========================================
-// Sabit Karakterlerin Özel Test Değerleri:
-const FIXED_READINGS = {
-    // Kesin Anomaliler
-    2: 90,   // Murat Çelik
-    5: 60,   // Burak Demir
-    6: 68,   // Mert Kurt
-    7: 95,   // Kerem Aksoy
-    9: 100,  // Dr. Zeynep
-    11: 60,  // Psikolog Merve
-    12: 49,  // Derya Aydın (Anomali olmasına rağmen %49 - Özel İstisna)
-    21: 75,  // Deniz Korkmaz
-
-    // Kesin İnsanlar
-    3: 20,   // Can Yılmaz
-    10: 1,   // Selin Şen
-    13: 25,  // Kimyager Sinem
-    14: 35,  // Aylin Koç
-    16: 40,  // Tolga Aslan
-    17: 5,   // Onur Ateş
-    18: 7    // Ceren Yıldız
+// Henry's Interview Schedule per Day (All 14 are in facility from start)
+const DAILY_INTERVIEW_SCHEDULE = {
+    1: [5, 8, 12, 1],   // Ted Karinsky, M. Cole Morgan, Alicia Winston, Bob
+    2: [2, 3],          // Evie Hill, Dakota Ahmadii
+    3: [4, 6],          // Hasan Kahveci, Katarina Jovanovic
+    4: [7, 9],          // Shane Smith, Milena Markic
+    5: [10, 11],        // Paul H. Simmons, Sergio Galvez II.
+    6: [13, 14],        // PERSONEL-13, PERSONEL-14
+    7: []               // No new characters
 };
 
 function shuffle(list) {
@@ -115,22 +98,12 @@ function shuffle(list) {
     return a;
 }
 
-// Rastgele Karakterler için Değer Üretimi:
-// Anomali ise %50'nin üstü (%51 - %99)
 function drawRandomAnomalyReading() {
     return Math.floor(Math.random() * 49) + 51;
 }
 
-// İnsan ise %50'nin altı (%1 - %49)
 function drawRandomHumanReading() {
     return Math.floor(Math.random() * 49) + 1;
-}
-
-function getCharacterReading(person) {
-    if (FIXED_READINGS[person.id] !== undefined) {
-        return FIXED_READINGS[person.id];
-    }
-    return person.isAnomaly ? drawRandomAnomalyReading() : drawRandomHumanReading();
 }
 
 function getReadingColor(reading) {
@@ -140,345 +113,49 @@ function getReadingColor(reading) {
     return "var(--accent-green)";
 }
 
-// ==========================================
-// ARRIVAL & NATURE GENERATION
-// ==========================================
-// 21 Personnel Pool (Bench: 21, Active Facility Cap: 14)
-const DAILY_ARRIVAL_QUOTA = { 1: 4, 2: 2, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3 };
-
-// Kesin Kimlikler:
-// Kesin Anomaliler (8): Murat Çelik (2), Burak Demir (5), Mert Kurt (6), Kerem Aksoy (7), Dr. Zeynep (9), Psikolog Merve (11), Derya Aydın (12), Deniz Korkmaz (21)
-// Kesin İnsanlar (7): Can Yılmaz (3), Selin Şen (10), Kimyager Sinem (13), Aylin Koç (14), Tolga Aslan (16), Onur Ateş (17), Ceren Yıldız (18)
-// Geri Kalanlar (6): Dr. Kaya (1), Dr. Arda (4), Asistan Elif (8), Emre Şahin (15), Bahar Toprak (19), Işıl Demirtaş (20) -> %30 Anomali / %70 İnsan
-const GUARANTEED_ANOMALIES = [2, 5, 6, 7, 9, 11, 12, 21];
-const GUARANTEED_HUMANS = [3, 10, 13, 14, 16, 17, 18];
-
-function assignNatures(characters) {
-    // 8 fixed anomalies, 7 fixed humans, 6 random characters
-    // To ensure Days 4-7 never have 3 anomalies in a 3-person batch, at least 3 randoms are humans
-    const randomChoices = shuffle([false, false, false, Math.random() < 0.5, Math.random() < 0.5, Math.random() < 0.5]);
-    let rIdx = 0;
-
-    return characters.map(p => {
-        if (GUARANTEED_ANOMALIES.includes(p.id)) {
-            p.isAnomaly = true;
-        } else if (GUARANTEED_HUMANS.includes(p.id)) {
-            p.isAnomaly = false;
-        } else {
-            p.isAnomaly = randomChoices[rIdx++];
-        }
-        return p;
-    });
-}
-
+// Generate Manifest for a New Campaign
 function generateManifest() {
-    const characters = assignNatures(INITIAL_PERSONNEL.map(p => ({ ...p })));
-    return characters.map(person => {
+    return FACILITY_61_ROSTER.map(base => {
+        const p = { ...base };
+
+        if (p.secretIdentity === "Random") {
+            // Independent 50/50 roll for Dakota Ahmadii and Alicia Winston
+            const isCorrupted = Math.random() < 0.5;
+            p.isAnomaly = isCorrupted;
+            p.actualIdentity = isCorrupted ? "Corrupted" : "Human";
+
+            if (p.id === 3) { // Dakota Ahmadii
+                p.reading = isCorrupted ? (Math.floor(Math.random() * 15) + 72) : (Math.floor(Math.random() * 15) + 18);
+            } else if (p.id === 12) { // Alicia Winston
+                p.reading = isCorrupted ? (Math.floor(Math.random() * 15) + 65) : (Math.floor(Math.random() * 15) + 28);
+            } else {
+                p.reading = isCorrupted ? drawRandomAnomalyReading() : drawRandomHumanReading();
+            }
+        } else {
+            p.isAnomaly = p.secretIdentity === "Corrupted";
+            p.actualIdentity = p.secretIdentity;
+        }
+
         return {
-            ...person,
+            ...p,
             arrivalDay: null,
-            reading: getCharacterReading(person),
             isMet: false,
             isTested: false,
-            isDead: false
+            isDead: false,
+            isExecuted: false,
+            isMissing: false,
+            isEscaped: false,
+            status: "AKTİF",
+            diedOnDay: null
         };
     });
 }
 
+// ==========================================
+// STATE MANAGEMENT & PERSISTENCE
+// ==========================================
+const SAVE_KEY = "facility61_saved_state";
 
-// ==========================================
-// DORMANT: DAILY DIALOGUE LIBRARY
-// ==========================================
-// 196 hand-written lines (14 characters x 2 natures x 7 days). No V4 system
-// reads these yet -- kept intact so the writing is not lost if the dialogue
-// channel is restored. Characters 15-21 have no lines written yet.
-const DAILY_DIALOGUES = {
-    1: { // Dr. Kaya
-        human: [
-            "Araştırmalarım sırasında anomalilerin insanların en çok öfke duygusunu çok iyi taklit ettiklerini öğrendim.",
-            "Kahve makinesi bozulmuş, bütün sabah konsantre olmakta biraz zorlandım.",
-            "Dışarıdaki ailemden gelen eski fotoğraflara baktım, insan özlüyor işte.",
-            "Mikroskop başında gözlerim çok yoruldu, biraz temiz hava alsam iyi olacak.",
-            "Numunelerdeki genetik bozulmalar ürkütücü, çok dikkatli çalışmalıyız.",
-            "Vardiyamın bitmesine az kaldı, eve dönüp sessizce uyumak istiyorum.",
-            "Son gün geldi çattı... Buradaki atmosfer bazen gerçekten nefes kesici."
-        ],
-        anomaly: [
-            "Hücre bölünme frekansları kusursuz... Tesisin manyetik ritmiyle tam senkronize.",
-            "Uyku ihtiyacını anlamıyorum. Karanlıkta gözlerimi kapattığımda sadece veri akışı var.",
-            "Laboratuvar termometresi 15 dereceye düşmüş, bence ideal bir biyolojik çalışma ortamı.",
-            "İnsan dokularının bu kadar çabuk yıpranması evrimsel bir hata gibi.",
-            "Dün gece reaktör çekirdeğinin çıkardığı melodiyi dinledim. Çok huzurlu bir tonu var.",
-            "Eski laboratuvar notlarımdaki hatıraları okudum... Bana ait değilmiş gibi.",
-            "Büyük dönüşüm yaklaşıyor. Tesisin içindeki duvarlar artık yabancı hissettirmiyor."
-        ]
-    },
-    2: { // Murat Çelik
-        human: [
-            "Kamera kayıtlarını taradım, koridorlarda şimdilik anormal bir hareketlilik yok.",
-            "Gece nöbetinde devriye atarken soğuktan ellerim buz kesti resmen.",
-            "Kapı kilit mekanizmalarını yağlattım, güvenlik protokollerine tam uyuyoruz.",
-            "Gece vardiyasında bazen garip gölgeler görüyorum gibi geliyor, yorgunluktan sanırım.",
-            "Muhafızların devriye çizelgesini güncelledim, herkes yerli yerinde.",
-            "Tesisin sessizliği insanın sinirlerini bozuyor, eski açık alan devriyelerimi özledim.",
-            "Görev süresi biterken güvenlik açığı bırakmamak için son kontrolleri yapıyorum."
-        ],
-        anomaly: [
-            "Küçükken hep pizza kuryesi olmak istemiştim, küçüklük hayallerimi gerçekleştirdiğim için kendimden gurur duyuyorum. Sana bir şey söyleyeyim mi? Ben kariyerim boyunca hiçbir pizzayı geç götürmedim.",
-            "Gece 03:00 devriyesinde nefes almayı bıraktığımda her şeyi çok daha net duyabiliyorum.",
-            "Tesisin havalandırma kapakları düzenli bir nabız gibi atıyor, fark ettin mi?",
-            "Bana üşüyüp üşümediğimi sordular. Sıcaklık kavramı sadece bir sayı dizisi.",
-            "Muhafızların yüz ifadelerini taklit etmek bazen gereksiz efor gerektiriyor.",
-            "Sistem beni gözlemlemeye çalışıyor ama güvenlik protokollerini ben yönetiyorum.",
-            "Son gün... Kapıların dışındaki dünyanın artık bir önemi kalmayacak."
-        ]
-    },
-    3: { // Can Yılmaz
-        human: [
-            "Ben hep güvenlik sistemlerinde çalıştım, kurduğum her güvenlik sistemi %100 güvenlidir. Burayı ben dizayn etmedim ve bu beni tedirgin ediyor.",
-            "Yedekleme kablolarını değiştirdim, tesisin eskiyen altyapısı can sıkıcı.",
-            "Ekrana bakmaktan göz numaram büyüdü galiba, yazılar bulanıklaşıyor.",
-            "Termal sensörler bugün biraz dengesizdi, yazılımı yeniden başlattım.",
-            "Bugün kantindeki yemekler yine berbattı, mide spazmı geçiriyorum.",
-            "Sistem loglarını temizledim, artık kalan saatleri sayıyorum.",
-            "Veri merkezini hazır tuttum, tahliye emri gelirse her şeyi mühürleyeceğim."
-        ],
-        anomaly: [
-            "Sunucu çekirdeğindeki elektriksel voltaj dalgalanmaları derimde karıncalanma yapıyor.",
-            "Klavyeye dokunmadan da terminal komutlarının akışını hissedebiliyorum.",
-            "Gereksiz sistem hatalarını sildim... Tesis sadece tek bir sinyali bekliyor.",
-            "Karanlık sunucu odasında ışıkları açmadan çalışmak çok daha verimli.",
-            "Veri hatlarında akan bazı paketler insan diline ait değil ama çok anlamlı.",
-            "İnsanların bilgisayarlarla bu kadar yavaş iletişim kurması çok tuhaf.",
-            "Ağ bağlantıları birleşiyor, tesis artık tek bir bilince dönüşüyor."
-        ]
-    },
-    4: { // Dr. Arda
-        human: [
-            "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere.",
-            "Dün gece gelen bir personelin tansiyonu çok yüksekti, stres herkesi vuruyor.",
-            "Kendi nabzımı ölçtüm, uykusuzluktan hafif taşikardi başlamış.",
-            "Sterilizasyon cihazı ısınmıyordu, teknik ekipten yardım istedim.",
-            "Karantina odasının kilitlerini kontrol ettim, her şey kuralına uygun.",
-            "İlaç kokusundan midem bulandı, bir an önce temiz hava almak istiyorum.",
-            "Tahliye öncesi sağlık raporlarını hazırlıyorum, umarım salimen çıkarız."
-        ],
-        anomaly: [
-            "Off ışıkların sesi hem gözlerimi acıtıyor hem de başımı ağrıtıyor, revirde de ağrı kesici yok kafam patlamak üzere.",
-            "Kan numunelerindeki demir oranını koklayarak ayırt edebiliyorum.",
-            "Dün gece bedenimin sıcaklığını 24 dereceye indirdim, çok dengeli hissettirdi.",
-            "Hücrelerin ölmesini engellemek çok kolayken insanların yaşlanması garip.",
-            "Revirdeki neşterlerin soğuk metal dokusu parmaklarıma çok tanıdık geliyor.",
-            "Biyolojik ağrı reseptörleri bence sadece gereksiz bir hata sinyali.",
-            "Kusursuz organizmalar için tıbbi müdahaleye gerek yoktur."
-        ]
-    },
-    5: { // Burak Demir
-        human: [
-            "3. kat borularındaki su sızıntısını tamir ettim, üstüm başım pas içinde kaldı.",
-            "İngiliz anahtarımı yine birisi almış, alet çantamı kilitleyeceğim artık.",
-            "Havalandırma filtreleri tozdan tıkanmış, ciğerlerim iflas etti.",
-            "Reaktör dairesindeki buhar vanası kaçırıyordu, contayı yeniledim.",
-            "Belim sabahtan beri çok ağrıyor, ağır parçaları taşımak beni bitirdi.",
-            "Takım çantasını topladım, son vardiyamı bitirmek için sabırsızlanıyorum.",
-            "Bütün vanalar kapalı, tesisin boru hatları son güne kadar dayanır."
-        ],
-        anomaly: [
-            "İstesem buradan kaçabilirim ama insanlığımı size kanıtlamak istiyorum. Dolayısıyla kaçmayacağım ama istesem kaçabilirim.",
-            "Ellerimin pas tutması veya kesilmesi önemli değil, altındaki yapı bozulmuyor.",
-            "Havalandırma tünellerinde karanlıkta yürümek fener kullanmaktan daha rahat.",
-            "Metal alaşımların moleküler yapısını parmak uçlarımla okuyabiliyorum.",
-            "Tesisin iskeletini güçlendirdim... Dışarıdan gelecek baskılara dayanacak.",
-            "İnsan teknisyenlerin yorulup mola vermesi sistemi gereksiz aksatıyor.",
-            "Kapaklar kilitlendi. Tesis artık dış dünyadan tamamen izole."
-        ]
-    },
-    6: { // Mert Kurt
-        human: [
-            "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar.",
-            "Petri kaplarını yanlışlıkla deviriyordum, panikten elim ayağım titredi.",
-            "Buradaki herkes çok gergin, gece yatakhanede kimse konuşmuyor.",
-            "Mikroskop camını temizlerken parmağımı kestim, revire gitmem gerekti.",
-            "Akademik tezim için notlar alıyorum ama buradaki ortam beni boğuyor.",
-            "Aileme sağ salim döneceğimi söyleyen bir mesaj göndermek istedim ama hat yok.",
-            "Stajın son günü... Buradan bir an önce ayrılmak istiyorum."
-        ],
-        anomaly: [
-            "Petri kaplarındaki bakterileri izlerken saatler akıp gidiyor... Öyle büyümeleriyle sanki bana bir şeyler anlatmak istiyorlar.",
-            "Biyolojik numuneler bana tepki veriyor... Camın ardından bana yöneliyorlar.",
-            "Hata yapıyormuş gibi davranmak, insan taklit etmenin en kolay yolu.",
-            "Kanımın rengi ışık altında bazen farklı bir dalga boyunda parlıyor.",
-            "Kıdemli doktorlar hücreleri inceliyor ama asıl incelenenin kendileri olduğunu bilmiyorlar.",
-            "Zaman algısı insanlar için çok doğrusal ve kısıtlayıcı.",
-            "Öğrenme aşaması tamamlandı. Artık taklit etmeme gerek kalmayacak."
-        ]
-    },
-    7: { // Kerem Aksoy
-        human: [
-            "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum.",
-            "Telsizden sürekli parazit geliyor, bataryası da çabuk bitiyor.",
-            "Dün gece alt koridordan bir tıkırtı geldi, fareymiş ama ödüm koptu.",
-            "Silahımın bakımını yaptım, umarım burada onu hiç kullanmak zorunda kalmam.",
-            "Nöbet arkadaşımla memleket sohbeti yaptık, zaman ancak öyle geçiyor.",
-            "Uykusuzluktan gözlerimin altı torba torba oldu, kahve de fayda etmiyor.",
-            "Son nöbet... Kapı açıldığı an arkama bile bakmadan çıkacağım."
-        ],
-        anomaly: [
-            "Gözlerimi kırpmadan yerimden oynamadan durduğum postu hep korurum.",
-            "Karanlık köşelerde bekleyen şeylerin silüetleri benimle aynı frekansta.",
-            "Silah taşımak komik bir formalite... Tehdit algısı içeriden geliyor.",
-            "Dün gece nöbet defterine yazdığım saatler gerçek zamanla uyuşmuyor.",
-            "Kapıların ardındaki fısıltılar insan kulağının duyamayacağı kadar tiz.",
-            "Kaslarımın yorulmaması diğer personelin dikkatini çekmeye başladı.",
-            "Güvenlik protokolleri tersine çevrildi. Artık kimse dışarı çıkamaz."
-        ]
-    },
-    8: { // Asistan Elif
-        human: [
-            "...",
-            "Dr. Kaya bugün çok gergindi, raporları üç kez baştan kontrol ettirdi.",
-            "Yatakhane çok soğuk, gece iki battaniyeyle bile zor ısındım.",
-            "Santrifüj cihazı garip sesler çıkarıyor, arıza yapacak diye korkuyorum.",
-            "Dün gece rüyamda tesisin sular altında kaldığını gördüm, kabustu resmen.",
-            "Evdeki kedimi çok özledim, dönünce ona sarılıp günlerce uyuyacağım.",
-            "Evrakları dosyaladım, son kontrolleri bitirip çıkış hazırlığı yapıyorum."
-        ],
-        anomaly: [
-            "Kimyasal gazların kokusu bana tanıdık bir katalizör gibi geliyor.",
-            "Tüplerdeki solüsyonların moleküler bağlarını çıplak gözle görebiliyorum.",
-            "Karanlıkta aynaya baktığımda gözlerimin iris tabakası döngüsel parlıyor.",
-            "Rüya görmek... İnsanların simülasyon motorunun yetersiz kalması gibi.",
-            "Gözyaşı bezlerimi nemlendirmek için yapay sıvı salgılamam gerekti.",
-            "Laboratuvarın soğuk zemininde yalınayak yürümek sinir iletimimi hızlandırıyor.",
-            "Tüm deneyler sonuçlandı. Yeni faz için hazırız."
-        ]
-    },
-    9: { // Dr. Zeynep
-        human: [
-            "DNA dizilimlerindeki mutasyon oranı korkutucu boyutta hızlı ilerliyor.",
-            "Laboratuvarda yalnız kalınca arkamda biri varmış gibi hissediyorum.",
-            "Gözlüğümü kaybettim, sabahtan beri her şey bulanık görünüyor.",
-            "Genetik makaslama protokolünde ufak bir hata yaptık, moralim çok bozuk.",
-            "Stresten parmaklarımı sıkmaktan eklemlerim ağrıyor.",
-            "Kalan verileri diske aktardım, bu tesiste bir gün daha kalsam delireceğim.",
-            "Son analizler bitti... Bir an önce dış dünyadaki normal hayatıma dönmeliyim."
-        ],
-        anomaly: [
-            "İnsanlar genetik olarak çok ezik varlıklar ve anomaliler onlardan daha zeki, bir nevi Homo superior oldukları için insanlar onlardan nefret ediyor sanırım.",
-            "Genetik dizilimler bana müzikal bir algoritma gibi görünüyor.",
-            "Bedenimdeki hücrelerin yer değiştirdiğini ve yenilendiğini izlemek büyüleyici.",
-            "Dün gece kendi saç telimi inceledim... Karbon yerine silikon bağları var.",
-            "Korku hormonu salgılayamadığım için diğer doktorlar beni tuhaf buluyor.",
-            "Biyolojik formum bu tesisin gelecekteki standardı olacak.",
-            "Evrim basamağı tamamlandı. Artık geri dönüş yok."
-        ]
-    },
-    10: { // Selin Şen
-        human: [
-            "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış.",
-            "Soğutma havuzunun sıcaklığı yükselmişti, pompayı manuel açtım.",
-            "Kulaklığımı takmadan reaktör katına inmişim, kulaklarım patlayacaktı.",
-            "Sıcaktan üniformam sırılsıklam oldu, duş alacak vaktim bile olmadı.",
-            "Baskı göstergeleri normal ama içimde kötü bir his var.",
-            "Son nöbetimde reaktör çekirdeğini güvenli moda aldım, çok yorgunum.",
-            "Tahliye öncesi ana şebekeyi kilitledim, görevimi tamamladım."
-        ],
-        anomaly: [
-            "Reaktör soğutma havuzunun o maviliği beni sürekli içine çekiyor. İndigo mavisi rengini duymuş muydun? Sanki benim için yaratılmış.",
-            "Soğutma havuzundaki suyun yaydığı mavi ışık (Cherenkov) tam göz rengimde.",
-            "Sıcaklık 80 dereceye çıksa bile ter bezlerimin tepki vermemesi harika.",
-            "Çekirdeğin içindeki atomik reaksiyonların sesini kelimelere dökebilirim.",
-            "Uranyum çubuklarının dizilimi aslında antik bir sembolü andırıyor.",
-            "İnsanların radyasyondan korkması onların kırılganlığının kanıtı.",
-            "Reaktörün kalbi benimle birlikte atıyor. Enerji hiç bitmeyecek."
-        ]
-    },
-    11: { // Psikolog Merve
-        human: [
-            "Anomalilerin varlığı beni tedirgin etmiyor, bence biz onları daha iyi anlayabiliriz ve anlarsak belki de ortak yönlerimizin daha fazla olduğunu öğrenebiliriz. Bu beni heyecanlandırıyor ama halkı neden korkuttuğunu da anlayabiliyorum.",
-            "Bugün 4 kişiyi dinledim, herkesin derdini dinlemek benim de enerjimi tüketti.",
-            "Geceleri yatarken kapımı iki kere kilitliyorum, kendimi güvende hissetmiyorum.",
-            "Kahveme şeker atmayı unutmuşum, kafam o kadar dolu ki.",
-            "Kendi psikolojik dayanıklılık testimi yaptım, acilen tatile ihtiyacım var.",
-            "Not defterimdeki raporları paketledim, tesis yönetiminin ciddi önlem alması gerek.",
-            "Son seanslar bitti... Buradaki insanların ruh sağlığı sınırda."
-        ],
-        anomaly: [
-            "İnsanların hissettiği empati ve korku duygusu çok kolay manipüle edilebiliyor.",
-            "Bugün bir personelin göz bebeklerine bakarken ona istediğim kelimeleri söylettim.",
-            "Yalan söylerken ses tellerindeki mikro titreşimleri sayabiliyorum.",
-            "Zihinsel travmalar... İnsan donanımının ne kadar dayanıksız olduğunun kanıtı.",
-            "Geceleri diğer personellerin rüyalarında sayıklamalarını kaydediyorum.",
-            "Bana anlattıkları çocukluk anıları... Kodlanmış sahte verilerden farksız.",
-            "Psikolojik analiz bitti. İnsan zihni bu tesisi kavramak için yetersiz."
-        ]
-    },
-    12: { // Derya Aydın
-        human: [
-            "Dış istasyonla bağlantı kurmaya çalıştım ama cızırtıdan hiçbir şey anlaşılmıyor.",
-            "Kulaklığı çıkarmaktan kulaklarım yara oldu, sürekli bip sesi dinliyorum.",
-            "Dün gece telsizden bir kadın çığlığı duydum sandım, meğer rüzgar sesiymiş.",
-            "Anten kablosunu yağmurda kontrol ettim, sırılsıklam ıslandım.",
-            "Merkez üsten gelen onay kodlarını deftere işledim, her şey çok yavaş ilerliyor.",
-            "Son mesaj trafiğini aktardım, nihayet bu kulaklıktan kurtulacağım.",
-            "Tahliye frekansını açık bıraktım, kapılar açılınca ilk ben çıkacağım."
-        ],
-        anomaly: [
-            "İşime son verilmeden 1 ay önce telsizler sürekli başımı ağrıtmaya başlıyordu, sanki başımın içinden kablolar geçiyor da onunla oynuyor gibilerdi.",
-            "Anten olmadan da manyetik sinyalleri kafatasımın içinde duyabiliyorum.",
-            "Dış dünyadan gelen sinyaller artık sahte ve anlamsız geliyor.",
-            "0.45 MHz bandında tesisin altından gelen sürekli bir yayın var, dinliyorum.",
-            "Telsiz mikrofonuna fısıldadığımda parazitlerin durması çok ilginç.",
-            "İnsanların konuştuğu diller veri iletimi için çok hantal.",
-            "Tüm frekanslar birleşti. Telsiz kulesi artık sadece tek bir sinyali yayıyor."
-        ]
-    },
-    13: { // Kimyager Sinem
-        human: [
-            "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim.",
-            "Asit tüpünü tutarken eldivenim delindi sandım, yüreğim ağzıma geldi.",
-            "Gözlerim kimyasal buhardan yanıyor, koruyucu maskem eskidi galiba.",
-            "Reaktif maddeleri soğuk dolaba kilitledim, kaza çıkmaması için dikkat şart.",
-            "Kahvemi laboratuvara soktuğum için Dr. Kaya'dan fırça yedim, haklıydı gerçi.",
-            "Kimyasal atık varillerini mühürledim, ellerim titriyor yorgunluktan.",
-            "Son numuneleri güvenli kasaya kaldırdım, eve dönünce sadece uyuyacağım."
-        ],
-        anomaly: [
-            "Eskiden laboratuvardan bali kaçırıp yangın merdiveninde çekerdim.",
-            "Bedenimdeki biyolojik sıvıların pH değeri 2.5 seviyesinde sabitlendi.",
-            "Toksik gazların ciğerlerime dolması nefes alma ihtiyacımı ortadan kaldırıyor.",
-            "Kimyasal bileşiklerin moleküler yapısını tadarak analiz edebiliyorum.",
-            "İnsan dokusunu eriten asitler cildimde sadece tatlı bir sıcaklık bırakıyor.",
-            "Zehirli ve zehirsiz ayrımı... Sadece organiklerin uydurduğu bir zayıflık.",
-            "Formül tamamlandı. Tesisin havası artık sadece bize uygun."
-        ]
-    },
-    14: { // Aylin Koç
-        human: [
-            "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz.",
-            "Sırtım sandalyede oturmaktan tutuldu, biraz esneme hareketi yapmam gerek.",
-            "Log kayıtlarında bir personelin gece giriş saati kayıptı, sistemsel bir hata sanırım.",
-            "Klavyemin bazı tuşları basmıyor, teknik servise haber verdim.",
-            "Bugün baş ağrısından ekrana bakamadım, revirden ilaç almam gerekti.",
-            "Haftalık istatistik raporunu tamamladım, son günüm için geri sayımdayım.",
-            "Tüm veri yedeklerini harici diske aktardım, görevimi bitirdim."
-        ],
-        anomaly: [
-            "Eğer ekrana çok bakarsanız ekranın bir diğer ucundan size bakanları görebilirsiniz.",
-            "Gözlerimi ekrandan ayırmadan saniyede 10 bin satır kodu tarayabiliyorum.",
-            "Sistemde silinmiş gibi görünen bazı isimler aslında hiç var olmamış.",
-            "İnsanların hesaplama yaparken bu kadar çok hata yapması kabul edilemez.",
-            "Kendi veri profilimi sisteme ekledim... Artık geçmişim kusursuz görünüyor.",
-            "Gelecek tahmin algoritmaları bu tesisin insanlardan arınacağını gösteriyor.",
-            "Bütün veri döngüleri kapandı. Analiz bitti: Tesis artık bizim."
-        ]
-    }
-};
-
-
-// ==========================================
-// GAME STATE
-// ==========================================
 let gameState = {
     day: 1,
     stage: STAGE.INTRO,
@@ -490,14 +167,47 @@ let gameState = {
     day3BriefingShown: false,
     selectedTeam: [],
     tiredMap: {},
-    missionStats: { success: 0, fail: 0, total: 0, deaths: 0 },
+    missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
     lastArrivals: [],
     newlyInterred: [],
-    revealPersonId: null
+    revealPersonId: null,
+    debugMode: false
 };
 
-// Only people who have already reported to the facility exist as far as the
-// player is concerned.
+function saveGameState() {
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+    } catch (e) {
+        console.warn("Could not save gameState to localStorage", e);
+    }
+}
+
+function loadSavedGameState() {
+    try {
+        const data = localStorage.getItem(SAVE_KEY);
+        if (data) {
+            const parsed = JSON.parse(data);
+            if (parsed && Array.isArray(parsed.manifest) && parsed.manifest.length === ROSTER_SIZE) {
+                return parsed;
+            }
+        }
+    } catch (e) {
+        console.warn("Error loading save state", e);
+    }
+    return null;
+}
+
+function clearSavedGameState() {
+    try {
+        localStorage.removeItem(SAVE_KEY);
+    } catch (e) {
+        console.warn("Could not clear save state", e);
+    }
+}
+
+// ==========================================
+// QUERIES & HELPERS
+// ==========================================
 function presentPersonnel() {
     return gameState.manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= gameState.day);
 }
@@ -519,29 +229,33 @@ function isDeployable(person) {
 }
 
 function meetsLeft() {
-    return MEETS_PER_DAY - gameState.meetsUsed;
+    return Math.max(0, MEETS_PER_DAY - gameState.meetsUsed);
 }
 
 function testsLeft() {
-    return testsForDay(gameState.day) - gameState.testsUsed;
+    return Math.max(0, testsForDay(gameState.day) - gameState.testsUsed);
 }
 
-// ---- Facility balance ---------------------------------------------------
+function executionsLeft() {
+    return Math.max(0, EXECUTIONS_PER_DAY - gameState.executionsUsed);
+}
+
+function canExecuteToday() {
+    return gameState.day >= EXECUTION_START_DAY;
+}
+
 function livingCounts() {
     const living = presentPersonnel().filter(p => !p.isDead);
     const anomalies = living.filter(p => p.isAnomaly).length;
     return { humans: living.length - anomalies, anomalies, total: living.length };
 }
 
-// The riot fires the instant anomalies outnumber humans among the living.
 function isRiotCondition() {
     if (gameState.day < RIOT_START_DAY) return false;
     const c = livingCounts();
     return c.anomalies > c.humans;
 }
 
-// Coarse threat readout. Deliberately bucketed rather than showing exact
-// counts -- the player must feel the pressure without being handed the roster.
 function threatLevel() {
     const c = livingCounts();
     const gap = c.humans - c.anomalies;
@@ -551,16 +265,6 @@ function threatLevel() {
     return { label: "STABİL", color: "var(--accent-green)", key: "stable" };
 }
 
-function executionsLeft() {
-    return EXECUTIONS_PER_DAY - gameState.executionsUsed;
-}
-
-function canExecuteToday() {
-    return gameState.day >= EXECUTION_START_DAY;
-}
-
-// Checked after anything that changes the living roster or the mission record.
-// Returns true when the campaign has ended.
 function checkCatastrophe() {
     if (gameState.endReason) return true;
 
@@ -568,6 +272,7 @@ function checkCatastrophe() {
         gameState.endReason = "riot";
         logEvent("⚡ ANOMALİ AYAKLANMASI! Anomaliler insanları sayıca geçti ve tesisi ele geçirdi.", "fail");
         showGameOver("riot");
+        saveGameState();
         return true;
     }
 
@@ -575,6 +280,7 @@ function checkCatastrophe() {
         gameState.endReason = "fired";
         logEvent("🏛️ DEVLET MÜDAHALESİ! Üç başarısız görev sonrası görevden alındın.", "fail");
         showGameOver("fired");
+        saveGameState();
         return true;
     }
 
@@ -585,21 +291,17 @@ function deployablePersonnel() {
     return presentPersonnel().filter(isDeployable);
 }
 
-// True when the facility physically cannot field the day's quota. Two days
-// of rest can bench everyone available, so this has to be survivable.
 function isUnderStrength() {
     return deployablePersonnel().length < requiredTeamSize();
 }
 
 function requiredTeamSize() {
-    // Deaths can in principle outpace arrivals; never ask for more people than
-    // the facility can actually field.
     const deployable = presentPersonnel().filter(isDeployable).length;
     return Math.max(1, Math.min(dispatchSizeForDay(gameState.day), Math.max(1, deployable)));
 }
 
 // ==========================================
-// MISSION RESOLUTION (unchanged from V2/V3)
+// MISSION RESOLUTION
 // ==========================================
 const MISSION_ODDS = {
     1: {
@@ -619,10 +321,6 @@ const MISSION_ODDS = {
     }
 };
 
-// Resolves a mission:
-// - Humans can be lost (loss chance). If any human dies/lost, mission is an automatic FAILURE.
-// - Anomalies have a 60% chance to escape (reported as haber alınamadı).
-// - If all team members are lost, mission is an automatic FAILURE.
 function resolveMission(team) {
     const size = team.length;
     const anomalyCount = team.filter(p => p.isAnomaly).length;
@@ -630,13 +328,11 @@ function resolveMission(team) {
 
     const missingPeople = [];
 
-    // 1. Calculate human loss risk first
+    // 1. Calculate human loss risk
     const humans = team.filter(p => !p.isAnomaly);
-    let humanLost = false;
     if (humans.length > 0 && Math.random() < odds.lossChance) {
         const lostHuman = humans[Math.floor(Math.random() * humans.length)];
         missingPeople.push(lostHuman);
-        humanLost = true;
     }
 
     // 2. Anomalies escaping (60% chance each)
@@ -647,10 +343,7 @@ function resolveMission(team) {
         }
     });
 
-    // 3. Determine success:
-    // - Tek kişilik görevlerde insan gönderilmişse, ölüp ölmemesine bakılmaksızın her zaman BAŞARILIDIR.
-    // - Tüm ekip kaybolduysa/öldüyse (kimse dönemezse) BAŞARISIZDIR.
-    // - İnsan kaybolsa bile görev başarısı ekibin başarı şansına (successChance) göre bağımsız hesaplanır.
+    // 3. Determine success
     let isSuccess = false;
     if (size === 1 && humans.length === 1) {
         isSuccess = true;
@@ -681,71 +374,25 @@ function pickReport(isSuccess) {
 }
 
 // ==========================================
-// ARRIVAL SCRIPTING & BENCH MANAGEMENT
-// ==========================================
-// Day 1: 3 Humans, 1 Anomaly (4 Total)
-// Day 2: 2 Anomalies (2 Total)
-// Day 3: 3 Humans (3 Total)
-// Days 4-7: Max 2 anomalies per 3-person batch (never 3 anomalies together)
-function setupArrivalPools(rawManifest) {
-    const humans = shuffle(rawManifest.filter(p => !p.isAnomaly));
-    const anomalies = shuffle(rawManifest.filter(p => p.isAnomaly));
-
-    // Day 1: 3 Humans, 1 Anomaly
-    const day1 = [humans.pop(), humans.pop(), humans.pop(), anomalies.pop()];
-    shuffle(day1).forEach(p => { p.arrivalDay = 1; });
-
-    // Day 2: 2 Anomalies
-    const day2 = [anomalies.pop(), anomalies.pop()];
-
-    // Day 3: 3 Humans
-    const day3 = [humans.pop(), humans.pop(), humans.pop()];
-
-    // Days 4-7 batches (each up to 3 people)
-    const remainingHumans = [...humans];
-    const remainingAnomalies = [...anomalies];
-    const dayBatches = [[], [], [], []];
-
-    // Guarantee at least 1 human in each batch as long as humans remain (never 3 anomalies)
-    for (let b = 0; b < 4; b++) {
-        if (remainingHumans.length > 0) {
-            dayBatches[b].push(remainingHumans.pop());
-        }
-    }
-
-    // Fill remaining slots in batches with leftover pool
-    const leftover = shuffle([...remainingHumans, ...remainingAnomalies]);
-    for (let b = 0; b < 4; b++) {
-        while (dayBatches[b].length < 3 && leftover.length > 0) {
-            dayBatches[b].push(leftover.pop());
-        }
-    }
-
-    const benchQueue = [
-        ...shuffle(day2),
-        ...shuffle(day3),
-        ...dayBatches.flatMap(batch => shuffle(batch))
-    ];
-
-    return {
-        manifest: rawManifest,
-        day1Ids: day1.map(p => p.id),
-        benchIds: benchQueue.map(p => p.id)
-    };
-}
-
-// ==========================================
-// LIFECYCLE
+// LIFECYCLE & INITIALIZATION
 // ==========================================
 function initGame() {
-    const rawManifest = generateManifest();
-    const { manifest, day1Ids, benchIds } = setupArrivalPools(rawManifest);
+    clearSavedGameState();
+    const manifest = generateManifest();
+
+    // Day 1 Unlocks (4 characters: Ted Karinsky, M. Cole Morgan, Alicia Winston, Bob)
+    const day1Ids = DAILY_INTERVIEW_SCHEDULE[1];
+    day1Ids.forEach(id => {
+        const p = manifest.find(x => x.id === id);
+        if (p) p.arrivalDay = 1;
+    });
+
+    const isDebug = new URLSearchParams(window.location.search).has("debug") || window.DEBUG_FACILITY === true;
 
     gameState = {
         day: 1,
         stage: STAGE.INTRO,
         manifest: manifest,
-        bench: benchIds,
         meetsUsed: 0,
         testsUsed: 0,
         executionsUsed: 0,
@@ -756,8 +403,11 @@ function initGame() {
         missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
         lastArrivals: day1Ids,
         newlyInterred: [],
-        revealPersonId: null
+        revealPersonId: null,
+        debugMode: isDebug
     };
+
+    saveGameState();
 
     const logs = document.getElementById("simulation-logs");
     if (logs) logs.innerHTML = "";
@@ -769,8 +419,9 @@ function initGame() {
 function beginCampaign() {
     document.getElementById("intro-overlay").classList.add("hidden");
     gameState.stage = STAGE.ARRIVAL;
-    gameState.lastArrivals = gameState.manifest.filter(p => p.arrivalDay === 1).map(p => p.id);
-    logEvent(`Tesis protokolü başladı. ${gameState.lastArrivals.length} personel giriş yaptı.`, "system");
+    gameState.lastArrivals = DAILY_INTERVIEW_SCHEDULE[1] || [];
+    logEvent(`Facility 61 protokolü başladı. İlk 4 personelin görüşme programı açıldı.`, "system");
+    saveGameState();
     renderAll();
 }
 
@@ -789,12 +440,9 @@ function logEvent(message, type = "system") {
 function advanceStage() {
     switch (gameState.stage) {
         case STAGE.ARRIVAL:
-            // Flush the newly-interred queue so the record drop animation fires
-            // on the first morning view and then settles to static styling. Doing
-            // it here stops later re-renders from replaying it all day.
             gameState.newlyInterred = [];
             gameState.stage = STAGE.MEETING;
-            logEvent(`Tanışma aşaması açıldı. Bugün ${MEETS_PER_DAY} kişiyle tanışabilirsin.`, "system");
+            logEvent(`Tanışma aşaması açıldı. Bugün ${MEETS_PER_DAY} kişiyle görüşebilirsin.`, "system");
             break;
 
         case STAGE.MEETING:
@@ -824,11 +472,12 @@ function advanceStage() {
         default:
             return;
     }
+    saveGameState();
     renderAll();
 }
 
 function nextDay() {
-    // Survivors who went out rest for 1 or 2 days (50% chance); the dead/escaped need no rest.
+    // Rest fatigue (1 or 2 days)
     gameState.selectedTeam.forEach(id => {
         const member = findPerson(id);
         if (member && member.isDead) return;
@@ -845,7 +494,8 @@ function nextDay() {
     gameState.selectedTeam = [];
 
     if (gameState.day >= TOTAL_DAYS) {
-        showGameOver();
+        showGameOver("complete");
+        saveGameState();
         return;
     }
 
@@ -855,28 +505,29 @@ function nextDay() {
     gameState.executionsUsed = 0;
     gameState.stage = STAGE.ARRIVAL;
 
-    // Refill up to 14 active living capacity in the facility from the 21-person bench
-    const livingCount = gameState.manifest.filter(p => p.arrivalDay && !p.isDead).length;
-    const freeSlots = Math.max(0, 14 - livingCount);
-    const quota = DAILY_ARRIVAL_QUOTA[gameState.day] || 3;
-    const bringCount = Math.min(quota, freeSlots, gameState.bench.length);
-    const newArrivalIds = gameState.bench.splice(0, bringCount);
-    newArrivalIds.forEach(id => {
+    // Daily Unlocks according to Henry's interview schedule
+    const scheduledIds = DAILY_INTERVIEW_SCHEDULE[gameState.day] || [];
+    scheduledIds.forEach(id => {
         const p = findPerson(id);
-        if (p) p.arrivalDay = gameState.day;
+        if (p && p.arrivalDay === null) {
+            p.arrivalDay = gameState.day;
+        }
     });
-    gameState.lastArrivals = newArrivalIds;
+    gameState.lastArrivals = scheduledIds;
 
-    // Yesterday's losses are carried down to the records section this morning,
-    // with an animation so the player sees exactly who left the roster.
     gameState.newlyInterred = gameState.manifest
         .filter(p => p.isDead && p.diedOnDay === gameState.day - 1)
         .map(p => p.id);
 
-    logEvent(`--- GÜN ${gameState.day} --- ${gameState.lastArrivals.length} yeni personel tesise giriş yaptı.`, "system");
+    if (scheduledIds.length > 0) {
+        logEvent(`--- GÜN ${gameState.day} --- ${scheduledIds.length} personelin görüşme programı açıldı.`, "system");
+    } else {
+        logEvent(`--- GÜN ${gameState.day} --- Yeni görüşme kaydı yok. Mevcut kadro ile devam ediliyor.`, "system");
+    }
+
+    saveGameState();
     renderAll();
 
-    // New arrivals can themselves tip the balance into a riot.
     if (checkCatastrophe()) return;
 
     if (gameState.day === EXECUTION_START_DAY && !gameState.day3BriefingShown) {
@@ -916,11 +567,12 @@ function meetPerson(personId) {
     gameState.meetsUsed += 1;
 
     const dialogueText = person.dialogue ? ` — "${person.dialogue}"` : "";
-    logEvent(`💬 ${person.name} ile tanışıldı (${person.role})${dialogueText}`, "action");
+    logEvent(`💬 ${person.name} ile görüşüldü (${person.role})${dialogueText}`, "action");
+    saveGameState();
     renderAll();
 
     if (meetsLeft() <= 0) {
-        flashNotice("Tanışma hakların bitti. Test aşamasına geçebilirsin.");
+        flashNotice("Görüşme hakların bitti. Test aşamasına geçebilirsin.");
     }
 }
 
@@ -931,19 +583,19 @@ function testPerson(personId) {
     if (gameState.stage !== STAGE.TESTING) return;
 
     if (person.isDead) {
-        flashNotice(`${person.name} görevden geri dönmedi.`);
+        flashNotice(`${person.name} artık tesiste değil.`);
         return;
     }
     if (!person.isMet) {
-        flashNotice("Önce bu kişiyle tanışmalısın.");
+        flashNotice(`${person.name} ile henüz görüşmedin. Tanışmadığın personele test yapılamaz.`);
+        return;
+    }
+    if (isResting(personId)) {
+        flashNotice(`${person.name} dinleniyor (${restDaysLeft(personId)} gün). Dinlenen personele test yapılamaz.`);
         return;
     }
     if (person.isTested) {
         showTestReveal(person);
-        return;
-    }
-    if (isResting(personId)) {
-        flashNotice(`${person.name} dinleniyor (${restDaysLeft(personId)} gün) — test edilemez.`);
         return;
     }
     if (testsLeft() <= 0) {
@@ -954,17 +606,20 @@ function testPerson(personId) {
     person.isTested = true;
     gameState.testsUsed += 1;
 
-    logEvent(`[TEST] ${person.name} — Nöro-Hücresel DNA testi tamamlandı. (${gameState.testsUsed}/${testsForDay(gameState.day)})`, "action");
+    logEvent(`🧬 ${person.name} test edildi (Ölçüm yapıldı).`, "action");
+    saveGameState();
     showTestReveal(person);
     renderAll();
+
+    if (testsLeft() <= 0) {
+        flashNotice("Bugünkü test hakların bitti. Görev aşamasına geçebilirsin.");
+    }
 }
 
-// ---- ELECTRIC CHAIR ----------------------------------------------------
-// Kills one person per day from day 3. Removing an anomaly relieves riot
-// pressure; removing a human makes it worse and costs a mission asset.
 function executePerson(personId) {
     const person = findPerson(personId);
     if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
+
     if (gameState.stage !== STAGE.EXECUTION) return;
 
     if (person.isDead) {
@@ -972,7 +627,7 @@ function executePerson(personId) {
         return;
     }
     if (!person.isMet) {
-        flashNotice(`${person.name} ile tanışmadın. Kimliği doğrulanmamış personel infaz edilemez.`);
+        flashNotice(`${person.name} ile görüşmedin. Kimliği doğrulanmamış personel infaz edilemez.`);
         return;
     }
     if (executionsLeft() <= 0) {
@@ -982,6 +637,7 @@ function executePerson(personId) {
 
     person.isDead = true;
     person.isExecuted = true;
+    person.status = "İNFAZ EDİLDİ";
     person.diedOnDay = gameState.day;
     gameState.executionsUsed += 1;
     gameState.missionStats.executions = (gameState.missionStats.executions || 0) + 1;
@@ -992,12 +648,12 @@ function executePerson(personId) {
         gameState.missionStats.humansExecuted = (gameState.missionStats.humansExecuted || 0) + 1;
     }
 
-    logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyede infaz edildi. (Gerçek kimliği gizli kaldı)`, "action");
+    logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyede infaz edildi. Hücresi boşaltıldı.`, "action");
 
-    // Remove them from any pending selection.
     const idx = gameState.selectedTeam.indexOf(personId);
     if (idx > -1) gameState.selectedTeam.splice(idx, 1);
 
+    saveGameState();
     showExecutionReveal(person);
     renderAll();
     checkCatastrophe();
@@ -1010,11 +666,11 @@ function toggleTeamMember(personId) {
     if (gameState.stage !== STAGE.DISPATCH) return;
 
     if (person.isDead) {
-        flashNotice(`${person.name} görevden geri dönmedi.`);
+        flashNotice(`${person.name} aktif kadroda değil (${person.status}).`);
         return;
     }
     if (!person.isMet) {
-        flashNotice(`${person.name} ile tanışmadın. Tanışmadığın personel göreve gidemez.`);
+        flashNotice(`${person.name} ile görüşmedin. Tanışmadığın personel göreve gidemez.`);
         return;
     }
     if (isResting(personId)) {
@@ -1032,6 +688,7 @@ function toggleTeamMember(personId) {
         }
         gameState.selectedTeam.push(personId);
     }
+    saveGameState();
     renderAll();
 }
 
@@ -1053,7 +710,6 @@ function dispatchMission() {
     let explanation;
 
     if (understrength) {
-        // Nobody left to send. The day is lost, but nobody is lost for it.
         isSuccess = false;
         explanation = "Sahaya sürecek yeterli personel kalmadı. Görev daha başlamadan başarısız sayıldı.";
     } else {
@@ -1064,9 +720,16 @@ function dispatchMission() {
 
         missingPeople.forEach(person => {
             person.isDead = true;
-            person.isMissing = true;
             person.diedOnDay = gameState.day;
-            explanation += ` 🌫️ ${person.name} operasyon sırasında kayboldu (haber alınamadı).`;
+            if (person.isAnomaly) {
+                person.isEscaped = true;
+                person.status = "KAÇTI";
+                explanation += ` 🚪 ${person.name} operasyon sırasında kaçarak kayıplara karıştı.`;
+            } else {
+                person.isMissing = true;
+                person.status = "KAYIP";
+                explanation += ` 🌫️ ${person.name} operasyon sırasında kayboldu.`;
+            }
         });
     }
 
@@ -1082,122 +745,121 @@ function dispatchMission() {
     missingPeople.forEach(person => {
         if (person.isAnomaly) {
             gameState.missionStats.anomaliesMissing = (gameState.missionStats.anomaliesMissing || 0) + 1;
+            logEvent(`🚪 KAÇTI: ${person.name} tesisten firar etti. Hücresi boşaltıldı.`, "fail");
         } else {
             gameState.missionStats.humansMissing = (gameState.missionStats.humansMissing || 0) + 1;
+            logEvent(`🌫️ KAYIP: ${person.name} adlı personelden haber alınamadı. Hücresi boşaltıldı.`, "fail");
         }
-        logEvent(`🌫️ KAYIP: ${person.name} adlı personelden haber alınamadı.`, "fail");
     });
 
     gameState.lastOutcome = { isSuccess, explanation, team, missingPeople };
     gameState.stage = STAGE.REPORT;
+    saveGameState();
     renderAll();
 
-    // Losing people can tip the balance, and a third failure ends the contract.
     if (checkCatastrophe()) return;
 
     showMissionResultModal(isSuccess, explanation, team, missingPeople);
 }
-
-// ==========================================
-// RENDERING
-// ==========================================
-let noticeTimer = null;
 
 function flashNotice(message) {
     const el = document.getElementById("stage-notice");
     if (!el) return;
     el.textContent = message;
     el.classList.add("visible");
-    if (noticeTimer) clearTimeout(noticeTimer);
-    noticeTimer = setTimeout(() => el.classList.remove("visible"), 2600);
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove("visible"), 2600);
 }
 
+// ==========================================
+// RENDERERS
+// ==========================================
 function renderStatus() {
     document.getElementById("current-day").textContent = `${gameState.day} / ${TOTAL_DAYS}`;
 
-    const info = STAGE_INFO[gameState.stage];
-    document.getElementById("current-stage").textContent = info ? info.label : "—";
-    document.getElementById("current-time").textContent = info ? info.clock : "—";
+    const info = STAGE_INFO[gameState.stage] || { label: "—", clock: "—" };
+    document.getElementById("current-stage").textContent = info.label;
+    document.getElementById("current-time").textContent = info.clock;
 
-    // The allowance box shows whichever budget the current stage actually uses.
-    const allowanceLabel = document.getElementById("allowance-label");
-    const allowanceValue = document.getElementById("allowance-value");
-    const pipsContainer = document.getElementById("allowance-pips");
-    pipsContainer.innerHTML = "";
-
-    let used = 0;
-    let total = 0;
-    if (gameState.stage === STAGE.MEETING) {
-        allowanceLabel.textContent = "TANIŞMA HAKKI";
-        used = gameState.meetsUsed; total = MEETS_PER_DAY;
-    } else if (gameState.stage === STAGE.TESTING) {
-        allowanceLabel.textContent = "TEST HAKKI";
-        used = gameState.testsUsed; total = testsForDay(gameState.day);
-    } else if (gameState.stage === STAGE.EXECUTION) {
-        allowanceLabel.textContent = "İNFAZ HAKKI";
-        used = gameState.executionsUsed; total = EXECUTIONS_PER_DAY;
-    } else if (gameState.stage === STAGE.DISPATCH) {
-        allowanceLabel.textContent = "GÖREV EKİBİ";
-        used = gameState.selectedTeam.length; total = requiredTeamSize();
-    } else {
-        allowanceLabel.textContent = "AŞAMA";
-        used = 0; total = 0;
-    }
-
-    allowanceValue.textContent = total > 0 ? `${used} / ${total}` : "—";
-    for (let i = 0; i < total; i++) {
-        const pip = document.createElement("div");
-        pip.className = `allowance-pip ${i < used ? "spent" : ""}`;
-        pipsContainer.appendChild(pip);
-    }
-
+    const rate = gameState.missionStats.total > 0
+        ? Math.round((gameState.missionStats.success / gameState.missionStats.total) * 100)
+        : 0;
     document.getElementById("mission-score").textContent =
-        `${gameState.missionStats.success} Başarılı / ${gameState.missionStats.total}`;
+        `${gameState.missionStats.success} Başarılı (%${rate})`;
+    document.getElementById("failure-count").textContent =
+        `${gameState.missionStats.fail} / ${MAX_MISSION_FAILURES}`;
 
-    // Failure counter -- three ends the contract.
-    const failEl = document.getElementById("failure-count");
-    const fails = gameState.missionStats.fail;
-    failEl.textContent = `${fails} / ${MAX_MISSION_FAILURES}`;
-    failEl.className = "stat-value " + (fails >= MAX_MISSION_FAILURES - 1 ? "danger" : fails > 0 ? "warn" : "");
-
-    // Riot pressure -- bucketed, never exact counts. Hidden entirely before
-    // day 3, since riots cannot happen yet and an inert gauge only confuses.
+    const threat = threatLevel();
     const threatBox = document.getElementById("threat-box");
-    if (threatBox) {
-        if (gameState.day < RIOT_START_DAY) {
-            threatBox.classList.add("hidden");
-        } else {
-            threatBox.classList.remove("hidden");
-            const threat = threatLevel();
-            const threatEl = document.getElementById("threat-level");
-            if (threatEl) {
-                threatEl.textContent = threat.label;
-                threatEl.style.color = threat.color;
-            }
-            threatBox.className = "stat-box threat-box threat-" + threat.key;
-        }
+    const threatValue = document.getElementById("threat-level");
+    if (threatBox && threatValue) {
+        threatBox.classList.remove("hidden");
+        threatValue.textContent = threat.label;
+        threatValue.style.color = threat.color;
+    }
+
+    const allowLabel = document.getElementById("allowance-label");
+    const allowVal = document.getElementById("allowance-value");
+    const allowPips = document.getElementById("allowance-pips");
+    if (!allowLabel || !allowVal || !allowPips) return;
+
+    let count = 0;
+    let maxCount = 0;
+    let label = "AŞAMA";
+
+    switch (gameState.stage) {
+        case STAGE.MEETING:
+            label = "TANIŞMA HAKKI";
+            count = meetsLeft();
+            maxCount = MEETS_PER_DAY;
+            break;
+        case STAGE.TESTING:
+            label = "TEST HAKKI";
+            count = testsLeft();
+            maxCount = testsForDay(gameState.day);
+            break;
+        case STAGE.EXECUTION:
+            label = "İNFAZ HAKKI";
+            count = executionsLeft();
+            maxCount = EXECUTIONS_PER_DAY;
+            break;
+        case STAGE.DISPATCH:
+            label = "GEREKLİ EKİP";
+            count = gameState.selectedTeam.length;
+            maxCount = requiredTeamSize();
+            break;
+        default:
+            label = info.label;
+            count = 0;
+            maxCount = 0;
+            break;
+    }
+
+    allowLabel.textContent = label;
+    allowVal.textContent = maxCount > 0 ? `${count} / ${maxCount}` : "—";
+    allowPips.innerHTML = "";
+    for (let i = 0; i < maxCount; i++) {
+        const pip = document.createElement("span");
+        pip.className = `allowance-pip ${i < count ? "active" : ""}`;
+        allowPips.appendChild(pip);
     }
 
     const present = presentPersonnel();
     const living = present.filter(p => !p.isDead);
     document.getElementById("met-count").textContent =
-        `Tanışılan: ${living.filter(p => p.isMet).length}/${living.length}`;
+        `Görüşülen: ${living.filter(p => p.isMet).length}/${living.length}`;
     document.getElementById("tested-count").textContent =
         `Test Edilen: ${living.filter(p => p.isTested).length}/${living.length}`;
 
     const lostCount = present.length - living.length;
     const lostBadge = document.getElementById("lost-count");
-    lostBadge.textContent = `☠️ Kayıp: ${lostCount}`;
+    lostBadge.textContent = `☠️ Kadro Dışı: ${lostCount}`;
     lostBadge.classList.toggle("has-losses", lostCount > 0);
 
     document.getElementById("roster-heading").textContent =
-        `Tesis Personeli (${present.length} / ${ROSTER_SIZE})`;
+        `Facility 61 Personeli (${present.length} / ${ROSTER_SIZE})`;
 }
 
-// A card must carry everything the player has learned, with no clicking.
-// A person stays on the active roster for the remainder of the day they die,
-// so the loss reads in context. They are carried down to the records section
-// the next morning.
 function isInterred(person) {
     return person.isDead && person.diedOnDay !== undefined && person.diedOnDay < gameState.day;
 }
@@ -1231,7 +893,13 @@ function buildRosterCard(person, stage) {
     card.dataset.id = person.id;
 
     const genderClass = person.gender === "Erkek" ? "male" : "female";
-    const avatarDisplay = person.isExecuted ? "⚡" : (isDead ? "🌫️" : (person.isMet ? person.avatar : "❓"));
+    
+    let avatarDisplay = "❓";
+    if (person.isExecuted) avatarDisplay = "⚡";
+    else if (person.isMissing) avatarDisplay = "🌫️";
+    else if (person.isEscaped) avatarDisplay = "🚪";
+    else if (isDead) avatarDisplay = "💀";
+    else if (person.isMet) avatarDisplay = person.avatar;
 
     let readingHtml = "";
     if (person.isTested && !isDead) {
@@ -1253,29 +921,50 @@ function buildRosterCard(person, stage) {
     }
 
     let dialogueHtml = "";
-    if (person.isMet && person.dialogue) {
+    if (person.isMet && person.dialogue && !isDead) {
         dialogueHtml = `<div class="person-dialogue" title="${person.dialogue}">"${person.dialogue}"</div>`;
     }
 
     let tagsHtml = "";
-    if (person.isExecuted) {
-        tagsHtml += `<span class="tag tag-executed">⚡ İnfaz Edildi</span>`;
-    } else if (person.isMissing || isDead) {
-        tagsHtml += `<span class="tag tag-missing">🌫️ Haber Alınamadı</span>`;
-    } else if (!person.isMet) {
-        tagsHtml += `<span class="tag tag-not-met">Bilinmiyor</span>`;
+    if (isDead) {
+        tagsHtml += `<span class="tag tag-cell-empty">Hücre: BOŞ</span>`;
+        if (person.isExecuted) {
+            tagsHtml += `<span class="tag tag-executed">⚡ İNFAZ EDİLDİ</span>`;
+        } else if (person.isEscaped) {
+            tagsHtml += `<span class="tag tag-escaped">🚪 KAÇTI</span>`;
+        } else if (person.isMissing) {
+            tagsHtml += `<span class="tag tag-missing">🌫️ KAYIP</span>`;
+        } else {
+            tagsHtml += `<span class="tag tag-dead">💀 ÖLDÜ</span>`;
+        }
     } else {
-        tagsHtml += `<span class="tag tag-met">Tanışıldı</span>`;
+        if (!person.isMet) {
+            tagsHtml += `<span class="tag tag-not-met">Görüşülmedi</span>`;
+        } else {
+            tagsHtml += `<span class="tag tag-met">Görüşüldü</span>`;
+        }
+        if (resting) tagsHtml += `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
+        if (isSelected) tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
+        if (isNew) tagsHtml += `<span class="tag tag-new">🆕 Yeni Görüşme</span>`;
     }
-    if (resting) tagsHtml += `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
-    if (isSelected) tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
-    if (isNew) tagsHtml += `<span class="tag tag-new">🆕 Yeni</span>`;
+
+    // Developer / Debug Mode indicator (Only visible when debug mode is ON)
+    let debugHtml = "";
+    if (gameState.debugMode) {
+        if (person.secretIdentity === "Human") {
+            debugHtml = `<span class="debug-badge badge-human">Human</span>`;
+        } else if (person.secretIdentity === "Corrupted") {
+            debugHtml = `<span class="debug-badge badge-corrupted">Corrupted</span>`;
+        } else if (person.secretIdentity === "Random") {
+            debugHtml = `<span class="debug-badge badge-random">Random (${person.actualIdentity})</span>`;
+        }
+    }
 
     card.innerHTML = `
         ${readingHtml}
         <div class="arrival-chip">G${person.arrivalDay}</div>
         <div class="avatar-circle ${genderClass}">${avatarDisplay}</div>
-        <div class="person-name">${person.name}</div>
+        <div class="person-name">${person.name}${debugHtml}</div>
         <div class="person-role">${person.isMet ? person.role : "???"}</div>
         ${dialogueHtml}
         <div class="card-status-tags">${tagsHtml}</div>
@@ -1293,7 +982,6 @@ function buildRosterCard(person, stage) {
     return card;
 }
 
-// Compact record card -- these are history, not choices.
 function buildRecordCard(person, arrivingIndex) {
     const card = document.createElement("div");
     const isArriving = arrivingIndex >= 0;
@@ -1306,23 +994,22 @@ function buildRecordCard(person, arrivingIndex) {
     card.dataset.id = person.id;
 
     if (isArriving) {
-        // Stagger so multiple losses read one at a time.
         card.style.animationDelay = `${arrivingIndex * 260}ms`;
     }
 
-    // Keep true identity hidden in records drawer
     const verdict = `<span class="record-verdict verdict-hidden">GİZLİ</span>`;
-    const cause = person.isExecuted
-        ? `<span class="record-cause">⚡ İnfaz</span>`
-        : `<span class="record-cause">🌫️ Kayıp</span>`;
+    let cause = `<span class="record-cause">💀 ${person.status || "Kayıp"}</span>`;
+    if (person.isExecuted) cause = `<span class="record-cause">⚡ İnfaz Edildi</span>`;
+    else if (person.isEscaped) cause = `<span class="record-cause">🚪 Kaçtı</span>`;
+    else if (person.isMissing) cause = `<span class="record-cause">🌫️ Kayıp</span>`;
 
-    const avatar = person.isExecuted ? "⚡" : "🌫️";
+    const avatar = person.isExecuted ? "⚡" : (person.isEscaped ? "🚪" : (person.isMissing ? "🌫️" : "💀"));
 
     card.innerHTML = `
         <div class="record-avatar">${avatar}</div>
         <div class="record-body">
             <div class="record-name">${person.name}</div>
-            <div class="record-meta">${cause}<span class="record-day">G${person.diedOnDay}</span></div>
+            <div class="record-meta">${cause}<span class="record-day">G${person.diedOnDay || "—"}</span></div>
         </div>
         ${verdict}
     `;
@@ -1349,7 +1036,6 @@ function renderPersonnel() {
     } else {
         recordsSection.classList.remove("hidden");
 
-        // Newest losses first, so the fresh ones are easy to find.
         const ordered = [...interred].sort((a, b) => (b.diedOnDay || 0) - (a.diedOnDay || 0));
         let arrivingSeen = 0;
         ordered.forEach(person => {
@@ -1358,13 +1044,12 @@ function renderPersonnel() {
             records.appendChild(buildRecordCard(person, arrivingIndex));
         });
 
-        // Summary chips at the top of the records drawer (nature neutral).
         const summary = document.getElementById("records-summary");
         const executedCount = interred.filter(p => p.isExecuted).length;
         const missingCount = interred.length - executedCount;
         summary.innerHTML = `
             <span class="records-stat">⚡ ${executedCount} İnfaz</span>
-            <span class="records-stat">🌫️ ${missingCount} Kayıp</span>
+            <span class="records-stat">🌫️ ${missingCount} Kayıp/Kaçak</span>
         `;
     }
 }
@@ -1372,7 +1057,6 @@ function renderPersonnel() {
 function renderStagePanel() {
     const stage = gameState.stage;
 
-    // Toggle panels
     const pArrival = document.getElementById("panel-arrival");
     if (pArrival) pArrival.classList.toggle("hidden", stage !== STAGE.ARRIVAL);
     const pMeeting = document.getElementById("panel-meeting");
@@ -1386,7 +1070,6 @@ function renderStagePanel() {
     const pReport = document.getElementById("panel-report");
     if (pReport) pReport.classList.toggle("hidden", stage !== STAGE.REPORT);
 
-    // Advance button
     const advanceBtn = document.getElementById("btn-advance-stage");
     let nextText = null;
     if (stage === STAGE.TESTING) {
@@ -1414,7 +1097,7 @@ function renderStagePanel() {
         arrivals.forEach(person => {
             const row = document.createElement("div");
             row.className = "arrival-row";
-            row.innerHTML = `<span class="arrival-avatar">❓</span><span><strong>${person.name}</strong> — Görev ve kimlik henüz bilinmiyor</span>`;
+            row.innerHTML = `<span class="arrival-avatar">❓</span><span><strong>${person.name}</strong> — Görüşme programı açıldı</span>`;
             list.appendChild(row);
         });
     }
@@ -1484,7 +1167,6 @@ function renderStagePanel() {
         warnBox.classList.toggle("hidden", !understrength);
 
         if (understrength) {
-            // Never let a benched roster strand the player with no legal move.
             dispatchBtn.disabled = false;
             dispatchBtn.textContent = "PERSONEL YETERSİZ — GÜNÜ KAYBET";
             dispatchBtn.classList.add("btn-understrength");
@@ -1519,7 +1201,7 @@ function renderAll() {
 }
 
 // ==========================================
-// TEST REVEAL -- the voltmeter moment
+// TEST REVEAL
 // ==========================================
 function renderVoltmeterHtml(reading) {
     const baseAngle = -55 + (reading / 100) * 110;
@@ -1572,7 +1254,7 @@ function showExecutionReveal(person) {
     verdict.textContent = "⚡ İNFAZ EDİLDİ";
     verdict.className = "execution-verdict verdict-executed";
     body.innerHTML = `
-        <p>Personelin tesis protokolü sonlandırıldı ve kadrodan düşürüldü.</p>
+        <p>Personelin protokolü sonlandırıldı ve hücresi boşaltıldı.</p>
         <p class="execution-consequence" style="color: var(--text-muted);">
             ❓ Kimlik Gizli: Anomali mi yoksa insan mı olduğu açıklanmadı.
         </p>
@@ -1595,9 +1277,11 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
         const row = document.createElement("div");
         row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
         const statusBadge = isMissing
-            ? `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`
+            ? (person.isAnomaly
+                ? `<span class="badge badge-missing" style="color: var(--accent-orange);">🚪 Kaçtı / Firar</span>`
+                : `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`)
             : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü</span>`;
-        row.innerHTML = `<span>${isMissing ? "🌫️" : person.avatar} <strong>${person.name}</strong> (${person.role})</span>${statusBadge}`;
+        row.innerHTML = `<span>${isMissing ? (person.isAnomaly ? "🚪" : "🌫️") : person.avatar} <strong>${person.name}</strong> (${person.role})</span>${statusBadge}`;
         breakdownList.appendChild(row);
     });
 
@@ -1634,8 +1318,8 @@ function showGameOver(reason = "complete") {
         Ulaşılan Gün: ${gameState.day} / ${TOTAL_DAYS}<br>
         Başarılı Görev: ${success} / ${total} (%${rate})<br>
         Başarısız Görev: ${gameState.missionStats.fail} / ${MAX_MISSION_FAILURES}<br>
-        Haber Alınamayan İnsan: ${humansMissing}<br>
-        Haber Alınamayan Anomali: ${anomaliesMissing}<br>
+        Kayıp İnsan: ${humansMissing}<br>
+        Firar Eden Anomali: ${anomaliesMissing}<br>
         İnfaz Edilen Anomali: ${purged}<br>
         İnfaz Edilen İnsan: ${wrongful}<br>
         Hayatta Kalan: ${counts.humans} insan / ${counts.anomalies} anomali
@@ -1646,7 +1330,7 @@ function showGameOver(reason = "complete") {
     if (reason === "riot") {
         titleElem.textContent = "⚡ ANOMALİ AYAKLANMASI";
         card.classList.add("ending-riot");
-        verdictElem.innerHTML = `<strong>Tesis düştü.</strong> Anomaliler insanları sayıca geçti ve
+        verdictElem.innerHTML = `<strong>Facility 61 düştü.</strong> Anomaliler insanları sayıca geçti ve
             direnecek kimse kalmadı. Kapılar içeriden mühürlendi.`;
     } else if (reason === "fired") {
         titleElem.textContent = "🏛️ GÖREVDEN ALINDIN";
@@ -1654,9 +1338,9 @@ function showGameOver(reason = "complete") {
         verdictElem.innerHTML = `<strong>${MAX_MISSION_FAILURES} başarısız görev.</strong> Devlet denetimi
             tesise el koydu ve yetkin iptal edildi. Yerine başkası atandı.`;
     } else if (success >= 5) {
-        titleElem.textContent = "TESİS GÜVENDE";
+        titleElem.textContent = "FACILITY 61 GÜVENDE";
         card.classList.add("ending-win");
-        verdictElem.innerHTML = `<strong>Tesis Güvende!</strong> Doğru seçimlerle tesisi kurtardın.`;
+        verdictElem.innerHTML = `<strong>Facility 61 Güvende!</strong> Doğru kararlarla tesisi başarıyla korudun.`;
     } else if (success >= 3) {
         titleElem.textContent = "KRİTİK HAYATTA KALMA";
         card.classList.add("ending-loss");
@@ -1664,7 +1348,7 @@ function showGameOver(reason = "complete") {
     } else {
         titleElem.textContent = "TESİS DÜŞTÜ";
         card.classList.add("ending-loss");
-        verdictElem.innerHTML = `<strong>Tesis Düştü!</strong> Operasyonlar başarısız oldu.`;
+        verdictElem.innerHTML = `<strong>Tesis Düştü!</strong> Operasyonlar yetersiz kaldı.`;
     }
 
     document.getElementById("game-over-modal").classList.remove("hidden");
@@ -1697,14 +1381,32 @@ function setupAuthGate() {
     const authError = document.getElementById("auth-error-msg");
     const authBox = document.querySelector(".auth-box");
 
+    function startOrResume() {
+        const saved = loadSavedGameState();
+        if (saved) {
+            gameState = saved;
+            if (new URLSearchParams(window.location.search).has("debug")) {
+                gameState.debugMode = true;
+            }
+            if (gameState.stage === STAGE.INTRO) {
+                document.getElementById("intro-overlay").classList.remove("hidden");
+            } else {
+                document.getElementById("intro-overlay").classList.add("hidden");
+            }
+            renderAll();
+        } else {
+            initGame();
+        }
+    }
+
     if (!authGate || !authForm) {
-        initGame();
+        startOrResume();
         return;
     }
 
     if (sessionStorage.getItem("thefacility_unlocked") === "1") {
         authGate.classList.add("authenticated");
-        initGame();
+        startOrResume();
         return;
     }
 
@@ -1718,7 +1420,7 @@ function setupAuthGate() {
         if (await verifyAccessKey(enteredKey)) {
             sessionStorage.setItem("thefacility_unlocked", "1");
             authGate.classList.add("authenticated");
-            initGame();
+            startOrResume();
         } else {
             if (authError) authError.classList.remove("hidden");
             if (authBox) {
@@ -1753,11 +1455,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnRevealClose) btnRevealClose.addEventListener("click", closeModals);
     const btnExecClose = document.getElementById("btn-execution-close");
     if (btnExecClose) btnExecClose.addEventListener("click", closeModals);
-    const btnDay3Close = document.getElementById("btn-day3-briefing-close");
+    const btnDay3Close = document.getElementById("day3-briefing-modal");
     if (btnDay3Close) {
         btnDay3Close.addEventListener("click", () => {
-            const modal = document.getElementById("day3-briefing-modal");
-            if (modal) modal.classList.add("hidden");
+            btnDay3Close.classList.add("hidden");
         });
     }
     const btnResultContinue = document.getElementById("btn-result-continue");
@@ -1790,7 +1491,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==========================================
-// BOT BENCHMARK -- rebuilt for the staged day
+// BOT BENCHMARK
 // ==========================================
 const BOT_STRATEGIES = [
     {
@@ -1819,18 +1520,15 @@ const BOT_STRATEGIES = [
     }
 ];
 
-// What a reading is worth, given the fixed pool. A player learns these.
 function bandRisk(reading) {
-    if (reading >= 70) return 1.00;      // 4 anomalies, 0 humans
-    if (reading >= 50) return 0.50;      // 3 anomalies, 3 humans
-    if (reading >= 30) return 1 / 3;     // 2 anomalies, 4 humans
-    return 0.00;                         // 0 anomalies, 5 humans
+    if (reading >= 70) return 1.00;
+    if (reading >= 50) return 0.50;
+    if (reading >= 30) return 1 / 3;
+    return 0.00;
 }
 
-const BASE_ANOMALY_RATE = (8 + 6 * 0.5) / 21;
+const BASE_ANOMALY_RATE = 6 / 14;
 
-// Legitimate elimination: subtract the anomaly mass already accounted for by
-// tested people from the pool's known total, and spread the rest evenly.
 function untestedRisk(manifest) {
     const tested = manifest.filter(p => p.isTested);
     const untestedCount = manifest.length - tested.length;
@@ -1873,26 +1571,23 @@ function simulateSingleGame(botType) {
         return (living.length - a) - a;
     };
 
-    // Initialize scripted arrivals and bench (21 total, Day 1: 4, Max active in facility: 14)
-    const { benchIds } = setupArrivalPools(manifest);
-    const bench = [...benchIds];
+    // Day 1 unlocks
+    DAILY_INTERVIEW_SCHEDULE[1].forEach(id => {
+        const p = manifest.find(x => x.id === id);
+        if (p) p.arrivalDay = 1;
+    });
 
     for (let day = 1; day <= TOTAL_DAYS; day++) {
         daysReached = day;
 
         if (day > 1) {
-            const living = manifest.filter(p => p.arrivalDay && !p.isDead).length;
-            const freeSlots = Math.max(0, 14 - living);
-            const quota = DAILY_ARRIVAL_QUOTA[day] || 3;
-            const bringCount = Math.min(quota, freeSlots, bench.length);
-            const incoming = bench.splice(0, bringCount);
-            incoming.forEach(id => {
+            const scheduled = DAILY_INTERVIEW_SCHEDULE[day] || [];
+            scheduled.forEach(id => {
                 const p = manifest.find(x => x.id === id);
-                if (p) p.arrivalDay = day;
+                if (p && p.arrivalDay === null) p.arrivalDay = day;
             });
         }
 
-        // Arrivals can themselves tip the balance.
         if (riotOn(day)) { endReason = "riot"; break; }
 
         const present = manifest.filter(p => p.arrivalDay && p.arrivalDay <= day && !p.isDead);
@@ -1909,7 +1604,7 @@ function simulateSingleGame(botType) {
             testable.slice(0, testsForDay(day)).forEach(p => { p.isTested = true; });
         }
 
-        // ---- EXECUTION (Day 2+) ----
+        // ---- EXECUTION (Day 3+) ----
         if (day >= EXECUTION_START_DAY && botType !== "random") {
             const candidates = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.isMet && p.isTested);
             let target = null;
@@ -1957,7 +1652,7 @@ function simulateSingleGame(botType) {
         let missingPeople = [];
 
         if (team.length !== teamSize) {
-            isSuccess = false;   // under strength -- automatic loss
+            isSuccess = false;
         } else {
             anomaliesSent += team.filter(p => p.isAnomaly).length;
             const outcome = resolveMission(team);
@@ -1972,7 +1667,6 @@ function simulateSingleGame(botType) {
 
         if (isSuccess) successfulDays++; else failures++;
 
-        // Riot check or 3 failures check
         if (riotOn(day)) { endReason = "riot"; break; }
         if (failures >= MAX_MISSION_FAILURES) { endReason = "fired"; break; }
 
