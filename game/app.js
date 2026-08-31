@@ -3,7 +3,10 @@
 // ============================================================================
 //
 // 14 Inmates: 7 Human, 5 Corrupted, 2 Random
-// Daily Energy: 8 points
+// Daily Energy: 8 points (Each finished interview consumes 2 energy)
+// Dialogue index progression: G1 (0) -> G2 (1) -> G3 (2) -> G4 (3) -> G5 (4)
+// Inline dialogue inside the page (NO popups/modals for interviews)
+//
 // Henry's Interview Unlock Schedule (All 14 exist in facility from Day 1):
 // Day 1: Bob (1), Ted Karinsky (2), M. Cole Morgan (3), Alicia Winston (4)
 // Day 2: Evie Hill (5), Dakota Ahmadii (6)
@@ -19,8 +22,7 @@ const MAX_DAILY_ENERGY = 8;
 
 // Energy Action Costs
 const ENERGY_COST = {
-    FIRST_MEET: 2,
-    SUBSEQUENT_MEET: 2,
+    INTERVIEW: 2,
     TEST: 1,
     RETURN_CHECK: 1,
     DISPATCH: 0
@@ -63,7 +65,7 @@ const STAGE_INFO = {
     report:    { label: "GÜN RAPORU",       clock: "18:00", next: null }
 };
 
-// ---- 14 FIXED INMATES DATA ------------------------------------------------
+// ---- 14 FIXED INMATES DATA (G1-G5 Array & Real PNG Paths) ----------------
 const FACILITY_61_ROSTER = [
     {
         id: 1,
@@ -71,16 +73,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "İşsiz",
-        photo: "photos/Bob.png",
-        photoLegacy: "Photos/Bob.png",
+        image: "/characters/bob.png",
         reading: 16,
-        dialogues: {
-            G1: "Heyoooo! Naber?",
-            G2: "Arkadaşım buranın dışında çöküş olduğunu söylüyor. Ama onu şu an dinleyemem, puzzle’ı tamamlamam lazım.",
-            G3: "Bugün konuşmak istemiyorum çünkü çok sinirliyim!",
-            G4: "Tarağımın teli kırıldı. Fanlarımdan tarak teli göndermelerini isticem.",
-            G5: "Bak Warden, patatesten ne yaptım! Bunu yemekhaneden ödünç aldım."
-        }
+        dialogues: [
+            "Heyoooo! Naber?",
+            "Arkadaşım buranın dışında çöküş olduğunu söylüyor. Ama onu şu an dinleyemem, puzzle’ı tamamlamam lazım.",
+            "Bugün konuşmak istemiyorum çünkü çok sinirliyim!",
+            "Tarağımın teli kırıldı. Fanlarımdan tarak teli göndermelerini isticem.",
+            "Bak Warden, patatesten ne yaptım! Bunu yemekhaneden ödünç aldım."
+        ]
     },
     {
         id: 2,
@@ -88,16 +89,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Eski Akademisyen",
-        photo: "photos/TedKarinsky.png",
-        photoLegacy: "Photos/TedKarinsky.png",
+        image: "/characters/ted-karinsky.png",
         reading: 92,
-        dialogues: {
-            G1: "Gerçekleri örtbas ederek makalemi yayımlamamı engellediler. Ben ise yayımladım.",
-            G2: "Gerçekler, siyasetin veya kamu düzeninin ihtiyaçlarına göre değiştirilemez.",
-            G3: "Siyasi meselelerle işim yok. Fakat gidişat beni suç işlemeye mecbur bıraktı.",
-            G4: "Teknoloji yasağı tam bir saçmalık! Her şeyin üstünü kapatmaya çalışıyorlar!",
-            G5: "Dün yazdığım notların bazılarını bugün ilk kez okuyormuşum gibi hissettim. Yine de düşüncelerin bana ait olduğundan eminim."
-        }
+        dialogues: [
+            "Gerçekleri örtbas ederek makalemi yayımlamamı engellediler. Ben ise yayımladım.",
+            "Gerçekler, siyasetin veya kamu düzeninin ihtiyaçlarına göre değiştirilemez.",
+            "Siyasi meselelerle işim yok. Fakat gidişat beni suç işlemeye mecbur bıraktı.",
+            "Teknoloji yasağı tam bir saçmalık! Her şeyin üstünü kapatmaya çalışıyorlar!",
+            "Dün yazdığım notların bazılarını bugün ilk kez okuyormuşum gibi hissettim. Yine de düşüncelerin bana ait olduğundan eminim."
+        ]
     },
     {
         id: 3,
@@ -105,16 +105,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Otomobil Tamircisi",
-        photo: "photos/MColeMorgan.png",
-        photoLegacy: "Photos/MColeMorgan.png",
+        image: "/characters/m-cole-morgan.png",
         reading: 32,
-        dialogues: {
-            G1: "Karımı ve kızımı dışarıdaki tehlikeden korumak istiyorum. Buradan ne kadar erken çıkarsam o kadar iyi.",
-            G2: "Hâlâ kendi tamirhanemi açma hayalim var. Buradaki görevler bu hayalimi kamçılıyor.",
-            G3: "Bugün karımdan bir mektup aldım. Uzun süre sonra aklına geldiğim için seviniyorum.",
-            G4: "Bugün kulaklarım çok çınlıyor. Kendimi pek iyi hissetmiyorum.",
-            G5: "Her gün bu kameralardan izlenmekten bıktım. Kendimi korkunç hissediyorum."
-        }
+        dialogues: [
+            "Karımı ve kızımı dışarıdaki tehlikeden korumak istiyorum. Buradan ne kadar erken çıkarsam o kadar iyi.",
+            "Hâlâ kendi tamirhanemi açma hayalim var. Buradaki görevler bu hayalimi kamçılıyor.",
+            "Bugün karımdan bir mektup aldım. Uzun süre sonra aklına geldiğim için seviniyorum.",
+            "Bugün kulaklarım çok çınlıyor. Kendimi pek iyi hissetmiyorum.",
+            "Her gün bu kameralardan izlenmekten bıktım. Kendimi korkunç hissediyorum."
+        ]
     },
     {
         id: 4,
@@ -122,16 +121,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Kız",
         role: "Edebiyat Mezunu",
-        photo: "photos/AliciaWinston.png",
-        photoLegacy: "Photos/AliciaWinston.png",
+        image: "/characters/alicia-winston.png",
         reading: null,
-        dialogues: {
-            G1: "Zamanında birilerine çok güvendim. Artık kimseye o kadar güvenemiyorum.",
-            G2: "Buranın kütüphanesindeki kitaplar çok sıkıcı. Aradığım hiçbir kitabı bulamıyorum.",
-            G3: "*Hıçkırır* Özür dilerim, sizi fark etmedim. *Gözyaşlarını siler*",
-            G4: "Burada herkes delirmiş. Kimseyle düzgün anlaşamıyorum. Aileme mektup yazacağım.",
-            G5: "Bugün uykumu iyi aldım. Ortak alanda televizyon izlemek bana iyi geliyor."
-        }
+        dialogues: [
+            "Zamanında birilerine çok güvendim. Artık kimseye o kadar güvenemiyorum.",
+            "Buranın kütüphanesindeki kitaplar çok sıkıcı. Aradığım hiçbir kitabı bulamıyorum.",
+            "*Hıçkırır* Özür dilerim, sizi fark etmedim. *Gözyaşlarını siler*",
+            "Burada herkes delirmiş. Kimseyle düzgün anlaşamıyorum. Aileme mektup yazacağım.",
+            "Bugün uykumu iyi aldım. Ortak alanda televizyon izlemek bana iyi geliyor."
+        ]
     },
     {
         id: 5,
@@ -139,16 +137,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Kız",
         role: "Garson",
-        photo: "photos/EvieHill.png",
-        photoLegacy: "Photos/EvieHill.png",
+        image: "/characters/evie-hill.png",
         reading: 86,
-        dialogues: {
-            G1: "Birileri odama girip eşyalarımı karıştırıyor. Onu yakalarsam fena yapacağım.",
-            G2: "Bu tesis gereğinden fazla mı soğuk, yoksa bir tek benim hücrem mi böyle?",
-            G3: "Kansızlığım var. Çok kan kaybetmemem gerekiyor. Kaybedersem yerine gelmesi birkaç saat sürüyor.",
-            G4: "Sanırım odama giren kişiyi buldum.",
-            G5: "Nişanlım dışarıda bir yerde beni bekliyor. Beni buradan çıkaracak."
-        }
+        dialogues: [
+            "Birileri odama girip eşyalarımı karıştırıyor. Onu yakalarsam fena yapacağım.",
+            "Bu tesis gereğinden fazla mı soğuk, yoksa bir tek benim hücrem mi böyle?",
+            "Kansızlığım var. Çok kan kaybetmemem gerekiyor. Kaybedersem yerine gelmesi birkaç saat sürüyor.",
+            "Sanırım odama giren kişiyi buldum.",
+            "Nişanlım dışarıda bir yerde beni bekliyor. Beni buradan çıkaracak."
+        ]
     },
     {
         id: 6,
@@ -156,16 +153,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Erkek",
         role: "Obezite Hastası",
-        photo: "photos/DakotaAhmadii.png",
-        photoLegacy: "Photos/DakotaAhmadii.png",
+        image: "/characters/dakota-ahmadii.png",
         reading: null,
-        dialogues: {
-            G1: "Yemekhanede çıkardığım kavga için özür dilerim ama o gün yemekte ıspanak olması sinirlerimi feci gerdi.",
-            G2: "Sesten ötürü üzgünüm, Warden. Ispanak bende gaz yapıyor.",
-            G3: "İçinde bir yerlerde derin bir pişmanlık var. Bakışlarından anlayabiliyorum.",
-            G4: "Dün akşam tesis o kadar gürültülüydü ki uyuyamadım.",
-            G5: "Saçlarımın bir anda beyazlamasının nedeni, çıkan beyaz saç tellerimi ardı ardına kopartmam. Biri ölünce mezarına beş tel geliyor."
-        }
+        dialogues: [
+            "Yemekhanede çıkardığım kavga için özür dilerim ama o gün yemekte ıspanak olması sinirlerimi feci gerdi.",
+            "Sesten ötürü üzgünüm, Warden. Ispanak bende gaz yapıyor.",
+            "İçinde bir yerlerde derin bir pişmanlık var. Bakışlarından anlayabiliyorum.",
+            "Dün akşam tesis o kadar gürültülüydü ki uyuyamadım.",
+            "Saçlarımın bir anda beyazlamasının nedeni, çıkan beyaz saç tellerimi ardı ardına kopartmam. Biri ölünce mezarına beş tel geliyor."
+        ]
     },
     {
         id: 7,
@@ -173,16 +169,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Egzotik Hayvan Tüccarı",
-        photo: "photos/HasanKahveci.png",
-        photoLegacy: "Photos/HasanKahveci.png",
+        image: "/characters/hasan-kahveci.png",
         reading: 19,
-        dialogues: {
-            G1: "Gittiğimiz görevlerden para kazanıyor muyuz? Buradan cebim dolu çıkmak istiyorum.",
-            G2: "Hayır, o kısa kollu kıyafetlerden giymeyeceğim. Böyle iyiyim.",
-            G3: "Bir zamanlar Zeki isimli bir jako papağanım vardı. Ona ‘zeki’ demeyi öğretmiştim.",
-            G4: "Zeki, zeki, zeki, zekiiiiii! ZE— ZEK— ZEKİİİ! CİK CİK CİK!",
-            G5: "Görevlerden beş kuruş kazanmadım. Param nerede, Warden?"
-        }
+        dialogues: [
+            "Gittiğimiz görevlerden para kazanıyor muyuz? Buradan cebim dolu çıkmak istiyorum.",
+            "Hayır, o kısa kollu kıyafetlerden giymeyeceğim. Böyle iyiyim.",
+            "Bir zamanlar Zeki isimli bir jako papağanım vardı. Ona ‘zeki’ demeyi öğretmiştim.",
+            "Zeki, zeki, zeki, zekiiiiii! ZE— ZEK— ZEKİİİ! CİK CİK CİK!",
+            "Görevlerden beş kuruş kazanmadım. Param nerede, Warden?"
+        ]
     },
     {
         id: 8,
@@ -190,16 +185,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Psikoloji Eğitimli Ev Hanımı",
-        photo: "photos/KatarinaJovanovic.png",
-        photoLegacy: "Photos/KatarinaJovanovic.png",
+        image: "/characters/katarina-jovanovic.png",
         reading: 28,
-        dialogues: {
-            G1: "Ne bakıyorsun? Gıcık mı oldun?",
-            G2: "İplerimle arama girilmesinden hoşlanmam.",
-            G3: "Ördüğüm bebeği hanımlardan birine vermeye çalıştım ama bir suratıma tükürmediği kaldı. Buradakiler çok kaba.",
-            G4: "Sekiz yüzüncü örgümde kocam beni almaya gelecek.",
-            G5: "Bu öğlen yemekhanede meyveli turta yediğimi zannettim ama bana onun çemenli pastırma olduğunu söylediler?"
-        }
+        dialogues: [
+            "Ne bakıyorsun? Gıcık mı oldun?",
+            "İplerimle arama girilmesinden hoşlanmam.",
+            "Ördüğüm bebeği hanımlardan birine vermeye çalıştım ama bir suratıma tükürmediği kaldı. Buradakiler çok kaba.",
+            "Sekiz yüzüncü örgümde kocam beni almaya gelecek.",
+            "Bu öğlen yemekhanede meyveli turta yediğimi zannettim ama bana onun çemenli pastırma olduğunu söylediler?"
+        ]
     },
     {
         id: 9,
@@ -207,16 +201,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Eski Ünlü Müzisyen",
-        photo: "photos/MilenaMarkic.png",
-        photoLegacy: "Photos/MilenaMarkic.png",
+        image: "/characters/milena-marvic.png",
         reading: 8,
-        dialogues: {
-            G1: "Bugün çok kötü görünüyorum. Fanlarım beni böyle görmediği için mutluyum.",
-            G2: "Şu mektuplara bir bakın! Herkes benim bir an önce sahnelere geri dönmemi istiyor gibi.",
-            G3: "Bu ruj markası bende alerji yapıyor. Dudaklarım o yüzden bu kadar şişkin.",
-            G4: "Bu ruj markası bende alerji yapıyor. Dudaklarım o yüzden bu kadar şişkin.",
-            G5: "PO— PO— MA! YAPTIM BEN DE BİR Hİ— PO— TEZ! MA— MA— MA— MA!"
-        }
+        dialogues: [
+            "Bugün çok kötü görünüyorum. Fanlarım beni böyle görmediği için mutluyum.",
+            "Şu mektuplara bir bakın! Herkes benim bir an önce sahnelere geri dönmemi istiyor gibi.",
+            "Bu ruj markası bende alerji yapıyor. Dudaklarım o yüzden bu kadar şişkin.",
+            "Bu ruj markası bende alerji yapıyor. Dudaklarım o yüzden bu kadar şişkin.",
+            "PO— PO— MA! YAPTIM BEN DE BİR Hİ— PO— TEZ! MA— MA— MA— MA!"
+        ]
     },
     {
         id: 10,
@@ -224,16 +217,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Market Çalışanı",
-        photo: "photos/ShaneSmith.png",
-        photoLegacy: "Photos/ShaneSmith.png",
+        image: "/characters/shane-smith.png",
         reading: 78,
-        dialogues: {
-            G1: "Ne bakıyovsun lan? Komik biv şev mi vav?",
-            G2: "Kimseyle konuşmak istemiyovum. Rahat bıvak beni.",
-            G3: "Bu— buvası ço— çok daha güvenli. Dışavısı ovospu çocuvu dolu.",
-            G4: "Gaviba senden hoşvandım, Wavden Bey. Bana diverlerinden daha iyi davvanıyovsun.",
-            G5: "Kimseye söyvemeyin ama buvada hoşvandığım çok hoş biv hanımefendi vav."
-        }
+        dialogues: [
+            "Ne bakıyovsun lan? Komik biv şev mi vav?",
+            "Kimseyle konuşmak istemiyovum. Rahat bıvak beni.",
+            "Bu— buvası ço— çok daha güvenli. Dışavısı ovospu çocuvu dolu.",
+            "Gaviba senden hoşvandım, Wavden Bey. Bana diverlerinden daha iyi davvanıyovsun.",
+            "Kimseye söyvemeyin ama buvada hoşvandığım çok hoş biv hanımefendi vav."
+        ]
     },
     {
         id: 11,
@@ -241,16 +233,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Sokak Performansçısı",
-        photo: "photos/PaulHSimmons.png",
-        photoLegacy: "Photos/PaulHSimmons.png",
+        image: "/characters/paul-h-simmons.png",
         reading: 88,
-        dialogues: {
-            G1: "Vay Henry Başkan. Seni görmeyeli uzun zaman olmuştu.",
-            G2: "Tesiste beğendiğim bir fıstık var. Onun da beni beğendiğini biliyorum.",
-            G3: "Burası sokaktaki yaşamımdan daha güvenli hissettirmiyor.",
-            G4: "Uzun süredir elmalı tütüne hasretim. Şimdi bir tane yakmak vardı.",
-            G5: "Üstümdeki kokunun sebebi, suların uzun süredir kesik olmasından kaynaklı."
-        }
+        dialogues: [
+            "Vay Henry Başkan. Seni görmeyeli uzun zaman olmuştu.",
+            "Tesiste beğendiğim bir fıstık var. Onun da beni beğendiğini biliyorum.",
+            "Burası sokaktaki yaşamımdan daha güvenli hissettirmiyor.",
+            "Uzun süredir elmalı tütüne hasretim. Şimdi bir tane yakmak vardı.",
+            "Üstümdeki kokunun sebebi, suların uzun süredir kesik olmasından kaynaklı."
+        ]
     },
     {
         id: 12,
@@ -258,16 +249,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Huzurevi Çalışanı",
-        photo: "photos/SergioGalvez.png",
-        photoLegacy: "Photos/SergioGalvez.png",
+        image: "/characters/sergio-galvez.png",
         reading: 42,
-        dialogues: {
-            G1: "Herkesle anlaşabilmek gibi garip bir huya sahibim. Sanırım bende şeytan tüyü var, hehehe.",
-            G2: "Gelenekselliğe ayak uyduramayanları anlamıyorum. Zaten teknolojilerle aram yok.",
-            G3: "Huzurevinde çalışırken isimleri karıştırdığım olurdu. İnsan her gün aynı saatte aynı ilaçları dağıtınca yüzler birbirine benziyor.",
-            G4: "Dün gece biri beni eski sakinlerden birinin adıyla çağırdı. Ses tanıdık geliyordu ama cevap vermedim.",
-            G5: "Bu sabah yatağımın altında bir çift terlik buldum. Benim değildi ama ayaklarıma tam oldu."
-        }
+        dialogues: [
+            "Herkesle anlaşabilmek gibi garip bir huya sahibim. Sanırım bende şeytan tüyü var, hehehe.",
+            "Gelenekselliğe ayak uyduramayanları anlamıyorum. Zaten teknolojilerle aram yok.",
+            "Huzurevinde çalışırken isimleri karıştırdığım olurdu. İnsan her gün aynı saatte aynı ilaçları dağıtınca yüzler birbirine benziyor.",
+            "Dün gece biri beni eski sakinlerden birinin adıyla çağırdı. Ses tanıdık geliyordu ama cevap vermedim.",
+            "Bu sabah yatağımın altında bir çift terlik buldum. Benim değildi ama ayaklarıma tam oldu."
+        ]
     },
     {
         id: 13,
@@ -275,16 +265,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Din Adamı",
-        photo: "photos/FatherGregory.png",
-        photoLegacy: "Photos/FatherGregory.png",
+        image: "/characters/father-gregory.png",
         reading: 84,
-        dialogues: {
-            G1: "Affedersin, Warden. İncil okumaya daldım, sizi fark edemedim.",
-            G2: "Tanrı bizi gözetliyor. Burada veya dışarıda yaşanan hiçbir şey gizli kalmaz.",
-            G3: "Babamız bize bu çöküşe yol açan her etkeni ortadan kaldıracağına söz veriyor. Tanrı’ya kulak verin.",
-            G4: "Yaşım gereği tuvalete giderken zorlanıyorum. Ama bu da her canlının sınavı.",
-            G5: "Bu tesise ilk geldiğimde şükürsüz biriydim. Artık canlı olduğum her güne teşekkür ediyorum."
-        }
+        dialogues: [
+            "Affedersin, Warden. İncil okumaya daldım, sizi fark edemedim.",
+            "Tanrı bizi gözetliyor. Burada veya dışarıda yaşanan hiçbir şey gizli kalmaz.",
+            "Babamız bize bu çöküşe yol açan her etkeni ortadan kaldıracağına söz veriyor. Tanrı’ya kulak verin.",
+            "Yaşım gereği tuvalete giderken zorlanıyorum. Ama bu da her canlının sınavı.",
+            "Bu tesise ilk geldiğimde şükürsüz biriydim. Artık canlı olduğum her güne teşekkür ediyorum."
+        ]
     },
     {
         id: 14,
@@ -292,16 +281,15 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Çizer",
-        photo: "photos/NinaGrace.png",
-        photoLegacy: "Photos/NinaGrace.png",
+        image: "/characters/nina-grace.png",
         reading: 14,
-        dialogues: {
-            G1: "Bugün hava çok güzel. İçeride yağlı boya tabloma mı devam etsem yoksa müzik mi dinlesem?",
-            G2: "Birkaç sene önce ailemle hayatımın en güzel kışını geçirmiştim. O zamanlar kar yağarken içtiğim sıcak çikolatayı ve evimin manzarasını resmettim.",
-            G3: "Neden geceleri deli gibi bağırıyorlar? Dün gece yatağımdan sıçrayarak uyandım!",
-            G4: "Ortak alanda kadın mahkûmlarla konuşmak bana daha güvenli hissettiriyor. Özellikle yaşı büyük erkeklerden korkuyorum.",
-            G5: "Kolumdaki yaraları kaşıdığım için sürekli kabuk bağlıyor ve kanıyor."
-        }
+        dialogues: [
+            "Bugün hava çok güzel. İçeride yağlı boya tabloma mı devam etsem yoksa müzik mi dinlesem?",
+            "Birkaç sene önce ailemle hayatımın en güzel kışını geçirmiştim. O zamanlar kar yağarken içtiğim sıcak çikolatayı ve evimin manzarasını resmettim.",
+            "Neden geceleri deli gibi bağırıyorlar? Dün gece yatağımdan sıçrayarak uyandım!",
+            "Ortak alanda kadın mahkûmlarla konuşmak bana daha güvenli hissettiriyor. Özellikle yaşı büyük erkeklerden korkuyorum.",
+            "Kolumdaki yaraları kaşıdığım için sürekli kabuk bağlıyor ve kanıyor."
+        ]
     }
 ];
 
@@ -351,8 +339,7 @@ function generateManifest() {
             ...p,
             arrivalDay: null,
             isMet: false,
-            dialogueStage: 0,
-            currentDialogue: p.dialogues.G1,
+            dialogueIndex: 0,
             isTested: false,
             isDead: false,
             isExecuted: false,
@@ -368,7 +355,7 @@ function generateManifest() {
 // ==========================================
 // STATE MANAGEMENT & PERSISTENCE
 // ==========================================
-const SAVE_KEY = "facility61_inmate_state";
+const SAVE_KEY = "facility61_inmate_state_v2";
 
 let gameState = {
     day: 1,
@@ -384,6 +371,7 @@ let gameState = {
     lastArrivals: [],
     newlyInterred: [],
     revealPersonId: null,
+    activeConversationId: null,
     debugMode: false
 };
 
@@ -401,6 +389,17 @@ function loadSavedGameState() {
         if (data) {
             const parsed = JSON.parse(data);
             if (parsed && Array.isArray(parsed.manifest) && parsed.manifest.length === ROSTER_SIZE) {
+                // Ensure backward compatibility of dialogueIndex and images
+                parsed.manifest.forEach(p => {
+                    if (typeof p.dialogueIndex !== "number") {
+                        p.dialogueIndex = p.dialogueStage ? (p.dialogueStage - 1) : 0;
+                    }
+                    const base = FACILITY_61_ROSTER.find(b => b.id === p.id);
+                    if (base) {
+                        p.image = base.image;
+                        p.dialogues = base.dialogues;
+                    }
+                });
                 return parsed;
             }
         }
@@ -415,6 +414,18 @@ function clearSavedGameState() {
         localStorage.removeItem(SAVE_KEY);
     } catch (e) {
         console.warn("Could not clear save state", e);
+    }
+}
+
+// ==========================================
+// IMAGE FALLBACK & ERROR HANDLER
+// ==========================================
+function handleImageError(imgEl, name, path) {
+    console.warn(`Profil görseli yüklenemedi: ${name} — ${path}`);
+    imgEl.style.display = "none";
+    const fallback = imgEl.nextElementSibling;
+    if (fallback) {
+        fallback.style.display = "flex";
     }
 }
 
@@ -435,18 +446,6 @@ function restDaysLeft(personId) {
 
 function isResting(personId) {
     return (gameState.tiredMap[personId] || 0) > 0;
-}
-
-function canPerformAction(energyCost) {
-    return gameState.energy >= energyCost;
-}
-
-function consumeEnergy(amount) {
-    if (gameState.energy >= amount) {
-        gameState.energy -= amount;
-        return true;
-    }
-    return false;
 }
 
 function getCharacterCurrentStatus(person) {
@@ -534,7 +533,7 @@ function requiredTeamSize() {
 }
 
 // ==========================================
-// MISSION RESOLUTION (BALANCED SKILL/RISK)
+// MISSION RESOLUTION
 // ==========================================
 function resolveMission(team) {
     const size = team.length;
@@ -543,12 +542,11 @@ function resolveMission(team) {
 
     const missingPeople = [];
 
-    // Base Success Probability:
-    // Corrupted can succeed, Human can fail based on composition
+    // Base Success Probability: Corrupted can succeed, Human can fail based on composition
     let baseSuccess = 0.50 + (humanCount * 0.25) - (anomalyCount * 0.15);
     baseSuccess = Math.max(0.15, Math.min(0.95, baseSuccess));
 
-    // Human Loss Risk (20% - 35% depending on corrupted presence)
+    // Human Loss Risk (15% - 35% depending on corrupted presence)
     const humanLossChance = 0.15 + (anomalyCount * 0.10);
     const humans = team.filter(p => !p.isAnomaly);
     if (humans.length > 0 && Math.random() < humanLossChance) {
@@ -616,6 +614,7 @@ function initGame() {
         lastArrivals: day1Ids,
         newlyInterred: [],
         revealPersonId: null,
+        activeConversationId: null,
         debugMode: isDebug
     };
 
@@ -650,11 +649,13 @@ function logEvent(message, type = "system") {
 // STAGE FLOW
 // ==========================================
 function advanceStage() {
+    gameState.activeConversationId = null;
+
     switch (gameState.stage) {
         case STAGE.ARRIVAL:
             gameState.newlyInterred = [];
             gameState.stage = STAGE.MEETING;
-            logEvent(`Görüşme aşaması açıldı. Kalan Enerji: ⚡${gameState.energy}`, "system");
+            logEvent(`Tanışma/Görüşme aşaması açıldı. Kalan Enerji: ⚡${gameState.energy}`, "system");
             break;
 
         case STAGE.MEETING:
@@ -689,11 +690,12 @@ function advanceStage() {
 }
 
 function nextDay() {
+    gameState.activeConversationId = null;
+
     // Rest fatigue for mission participants
     gameState.selectedTeam.forEach(id => {
         const member = findPerson(id);
         if (member && member.isDead) return;
-        // 1 or 2 days rest
         gameState.tiredMap[id] = Math.random() < 0.50 ? 2 : 1;
         if (member) member.pendingReturnCheck = false;
     });
@@ -705,9 +707,7 @@ function nextDay() {
         }
     });
 
-    // Reset pending return checks from previous day
     gameState.manifest.forEach(p => { p.pendingReturnCheck = false; });
-
     gameState.selectedTeam = [];
 
     if (gameState.day >= TOTAL_DAYS) {
@@ -754,7 +754,70 @@ function nextDay() {
 }
 
 // ==========================================
-// PLAYER ACTIONS (MEETING, TESTING, EXECUTION)
+// INLINE INTERVIEW SYSTEM (NO POPUPS)
+// ==========================================
+function startInterview(personId) {
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
+    if (person.isDead) {
+        flashNotice(`${person.name} artık tesiste değil (${getCharacterCurrentStatus(person)}).`);
+        return;
+    }
+
+    if (gameState.energy < ENERGY_COST.INTERVIEW) {
+        flashNotice(`Yetersiz Enerji! Görüşme için ⚡${ENERGY_COST.INTERVIEW} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
+        return;
+    }
+
+    // Toggle inline conversation on the card
+    if (gameState.activeConversationId === personId) {
+        gameState.activeConversationId = null;
+    } else {
+        gameState.activeConversationId = personId;
+    }
+
+    renderPersonnel();
+}
+
+function finishInterview(personId) {
+    const person = findPerson(personId);
+    if (!person || person.isDead) return;
+
+    if (gameState.energy < ENERGY_COST.INTERVIEW) {
+        flashNotice(`Yetersiz Enerji! Görüşmeyi tamamlamak için ⚡${ENERGY_COST.INTERVIEW} enerji gerekli.`);
+        return;
+    }
+
+    // 1. Consume energy exactly once
+    gameState.energy -= ENERGY_COST.INTERVIEW;
+
+    // 2. Mark as met
+    person.isMet = true;
+
+    // Current dialogue line shown
+    const currentIndex = person.dialogueIndex ?? 0;
+    const currentText = person.dialogues[currentIndex] || person.dialogues[person.dialogues.length - 1];
+
+    logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${currentIndex + 1}]: "${currentText}"`, "action");
+
+    // 3. Advance dialogue index (Max index = 4 for G5)
+    person.dialogueIndex = Math.min(currentIndex + 1, person.dialogues.length - 1);
+
+    // 4. Close inline dialogue
+    gameState.activeConversationId = null;
+
+    // 5. Persist and update UI
+    saveGameState();
+    renderAll();
+}
+
+function cancelInterview() {
+    gameState.activeConversationId = null;
+    renderPersonnel();
+}
+
+// ==========================================
+// PLAYER ACTIONS (TESTING, EXECUTION, DISPATCH)
 // ==========================================
 function handleCardClick(personId) {
     const person = findPerson(personId);
@@ -762,7 +825,7 @@ function handleCardClick(personId) {
 
     switch (gameState.stage) {
         case STAGE.MEETING:
-            meetPerson(personId);
+            startInterview(personId);
             break;
         case STAGE.TESTING:
             testPerson(personId);
@@ -774,50 +837,8 @@ function handleCardClick(personId) {
             toggleTeamMember(personId);
             break;
         default:
-            // Viewing character modal in other stages
-            if (person.isMet) {
-                showInmateDetailsModal(person);
-            }
             break;
     }
-}
-
-function meetPerson(personId) {
-    const person = findPerson(personId);
-    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
-    if (gameState.stage !== STAGE.MEETING) return;
-
-    if (person.isDead) {
-        flashNotice(`${person.name} artık tesiste değil (${getCharacterCurrentStatus(person)}).`);
-        return;
-    }
-
-    const isFirstMeet = !person.isMet;
-    const energyNeeded = isFirstMeet ? ENERGY_COST.FIRST_MEET : ENERGY_COST.SUBSEQUENT_MEET;
-
-    if (!canPerformAction(energyNeeded)) {
-        flashNotice(`Yetersiz Enerji! Görüşme için ⚡${energyNeeded} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
-        return;
-    }
-
-    consumeEnergy(energyNeeded);
-
-    if (isFirstMeet) {
-        person.isMet = true;
-        person.dialogueStage = 1;
-    } else {
-        // Increment dialogue stage (G1 -> G2 -> G3 -> G4 -> G5)
-        person.dialogueStage = Math.min(5, person.dialogueStage + 1);
-    }
-
-    const stageKey = "G" + person.dialogueStage;
-    person.currentDialogue = person.dialogues[stageKey] || person.dialogues.G5;
-
-    logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${person.dialogueStage}]: "${person.currentDialogue}"`, "action");
-
-    saveGameState();
-    showInmateDetailsModal(person);
-    renderAll();
 }
 
 function testPerson(personId) {
@@ -842,35 +863,17 @@ function testPerson(personId) {
         return;
     }
 
-    if (!canPerformAction(ENERGY_COST.TEST)) {
+    if (gameState.energy < ENERGY_COST.TEST) {
         flashNotice(`Yetersiz Enerji! Test uygulamak için ⚡${ENERGY_COST.TEST} enerji gerekli.`);
         return;
     }
 
-    consumeEnergy(ENERGY_COST.TEST);
+    gameState.energy -= ENERGY_COST.TEST;
     person.isTested = true;
 
     logEvent(`🧬 ${person.name} test edildi (Ölçüm yapıldı).`, "action");
     saveGameState();
     showTestReveal(person);
-    renderAll();
-}
-
-function performReturnCheck(personId) {
-    const person = findPerson(personId);
-    if (!person || !person.pendingReturnCheck) return;
-
-    if (!canPerformAction(ENERGY_COST.RETURN_CHECK)) {
-        flashNotice(`Dönüş kontrolü için ⚡${ENERGY_COST.RETURN_CHECK} enerji gerekli.`);
-        return;
-    }
-
-    consumeEnergy(ENERGY_COST.RETURN_CHECK);
-    person.pendingReturnCheck = false;
-    gameState.tiredMap[person.id] = Math.random() < 0.5 ? 2 : 1;
-
-    logEvent(`🔍 ${person.name} görev dönüş kontrolünden geçirildi ve dinlenmeye alındı.`, "action");
-    saveGameState();
     renderAll();
 }
 
@@ -1148,12 +1151,12 @@ function buildRosterCard(person, stage) {
     const resting = !isDead && isResting(person.id);
     const isSelected = gameState.selectedTeam.includes(person.id);
     const isNew = gameState.lastArrivals.includes(person.id);
-    const statusText = getCharacterCurrentStatus(person);
+    const isConversing = gameState.activeConversationId === person.id;
 
     let actionable = false;
     if (!isDead) {
-        if (stage === STAGE.MEETING) actionable = canPerformAction(person.isMet ? ENERGY_COST.SUBSEQUENT_MEET : ENERGY_COST.FIRST_MEET);
-        else if (stage === STAGE.TESTING) actionable = person.isMet && !person.isTested && !resting && canPerformAction(ENERGY_COST.TEST);
+        if (stage === STAGE.MEETING) actionable = gameState.energy >= ENERGY_COST.INTERVIEW;
+        else if (stage === STAGE.TESTING) actionable = person.isMet && !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
         else if (stage === STAGE.EXECUTION) actionable = person.isMet && executionsLeft() > 0;
         else if (stage === STAGE.DISPATCH) actionable = person.isMet && !resting && !person.pendingReturnCheck;
     }
@@ -1167,6 +1170,7 @@ function buildRosterCard(person, stage) {
         isDead ? "is-dead" : "",
         person.isExecuted ? "is-executed" : "",
         isDead ? "is-departing" : "",
+        isConversing ? "is-conversing active-dialogue-card" : "",
         actionable ? (stage === STAGE.EXECUTION ? "is-executable" : "is-actionable") : "",
         isNew && stage === STAGE.ARRIVAL ? "is-arriving" : ""
     ].filter(Boolean).join(" ");
@@ -1174,11 +1178,10 @@ function buildRosterCard(person, stage) {
 
     const genderClass = person.gender === "Erkek" ? "male" : "female";
 
-    // Avatar Image with robust fallback
-    const photoSrc = person.photo || person.photoLegacy;
+    // Avatar Container with img and fallback
     const avatarHtml = `
-        <div class="avatar-circle ${genderClass}">
-            <img src="${photoSrc}" alt="${person.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="character-avatar avatar-circle ${genderClass}">
+            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
             <span class="avatar-fallback" style="display:none;">${person.name.charAt(0)}</span>
         </div>
     `;
@@ -1202,9 +1205,34 @@ function buildRosterCard(person, stage) {
         readingHtml = `<div class="reading-badge untested" title="Test Edilmedi">—</div>`;
     }
 
+    // Static Dialogue Preview if already met and not currently conversing
     let dialogueHtml = "";
-    if (person.isMet && person.currentDialogue && !isDead) {
-        dialogueHtml = `<div class="person-dialogue" title="${person.currentDialogue}"><span class="dialogue-stage-chip">G${person.dialogueStage}</span> "${person.currentDialogue}"</div>`;
+    const currentIndex = person.dialogueIndex ?? 0;
+    const currentSpeech = person.dialogues[currentIndex] || person.dialogues[person.dialogues.length - 1];
+
+    if (person.isMet && currentSpeech && !isDead && !isConversing) {
+        dialogueHtml = `<div class="person-dialogue" title="${currentSpeech}"><span class="dialogue-stage-chip">G${currentIndex + 1}</span> "${currentSpeech}"</div>`;
+    }
+
+    // Active Inline Dialogue Box (When player is actively conversing with this character)
+    let inlineConversationHtml = "";
+    if (isConversing) {
+        inlineConversationHtml = `
+            <div class="inline-dialogue-active-container">
+                <div class="inline-dialogue-speech">
+                    <span class="dialogue-stage-chip" style="background:var(--accent-blue); color:#fff;">G${currentIndex + 1}</span>
+                    💬 "${currentSpeech}"
+                </div>
+                <div class="inline-dialogue-actions">
+                    <button class="btn btn-finish-interview" onclick="event.stopPropagation(); finishInterview(${person.id});">
+                        Görüşmeyi Bitir (⚡2)
+                    </button>
+                    <button class="btn btn-cancel-interview" onclick="event.stopPropagation(); cancelInterview();">
+                        ✕
+                    </button>
+                </div>
+            </div>
+        `;
     }
 
     let tagsHtml = "";
@@ -1223,7 +1251,7 @@ function buildRosterCard(person, stage) {
         if (!person.isMet) {
             tagsHtml += `<span class="tag tag-not-met">Görüşülmedi</span>`;
         } else {
-            tagsHtml += `<span class="tag tag-met">Görüşüldü (G${person.dialogueStage})</span>`;
+            tagsHtml += `<span class="tag tag-met">Görüşüldü (G${currentIndex + 1})</span>`;
         }
         if (person.pendingReturnCheck) {
             tagsHtml += `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
@@ -1252,6 +1280,7 @@ function buildRosterCard(person, stage) {
         <div class="person-name">${person.name}${debugHtml}</div>
         <div class="person-role">${person.role}</div>
         ${dialogueHtml}
+        ${inlineConversationHtml}
         <div class="card-status-tags">${tagsHtml}</div>
     `;
 
@@ -1288,12 +1317,10 @@ function buildRecordCard(person, arrivingIndex) {
     else if (person.isEscaped) cause = `<span class="record-cause">🚪 Kaçtı</span>`;
     else if (person.isMissing) cause = `<span class="record-cause">🌫️ Kayıp</span>`;
 
-    const photoSrc = person.photo || person.photoLegacy;
-
     card.innerHTML = `
-        <div class="record-avatar">
-            <img src="${photoSrc}" alt="${person.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" />
-            <span style="display:none;">💀</span>
+        <div class="record-avatar character-avatar" style="width:32px; height:32px;">
+            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+            <span class="avatar-fallback" style="display:none; font-size:0.9rem;">💀</span>
         </div>
         <div class="record-body">
             <div class="record-name">${person.name}</div>
@@ -1383,10 +1410,15 @@ function renderStagePanel() {
         const list = document.getElementById("arrival-list");
         list.innerHTML = "";
         arrivals.forEach(person => {
-            const photoSrc = person.photo || person.photoLegacy;
             const row = document.createElement("div");
             row.className = "arrival-row";
-            row.innerHTML = `<img src="${photoSrc}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" onerror="this.style.display='none';" /><span><strong>${person.name}</strong> (${person.role}) — Görüşme programı açıldı</span>`;
+            row.innerHTML = `
+                <div class="character-avatar" style="width:28px; height:28px;">
+                    <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+                    <span class="avatar-fallback" style="display:none; font-size:0.8rem;">👤</span>
+                </div>
+                <span><strong>${person.name}</strong> (${person.role}) — Görüşme programı açıldı</span>
+            `;
             list.appendChild(row);
         });
     }
@@ -1496,7 +1528,7 @@ function renderAll() {
 }
 
 // ==========================================
-// TEST REVEAL & INMATE DETAILS MODALS
+// TEST REVEAL & EXECUTION MODALS
 // ==========================================
 function renderVoltmeterHtml(reading) {
     const baseAngle = -55 + (reading / 100) * 110;
@@ -1527,35 +1559,19 @@ function renderVoltmeterHtml(reading) {
     `;
 }
 
-function showInmateDetailsModal(person) {
+function showTestReveal(person) {
     document.getElementById("reveal-name").textContent = person.name;
     document.getElementById("reveal-role").textContent = person.role;
 
-    const photoSrc = person.photo || person.photoLegacy;
     document.getElementById("reveal-avatar").innerHTML = `
-        <img src="${photoSrc}" alt="${person.name}" onerror="this.style.display='none';" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
-    `;
-
-    const stageKey = "G" + (person.dialogueStage || 1);
-    const dialogueText = person.currentDialogue || person.dialogues[stageKey] || person.dialogues.G1;
-
-    let modalHtml = `
-        <div class="reveal-dialogue">
-            <span class="dialogue-stage-badge" style="background:var(--accent-blue); color:#fff; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem; margin-right:6px;">G${person.dialogueStage || 1}</span>
-            💬 "${dialogueText}"
+        <div class="character-avatar" style="width:80px; height:80px; margin:0 auto;">
+            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+            <span class="avatar-fallback" style="display:none; font-size:2rem;">👤</span>
         </div>
     `;
 
-    if (person.isTested) {
-        modalHtml += renderVoltmeterHtml(person.reading);
-    }
-
-    document.getElementById("reveal-body").innerHTML = modalHtml;
+    document.getElementById("reveal-body").innerHTML = renderVoltmeterHtml(person.reading);
     document.getElementById("test-reveal-modal").classList.remove("hidden");
-}
-
-function showTestReveal(person) {
-    showInmateDetailsModal(person);
 }
 
 function showExecutionReveal(person) {
@@ -1862,6 +1878,15 @@ function estimatedRisk(person, manifest) {
     return person.isTested ? bandRisk(person.reading) : untestedRisk(manifest);
 }
 
+function shuffle(list) {
+    const a = [...list];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
 function simulateSingleGame(botType) {
     const manifest = generateManifest();
     const tiredMap = {};
@@ -1917,7 +1942,7 @@ function simulateSingleGame(botType) {
         unmet.slice(0, 3).forEach(p => {
             if (energy >= 2) {
                 p.isMet = true;
-                p.dialogueStage = 1;
+                p.dialogueIndex = Math.min((p.dialogueIndex ?? 0) + 1, 4);
                 energy -= 2;
             }
         });
