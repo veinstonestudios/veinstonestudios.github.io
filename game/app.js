@@ -1,44 +1,49 @@
-// THE FACILITY 61 -- 14 PERSONNEL ROSTER
+// ============================================================================
+// THE FACILITY 61 -- ULTIMATE 14 INMATE SIMULATION
+// ============================================================================
 //
-// 14 Fixed Characters:
-// 7 Human, 5 Corrupted, 2 Random (50% Human / 50% Corrupted at new game)
-//
-// Henry's Interview Unlock Schedule:
-// Day 1: Ted Karinsky (5), M. Cole Morgan (8), Alicia Winston (12), Bob (1)   [4 Total]
-// Day 2: Evie Hill (2), Dakota Ahmadii (3)                                    [2 Total]
-// Day 3: Hasan Kahveci (4), Katarina Jovanovic (6)                            [2 Total]
-// Day 4: Shane Smith (7), Milena Markic (9)                                   [2 Total]
-// Day 5: Paul H. Simmons (10), Sergio Galvez II. (11)                         [2 Total]
-// Day 6: PERSONEL-13 (13), PERSONEL-14 (14)                                   [2 Total]
-// Day 7: No new characters unlocked                                           [0 Total]
+// 14 Inmates: 7 Human, 5 Corrupted, 2 Random
+// Daily Energy: 8 points
+// Henry's Interview Unlock Schedule (All 14 exist in facility from Day 1):
+// Day 1: Bob (1), Ted Karinsky (2), M. Cole Morgan (3), Alicia Winston (4)
+// Day 2: Evie Hill (5), Dakota Ahmadii (6)
+// Day 3: Hasan Kahveci (7), Katarina Jovanovic (8)
+// Day 4: Milena Marvic (9), Shane Smith (10)
+// Day 5: Paul H. Simmons (11), Sergio Galvez II. (12)
+// Day 6: Father Gregory (13), Nina Grace (14)
+// Day 7: No new characters unlocked
 
 const TOTAL_DAYS = 7;
-const ROSTER_SIZE = 14;      // Exactly 14 Facility 61 personnel
+const ROSTER_SIZE = 14;
+const MAX_DAILY_ENERGY = 8;
 
-// ---- Electric chair -----------------------------------------------------
+// Energy Action Costs
+const ENERGY_COST = {
+    FIRST_MEET: 2,
+    SUBSEQUENT_MEET: 2,
+    TEST: 1,
+    RETURN_CHECK: 1,
+    DISPATCH: 0
+};
+
+// Dispatch Requirements per Day
+const DAILY_DISPATCH_QUOTA = {
+    1: 1,
+    2: 1,
+    3: 2,
+    4: 2,
+    5: 3,
+    6: 3,
+    7: 3
+};
+
+// Electric Chair & Riot Days
 const EXECUTION_START_DAY = 3;
 const EXECUTIONS_PER_DAY = 1;
-
-// ---- Anomaly riot -------------------------------------------------------
 const RIOT_START_DAY = 3;
-
-// ---- Government oversight -----------------------------------------------
 const MAX_MISSION_FAILURES = 3;
 
-// ---- Per-day allowances -------------------------------------------------
-const MEETS_PER_DAY = 3;
-
-function testsForDay(day) {
-    return day === 1 ? 1 : 2;
-}
-
-function dispatchSizeForDay(day) {
-    if (day === 1) return 1;
-    if (day <= 3) return 2;
-    return 3;
-}
-
-// ---- Stage machine ------------------------------------------------------
+// Stage Definitions
 const STAGE = {
     INTRO:     "intro",
     ARRIVAL:   "arrival",
@@ -58,59 +63,265 @@ const STAGE_INFO = {
     report:    { label: "GÜN RAPORU",       clock: "18:00", next: null }
 };
 
-// ---- FACILITY 61: 14 Fixed Characters -----------------------------------
-// Secret identities:
-// Green: Human (7) | Red: Corrupted (5) | Yellow: Random (2)
+// ---- 14 FIXED INMATES DATA ------------------------------------------------
 const FACILITY_61_ROSTER = [
-    { id: 1,  name: "Bob",                 secretIdentity: "Human",     gender: "Erkek", role: "Tesis Teknisyeni",          avatar: "👨‍🔧", reading: 16, dialogue: "Tesisin boruları geceleri garip sesler çıkarıyor, ama bu sadece genleşme." },
-    { id: 2,  name: "Evie Hill",            secretIdentity: "Corrupted", gender: "Kız",   role: "İdari Koordinatör",         avatar: "👩‍💼", reading: 86, dialogue: "Her şey kontrol altında. Endişelenecek hiçbir şey yok, kesinlikle hiçbir şey." },
-    { id: 3,  name: "Dakota Ahmadii",       secretIdentity: "Random",    gender: "Erkek", role: "Ağ Güvenlik Uzmanı",        avatar: "🧑‍💻", reading: null, dialogue: "Sistem loglarında açıklayamadığım veri anomalileri var." },
-    { id: 4,  name: "Hasan Kahveci",        secretIdentity: "Human",     gender: "Erkek", role: "Lojistik & İaşe Sorumlusu", avatar: "👨‍🍳", reading: 19, dialogue: "Bugün sıcak çorba çıkardım. İnsan olmanın kıymetini bilmek lazım." },
-    { id: 5,  name: "Ted Karinsky",         secretIdentity: "Corrupted", gender: "Erkek", role: "Güvenlik Amiri",             avatar: "👮‍♂️", reading: 92, dialogue: "Kapılar kapalı kaldığı sürece hepimiz güvendeyiz. İçeridekiler dahil." },
-    { id: 6,  name: "Katarina Jovanovic",   secretIdentity: "Human",     gender: "Kız",   role: "Baş Biyolog",               avatar: "👩‍🔬", reading: 28, dialogue: "Hücre örneklerinde hücresel bozulma belirtileri arıyorum." },
-    { id: 7,  name: "Shane Smith",          secretIdentity: "Corrupted", gender: "Erkek", role: "Ağır Muhafız",              avatar: "💂‍♂️", reading: 78, dialogue: "Bana verilen emirleri sorgulamam. Sadece uygularım." },
-    { id: 8,  name: "M. Cole Morgan",       secretIdentity: "Human",     gender: "Erkek", role: "Arşiv Sorumlusu",           avatar: "👨‍🏫", reading: 32, dialogue: "Eski kayıtlara göre bu tesis ilk inşa edildiğinde çok daha farklıydı." },
-    { id: 9,  name: "Milena Markic",        secretIdentity: "Human",     gender: "Kız",   role: "Tesis Hekimi",              avatar: "👩‍⚕️", reading: 8,  dialogue: "Nabızları dinlerken bazen normal ritmin dışında bir şeyler duyuyorum." },
-    { id: 10, name: "Paul H. Simmons",      secretIdentity: "Corrupted", gender: "Erkek", role: "Sistem Denetçisi",          avatar: "🧑‍💼", reading: 88, dialogue: "Tesisin verimliliği her şeyden önce gelir. Duygular sadece gecikmeye yol açar." },
-    { id: 11, name: "Sergio Galvez II.",    secretIdentity: "Human",     gender: "Erkek", role: "Reaktör Operatörü",         avatar: "👨‍🔧", reading: 42, dialogue: "Çekirdekteki basınç dengede, vardiyamı sağ salim bitirmek istiyorum." },
-    { id: 12, name: "Alicia Winston",       secretIdentity: "Random",    gender: "Kız",   role: "İletişim Subayı",           avatar: "👩‍💻", reading: null, dialogue: "Dış dünyadan gelen frekanslar giderek zayıflıyor." },
-    { id: 13, name: "PERSONEL-13",          secretIdentity: "Human",     gender: "Erkek", role: "Gözlemci Birim",            avatar: "🧑‍💼", reading: 12, dialogue: "Kayıtlar güncellendi. Gözlerim üzerinizde." },
-    { id: 14, name: "PERSONEL-14",          secretIdentity: "Corrupted", gender: "Kız",   role: "Reaktif Birim",             avatar: "👤", reading: 96, dialogue: "..." }
+    {
+        id: 1,
+        name: "Bob",
+        secretIdentity: "Human",
+        gender: "Erkek",
+        role: "İşsiz",
+        photo: "photos/Bob.png",
+        photoLegacy: "Photos/Bob.png",
+        reading: 16,
+        dialogues: {
+            G1: "Heyoooo! Naber?",
+            G2: "Arkadaşım buranın dışında çöküş olduğunu söylüyor. Ama onu şu an dinleyemem, puzzle’ı tamamlamam lazım.",
+            G3: "Bugün konuşmak istemiyorum çünkü çok sinirliyim!",
+            G4: "Tarağımın teli kırıldı. Fanlarımdan tarak teli göndermelerini isticem.",
+            G5: "Bak Warden, patatesten ne yaptım! Bunu yemekhaneden ödünç aldım."
+        }
+    },
+    {
+        id: 2,
+        name: "Ted Karinsky",
+        secretIdentity: "Corrupted",
+        gender: "Erkek",
+        role: "Eski Akademisyen",
+        photo: "photos/TedKarinsky.png",
+        photoLegacy: "Photos/TedKarinsky.png",
+        reading: 92,
+        dialogues: {
+            G1: "Gerçekleri örtbas ederek makalemi yayımlamamı engellediler. Ben ise yayımladım.",
+            G2: "Gerçekler, siyasetin veya kamu düzeninin ihtiyaçlarına göre değiştirilemez.",
+            G3: "Siyasi meselelerle işim yok. Fakat gidişat beni suç işlemeye mecbur bıraktı.",
+            G4: "Teknoloji yasağı tam bir saçmalık! Her şeyin üstünü kapatmaya çalışıyorlar!",
+            G5: "Dün yazdığım notların bazılarını bugün ilk kez okuyormuşum gibi hissettim. Yine de düşüncelerin bana ait olduğundan eminim."
+        }
+    },
+    {
+        id: 3,
+        name: "M. Cole Morgan",
+        secretIdentity: "Human",
+        gender: "Erkek",
+        role: "Otomobil Tamircisi",
+        photo: "photos/MColeMorgan.png",
+        photoLegacy: "Photos/MColeMorgan.png",
+        reading: 32,
+        dialogues: {
+            G1: "Karımı ve kızımı dışarıdaki tehlikeden korumak istiyorum. Buradan ne kadar erken çıkarsam o kadar iyi.",
+            G2: "Hâlâ kendi tamirhanemi açma hayalim var. Buradaki görevler bu hayalimi kamçılıyor.",
+            G3: "Bugün karımdan bir mektup aldım. Uzun süre sonra aklına geldiğim için seviniyorum.",
+            G4: "Bugün kulaklarım çok çınlıyor. Kendimi pek iyi hissetmiyorum.",
+            G5: "Her gün bu kameralardan izlenmekten bıktım. Kendimi korkunç hissediyorum."
+        }
+    },
+    {
+        id: 4,
+        name: "Alicia Winston",
+        secretIdentity: "Random",
+        gender: "Kız",
+        role: "Edebiyat Mezunu",
+        photo: "photos/AliciaWinston.png",
+        photoLegacy: "Photos/AliciaWinston.png",
+        reading: null,
+        dialogues: {
+            G1: "Zamanında birilerine çok güvendim. Artık kimseye o kadar güvenemiyorum.",
+            G2: "Buranın kütüphanesindeki kitaplar çok sıkıcı. Aradığım hiçbir kitabı bulamıyorum.",
+            G3: "*Hıçkırır* Özür dilerim, sizi fark etmedim. *Gözyaşlarını siler*",
+            G4: "Burada herkes delirmiş. Kimseyle düzgün anlaşamıyorum. Aileme mektup yazacağım.",
+            G5: "Bugün uykumu iyi aldım. Ortak alanda televizyon izlemek bana iyi geliyor."
+        }
+    },
+    {
+        id: 5,
+        name: "Evie Hill",
+        secretIdentity: "Corrupted",
+        gender: "Kız",
+        role: "Garson",
+        photo: "photos/EvieHill.png",
+        photoLegacy: "Photos/EvieHill.png",
+        reading: 86,
+        dialogues: {
+            G1: "Birileri odama girip eşyalarımı karıştırıyor. Onu yakalarsam fena yapacağım.",
+            G2: "Bu tesis gereğinden fazla mı soğuk, yoksa bir tek benim hücrem mi böyle?",
+            G3: "Kansızlığım var. Çok kan kaybetmemem gerekiyor. Kaybedersem yerine gelmesi birkaç saat sürüyor.",
+            G4: "Sanırım odama giren kişiyi buldum.",
+            G5: "Nişanlım dışarıda bir yerde beni bekliyor. Beni buradan çıkaracak."
+        }
+    },
+    {
+        id: 6,
+        name: "Dakota Ahmadii",
+        secretIdentity: "Random",
+        gender: "Erkek",
+        role: "Obezite Hastası",
+        photo: "photos/DakotaAhmadii.png",
+        photoLegacy: "Photos/DakotaAhmadii.png",
+        reading: null,
+        dialogues: {
+            G1: "Yemekhanede çıkardığım kavga için özür dilerim ama o gün yemekte ıspanak olması sinirlerimi feci gerdi.",
+            G2: "Sesten ötürü üzgünüm, Warden. Ispanak bende gaz yapıyor.",
+            G3: "İçinde bir yerlerde derin bir pişmanlık var. Bakışlarından anlayabiliyorum.",
+            G4: "Dün akşam tesis o kadar gürültülüydü ki uyuyamadım.",
+            G5: "Saçlarımın bir anda beyazlamasının nedeni, çıkan beyaz saç tellerimi ardı ardına kopartmam. Biri ölünce mezarına beş tel geliyor."
+        }
+    },
+    {
+        id: 7,
+        name: "Hasan Kahveci",
+        secretIdentity: "Human",
+        gender: "Erkek",
+        role: "Egzotik Hayvan Tüccarı",
+        photo: "photos/HasanKahveci.png",
+        photoLegacy: "Photos/HasanKahveci.png",
+        reading: 19,
+        dialogues: {
+            G1: "Gittiğimiz görevlerden para kazanıyor muyuz? Buradan cebim dolu çıkmak istiyorum.",
+            G2: "Hayır, o kısa kollu kıyafetlerden giymeyeceğim. Böyle iyiyim.",
+            G3: "Bir zamanlar Zeki isimli bir jako papağanım vardı. Ona ‘zeki’ demeyi öğretmiştim.",
+            G4: "Zeki, zeki, zeki, zekiiiiii! ZE— ZEK— ZEKİİİ! CİK CİK CİK!",
+            G5: "Görevlerden beş kuruş kazanmadım. Param nerede, Warden?"
+        }
+    },
+    {
+        id: 8,
+        name: "Katarina Jovanovic",
+        secretIdentity: "Human",
+        gender: "Kız",
+        role: "Psikoloji Eğitimli Ev Hanımı",
+        photo: "photos/KatarinaJovanovic.png",
+        photoLegacy: "Photos/KatarinaJovanovic.png",
+        reading: 28,
+        dialogues: {
+            G1: "Ne bakıyorsun? Gıcık mı oldun?",
+            G2: "İplerimle arama girilmesinden hoşlanmam.",
+            G3: "Ördüğüm bebeği hanımlardan birine vermeye çalıştım ama bir suratıma tükürmediği kaldı. Buradakiler çok kaba.",
+            G4: "Sekiz yüzüncü örgümde kocam beni almaya gelecek.",
+            G5: "Bu öğlen yemekhanede meyveli turta yediğimi zannettim ama bana onun çemenli pastırma olduğunu söylediler?"
+        }
+    },
+    {
+        id: 9,
+        name: "Milena Marvic",
+        secretIdentity: "Human",
+        gender: "Kız",
+        role: "Eski Ünlü Müzisyen",
+        photo: "photos/MilenaMarkic.png",
+        photoLegacy: "Photos/MilenaMarkic.png",
+        reading: 8,
+        dialogues: {
+            G1: "Bugün çok kötü görünüyorum. Fanlarım beni böyle görmediği için mutluyum.",
+            G2: "Şu mektuplara bir bakın! Herkes benim bir an önce sahnelere geri dönmemi istiyor gibi.",
+            G3: "Bu ruj markası bende alerji yapıyor. Dudaklarım o yüzden bu kadar şişkin.",
+            G4: "Bu ruj markası bende alerji yapıyor. Dudaklarım o yüzden bu kadar şişkin.",
+            G5: "PO— PO— MA! YAPTIM BEN DE BİR Hİ— PO— TEZ! MA— MA— MA— MA!"
+        }
+    },
+    {
+        id: 10,
+        name: "Shane Smith",
+        secretIdentity: "Corrupted",
+        gender: "Erkek",
+        role: "Market Çalışanı",
+        photo: "photos/ShaneSmith.png",
+        photoLegacy: "Photos/ShaneSmith.png",
+        reading: 78,
+        dialogues: {
+            G1: "Ne bakıyovsun lan? Komik biv şev mi vav?",
+            G2: "Kimseyle konuşmak istemiyovum. Rahat bıvak beni.",
+            G3: "Bu— buvası ço— çok daha güvenli. Dışavısı ovospu çocuvu dolu.",
+            G4: "Gaviba senden hoşvandım, Wavden Bey. Bana diverlerinden daha iyi davvanıyovsun.",
+            G5: "Kimseye söyvemeyin ama buvada hoşvandığım çok hoş biv hanımefendi vav."
+        }
+    },
+    {
+        id: 11,
+        name: "Paul H. Simmons",
+        secretIdentity: "Corrupted",
+        gender: "Erkek",
+        role: "Sokak Performansçısı",
+        photo: "photos/PaulHSimmons.png",
+        photoLegacy: "Photos/PaulHSimmons.png",
+        reading: 88,
+        dialogues: {
+            G1: "Vay Henry Başkan. Seni görmeyeli uzun zaman olmuştu.",
+            G2: "Tesiste beğendiğim bir fıstık var. Onun da beni beğendiğini biliyorum.",
+            G3: "Burası sokaktaki yaşamımdan daha güvenli hissettirmiyor.",
+            G4: "Uzun süredir elmalı tütüne hasretim. Şimdi bir tane yakmak vardı.",
+            G5: "Üstümdeki kokunun sebebi, suların uzun süredir kesik olmasından kaynaklı."
+        }
+    },
+    {
+        id: 12,
+        name: "Sergio Galvez II.",
+        secretIdentity: "Human",
+        gender: "Erkek",
+        role: "Huzurevi Çalışanı",
+        photo: "photos/SergioGalvez.png",
+        photoLegacy: "Photos/SergioGalvez.png",
+        reading: 42,
+        dialogues: {
+            G1: "Herkesle anlaşabilmek gibi garip bir huya sahibim. Sanırım bende şeytan tüyü var, hehehe.",
+            G2: "Gelenekselliğe ayak uyduramayanları anlamıyorum. Zaten teknolojilerle aram yok.",
+            G3: "Huzurevinde çalışırken isimleri karıştırdığım olurdu. İnsan her gün aynı saatte aynı ilaçları dağıtınca yüzler birbirine benziyor.",
+            G4: "Dün gece biri beni eski sakinlerden birinin adıyla çağırdı. Ses tanıdık geliyordu ama cevap vermedim.",
+            G5: "Bu sabah yatağımın altında bir çift terlik buldum. Benim değildi ama ayaklarıma tam oldu."
+        }
+    },
+    {
+        id: 13,
+        name: "Father Gregory",
+        secretIdentity: "Corrupted",
+        gender: "Erkek",
+        role: "Din Adamı",
+        photo: "photos/FatherGregory.png",
+        photoLegacy: "Photos/FatherGregory.png",
+        reading: 84,
+        dialogues: {
+            G1: "Affedersin, Warden. İncil okumaya daldım, sizi fark edemedim.",
+            G2: "Tanrı bizi gözetliyor. Burada veya dışarıda yaşanan hiçbir şey gizli kalmaz.",
+            G3: "Babamız bize bu çöküşe yol açan her etkeni ortadan kaldıracağına söz veriyor. Tanrı’ya kulak verin.",
+            G4: "Yaşım gereği tuvalete giderken zorlanıyorum. Ama bu da her canlının sınavı.",
+            G5: "Bu tesise ilk geldiğimde şükürsüz biriydim. Artık canlı olduğum her güne teşekkür ediyorum."
+        }
+    },
+    {
+        id: 14,
+        name: "Nina Grace",
+        secretIdentity: "Human",
+        gender: "Kız",
+        role: "Çizer",
+        photo: "photos/NinaGrace.png",
+        photoLegacy: "Photos/NinaGrace.png",
+        reading: 14,
+        dialogues: {
+            G1: "Bugün hava çok güzel. İçeride yağlı boya tabloma mı devam etsem yoksa müzik mi dinlesem?",
+            G2: "Birkaç sene önce ailemle hayatımın en güzel kışını geçirmiştim. O zamanlar kar yağarken içtiğim sıcak çikolatayı ve evimin manzarasını resmettim.",
+            G3: "Neden geceleri deli gibi bağırıyorlar? Dün gece yatağımdan sıçrayarak uyandım!",
+            G4: "Ortak alanda kadın mahkûmlarla konuşmak bana daha güvenli hissettiriyor. Özellikle yaşı büyük erkeklerden korkuyorum.",
+            G5: "Kolumdaki yaraları kaşıdığım için sürekli kabuk bağlıyor ve kanıyor."
+        }
+    }
 ];
 
-// Henry's Interview Schedule per Day (All 14 are in facility from start)
+// Daily Interview Unlock Schedule
 const DAILY_INTERVIEW_SCHEDULE = {
-    1: [5, 8, 12, 1],   // Ted Karinsky, M. Cole Morgan, Alicia Winston, Bob
-    2: [2, 3],          // Evie Hill, Dakota Ahmadii
-    3: [4, 6],          // Hasan Kahveci, Katarina Jovanovic
-    4: [7, 9],          // Shane Smith, Milena Markic
-    5: [10, 11],        // Paul H. Simmons, Sergio Galvez II.
-    6: [13, 14],        // PERSONEL-13, PERSONEL-14
-    7: []               // No new characters
+    1: [1, 2, 3, 4],   // Bob, Ted Karinsky, M. Cole Morgan, Alicia Winston
+    2: [5, 6],          // Evie Hill, Dakota Ahmadii
+    3: [7, 8],          // Hasan Kahveci, Katarina Jovanovic
+    4: [9, 10],         // Milena Marvic, Shane Smith
+    5: [11, 12],        // Paul H. Simmons, Sergio Galvez II.
+    6: [13, 14],        // Father Gregory, Nina Grace
+    7: []               // No new unlocks
 };
 
-function shuffle(list) {
-    const a = [...list];
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
-
 function drawRandomAnomalyReading() {
-    return Math.floor(Math.random() * 49) + 51;
+    return Math.floor(Math.random() * 45) + 55;
 }
 
 function drawRandomHumanReading() {
-    return Math.floor(Math.random() * 49) + 1;
-}
-
-function getReadingColor(reading) {
-    if (reading >= 70) return "var(--accent-red)";
-    if (reading >= 50) return "var(--accent-orange)";
-    if (reading >= 30) return "#8bc34a";
-    return "var(--accent-green)";
+    return Math.floor(Math.random() * 45) + 5;
 }
 
 // Generate Manifest for a New Campaign
@@ -119,15 +330,15 @@ function generateManifest() {
         const p = { ...base };
 
         if (p.secretIdentity === "Random") {
-            // Independent 50/50 roll for Dakota Ahmadii and Alicia Winston
+            // Independent 50/50 roll for Alicia Winston and Dakota Ahmadii
             const isCorrupted = Math.random() < 0.5;
             p.isAnomaly = isCorrupted;
             p.actualIdentity = isCorrupted ? "Corrupted" : "Human";
 
-            if (p.id === 3) { // Dakota Ahmadii
+            if (p.id === 4) { // Alicia Winston
+                p.reading = isCorrupted ? (Math.floor(Math.random() * 15) + 65) : (Math.floor(Math.random() * 15) + 25);
+            } else if (p.id === 6) { // Dakota Ahmadii
                 p.reading = isCorrupted ? (Math.floor(Math.random() * 15) + 72) : (Math.floor(Math.random() * 15) + 18);
-            } else if (p.id === 12) { // Alicia Winston
-                p.reading = isCorrupted ? (Math.floor(Math.random() * 15) + 65) : (Math.floor(Math.random() * 15) + 28);
             } else {
                 p.reading = isCorrupted ? drawRandomAnomalyReading() : drawRandomHumanReading();
             }
@@ -140,13 +351,16 @@ function generateManifest() {
             ...p,
             arrivalDay: null,
             isMet: false,
+            dialogueStage: 0,
+            currentDialogue: p.dialogues.G1,
             isTested: false,
             isDead: false,
             isExecuted: false,
             isMissing: false,
             isEscaped: false,
-            status: "AKTİF",
-            diedOnDay: null
+            status: "Görüşülmedi",
+            diedOnDay: null,
+            pendingReturnCheck: false
         };
     });
 }
@@ -154,20 +368,19 @@ function generateManifest() {
 // ==========================================
 // STATE MANAGEMENT & PERSISTENCE
 // ==========================================
-const SAVE_KEY = "facility61_saved_state";
+const SAVE_KEY = "facility61_inmate_state";
 
 let gameState = {
     day: 1,
+    energy: MAX_DAILY_ENERGY,
     stage: STAGE.INTRO,
     manifest: [],
-    meetsUsed: 0,
-    testsUsed: 0,
     executionsUsed: 0,
     endReason: null,
     day3BriefingShown: false,
     selectedTeam: [],
     tiredMap: {},
-    missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
+    missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
     lastArrivals: [],
     newlyInterred: [],
     revealPersonId: null,
@@ -224,16 +437,35 @@ function isResting(personId) {
     return (gameState.tiredMap[personId] || 0) > 0;
 }
 
+function canPerformAction(energyCost) {
+    return gameState.energy >= energyCost;
+}
+
+function consumeEnergy(amount) {
+    if (gameState.energy >= amount) {
+        gameState.energy -= amount;
+        return true;
+    }
+    return false;
+}
+
+function getCharacterCurrentStatus(person) {
+    if (person.isExecuted) return "İnfaz edildi";
+    if (person.isEscaped) return "Kaçtı";
+    if (person.isMissing) return "Kayıp";
+    if (person.isDead) return "Öldü";
+    if (person.pendingReturnCheck) return "Dönüş kontrolü bekliyor";
+    if (isResting(person.id)) return "Dinleniyor";
+    if (gameState.selectedTeam.includes(person.id)) return "Görevde";
+    if (!person.isMet) return "Görüşülmedi";
+    return "Tesiste ve müsait";
+}
+
 function isDeployable(person) {
-    return person.isMet && !person.isDead && !isResting(person.id);
-}
-
-function meetsLeft() {
-    return Math.max(0, MEETS_PER_DAY - gameState.meetsUsed);
-}
-
-function testsLeft() {
-    return Math.max(0, testsForDay(gameState.day) - gameState.testsUsed);
+    if (!person.isMet || person.isDead || isResting(person.id) || person.pendingReturnCheck) {
+        return false;
+    }
+    return true;
 }
 
 function executionsLeft() {
@@ -270,7 +502,7 @@ function checkCatastrophe() {
 
     if (isRiotCondition()) {
         gameState.endReason = "riot";
-        logEvent("⚡ ANOMALİ AYAKLANMASI! Anomaliler insanları sayıca geçti ve tesisi ele geçirdi.", "fail");
+        logEvent("⚡ ANOMALİ AYAKLANMASI! Anomaliler insanları sayıca geçti ve Facility 61'i ele geçirdi.", "fail");
         showGameOver("riot");
         saveGameState();
         return true;
@@ -278,7 +510,7 @@ function checkCatastrophe() {
 
     if (gameState.missionStats.fail >= MAX_MISSION_FAILURES) {
         gameState.endReason = "fired";
-        logEvent("🏛️ DEVLET MÜDAHALESİ! Üç başarısız görev sonrası görevden alındın.", "fail");
+        logEvent("🏛️ DEVLET MÜDAHALESİ! 3 başarısız görev sonrası Henry görevden alındı.", "fail");
         showGameOver("fired");
         saveGameState();
         return true;
@@ -296,76 +528,57 @@ function isUnderStrength() {
 }
 
 function requiredTeamSize() {
+    const quota = DAILY_DISPATCH_QUOTA[gameState.day] || 2;
     const deployable = presentPersonnel().filter(isDeployable).length;
-    return Math.max(1, Math.min(dispatchSizeForDay(gameState.day), Math.max(1, deployable)));
+    return Math.max(1, Math.min(quota, Math.max(1, deployable)));
 }
 
 // ==========================================
-// MISSION RESOLUTION
+// MISSION RESOLUTION (BALANCED SKILL/RISK)
 // ==========================================
-const MISSION_ODDS = {
-    1: {
-        0: { successChance: 1.00, lossChance: 0.40 },
-        1: { successChance: 0.00, lossChance: 0.00 }
-    },
-    2: {
-        0: { successChance: 1.00, lossChance: 0.30 },
-        1: { successChance: 0.66, lossChance: 0.30 },
-        2: { successChance: 0.00, lossChance: 0.00 }
-    },
-    3: {
-        0: { successChance: 1.00, lossChance: 0.20 },
-        1: { successChance: 0.66, lossChance: 0.20 },
-        2: { successChance: 0.33, lossChance: 0.75 },
-        3: { successChance: 0.00, lossChance: 0.00 }
-    }
-};
-
 function resolveMission(team) {
     const size = team.length;
     const anomalyCount = team.filter(p => p.isAnomaly).length;
-    const odds = (MISSION_ODDS[size] && MISSION_ODDS[size][anomalyCount]) || { successChance: 0, lossChance: 0 };
+    const humanCount = size - anomalyCount;
 
     const missingPeople = [];
 
-    // 1. Calculate human loss risk
+    // Base Success Probability:
+    // Corrupted can succeed, Human can fail based on composition
+    let baseSuccess = 0.50 + (humanCount * 0.25) - (anomalyCount * 0.15);
+    baseSuccess = Math.max(0.15, Math.min(0.95, baseSuccess));
+
+    // Human Loss Risk (20% - 35% depending on corrupted presence)
+    const humanLossChance = 0.15 + (anomalyCount * 0.10);
     const humans = team.filter(p => !p.isAnomaly);
-    if (humans.length > 0 && Math.random() < odds.lossChance) {
+    if (humans.length > 0 && Math.random() < humanLossChance) {
         const lostHuman = humans[Math.floor(Math.random() * humans.length)];
         missingPeople.push(lostHuman);
     }
 
-    // 2. Anomalies escaping (60% chance each)
+    // Corrupted Escape Risk (45% chance each to escape)
     const anomalies = team.filter(p => p.isAnomaly);
     anomalies.forEach(anomaly => {
-        if (Math.random() < 0.60) {
+        if (Math.random() < 0.45) {
             missingPeople.push(anomaly);
         }
     });
 
-    // 3. Determine success
-    let isSuccess = false;
-    if (size === 1 && humans.length === 1) {
-        isSuccess = true;
-    } else if (missingPeople.length === team.length) {
-        isSuccess = false;
-    } else {
-        isSuccess = Math.random() < odds.successChance;
-    }
+    const isSuccess = (missingPeople.length < team.length) && (Math.random() < baseSuccess);
 
     return { isSuccess, missingPeople };
 }
 
 const SUCCESS_REPORTS = [
-    "Ekip hedefe ulaştı ve saha raporu eksiksiz teslim edildi.",
-    "Operasyon tamamlandı, toplanan veriler tesise aktarıldı.",
-    "Görev hedefleri karşılandı ve sektör yeniden mühürlendi."
+    "Saha hedeflerine ulaşıldı ve operasyon raporu teslim edildi.",
+    "Bölge taraması tamamlandı, kritik numuneler tesise aktarıldı.",
+    "Görev başarıyla sonuçlandı ve dış hatlar güvenceye alındı."
 ];
 
 const FAILURE_REPORTS = [
-    "Saha operasyonu yarıda kaldı, hedeflere ulaşılamadı.",
-    "Görev sırasında koordinasyon koptu ve operasyon çöktü.",
-    "Operasyon başarısız oldu, raporlar eksik teslim edildi."
+    "Saha şartları beklenmedik şekilde ağırlaştı, operasyon yarıda kaldı.",
+    "Görev sırasında koordinasyon bozuldu ve hedefler kaybedildi.",
+    "Saha operasyonu başarısız oldu, ekip hedefe ulaşamadı."
 ];
 
 function pickReport(isSuccess) {
@@ -380,7 +593,7 @@ function initGame() {
     clearSavedGameState();
     const manifest = generateManifest();
 
-    // Day 1 Unlocks (4 characters: Ted Karinsky, M. Cole Morgan, Alicia Winston, Bob)
+    // Day 1 Unlocks: Bob, Ted Karinsky, M. Cole Morgan, Alicia Winston
     const day1Ids = DAILY_INTERVIEW_SCHEDULE[1];
     day1Ids.forEach(id => {
         const p = manifest.find(x => x.id === id);
@@ -391,16 +604,15 @@ function initGame() {
 
     gameState = {
         day: 1,
+        energy: MAX_DAILY_ENERGY,
         stage: STAGE.INTRO,
         manifest: manifest,
-        meetsUsed: 0,
-        testsUsed: 0,
         executionsUsed: 0,
         endReason: null,
         day3BriefingShown: false,
         selectedTeam: [],
         tiredMap: {},
-        missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
+        missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
         lastArrivals: day1Ids,
         newlyInterred: [],
         revealPersonId: null,
@@ -420,7 +632,7 @@ function beginCampaign() {
     document.getElementById("intro-overlay").classList.add("hidden");
     gameState.stage = STAGE.ARRIVAL;
     gameState.lastArrivals = DAILY_INTERVIEW_SCHEDULE[1] || [];
-    logEvent(`Facility 61 protokolü başladı. İlk 4 personelin görüşme programı açıldı.`, "system");
+    logEvent(`Facility 61 protokolü başladı. İlk 4 mahkûmun görüşme programı açıldı.`, "system");
     saveGameState();
     renderAll();
 }
@@ -442,18 +654,18 @@ function advanceStage() {
         case STAGE.ARRIVAL:
             gameState.newlyInterred = [];
             gameState.stage = STAGE.MEETING;
-            logEvent(`Tanışma aşaması açıldı. Bugün ${MEETS_PER_DAY} kişiyle görüşebilirsin.`, "system");
+            logEvent(`Görüşme aşaması açıldı. Kalan Enerji: ⚡${gameState.energy}`, "system");
             break;
 
         case STAGE.MEETING:
             gameState.stage = STAGE.TESTING;
-            logEvent(`Test aşaması açıldı. Bugün ${testsForDay(gameState.day)} test hakkın var.`, "system");
+            logEvent(`Test aşaması açıldı. Test maliyeti: ⚡1 enerji.`, "system");
             break;
 
         case STAGE.TESTING:
             if (canExecuteToday()) {
                 gameState.stage = STAGE.EXECUTION;
-                logEvent("İnfaz aşaması açıldı. Elektrikli sandalye kullanıma hazır.", "system");
+                logEvent("İnfaz aşaması açıldı. Elektrikli sandalye hazır.", "system");
             } else {
                 gameState.stage = STAGE.DISPATCH;
                 logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
@@ -477,11 +689,13 @@ function advanceStage() {
 }
 
 function nextDay() {
-    // Rest fatigue (1 or 2 days)
+    // Rest fatigue for mission participants
     gameState.selectedTeam.forEach(id => {
         const member = findPerson(id);
         if (member && member.isDead) return;
+        // 1 or 2 days rest
         gameState.tiredMap[id] = Math.random() < 0.50 ? 2 : 1;
+        if (member) member.pendingReturnCheck = false;
     });
 
     Object.keys(gameState.tiredMap).forEach(id => {
@@ -490,6 +704,9 @@ function nextDay() {
             if (gameState.tiredMap[id] <= 0) delete gameState.tiredMap[id];
         }
     });
+
+    // Reset pending return checks from previous day
+    gameState.manifest.forEach(p => { p.pendingReturnCheck = false; });
 
     gameState.selectedTeam = [];
 
@@ -500,12 +717,11 @@ function nextDay() {
     }
 
     gameState.day += 1;
-    gameState.meetsUsed = 0;
-    gameState.testsUsed = 0;
+    gameState.energy = MAX_DAILY_ENERGY;
     gameState.executionsUsed = 0;
     gameState.stage = STAGE.ARRIVAL;
 
-    // Daily Unlocks according to Henry's interview schedule
+    // Daily unlock schedule
     const scheduledIds = DAILY_INTERVIEW_SCHEDULE[gameState.day] || [];
     scheduledIds.forEach(id => {
         const p = findPerson(id);
@@ -520,9 +736,9 @@ function nextDay() {
         .map(p => p.id);
 
     if (scheduledIds.length > 0) {
-        logEvent(`--- GÜN ${gameState.day} --- ${scheduledIds.length} personelin görüşme programı açıldı.`, "system");
+        logEvent(`--- GÜN ${gameState.day} --- ${scheduledIds.length} mahkûmun görüşme programı açıldı. Enerji yenilendi (⚡8).`, "system");
     } else {
-        logEvent(`--- GÜN ${gameState.day} --- Yeni görüşme kaydı yok. Mevcut kadro ile devam ediliyor.`, "system");
+        logEvent(`--- GÜN ${gameState.day} --- Yeni mahkûm açılmadı. Enerji yenilendi (⚡8).`, "system");
     }
 
     saveGameState();
@@ -538,48 +754,75 @@ function nextDay() {
 }
 
 // ==========================================
-// PLAYER ACTIONS
+// PLAYER ACTIONS (MEETING, TESTING, EXECUTION)
 // ==========================================
 function handleCardClick(personId) {
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
+
     switch (gameState.stage) {
-        case STAGE.MEETING:   meetPerson(personId); break;
-        case STAGE.TESTING:   testPerson(personId); break;
-        case STAGE.EXECUTION: executePerson(personId); break;
-        case STAGE.DISPATCH:  toggleTeamMember(personId); break;
-        default: break;
+        case STAGE.MEETING:
+            meetPerson(personId);
+            break;
+        case STAGE.TESTING:
+            testPerson(personId);
+            break;
+        case STAGE.EXECUTION:
+            executePerson(personId);
+            break;
+        case STAGE.DISPATCH:
+            toggleTeamMember(personId);
+            break;
+        default:
+            // Viewing character modal in other stages
+            if (person.isMet) {
+                showInmateDetailsModal(person);
+            }
+            break;
     }
 }
 
 function meetPerson(personId) {
     const person = findPerson(personId);
     if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
-
     if (gameState.stage !== STAGE.MEETING) return;
-    if (person.isDead) return;
-    if (person.isMet) return;
 
-    if (meetsLeft() <= 0) {
-        flashNotice("Bugünkü tanışma hakkın bitti. Test aşamasına geçebilirsin.");
+    if (person.isDead) {
+        flashNotice(`${person.name} artık tesiste değil (${getCharacterCurrentStatus(person)}).`);
         return;
     }
 
-    person.isMet = true;
-    gameState.meetsUsed += 1;
+    const isFirstMeet = !person.isMet;
+    const energyNeeded = isFirstMeet ? ENERGY_COST.FIRST_MEET : ENERGY_COST.SUBSEQUENT_MEET;
 
-    const dialogueText = person.dialogue ? ` — "${person.dialogue}"` : "";
-    logEvent(`💬 ${person.name} ile görüşüldü (${person.role})${dialogueText}`, "action");
-    saveGameState();
-    renderAll();
-
-    if (meetsLeft() <= 0) {
-        flashNotice("Görüşme hakların bitti. Test aşamasına geçebilirsin.");
+    if (!canPerformAction(energyNeeded)) {
+        flashNotice(`Yetersiz Enerji! Görüşme için ⚡${energyNeeded} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
+        return;
     }
+
+    consumeEnergy(energyNeeded);
+
+    if (isFirstMeet) {
+        person.isMet = true;
+        person.dialogueStage = 1;
+    } else {
+        // Increment dialogue stage (G1 -> G2 -> G3 -> G4 -> G5)
+        person.dialogueStage = Math.min(5, person.dialogueStage + 1);
+    }
+
+    const stageKey = "G" + person.dialogueStage;
+    person.currentDialogue = person.dialogues[stageKey] || person.dialogues.G5;
+
+    logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${person.dialogueStage}]: "${person.currentDialogue}"`, "action");
+
+    saveGameState();
+    showInmateDetailsModal(person);
+    renderAll();
 }
 
 function testPerson(personId) {
     const person = findPerson(personId);
     if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
-
     if (gameState.stage !== STAGE.TESTING) return;
 
     if (person.isDead) {
@@ -587,39 +830,53 @@ function testPerson(personId) {
         return;
     }
     if (!person.isMet) {
-        flashNotice(`${person.name} ile henüz görüşmedin. Tanışmadığın personele test yapılamaz.`);
+        flashNotice(`${person.name} ile henüz görüşmedin. Tanışmadığın mahkûma test uygulanamaz.`);
         return;
     }
     if (isResting(personId)) {
-        flashNotice(`${person.name} dinleniyor (${restDaysLeft(personId)} gün). Dinlenen personele test yapılamaz.`);
+        flashNotice(`${person.name} dinleniyor (${restDaysLeft(personId)} gün). Dinlenen mahkûma test yapılamaz.`);
         return;
     }
     if (person.isTested) {
         showTestReveal(person);
         return;
     }
-    if (testsLeft() <= 0) {
-        flashNotice("Bugünkü test hakkın bitti. Görev aşamasına geçebilirsin.");
+
+    if (!canPerformAction(ENERGY_COST.TEST)) {
+        flashNotice(`Yetersiz Enerji! Test uygulamak için ⚡${ENERGY_COST.TEST} enerji gerekli.`);
         return;
     }
 
+    consumeEnergy(ENERGY_COST.TEST);
     person.isTested = true;
-    gameState.testsUsed += 1;
 
     logEvent(`🧬 ${person.name} test edildi (Ölçüm yapıldı).`, "action");
     saveGameState();
     showTestReveal(person);
     renderAll();
+}
 
-    if (testsLeft() <= 0) {
-        flashNotice("Bugünkü test hakların bitti. Görev aşamasına geçebilirsin.");
+function performReturnCheck(personId) {
+    const person = findPerson(personId);
+    if (!person || !person.pendingReturnCheck) return;
+
+    if (!canPerformAction(ENERGY_COST.RETURN_CHECK)) {
+        flashNotice(`Dönüş kontrolü için ⚡${ENERGY_COST.RETURN_CHECK} enerji gerekli.`);
+        return;
     }
+
+    consumeEnergy(ENERGY_COST.RETURN_CHECK);
+    person.pendingReturnCheck = false;
+    gameState.tiredMap[person.id] = Math.random() < 0.5 ? 2 : 1;
+
+    logEvent(`🔍 ${person.name} görev dönüş kontrolünden geçirildi ve dinlenmeye alındı.`, "action");
+    saveGameState();
+    renderAll();
 }
 
 function executePerson(personId) {
     const person = findPerson(personId);
     if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
-
     if (gameState.stage !== STAGE.EXECUTION) return;
 
     if (person.isDead) {
@@ -627,7 +884,7 @@ function executePerson(personId) {
         return;
     }
     if (!person.isMet) {
-        flashNotice(`${person.name} ile görüşmedin. Kimliği doğrulanmamış personel infaz edilemez.`);
+        flashNotice(`${person.name} ile görüşmedin. Kimliği doğrulanmamış mahkûm infaz edilemez.`);
         return;
     }
     if (executionsLeft() <= 0) {
@@ -637,7 +894,6 @@ function executePerson(personId) {
 
     person.isDead = true;
     person.isExecuted = true;
-    person.status = "İNFAZ EDİLDİ";
     person.diedOnDay = gameState.day;
     gameState.executionsUsed += 1;
     gameState.missionStats.executions = (gameState.missionStats.executions || 0) + 1;
@@ -662,19 +918,22 @@ function executePerson(personId) {
 function toggleTeamMember(personId) {
     const person = findPerson(personId);
     if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
-
     if (gameState.stage !== STAGE.DISPATCH) return;
 
     if (person.isDead) {
-        flashNotice(`${person.name} aktif kadroda değil (${person.status}).`);
+        flashNotice(`${person.name} aktif kadroda değil (${getCharacterCurrentStatus(person)}).`);
         return;
     }
     if (!person.isMet) {
-        flashNotice(`${person.name} ile görüşmedin. Tanışmadığın personel göreve gidemez.`);
+        flashNotice(`${person.name} ile görüşmedin. Görüşmediğin mahkûm göreve gönderilemez.`);
         return;
     }
     if (isResting(personId)) {
         flashNotice(`${person.name} ${restDaysLeft(personId)} gün daha dinlenecek, göreve gidemez.`);
+        return;
+    }
+    if (person.pendingReturnCheck) {
+        flashNotice(`${person.name} dönüş kontrolü bekliyor, yeni göreve gönderilemez.`);
         return;
     }
 
@@ -683,7 +942,7 @@ function toggleTeamMember(personId) {
         gameState.selectedTeam.splice(index, 1);
     } else {
         if (gameState.selectedTeam.length >= requiredTeamSize()) {
-            flashNotice(`Bugün tam olarak ${requiredTeamSize()} kişi göndermelisin.`);
+            flashNotice(`Bugün tam olarak ${requiredTeamSize()} kişi seçmelisin.`);
             return;
         }
         gameState.selectedTeam.push(personId);
@@ -711,7 +970,7 @@ function dispatchMission() {
 
     if (understrength) {
         isSuccess = false;
-        explanation = "Sahaya sürecek yeterli personel kalmadı. Görev daha başlamadan başarısız sayıldı.";
+        explanation = "Sahaya sürecek yeterli mahkûm kalmadı. Görev daha başlamadan başarısız sayıldı.";
     } else {
         const outcome = resolveMission(team);
         isSuccess = outcome.isSuccess;
@@ -723,12 +982,17 @@ function dispatchMission() {
             person.diedOnDay = gameState.day;
             if (person.isAnomaly) {
                 person.isEscaped = true;
-                person.status = "KAÇTI";
                 explanation += ` 🚪 ${person.name} operasyon sırasında kaçarak kayıplara karıştı.`;
             } else {
                 person.isMissing = true;
-                person.status = "KAYIP";
                 explanation += ` 🌫️ ${person.name} operasyon sırasında kayboldu.`;
+            }
+        });
+
+        // Set returning team members to pending return check
+        team.forEach(person => {
+            if (!person.isDead) {
+                person.pendingReturnCheck = true;
             }
         });
     }
@@ -748,7 +1012,7 @@ function dispatchMission() {
             logEvent(`🚪 KAÇTI: ${person.name} tesisten firar etti. Hücresi boşaltıldı.`, "fail");
         } else {
             gameState.missionStats.humansMissing = (gameState.missionStats.humansMissing || 0) + 1;
-            logEvent(`🌫️ KAYIP: ${person.name} adlı personelden haber alınamadı. Hücresi boşaltıldı.`, "fail");
+            logEvent(`🌫️ KAYIP: ${person.name} adlı mahkûmdan haber alınamadı. Hücresi boşaltıldı.`, "fail");
         }
     });
 
@@ -781,6 +1045,21 @@ function renderStatus() {
     document.getElementById("current-stage").textContent = info.label;
     document.getElementById("current-time").textContent = info.clock;
 
+    // Energy display
+    const energyVal = document.getElementById("energy-value");
+    if (energyVal) {
+        energyVal.textContent = `⚡ ${gameState.energy} / ${MAX_DAILY_ENERGY}`;
+    }
+    const energyPips = document.getElementById("energy-pips");
+    if (energyPips) {
+        energyPips.innerHTML = "";
+        for (let i = 0; i < MAX_DAILY_ENERGY; i++) {
+            const pip = document.createElement("span");
+            pip.className = `allowance-pip ${i < gameState.energy ? "active" : ""}`;
+            energyPips.appendChild(pip);
+        }
+    }
+
     const rate = gameState.missionStats.total > 0
         ? Math.round((gameState.missionStats.success / gameState.missionStats.total) * 100)
         : 0;
@@ -801,47 +1080,47 @@ function renderStatus() {
     const allowLabel = document.getElementById("allowance-label");
     const allowVal = document.getElementById("allowance-value");
     const allowPips = document.getElementById("allowance-pips");
-    if (!allowLabel || !allowVal || !allowPips) return;
+    if (allowLabel && allowVal && allowPips) {
+        let count = 0;
+        let maxCount = 0;
+        let label = "AŞAMA";
 
-    let count = 0;
-    let maxCount = 0;
-    let label = "AŞAMA";
+        switch (gameState.stage) {
+            case STAGE.MEETING:
+                label = "ENERJİ DURUMU";
+                count = gameState.energy;
+                maxCount = MAX_DAILY_ENERGY;
+                break;
+            case STAGE.TESTING:
+                label = "ENERJİ DURUMU";
+                count = gameState.energy;
+                maxCount = MAX_DAILY_ENERGY;
+                break;
+            case STAGE.EXECUTION:
+                label = "İNFAZ HAKKI";
+                count = executionsLeft();
+                maxCount = EXECUTIONS_PER_DAY;
+                break;
+            case STAGE.DISPATCH:
+                label = "GEREKLİ EKİP";
+                count = gameState.selectedTeam.length;
+                maxCount = requiredTeamSize();
+                break;
+            default:
+                label = info.label;
+                count = 0;
+                maxCount = 0;
+                break;
+        }
 
-    switch (gameState.stage) {
-        case STAGE.MEETING:
-            label = "TANIŞMA HAKKI";
-            count = meetsLeft();
-            maxCount = MEETS_PER_DAY;
-            break;
-        case STAGE.TESTING:
-            label = "TEST HAKKI";
-            count = testsLeft();
-            maxCount = testsForDay(gameState.day);
-            break;
-        case STAGE.EXECUTION:
-            label = "İNFAZ HAKKI";
-            count = executionsLeft();
-            maxCount = EXECUTIONS_PER_DAY;
-            break;
-        case STAGE.DISPATCH:
-            label = "GEREKLİ EKİP";
-            count = gameState.selectedTeam.length;
-            maxCount = requiredTeamSize();
-            break;
-        default:
-            label = info.label;
-            count = 0;
-            maxCount = 0;
-            break;
-    }
-
-    allowLabel.textContent = label;
-    allowVal.textContent = maxCount > 0 ? `${count} / ${maxCount}` : "—";
-    allowPips.innerHTML = "";
-    for (let i = 0; i < maxCount; i++) {
-        const pip = document.createElement("span");
-        pip.className = `allowance-pip ${i < count ? "active" : ""}`;
-        allowPips.appendChild(pip);
+        allowLabel.textContent = label;
+        allowVal.textContent = maxCount > 0 ? `${count} / ${maxCount}` : "—";
+        allowPips.innerHTML = "";
+        for (let i = 0; i < maxCount; i++) {
+            const pip = document.createElement("span");
+            pip.className = `allowance-pip ${i < count ? "active" : ""}`;
+            allowPips.appendChild(pip);
+        }
     }
 
     const present = presentPersonnel();
@@ -857,7 +1136,7 @@ function renderStatus() {
     lostBadge.classList.toggle("has-losses", lostCount > 0);
 
     document.getElementById("roster-heading").textContent =
-        `Facility 61 Personeli (${present.length} / ${ROSTER_SIZE})`;
+        `Facility 61 Mahkûmları (${present.length} / ${ROSTER_SIZE})`;
 }
 
 function isInterred(person) {
@@ -869,13 +1148,14 @@ function buildRosterCard(person, stage) {
     const resting = !isDead && isResting(person.id);
     const isSelected = gameState.selectedTeam.includes(person.id);
     const isNew = gameState.lastArrivals.includes(person.id);
+    const statusText = getCharacterCurrentStatus(person);
 
     let actionable = false;
     if (!isDead) {
-        if (stage === STAGE.MEETING) actionable = !person.isMet && meetsLeft() > 0;
-        else if (stage === STAGE.TESTING) actionable = person.isMet && !person.isTested && !resting && testsLeft() > 0;
+        if (stage === STAGE.MEETING) actionable = canPerformAction(person.isMet ? ENERGY_COST.SUBSEQUENT_MEET : ENERGY_COST.FIRST_MEET);
+        else if (stage === STAGE.TESTING) actionable = person.isMet && !person.isTested && !resting && canPerformAction(ENERGY_COST.TEST);
         else if (stage === STAGE.EXECUTION) actionable = person.isMet && executionsLeft() > 0;
-        else if (stage === STAGE.DISPATCH) actionable = person.isMet && !resting;
+        else if (stage === STAGE.DISPATCH) actionable = person.isMet && !resting && !person.pendingReturnCheck;
     }
 
     const card = document.createElement("div");
@@ -893,13 +1173,15 @@ function buildRosterCard(person, stage) {
     card.dataset.id = person.id;
 
     const genderClass = person.gender === "Erkek" ? "male" : "female";
-    
-    let avatarDisplay = "❓";
-    if (person.isExecuted) avatarDisplay = "⚡";
-    else if (person.isMissing) avatarDisplay = "🌫️";
-    else if (person.isEscaped) avatarDisplay = "🚪";
-    else if (isDead) avatarDisplay = "💀";
-    else if (person.isMet) avatarDisplay = person.avatar;
+
+    // Avatar Image with robust fallback
+    const photoSrc = person.photo || person.photoLegacy;
+    const avatarHtml = `
+        <div class="avatar-circle ${genderClass}">
+            <img src="${photoSrc}" alt="${person.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <span class="avatar-fallback" style="display:none;">${person.name.charAt(0)}</span>
+        </div>
+    `;
 
     let readingHtml = "";
     if (person.isTested && !isDead) {
@@ -921,8 +1203,8 @@ function buildRosterCard(person, stage) {
     }
 
     let dialogueHtml = "";
-    if (person.isMet && person.dialogue && !isDead) {
-        dialogueHtml = `<div class="person-dialogue" title="${person.dialogue}">"${person.dialogue}"</div>`;
+    if (person.isMet && person.currentDialogue && !isDead) {
+        dialogueHtml = `<div class="person-dialogue" title="${person.currentDialogue}"><span class="dialogue-stage-chip">G${person.dialogueStage}</span> "${person.currentDialogue}"</div>`;
     }
 
     let tagsHtml = "";
@@ -941,11 +1223,14 @@ function buildRosterCard(person, stage) {
         if (!person.isMet) {
             tagsHtml += `<span class="tag tag-not-met">Görüşülmedi</span>`;
         } else {
-            tagsHtml += `<span class="tag tag-met">Görüşüldü</span>`;
+            tagsHtml += `<span class="tag tag-met">Görüşüldü (G${person.dialogueStage})</span>`;
+        }
+        if (person.pendingReturnCheck) {
+            tagsHtml += `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
         }
         if (resting) tagsHtml += `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
         if (isSelected) tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
-        if (isNew) tagsHtml += `<span class="tag tag-new">🆕 Yeni Görüşme</span>`;
+        if (isNew) tagsHtml += `<span class="tag tag-new">🆕 Görüşmeye Açıldı</span>`;
     }
 
     // Developer / Debug Mode indicator (Only visible when debug mode is ON)
@@ -963,9 +1248,9 @@ function buildRosterCard(person, stage) {
     card.innerHTML = `
         ${readingHtml}
         <div class="arrival-chip">G${person.arrivalDay}</div>
-        <div class="avatar-circle ${genderClass}">${avatarDisplay}</div>
+        ${avatarHtml}
         <div class="person-name">${person.name}${debugHtml}</div>
-        <div class="person-role">${person.isMet ? person.role : "???"}</div>
+        <div class="person-role">${person.role}</div>
         ${dialogueHtml}
         <div class="card-status-tags">${tagsHtml}</div>
     `;
@@ -998,15 +1283,18 @@ function buildRecordCard(person, arrivingIndex) {
     }
 
     const verdict = `<span class="record-verdict verdict-hidden">GİZLİ</span>`;
-    let cause = `<span class="record-cause">💀 ${person.status || "Kayıp"}</span>`;
+    let cause = `<span class="record-cause">💀 ${getCharacterCurrentStatus(person)}</span>`;
     if (person.isExecuted) cause = `<span class="record-cause">⚡ İnfaz Edildi</span>`;
     else if (person.isEscaped) cause = `<span class="record-cause">🚪 Kaçtı</span>`;
     else if (person.isMissing) cause = `<span class="record-cause">🌫️ Kayıp</span>`;
 
-    const avatar = person.isExecuted ? "⚡" : (person.isEscaped ? "🚪" : (person.isMissing ? "🌫️" : "💀"));
+    const photoSrc = person.photo || person.photoLegacy;
 
     card.innerHTML = `
-        <div class="record-avatar">${avatar}</div>
+        <div class="record-avatar">
+            <img src="${photoSrc}" alt="${person.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" />
+            <span style="display:none;">💀</span>
+        </div>
         <div class="record-body">
             <div class="record-name">${person.name}</div>
             <div class="record-meta">${cause}<span class="record-day">G${person.diedOnDay || "—"}</span></div>
@@ -1095,32 +1383,39 @@ function renderStagePanel() {
         const list = document.getElementById("arrival-list");
         list.innerHTML = "";
         arrivals.forEach(person => {
+            const photoSrc = person.photo || person.photoLegacy;
             const row = document.createElement("div");
             row.className = "arrival-row";
-            row.innerHTML = `<span class="arrival-avatar">❓</span><span><strong>${person.name}</strong> — Görüşme programı açıldı</span>`;
+            row.innerHTML = `<img src="${photoSrc}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" onerror="this.style.display='none';" /><span><strong>${person.name}</strong> (${person.role}) — Görüşme programı açıldı</span>`;
             list.appendChild(row);
         });
     }
 
     // ---- Meeting ----
     if (stage === STAGE.MEETING) {
-        document.getElementById("meeting-remaining").textContent = meetsLeft();
+        const meetingRem = document.getElementById("meeting-remaining");
+        if (meetingRem) meetingRem.textContent = `⚡${gameState.energy}`;
         const unmet = presentPersonnel().filter(p => !p.isMet && !p.isDead).length;
-        document.getElementById("meeting-unmet").textContent = unmet;
+        const meetingUnmet = document.getElementById("meeting-unmet");
+        if (meetingUnmet) meetingUnmet.textContent = unmet;
     }
 
     // ---- Testing ----
     if (stage === STAGE.TESTING) {
-        document.getElementById("testing-remaining").textContent = testsLeft();
+        const testRem = document.getElementById("testing-remaining");
+        if (testRem) testRem.textContent = `⚡${gameState.energy}`;
         const testable = presentPersonnel().filter(p => p.isMet && !p.isTested && !p.isDead && !isResting(p.id)).length;
-        document.getElementById("testing-available").textContent = testable;
+        const testAvail = document.getElementById("testing-available");
+        if (testAvail) testAvail.textContent = testable;
     }
 
     // ---- Execution ----
     if (stage === STAGE.EXECUTION) {
-        document.getElementById("execution-remaining").textContent = executionsLeft();
+        const execRem = document.getElementById("execution-remaining");
+        if (execRem) execRem.textContent = executionsLeft();
         const eligible = presentPersonnel().filter(p => p.isMet && !p.isDead).length;
-        document.getElementById("execution-eligible").textContent = eligible;
+        const execElig = document.getElementById("execution-eligible");
+        if (execElig) execElig.textContent = eligible;
 
         const threat = threatLevel();
         const box = document.getElementById("execution-threat");
@@ -1148,7 +1443,7 @@ function renderStagePanel() {
                 const pill = document.createElement("div");
                 pill.className = "team-member-pill";
                 const readingText = person.isTested ? "Test Edildi ⚡" : "Test Edilmedi";
-                pill.innerHTML = `<span>${person.avatar} ${person.name}</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
+                pill.innerHTML = `<span><strong>${person.name}</strong> (${person.role})</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
                 const removeBtn = pill.querySelector(".btn-remove-pill");
                 if (removeBtn) {
                     removeBtn.addEventListener("click", (e) => {
@@ -1168,7 +1463,7 @@ function renderStagePanel() {
 
         if (understrength) {
             dispatchBtn.disabled = false;
-            dispatchBtn.textContent = "PERSONEL YETERSİZ — GÜNÜ KAYBET";
+            dispatchBtn.textContent = "MAHKÛM YETERSİZ — GÜNÜ KAYBET";
             dispatchBtn.classList.add("btn-understrength");
         } else {
             dispatchBtn.classList.remove("btn-understrength");
@@ -1201,7 +1496,7 @@ function renderAll() {
 }
 
 // ==========================================
-// TEST REVEAL
+// TEST REVEAL & INMATE DETAILS MODALS
 // ==========================================
 function renderVoltmeterHtml(reading) {
     const baseAngle = -55 + (reading / 100) * 110;
@@ -1232,15 +1527,35 @@ function renderVoltmeterHtml(reading) {
     `;
 }
 
-function showTestReveal(person) {
+function showInmateDetailsModal(person) {
     document.getElementById("reveal-name").textContent = person.name;
     document.getElementById("reveal-role").textContent = person.role;
-    document.getElementById("reveal-avatar").textContent = person.avatar;
-    const dialogueHtml = (person.isMet && person.dialogue)
-        ? `<div class="reveal-dialogue">💬 "${person.dialogue}"</div>`
-        : "";
-    document.getElementById("reveal-body").innerHTML = dialogueHtml + renderVoltmeterHtml(person.reading);
+
+    const photoSrc = person.photo || person.photoLegacy;
+    document.getElementById("reveal-avatar").innerHTML = `
+        <img src="${photoSrc}" alt="${person.name}" onerror="this.style.display='none';" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+    `;
+
+    const stageKey = "G" + (person.dialogueStage || 1);
+    const dialogueText = person.currentDialogue || person.dialogues[stageKey] || person.dialogues.G1;
+
+    let modalHtml = `
+        <div class="reveal-dialogue">
+            <span class="dialogue-stage-badge" style="background:var(--accent-blue); color:#fff; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem; margin-right:6px;">G${person.dialogueStage || 1}</span>
+            💬 "${dialogueText}"
+        </div>
+    `;
+
+    if (person.isTested) {
+        modalHtml += renderVoltmeterHtml(person.reading);
+    }
+
+    document.getElementById("reveal-body").innerHTML = modalHtml;
     document.getElementById("test-reveal-modal").classList.remove("hidden");
+}
+
+function showTestReveal(person) {
+    showInmateDetailsModal(person);
 }
 
 function showExecutionReveal(person) {
@@ -1254,7 +1569,7 @@ function showExecutionReveal(person) {
     verdict.textContent = "⚡ İNFAZ EDİLDİ";
     verdict.className = "execution-verdict verdict-executed";
     body.innerHTML = `
-        <p>Personelin protokolü sonlandırıldı ve hücresi boşaltıldı.</p>
+        <p>Mahkûmun protokolü sonlandırıldı ve hücresi boşaltıldı.</p>
         <p class="execution-consequence" style="color: var(--text-muted);">
             ❓ Kimlik Gizli: Anomali mi yoksa insan mı olduğu açıklanmadı.
         </p>
@@ -1280,8 +1595,8 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
             ? (person.isAnomaly
                 ? `<span class="badge badge-missing" style="color: var(--accent-orange);">🚪 Kaçtı / Firar</span>`
                 : `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`)
-            : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü</span>`;
-        row.innerHTML = `<span>${isMissing ? (person.isAnomaly ? "🚪" : "🌫️") : person.avatar} <strong>${person.name}</strong> (${person.role})</span>${statusBadge}`;
+            : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü (Kontrol Bekliyor)</span>`;
+        row.innerHTML = `<span><strong>${person.name}</strong> (${person.role})</span>${statusBadge}`;
         breakdownList.appendChild(row);
     });
 
@@ -1337,10 +1652,14 @@ function showGameOver(reason = "complete") {
         card.classList.add("ending-fired");
         verdictElem.innerHTML = `<strong>${MAX_MISSION_FAILURES} başarısız görev.</strong> Devlet denetimi
             tesise el koydu ve yetkin iptal edildi. Yerine başkası atandı.`;
-    } else if (success >= 5) {
-        titleElem.textContent = "FACILITY 61 GÜVENDE";
+    } else if (success >= 5 && counts.humans >= 4 && wrongful <= 1) {
+        titleElem.textContent = "MÜKEMMEL TESİS ZAFERİ 🏆";
         card.classList.add("ending-win");
-        verdictElem.innerHTML = `<strong>Facility 61 Güvende!</strong> Doğru kararlarla tesisi başarıyla korudun.`;
+        verdictElem.innerHTML = `<strong>Facility 61 Başarıyla Kurtarıldı!</strong> 5'ten fazla görev tamamlandı ve insanlar korundu.`;
+    } else if (success >= 5) {
+        titleElem.textContent = "TESİS GÜVENDE";
+        card.classList.add("ending-win");
+        verdictElem.innerHTML = `<strong>Facility 61 Güvende!</strong> Ağır kayıplara rağmen asgari gereksinimler karşılandı.`;
     } else if (success >= 3) {
         titleElem.textContent = "KRİTİK HAYATTA KALMA";
         card.classList.add("ending-loss");
@@ -1593,15 +1912,25 @@ function simulateSingleGame(botType) {
         const present = manifest.filter(p => p.arrivalDay && p.arrivalDay <= day && !p.isDead);
 
         // ---- MEETING ----
+        let energy = MAX_DAILY_ENERGY;
         let unmet = present.filter(p => !p.isMet);
-        unmet = botType === "random" ? shuffle(unmet) : unmet.sort((a, b) => (a.arrivalDay || 1) - (b.arrivalDay || 1));
-        unmet.slice(0, MEETS_PER_DAY).forEach(p => { p.isMet = true; });
+        unmet.slice(0, 3).forEach(p => {
+            if (energy >= 2) {
+                p.isMet = true;
+                p.dialogueStage = 1;
+                energy -= 2;
+            }
+        });
 
         // ---- TESTING ----
         if (botType !== "random") {
             let testable = present.filter(p => p.isMet && !p.isTested && !rest(p));
-            testable = (botType === "tester") ? shuffle(testable) : testable.sort((a, b) => (a.arrivalDay || 1) - (b.arrivalDay || 1));
-            testable.slice(0, testsForDay(day)).forEach(p => { p.isTested = true; });
+            testable.slice(0, 2).forEach(p => {
+                if (energy >= 1) {
+                    p.isTested = true;
+                    energy -= 1;
+                }
+            });
         }
 
         // ---- EXECUTION (Day 3+) ----
@@ -1625,7 +1954,7 @@ function simulateSingleGame(botType) {
 
         // ---- DISPATCH ----
         const deployable = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.isMet && !rest(p));
-        const teamSize = Math.max(1, Math.min(dispatchSizeForDay(day), Math.max(1, deployable.length)));
+        const teamSize = Math.max(1, Math.min(DAILY_DISPATCH_QUOTA[day] || 2, Math.max(1, deployable.length)));
 
         let team = [];
         if (deployable.length >= teamSize) {
