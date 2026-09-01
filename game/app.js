@@ -16,11 +16,18 @@
 // Formula: dialogueIndex = Math.min(Math.max(currentDay - character.introducedDay, 0), character.dialogues.length - 1)
 //
 // DAY 1 FLOW (NO TESTING STAGE ON DAY 1):
-// Day 1: Tanışma -> Görev Sevki -> Rapor
+// Day 1: Tanışma -> Görev Sevki -> Rapor (No test stage, no guide button)
 // Day 2+: Tanışma -> Test -> Görev Sevki -> Rapor (Day 3+: İnfaz included)
+// Day 2 Auto-Guide: Opens brain test guide on first entry to testing stage if not seen.
+// Permanent Guide Button: Visible on all stages from Day 2+.
 //
-// Unintroduced characters are completely anonymous (? avatar, "BİLİNMEYEN MAHKÛM", no PNG in DOM, NO dialogue in DOM).
-// Single click "TANIŞ ⚡2" completes introduction immediately and shows G1 with a simple "Kapat ✕" button.
+// BRAIN SCAN VISUAL TESTING:
+// 0–19:   brain-human.png
+// 20–44:  brain-doubt-30.png
+// 45–69:  brain-doubt-60.png
+// 70–89:  brain-corrupted-80.png
+// 90–100: brain-corrupted-100.png
+// (Visual scan ONLY, no numbers/percentages/diagnoses on screen).
 //
 
 const TOTAL_DAYS = 7;
@@ -311,6 +318,15 @@ const DAILY_INTERVIEW_SCHEDULE = {
     7: []
 };
 
+// Brain Scan Image Mapping
+function getBrainScanImage(reading) {
+    if (reading <= 19) return "brain-tests/brain-human.png";
+    if (reading <= 44) return "brain-tests/brain-doubt-30.png";
+    if (reading <= 69) return "brain-tests/brain-doubt-60.png";
+    if (reading <= 89) return "brain-tests/brain-corrupted-80.png";
+    return "brain-tests/brain-corrupted-100.png";
+}
+
 function drawRandomAnomalyReading() {
     return Math.floor(Math.random() * 45) + 55;
 }
@@ -382,6 +398,7 @@ let gameState = {
     executionsUsed: 0,
     endReason: null,
     day3BriefingShown: false,
+    brainTestGuideSeen: false,
     selectedTeam: [],
     tiredMap: {},
     missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
@@ -454,6 +471,7 @@ function loadSavedGameState() {
                     };
                 });
 
+                parsed.brainTestGuideSeen = Boolean(parsed.brainTestGuideSeen);
                 return parsed;
             }
         }
@@ -597,11 +615,9 @@ function resolveMission(team) {
 
     const missingPeople = [];
 
-    // Base Success Probability: Corrupted can succeed, Human can fail based on composition
     let baseSuccess = 0.50 + (humanCount * 0.25) - (anomalyCount * 0.15);
     baseSuccess = Math.max(0.15, Math.min(0.95, baseSuccess));
 
-    // Human Loss Risk (15% - 35% depending on corrupted presence)
     const humanLossChance = 0.15 + (anomalyCount * 0.10);
     const humans = team.filter(p => !p.isAnomaly);
     if (humans.length > 0 && Math.random() < humanLossChance) {
@@ -609,7 +625,6 @@ function resolveMission(team) {
         missingPeople.push(lostHuman);
     }
 
-    // Corrupted Escape Risk (45% chance each to escape)
     const anomalies = team.filter(p => p.isAnomaly);
     anomalies.forEach(anomaly => {
         if (Math.random() < 0.45) {
@@ -646,7 +661,6 @@ function initGame() {
     clearSavedGameState();
     const manifest = generateManifest();
 
-    // Day 1 Unlocks: Bob, Ted Karinsky, M. Cole Morgan, Alicia Winston
     const day1Ids = DAILY_INTERVIEW_SCHEDULE[1];
     day1Ids.forEach(id => {
         const p = manifest.find(x => x.id === id);
@@ -663,6 +677,7 @@ function initGame() {
         executionsUsed: 0,
         endReason: null,
         day3BriefingShown: false,
+        brainTestGuideSeen: false,
         selectedTeam: [],
         tiredMap: {},
         missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
@@ -701,6 +716,23 @@ function logEvent(message, type = "system") {
 }
 
 // ==========================================
+// BRAIN TEST GUIDE (MODAL CONTROLS)
+// ==========================================
+function openBrainTestGuide() {
+    const guideModal = document.getElementById("brain-guide-modal");
+    if (guideModal) guideModal.classList.remove("hidden");
+}
+
+function closeBrainTestGuide() {
+    const guideModal = document.getElementById("brain-guide-modal");
+    if (guideModal) guideModal.classList.add("hidden");
+    if (!gameState.brainTestGuideSeen) {
+        gameState.brainTestGuideSeen = true;
+        saveGameState();
+    }
+}
+
+// ==========================================
 // STAGE FLOW
 // ==========================================
 function advanceStage() {
@@ -721,6 +753,9 @@ function advanceStage() {
             } else {
                 gameState.stage = STAGE.TESTING;
                 logEvent(`Test aşaması açıldı. Test maliyeti: ⚡1 enerji.`, "system");
+                if (gameState.day >= 2 && !gameState.brainTestGuideSeen) {
+                    openBrainTestGuide();
+                }
             }
             break;
 
@@ -818,7 +853,6 @@ function nextDay() {
 // INTERVIEW & INTRODUCTION ACTIONS (SINGLE STEP)
 // ==========================================
 
-// 1. TANIŞ ⚡2: Instant 1-click introduction
 function introducePerson(personId) {
     if (gameState.stage !== STAGE.MEETING) {
         flashNotice("Tanışma işlemi yalnızca Tanışma aşamasında yapılabilir.");
@@ -842,28 +876,22 @@ function introducePerson(personId) {
         return;
     }
 
-    // 1. Deduct 2 energy
     gameState.energy -= ENERGY_COST.INTERVIEW;
 
-    // 2. Mark introduced and spoken days
     person.introduced = true;
     person.introducedDay = gameState.day;
     person.lastSpokenDay = gameState.day;
     person.isMet = true;
 
-    // 3. Open dialogue bubble with G1
     gameState.activeConversationId = person.id;
 
-    // 4. Log event
     const g1Text = person.dialogues[0];
     logEvent(`🤝 ${person.name} (${person.role}) ile TANIŞILDI [G1]: "${g1Text}"`, "action");
 
-    // 5. Save & Render
     saveGameState();
     renderAll();
 }
 
-// 2. KONUŞ ⚡2: Instant 1-click conversation for subsequent days
 function speakToPerson(personId) {
     if (gameState.stage !== STAGE.MEETING) {
         flashNotice("Görüşmeler yalnızca Tanışma aşamasında yapılabilir.");
@@ -891,28 +919,21 @@ function speakToPerson(personId) {
         return;
     }
 
-    // 1. Deduct 2 energy
     gameState.energy -= ENERGY_COST.INTERVIEW;
 
-    // 2. Mark spoken day
     person.lastSpokenDay = gameState.day;
 
-    // 3. Calculate dialogue index (calendar day difference)
     const dIndex = getCharacterDialogueIndex(person);
     const text = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
 
-    // 4. Open dialogue bubble
     gameState.activeConversationId = person.id;
 
-    // 5. Log event
     logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${dIndex + 1}]: "${text}"`, "action");
 
-    // 6. Save & Render
     saveGameState();
     renderAll();
 }
 
-// 3. Close dialogue bubble
 function closeDialogue(personId) {
     if (gameState.activeConversationId === personId || !personId) {
         gameState.activeConversationId = null;
@@ -1003,7 +1024,7 @@ function testPerson(personId) {
     gameState.energy -= ENERGY_COST.TEST;
     person.isTested = true;
 
-    logEvent(`🧬 ${person.name} test edildi (Ölçüm yapıldı).`, "action");
+    logEvent(`🧠 ${person.name} üzerinde beyin testi uygulandı.`, "action");
     saveGameState();
     showTestReveal(person);
     renderAll();
@@ -1124,7 +1145,6 @@ function dispatchMission() {
             }
         });
 
-        // Set returning team members to pending return check
         team.forEach(person => {
             if (!person.isDead) {
                 person.pendingReturnCheck = true;
@@ -1179,6 +1199,16 @@ function renderStatus() {
     const info = STAGE_INFO[gameState.stage] || { label: "—", clock: "—" };
     document.getElementById("current-stage").textContent = info.label;
     document.getElementById("current-time").textContent = info.clock;
+
+    // Brain Test Guide button visibility (visible from Day 2+)
+    const btnGuide = document.getElementById("btn-open-guide-modal");
+    if (btnGuide) {
+        if (gameState.day >= 2) {
+            btnGuide.classList.remove("hidden");
+        } else {
+            btnGuide.classList.add("hidden");
+        }
+    }
 
     // Energy display
     const energyVal = document.getElementById("energy-value");
@@ -1317,7 +1347,6 @@ function buildRosterCard(person, stage) {
         ].filter(Boolean).join(" ");
         card.dataset.id = person.id;
 
-        // NO <img>, NO name, NO role, NO dialogue box, NO "Görüşmeyi Bitir"
         card.innerHTML = `
             <div class="arrival-chip">G${person.arrivalDay || "—"}</div>
             <div class="character-avatar avatar-circle unknown-avatar">
@@ -1363,7 +1392,6 @@ function buildRosterCard(person, stage) {
 
     const genderClass = person.gender === "Erkek" ? "male" : "female";
 
-    // Avatar with real PNG
     let debugHtml = "";
     if (gameState.debugMode) {
         if (person.secretIdentity === "Human") {
@@ -1382,31 +1410,17 @@ function buildRosterCard(person, stage) {
         </div>
     `;
 
-    // Reading Gauge
+    // Tested Brain Scan Badge (Neutral, no numbers, no color grading)
     let readingHtml = "";
     if (person.isTested && !isDead) {
-        const baseAngle = -55 + (person.reading / 100) * 110;
-        readingHtml = `<div class="reading-badge tested-gauge" title="Ölçüm Kadranını Büyüt">
-            <svg viewBox="0 0 38 22" class="mini-gauge-svg">
-                <path d="M 5 18 A 14 14 0 0 1 33 18" fill="none" stroke="#233144" stroke-width="3"/>
-                <path d="M 5 18 A 14 14 0 0 1 12 7" fill="none" stroke="#2ea043" stroke-width="3"/>
-                <path d="M 12 7 A 14 14 0 0 1 24 7" fill="none" stroke="#d29922" stroke-width="3"/>
-                <path d="M 24 7 A 14 14 0 0 1 33 18" fill="none" stroke="#da3633" stroke-width="3"/>
-                <g style="transform-origin: 19px 18px; transform: rotate(${baseAngle}deg);">
-                    <line x1="19" y1="18" x2="19" y2="4" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
-                </g>
-                <circle cx="19" cy="18" r="2.5" fill="#ff4d4d"/>
-            </svg>
-        </div>`;
+        readingHtml = `<div class="reading-badge tested-brain-badge" title="Beyin Taramasını İncele" style="cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.72rem; color:#d2a8ff; font-weight:700; background:rgba(137,87,229,0.18); border:1px solid rgba(137,87,229,0.4); border-radius:4px; padding:2px 6px;">🧠 TARAMA</div>`;
     } else if (!isDead) {
         readingHtml = `<div class="reading-badge untested" title="Test Edilmedi">—</div>`;
     }
 
-    // Dialogue Calculation
     const dIndex = getCharacterDialogueIndex(person);
     const currentSpeech = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
 
-    // Inline Active Dialogue Box (Shown when activeConversationId === person.id)
     let inlineDialogueHtml = "";
     if (isConversing && !isDead) {
         inlineDialogueHtml = `
@@ -1424,7 +1438,7 @@ function buildRosterCard(person, stage) {
         `;
     }
 
-    // Single Status Tag or Action Button
+    // Status Tag or Action Button
     let buttonOrTagHtml = "";
     if (isDead) {
         buttonOrTagHtml = `<span class="tag tag-cell-empty">Hücre: BOŞ</span>`;
@@ -1436,6 +1450,12 @@ function buildRosterCard(person, stage) {
         buttonOrTagHtml = `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
     } else if (person.pendingReturnCheck) {
         buttonOrTagHtml = `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
+    } else if (stage === STAGE.TESTING) {
+        if (person.isTested) {
+            buttonOrTagHtml = `<span class="tag tag-tested-neutral" onclick="event.stopPropagation(); showTestReveal(findPerson('${person.id}'));">🧠 TEST UYGULANDI</span>`;
+        } else {
+            buttonOrTagHtml = `<button class="btn btn-action-card btn-tag-test" onclick="event.stopPropagation(); testPerson('${person.id}');">TEST ET ⚡1</button>`;
+        }
     } else if (spokenToday) {
         buttonOrTagHtml = `<span class="tag tag-spoken-today">✓ BUGÜN GÖRÜŞÜLDÜ</span>`;
     } else {
@@ -1460,7 +1480,7 @@ function buildRosterCard(person, stage) {
         <div class="card-status-tags">${buttonOrTagHtml}</div>
     `;
 
-    const gaugeEl = card.querySelector(".tested-gauge");
+    const gaugeEl = card.querySelector(".tested-brain-badge");
     if (gaugeEl) {
         gaugeEl.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -1721,58 +1741,26 @@ function renderAll() {
 }
 
 // ==========================================
-// TEST REVEAL & EXECUTION MODALS
+// TEST REVEAL & EXECUTION MODALS (BRAIN SCAN)
 // ==========================================
-function renderVoltmeterHtml(reading) {
-    const baseAngle = -55 + (reading / 100) * 110;
-
-    return `
-        <div class="voltmeter-meter-box">
-            <svg viewBox="0 0 220 100" class="voltmeter-svg">
-                <rect x="5" y="5" width="210" height="90" rx="6" fill="#0d141f" stroke="#273549" stroke-width="1.5"/>
-                <path d="M 38 75 A 80 80 0 0 1 82 25" fill="none" stroke="#2ea043" stroke-width="3.5" opacity="0.85"/>
-                <path d="M 83 25 A 80 80 0 0 1 138 25" fill="none" stroke="#d29922" stroke-width="3.5" opacity="0.85"/>
-                <path d="M 139 25 A 80 80 0 0 1 182 75" fill="none" stroke="#da3633" stroke-width="3.5" opacity="0.85"/>
-                <text x="34" y="86" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">0</text>
-                <text x="66" y="44" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">25</text>
-                <text x="110" y="28" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">50</text>
-                <text x="154" y="44" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">75</text>
-                <text x="186" y="86" fill="#8b9bb4" font-size="8" font-family="monospace" text-anchor="middle">100</text>
-                <text x="110" y="58" fill="#57657a" font-size="7" font-family="monospace" text-anchor="middle" letter-spacing="1">NÖRO-HÜCRESEL DNA (mV)</text>
-                <g class="voltmeter-needle-group" style="--needle-angle: ${baseAngle}deg;">
-                    <polygon points="108,85 110,16 112,85" fill="#ff4d4d"/>
-                    <circle cx="110" cy="85" r="6" fill="#1b2434" stroke="#3b4e6b" stroke-width="2"/>
-                    <circle cx="110" cy="85" r="2" fill="#ff4d4d"/>
-                </g>
-            </svg>
-            <div class="voltmeter-footer">
-                <span class="voltmeter-hint">⚡ Analog Kadran Ölçümü</span>
-            </div>
-        </div>
-    `;
-}
-
 function showTestReveal(person) {
-    document.getElementById("reveal-name").textContent = person.introduced ? person.name : "BİLİNMEYEN MAHKÛM";
-    document.getElementById("reveal-role").textContent = person.introduced ? person.role : "—";
+    const scanImg = getBrainScanImage(person.reading);
+    const revealName = document.getElementById("reveal-name");
+    if (revealName) {
+        revealName.textContent = person.introduced ? `${person.name} — BEYİN TARAMASI` : "BEYİN TARAMASI";
+    }
 
-    if (person.introduced) {
-        document.getElementById("reveal-avatar").innerHTML = `
-            <div class="character-avatar" style="width:80px; height:80px; margin:0 auto;">
-                <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
-                <span class="avatar-fallback" style="display:none; font-size:2rem;">👤</span>
-            </div>
-        `;
-    } else {
-        document.getElementById("reveal-avatar").innerHTML = `
-            <div class="character-avatar unknown-avatar" style="width:80px; height:80px; margin:0 auto;">
-                <span class="avatar-fallback" style="display:flex; font-size:2.4rem; color:var(--text-muted);">?</span>
+    const revealBody = document.getElementById("reveal-body");
+    if (revealBody) {
+        revealBody.innerHTML = `
+            <div class="brain-scan-container">
+                <img src="${scanImg}" alt="Beyin Taraması" class="brain-scan-img" onerror="handleImageError(this, 'Beyin Taraması', '${scanImg}')" />
             </div>
         `;
     }
 
-    document.getElementById("reveal-body").innerHTML = renderVoltmeterHtml(person.reading);
-    document.getElementById("test-reveal-modal").classList.remove("hidden");
+    const modal = document.getElementById("test-reveal-modal");
+    if (modal) modal.classList.remove("hidden");
 }
 
 function showExecutionReveal(person) {
@@ -1829,6 +1817,8 @@ function closeModals() {
     if (resultModal) resultModal.classList.add("hidden");
     const execModal = document.getElementById("execution-reveal-modal");
     if (execModal) execModal.classList.add("hidden");
+    const guideModal = document.getElementById("brain-guide-modal");
+    if (guideModal) closeBrainTestGuide();
 }
 
 function showGameOver(reason = "complete") {
@@ -1989,8 +1979,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-advance-stage").addEventListener("click", advanceStage);
     document.getElementById("btn-dispatch").addEventListener("click", dispatchMission);
 
+    const btnOpenGuide = document.getElementById("btn-open-guide-modal");
+    if (btnOpenGuide) btnOpenGuide.addEventListener("click", openBrainTestGuide);
+    const btnCloseGuide = document.getElementById("btn-close-guide-modal");
+    if (btnCloseGuide) btnCloseGuide.addEventListener("click", closeBrainTestGuide);
+    const btnCloseGuideX = document.getElementById("btn-close-guide-modal-x");
+    if (btnCloseGuideX) btnCloseGuideX.addEventListener("click", closeBrainTestGuide);
+
     const btnRevealClose = document.getElementById("btn-reveal-close");
     if (btnRevealClose) btnRevealClose.addEventListener("click", closeModals);
+    const btnRevealCloseX = document.getElementById("btn-reveal-close-x");
+    if (btnRevealCloseX) btnRevealCloseX.addEventListener("click", closeModals);
+
     const btnExecClose = document.getElementById("btn-execution-close");
     if (btnExecClose) btnExecClose.addEventListener("click", closeModals);
     const btnDay3Close = document.getElementById("day3-briefing-modal");
@@ -2118,7 +2118,6 @@ function simulateSingleGame(botType) {
         return (living.length - a) - a;
     };
 
-    // Day 1 unlocks
     DAILY_INTERVIEW_SCHEDULE[1].forEach(id => {
         const p = manifest.find(x => x.id === id);
         if (p) p.arrivalDay = 1;

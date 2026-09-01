@@ -2581,5 +2581,104 @@ body {
     color: #ffffff;
 }
 
+/* Brain Test & Scan Result Modal */
+.brain-guide-card {
+    max-width: 960px !important;
+    width: 95vw !important;
+    max-height: 90vh !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.brain-guide-modal-body {
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.brain-guide-img-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brain-guide-img {
+    width: 100%;
+    max-width: 900px;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.brain-scan-modal-card {
+    max-width: 800px !important;
+    width: 92vw !important;
+    max-height: 88vh !important;
+    background: #0d131d !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.brain-scan-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.brain-scan-result img,
+.brain-scan-img {
+    width: 100%;
+    max-width: 900px;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+}
+
+.btn-guide-toggle {
+    background: rgba(56, 139, 253, 0.15);
+    color: #58a6ff;
+    border: 1px solid rgba(56, 139, 253, 0.4);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-guide-toggle:hover {
+    background: rgba(56, 139, 253, 0.3);
+    border-color: #58a6ff;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(56, 139, 253, 0.4);
+}
+
+.btn-tag-test {
+    background: #8957e5;
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(137, 87, 229, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-tag-test:hover {
+    background: #a371f7;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(163, 113, 247, 0.6);
+}
+
+.tag-tested-neutral {
+    background: rgba(137, 87, 229, 0.15) !important;
+    color: #d2a8ff !important;
+    border: 1px solid rgba(137, 87, 229, 0.3) !important;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
 
 
