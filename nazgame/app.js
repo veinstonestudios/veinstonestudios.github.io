@@ -8,12 +8,12 @@
 // Inline dialogue inside the page (NO popups/modals for interviews)
 //
 // Henry's Interview Unlock Schedule (All 14 exist in facility from Day 1):
-// Day 1: Bob (1), Ted Karinsky (2), M. Cole Morgan (3), Alicia Winston (4)
-// Day 2: Evie Hill (5), Dakota Ahmadii (6)
-// Day 3: Hasan Kahveci (7), Katarina Jovanovic (8)
-// Day 4: Milena Marvic (9), Shane Smith (10)
-// Day 5: Paul H. Simmons (11), Sergio Galvez II. (12)
-// Day 6: Father Gregory (13), Nina Grace (14)
+// Day 1: Bob, Ted Karinsky, M. Cole Morgan, Alicia Winston
+// Day 2: Evie Hill, Dakota Ahmadii
+// Day 3: Hasan Kahveci, Katarina Jovanovic
+// Day 4: Milena Marvic, Shane Smith
+// Day 5: Paul H. Simmons, Sergio Galvez II.
+// Day 6: Father Gregory, Nina Grace
 // Day 7: No new characters unlocked
 
 const TOTAL_DAYS = 7;
@@ -65,10 +65,10 @@ const STAGE_INFO = {
     report:    { label: "GÜN RAPORU",       clock: "18:00", next: null }
 };
 
-// ---- 14 FIXED INMATES DATA (G1-G5 Array & Real PNG Paths) ----------------
+// ---- 14 FIXED INMATES DATA (Direct ID to Image Mapping) ----------------
 const FACILITY_61_ROSTER = [
     {
-        id: 1,
+        id: "bob",
         name: "Bob",
         secretIdentity: "Human",
         gender: "Erkek",
@@ -84,7 +84,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 2,
+        id: "ted-karinsky",
         name: "Ted Karinsky",
         secretIdentity: "Corrupted",
         gender: "Erkek",
@@ -100,7 +100,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 3,
+        id: "m-cole-morgan",
         name: "M. Cole Morgan",
         secretIdentity: "Human",
         gender: "Erkek",
@@ -116,7 +116,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 4,
+        id: "alicia-winston",
         name: "Alicia Winston",
         secretIdentity: "Random",
         gender: "Kız",
@@ -132,7 +132,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 5,
+        id: "evie-hill",
         name: "Evie Hill",
         secretIdentity: "Corrupted",
         gender: "Kız",
@@ -148,7 +148,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 6,
+        id: "dakota-ahmadii",
         name: "Dakota Ahmadii",
         secretIdentity: "Random",
         gender: "Erkek",
@@ -164,7 +164,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 7,
+        id: "hasan-kahveci",
         name: "Hasan Kahveci",
         secretIdentity: "Human",
         gender: "Erkek",
@@ -180,7 +180,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 8,
+        id: "katarina-jovanovic",
         name: "Katarina Jovanovic",
         secretIdentity: "Human",
         gender: "Kız",
@@ -196,7 +196,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 9,
+        id: "milena-marvic",
         name: "Milena Marvic",
         secretIdentity: "Human",
         gender: "Kız",
@@ -212,7 +212,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 10,
+        id: "shane-smith",
         name: "Shane Smith",
         secretIdentity: "Corrupted",
         gender: "Erkek",
@@ -228,7 +228,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 11,
+        id: "paul-h-simmons",
         name: "Paul H. Simmons",
         secretIdentity: "Corrupted",
         gender: "Erkek",
@@ -244,7 +244,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 12,
+        id: "sergio-galvez",
         name: "Sergio Galvez II.",
         secretIdentity: "Human",
         gender: "Erkek",
@@ -260,7 +260,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 13,
+        id: "father-gregory",
         name: "Father Gregory",
         secretIdentity: "Corrupted",
         gender: "Erkek",
@@ -276,7 +276,7 @@ const FACILITY_61_ROSTER = [
         ]
     },
     {
-        id: 14,
+        id: "nina-grace",
         name: "Nina Grace",
         secretIdentity: "Human",
         gender: "Kız",
@@ -295,13 +295,13 @@ const FACILITY_61_ROSTER = [
 
 // Daily Interview Unlock Schedule
 const DAILY_INTERVIEW_SCHEDULE = {
-    1: [1, 2, 3, 4],   // Bob, Ted Karinsky, M. Cole Morgan, Alicia Winston
-    2: [5, 6],          // Evie Hill, Dakota Ahmadii
-    3: [7, 8],          // Hasan Kahveci, Katarina Jovanovic
-    4: [9, 10],         // Milena Marvic, Shane Smith
-    5: [11, 12],        // Paul H. Simmons, Sergio Galvez II.
-    6: [13, 14],        // Father Gregory, Nina Grace
-    7: []               // No new unlocks
+    1: ["bob", "ted-karinsky", "m-cole-morgan", "alicia-winston"],
+    2: ["evie-hill", "dakota-ahmadii"],
+    3: ["hasan-kahveci", "katarina-jovanovic"],
+    4: ["milena-marvic", "shane-smith"],
+    5: ["paul-h-simmons", "sergio-galvez"],
+    6: ["father-gregory", "nina-grace"],
+    7: []
 };
 
 function drawRandomAnomalyReading() {
@@ -323,9 +323,9 @@ function generateManifest() {
             p.isAnomaly = isCorrupted;
             p.actualIdentity = isCorrupted ? "Corrupted" : "Human";
 
-            if (p.id === 4) { // Alicia Winston
+            if (p.id === "alicia-winston") {
                 p.reading = isCorrupted ? (Math.floor(Math.random() * 15) + 65) : (Math.floor(Math.random() * 15) + 25);
-            } else if (p.id === 6) { // Dakota Ahmadii
+            } else if (p.id === "dakota-ahmadii") {
                 p.reading = isCorrupted ? (Math.floor(Math.random() * 15) + 72) : (Math.floor(Math.random() * 15) + 18);
             } else {
                 p.reading = isCorrupted ? drawRandomAnomalyReading() : drawRandomHumanReading();
@@ -389,13 +389,14 @@ function loadSavedGameState() {
         if (data) {
             const parsed = JSON.parse(data);
             if (parsed && Array.isArray(parsed.manifest) && parsed.manifest.length === ROSTER_SIZE) {
-                // Ensure backward compatibility of dialogueIndex and images
-                parsed.manifest.forEach(p => {
+                // Ensure backward compatibility of dialogueIndex, id, and images
+                parsed.manifest.forEach((p, idx) => {
                     if (typeof p.dialogueIndex !== "number") {
                         p.dialogueIndex = p.dialogueStage ? (p.dialogueStage - 1) : 0;
                     }
-                    const base = FACILITY_61_ROSTER.find(b => b.id === p.id);
+                    const base = FACILITY_61_ROSTER.find(b => b.id === p.id || b.name === p.name || String(b.id) === String(p.id)) || FACILITY_61_ROSTER[idx];
                     if (base) {
+                        p.id = base.id;
                         p.image = base.image;
                         p.dialogues = base.dialogues;
                     }
@@ -437,7 +438,7 @@ function presentPersonnel() {
 }
 
 function findPerson(personId) {
-    return gameState.manifest.find(p => p.id === personId);
+    return gameState.manifest.find(p => p.id === personId || String(p.id) === String(personId) || p.name === personId);
 }
 
 function restDaysLeft(personId) {
@@ -701,7 +702,7 @@ function nextDay() {
     });
 
     Object.keys(gameState.tiredMap).forEach(id => {
-        if (!gameState.selectedTeam.includes(Number(id))) {
+        if (!gameState.selectedTeam.includes(id)) {
             gameState.tiredMap[id] -= 1;
             if (gameState.tiredMap[id] <= 0) delete gameState.tiredMap[id];
         }
@@ -770,10 +771,10 @@ function startInterview(personId) {
     }
 
     // Toggle inline conversation on the card
-    if (gameState.activeConversationId === personId) {
+    if (gameState.activeConversationId === person.id) {
         gameState.activeConversationId = null;
     } else {
-        gameState.activeConversationId = personId;
+        gameState.activeConversationId = person.id;
     }
 
     renderPersonnel();
@@ -825,16 +826,16 @@ function handleCardClick(personId) {
 
     switch (gameState.stage) {
         case STAGE.MEETING:
-            startInterview(personId);
+            startInterview(person.id);
             break;
         case STAGE.TESTING:
-            testPerson(personId);
+            testPerson(person.id);
             break;
         case STAGE.EXECUTION:
-            executePerson(personId);
+            executePerson(person.id);
             break;
         case STAGE.DISPATCH:
-            toggleTeamMember(personId);
+            toggleTeamMember(person.id);
             break;
         default:
             break;
@@ -854,8 +855,8 @@ function testPerson(personId) {
         flashNotice(`${person.name} ile henüz görüşmedin. Tanışmadığın mahkûma test uygulanamaz.`);
         return;
     }
-    if (isResting(personId)) {
-        flashNotice(`${person.name} dinleniyor (${restDaysLeft(personId)} gün). Dinlenen mahkûma test yapılamaz.`);
+    if (isResting(person.id)) {
+        flashNotice(`${person.name} dinleniyor (${restDaysLeft(person.id)} gün). Dinlenen mahkûma test yapılamaz.`);
         return;
     }
     if (person.isTested) {
@@ -909,7 +910,7 @@ function executePerson(personId) {
 
     logEvent(`⚡ İNFAZ: ${person.name} elektrikli sandalyede infaz edildi. Hücresi boşaltıldı.`, "action");
 
-    const idx = gameState.selectedTeam.indexOf(personId);
+    const idx = gameState.selectedTeam.indexOf(person.id);
     if (idx > -1) gameState.selectedTeam.splice(idx, 1);
 
     saveGameState();
@@ -931,8 +932,8 @@ function toggleTeamMember(personId) {
         flashNotice(`${person.name} ile görüşmedin. Görüşmediğin mahkûm göreve gönderilemez.`);
         return;
     }
-    if (isResting(personId)) {
-        flashNotice(`${person.name} ${restDaysLeft(personId)} gün daha dinlenecek, göreve gidemez.`);
+    if (isResting(person.id)) {
+        flashNotice(`${person.name} ${restDaysLeft(person.id)} gün daha dinlenecek, göreve gidemez.`);
         return;
     }
     if (person.pendingReturnCheck) {
@@ -940,7 +941,7 @@ function toggleTeamMember(personId) {
         return;
     }
 
-    const index = gameState.selectedTeam.indexOf(personId);
+    const index = gameState.selectedTeam.indexOf(person.id);
     if (index > -1) {
         gameState.selectedTeam.splice(index, 1);
     } else {
@@ -948,7 +949,7 @@ function toggleTeamMember(personId) {
             flashNotice(`Bugün tam olarak ${requiredTeamSize()} kişi seçmelisin.`);
             return;
         }
-        gameState.selectedTeam.push(personId);
+        gameState.selectedTeam.push(person.id);
     }
     saveGameState();
     renderAll();
@@ -1224,7 +1225,7 @@ function buildRosterCard(person, stage) {
                     💬 "${currentSpeech}"
                 </div>
                 <div class="inline-dialogue-actions">
-                    <button class="btn btn-finish-interview" onclick="event.stopPropagation(); finishInterview(${person.id});">
+                    <button class="btn btn-finish-interview" onclick="event.stopPropagation(); finishInterview('${person.id}');">
                         Görüşmeyi Bitir (⚡2)
                     </button>
                     <button class="btn btn-cancel-interview" onclick="event.stopPropagation(); cancelInterview();">
@@ -2032,7 +2033,7 @@ function simulateSingleGame(botType) {
             tiredMap[id] = Math.random() < 0.50 ? 2 : 1;
         });
         Object.keys(tiredMap).forEach(id => {
-            if (!sentIds.includes(Number(id))) {
+            if (!sentIds.includes(id)) {
                 tiredMap[id] -= 1;
                 if (tiredMap[id] <= 0) delete tiredMap[id];
             }
