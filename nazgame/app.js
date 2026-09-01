@@ -15,6 +15,12 @@
 //
 // Formula: dialogueIndex = Math.min(Math.max(currentDay - character.introducedDay, 0), character.dialogues.length - 1)
 //
+// TASK COMPETENCY SYSTEM:
+// - low: 25, medium: 50, high: 75, very_high: 95
+// - baseSuccessChance = average of selected characters' competency scores
+// - corruptedPenalty = corruptedCount * 10
+// - finalSuccessChance = Math.max(10, Math.min(95, baseSuccessChance - corruptedPenalty))
+//
 // DAY 1 FLOW (NO TESTING STAGE ON DAY 1):
 // Day 1: Tanışma -> Görev Sevki -> Rapor (No test stage, no guide button)
 // Day 2+: Tanışma -> Test -> Görev Sevki -> Rapor (Day 3+: İnfaz included)
@@ -27,7 +33,6 @@
 // 45–69:  brain-doubt-60.png
 // 70–89:  brain-corrupted-80.png
 // 90–100: brain-corrupted-100.png
-// (Visual scan ONLY, no numbers/percentages/diagnoses on screen).
 //
 
 const TOTAL_DAYS = 7;
@@ -51,6 +56,21 @@ const DAILY_DISPATCH_QUOTA = {
     5: 3,
     6: 3,
     7: 3
+};
+
+// Task Competency Definitions
+const COMPETENCY_LABELS = {
+    low: "DÜŞÜK",
+    medium: "ORTA",
+    high: "YÜKSEK",
+    very_high: "ÇOK YÜKSEK"
+};
+
+const COMPETENCY_SCORES = {
+    low: 25,
+    medium: 50,
+    high: 75,
+    very_high: 95
 };
 
 // Electric Chair & Riot Days
@@ -87,6 +107,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "İşsiz",
+        taskCompetency: "low",
         image: "characters/bob.png",
         reading: 16,
         dialogues: [
@@ -103,6 +124,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Eski Akademisyen",
+        taskCompetency: "high",
         image: "characters/ted-karinsky.png",
         reading: 92,
         dialogues: [
@@ -119,6 +141,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Otomobil Tamircisi",
+        taskCompetency: "very_high",
         image: "characters/m-cole-morgan.png",
         reading: 32,
         dialogues: [
@@ -135,6 +158,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Kız",
         role: "Edebiyat Mezunu",
+        taskCompetency: "medium",
         image: "characters/alicia-winston.png",
         reading: null,
         dialogues: [
@@ -151,6 +175,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Kız",
         role: "Garson",
+        taskCompetency: "medium",
         image: "characters/evie-hill.png?v=3",
         reading: 86,
         dialogues: [
@@ -167,6 +192,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Erkek",
         role: "Obezite Hastası",
+        taskCompetency: "low",
         image: "characters/dakota-ahmadii.png?v=3",
         reading: null,
         dialogues: [
@@ -183,6 +209,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Egzotik Hayvan Tüccarı",
+        taskCompetency: "very_high",
         image: "characters/hasan-kahveci.png",
         reading: 19,
         dialogues: [
@@ -199,6 +226,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Psikoloji Eğitimli Ev Hanımı",
+        taskCompetency: "high",
         image: "characters/katarina-jovanovic.png",
         reading: 28,
         dialogues: [
@@ -215,6 +243,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Eski Ünlü Müzisyen",
+        taskCompetency: "low",
         image: "characters/milena-marvic.png",
         reading: 8,
         dialogues: [
@@ -231,6 +260,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Market Çalışanı",
+        taskCompetency: "medium",
         image: "characters/shane-smith.png",
         reading: 78,
         dialogues: [
@@ -247,6 +277,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Sokak Performansçısı",
+        taskCompetency: "low",
         image: "characters/paul-h-simmons.png",
         reading: 88,
         dialogues: [
@@ -263,6 +294,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Huzurevi Çalışanı",
+        taskCompetency: "high",
         image: "characters/sergio-galvez.png",
         reading: 42,
         dialogues: [
@@ -279,6 +311,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Din Adamı",
+        taskCompetency: "medium",
         image: "characters/father-gregory.png",
         reading: 84,
         dialogues: [
@@ -295,6 +328,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Çizer",
+        taskCompetency: "high",
         image: "characters/nina-grace.png?v=3",
         reading: 14,
         dialogues: [
@@ -447,6 +481,7 @@ function loadSavedGameState() {
                         name: canonical.name,
                         role: canonical.role,
                         gender: canonical.gender,
+                        taskCompetency: canonical.taskCompetency,
                         image: canonical.image,
                         dialogues: canonical.dialogues,
                         secretIdentity: canonical.secretIdentity,
@@ -606,17 +641,27 @@ function requiredTeamSize() {
 }
 
 // ==========================================
-// MISSION RESOLUTION
+// MISSION RESOLUTION (TASK COMPETENCY BASED)
 // ==========================================
 function resolveMission(team) {
     const size = team.length;
     const anomalyCount = team.filter(p => p.isAnomaly).length;
-    const humanCount = size - anomalyCount;
+
+    // 1. Calculate Base Success Chance from Competency Scores
+    const totalCompetencyScore = team.reduce((total, character) => {
+        const score = COMPETENCY_SCORES[character.taskCompetency] || 50;
+        return total + score;
+    }, 0);
+    const baseSuccessChance = totalCompetencyScore / size;
+
+    // 2. Apply Corrupted Penalty (10 points per Corrupted)
+    const corruptedPenalty = anomalyCount * 10;
+    const calculatedSuccessChance = baseSuccessChance - corruptedPenalty;
+
+    // 3. Clamp final success chance strictly between 10% and 95%
+    const finalSuccessChance = Math.max(10, Math.min(95, calculatedSuccessChance));
 
     const missingPeople = [];
-
-    let baseSuccess = 0.50 + (humanCount * 0.25) - (anomalyCount * 0.15);
-    baseSuccess = Math.max(0.15, Math.min(0.95, baseSuccess));
 
     const humanLossChance = 0.15 + (anomalyCount * 0.10);
     const humans = team.filter(p => !p.isAnomaly);
@@ -632,26 +677,24 @@ function resolveMission(team) {
         }
     });
 
-    const isSuccess = (missingPeople.length < team.length) && (Math.random() < baseSuccess);
+    const isSuccess = (missingPeople.length < team.length) && ((Math.random() * 100) < finalSuccessChance);
 
-    return { isSuccess, missingPeople };
-}
+    let explanation;
+    if (isSuccess) {
+        if (anomalyCount > 0) {
+            explanation = "Ekipte anomali şüphesi bulunmasına rağmen operasyon tamamlandı.";
+        } else {
+            explanation = "Ekibin yüksek operasyon yetkinliği görevin tamamlanmasını sağladı.";
+        }
+    } else {
+        if (anomalyCount > 0 && baseSuccessChance >= 60) {
+            explanation = "Yeterli uzmanlık bulunmasına rağmen ekip içindeki anomali etkisi operasyonu aksattı.";
+        } else {
+            explanation = "Ekibin operasyon yetkinliği görev için yetersiz kaldı.";
+        }
+    }
 
-const SUCCESS_REPORTS = [
-    "Saha hedeflerine ulaşıldı ve operasyon raporu teslim edildi.",
-    "Bölge taraması tamamlandı, kritik numuneler tesise aktarıldı.",
-    "Görev başarıyla sonuçlandı ve dış hatlar güvenceye alındı."
-];
-
-const FAILURE_REPORTS = [
-    "Saha şartları beklenmedik şekilde ağırlaştı, operasyon yarıda kaldı.",
-    "Görev sırasında koordinasyon bozuldu ve hedefler kaybedildi.",
-    "Saha operasyonu başarısız oldu, ekip hedefe ulaşamadı."
-];
-
-function pickReport(isSuccess) {
-    const pool = isSuccess ? SUCCESS_REPORTS : FAILURE_REPORTS;
-    return pool[Math.floor(Math.random() * pool.length)];
+    return { isSuccess, missingPeople, explanation, finalSuccessChance, baseSuccessChance };
 }
 
 // ==========================================
@@ -1131,7 +1174,7 @@ function dispatchMission() {
         const outcome = resolveMission(team);
         isSuccess = outcome.isSuccess;
         missingPeople = outcome.missingPeople || [];
-        explanation = pickReport(isSuccess);
+        explanation = outcome.explanation;
 
         missingPeople.forEach(person => {
             person.isDead = true;
@@ -1470,12 +1513,20 @@ function buildRosterCard(person, stage) {
         buttonOrTagHtml += `<span class="tag tag-team">✅ Görevde</span>`;
     }
 
+    const competencyLabel = COMPETENCY_LABELS[person.taskCompetency] || "—";
+    const competencyHtml = `
+        <div class="person-competency competency-${person.taskCompetency}">
+            GÖREV YETKİNLİĞİ: ${competencyLabel}
+        </div>
+    `;
+
     card.innerHTML = `
         ${readingHtml}
         <div class="arrival-chip">G${person.arrivalDay || "—"}</div>
         ${avatarHtml}
         <div class="person-name">${person.name}${debugHtml}</div>
         <div class="person-role">${person.role}</div>
+        ${competencyHtml}
         ${inlineDialogueHtml}
         <div class="card-status-tags">${buttonOrTagHtml}</div>
     `;
@@ -1688,7 +1739,11 @@ function renderStagePanel() {
                 const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
                 const displayRole = person.introduced ? person.role : "—";
                 const readingText = person.isTested ? "Test Edildi ⚡" : "Test Edilmedi";
-                pill.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
+                const competencyText = person.introduced && person.taskCompetency
+                    ? `<span class="pill-competency competency-${person.taskCompetency}">${COMPETENCY_LABELS[person.taskCompetency]}</span>`
+                    : "";
+
+                pill.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${competencyText}<span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
                 const removeBtn = pill.querySelector(".btn-remove-pill");
                 if (removeBtn) {
                     removeBtn.addEventListener("click", (e) => {
@@ -1798,12 +1853,15 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
         row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
         const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
         const displayRole = person.introduced ? person.role : "—";
+        const competencyText = person.introduced && person.taskCompetency
+            ? `<span class="badge competency-${person.taskCompetency}" style="margin-right:6px;">${COMPETENCY_LABELS[person.taskCompetency]}</span>`
+            : "";
         const statusBadge = isMissing
             ? (person.isAnomaly
                 ? `<span class="badge badge-missing" style="color: var(--accent-orange);">🚪 Kaçtı / Firar</span>`
                 : `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`)
             : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü (Kontrol Bekliyor)</span>`;
-        row.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${statusBadge}`;
+        row.innerHTML = `<span><strong>${displayName}</strong> (${displayRole}) ${competencyText}</span>${statusBadge}`;
         breakdownList.appendChild(row);
     });
 
