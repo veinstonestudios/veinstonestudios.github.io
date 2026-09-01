@@ -5,25 +5,19 @@
 // 14 Inmates: 7 Human, 5 Corrupted, 2 Random
 // Daily Energy: 8 points (Each finished interview/introduction consumes 2 energy)
 // Rule: Max 1 interview per character per day.
-// Dialogue progression is calendar-day based:
-//   - Day introduced: G1 (index 0)
-//   - Day + 1: G2 (index 1)
-//   - Day + 2: G3 (index 2)
-//   - Day + 3: G4 (index 3)
-//   - Day + 4+: G5 (index 4)
-// If a character is not spoken to on a day, that day's dialogue is skipped
-// because dialogue index = min(currentDay - introducedDay, 4).
-// Unintroduced characters are completely anonymous (? avatar, "BİLİNMEYEN MAHKÛM", no PNG in DOM).
-// Inline dialogue inside the page (NO popups/modals for interviews).
 //
-// Henry's Interview Unlock Schedule (All 14 exist in facility from Day 1):
-// Day 1: Bob, Ted Karinsky, M. Cole Morgan, Alicia Winston
-// Day 2: Evie Hill, Dakota Ahmadii
-// Day 3: Hasan Kahveci, Katarina Jovanovic
-// Day 4: Milena Marvic, Shane Smith
-// Day 5: Paul H. Simmons, Sergio Galvez II.
-// Day 6: Father Gregory, Nina Grace
-// Day 7: No new characters unlocked
+// CALENDAR-DAY DIALOGUE PROGRESSION:
+// TANIŞ -> G1 (Day introduced)
+// NEXT CALENDAR DAY -> G2
+// NEXT CALENDAR DAY -> G3
+// NEXT CALENDAR DAY -> G4
+// NEXT CALENDAR DAY -> G5
+//
+// Formula: dialogueIndex = Math.min(Math.max(currentDay - character.introducedDay, 0), character.dialogues.length - 1)
+//
+// Unintroduced characters are completely anonymous (? avatar, "BİLİNMEYEN MAHKÛM", no PNG in DOM, NO dialogue in DOM).
+// Single click "TANIŞ ⚡2" completes introduction immediately and shows G1 with a simple "Kapat ✕" button.
+//
 
 const TOTAL_DAYS = 7;
 const ROSTER_SIZE = 14;
@@ -321,7 +315,7 @@ function drawRandomHumanReading() {
     return Math.floor(Math.random() * 45) + 5;
 }
 
-// Compute dialogue index based on calendar day difference since introduction
+// Compute dialogue index strictly based on calendar day difference since introduction
 function getCharacterDialogueIndex(person) {
     if (!person.introduced || person.introducedDay === null) {
         return 0; // G1
@@ -409,7 +403,6 @@ function loadSavedGameState() {
         if (data) {
             const parsed = JSON.parse(data);
             if (parsed && Array.isArray(parsed.manifest) && parsed.manifest.length === ROSTER_SIZE) {
-                // Ensure backward compatibility of introduced, introducedDay, lastSpokenDay, id, and images
                 parsed.manifest.forEach((p, idx) => {
                     const base = FACILITY_61_ROSTER.find(b => b.id === p.id || b.name === p.name || String(b.id) === String(p.id)) || FACILITY_61_ROSTER[idx];
                     if (base) {
@@ -784,9 +777,56 @@ function nextDay() {
 }
 
 // ==========================================
-// INLINE INTERVIEW SYSTEM (NO POPUPS)
+// INTERVIEW & INTRODUCTION ACTIONS (SINGLE STEP)
 // ==========================================
-function startInterview(personId) {
+
+// 1. TANIŞ ⚡2: Instant 1-click introduction
+function introducePerson(personId) {
+    if (gameState.stage !== STAGE.MEETING) {
+        flashNotice("Tanışma işlemi yalnızca Tanışma aşamasında yapılabilir.");
+        return;
+    }
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) {
+        flashNotice("Bu mahkûmun görüşme programı henüz açılmadı.");
+        return;
+    }
+    if (person.isDead) {
+        flashNotice("Bu mahkûm artık tesiste değil.");
+        return;
+    }
+    if (person.introduced) {
+        flashNotice("Bu mahkûm ile zaten tanışıldı.");
+        return;
+    }
+    if (gameState.energy < ENERGY_COST.INTERVIEW) {
+        flashNotice(`Yetersiz Enerji! Tanışmak için ⚡${ENERGY_COST.INTERVIEW} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
+        return;
+    }
+
+    // 1. Deduct 2 energy
+    gameState.energy -= ENERGY_COST.INTERVIEW;
+
+    // 2. Mark introduced and spoken days
+    person.introduced = true;
+    person.introducedDay = gameState.day;
+    person.lastSpokenDay = gameState.day;
+    person.isMet = true;
+
+    // 3. Open dialogue bubble with G1
+    gameState.activeConversationId = person.id;
+
+    // 4. Log event
+    const g1Text = person.dialogues[0];
+    logEvent(`🤝 ${person.name} (${person.role}) ile TANIŞILDI [G1]: "${g1Text}"`, "action");
+
+    // 5. Save & Render
+    saveGameState();
+    renderAll();
+}
+
+// 2. KONUŞ ⚡2: Instant 1-click conversation for subsequent days
+function speakToPerson(personId) {
     if (gameState.stage !== STAGE.MEETING) {
         flashNotice("Görüşmeler yalnızca Tanışma aşamasında yapılabilir.");
         return;
@@ -796,76 +836,53 @@ function startInterview(personId) {
         flashNotice("Bu mahkûmun görüşme programı henüz açılmadı.");
         return;
     }
-    if (person.isDead) {
-        flashNotice(`${person.introduced ? person.name : "Mahkûm"} artık tesiste değil (${getCharacterCurrentStatus(person)}).`);
+    if (person.isDead || isResting(person.id) || person.pendingReturnCheck) {
+        flashNotice(`${person.name} şu an görüşmeye müsait değil (${getCharacterCurrentStatus(person)}).`);
+        return;
+    }
+    if (!person.introduced) {
+        introducePerson(personId);
         return;
     }
     if (person.lastSpokenDay === gameState.day) {
         flashNotice(`${person.name} ile bugün zaten görüşüldü. Sonraki gün tekrar konuşabilirsin.`);
         return;
     }
-
     if (gameState.energy < ENERGY_COST.INTERVIEW) {
         flashNotice(`Yetersiz Enerji! Görüşme için ⚡${ENERGY_COST.INTERVIEW} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
         return;
     }
 
-    // Toggle inline conversation on the card
-    if (gameState.activeConversationId === person.id) {
-        gameState.activeConversationId = null;
-    } else {
-        gameState.activeConversationId = person.id;
-    }
-
-    renderPersonnel();
-}
-
-function finishInterview(personId) {
-    const person = findPerson(personId);
-    if (!person || person.isDead) return;
-
-    if (person.lastSpokenDay === gameState.day) {
-        flashNotice(`${person.name} ile bugün zaten görüşüldü.`);
-        gameState.activeConversationId = null;
-        renderPersonnel();
-        return;
-    }
-
-    if (gameState.energy < ENERGY_COST.INTERVIEW) {
-        flashNotice(`Yetersiz Enerji! Görüşmeyi tamamlamak için ⚡${ENERGY_COST.INTERVIEW} enerji gerekli.`);
-        return;
-    }
-
-    // 1. Consume energy exactly once
+    // 1. Deduct 2 energy
     gameState.energy -= ENERGY_COST.INTERVIEW;
 
-    // 2. Mark as introduced and set days
-    const isFirstTime = !person.introduced;
-    person.introduced = true;
-    if (person.introducedDay === null) {
-        person.introducedDay = gameState.day;
-    }
+    // 2. Mark spoken day
     person.lastSpokenDay = gameState.day;
-    person.isMet = true;
 
-    // Current dialogue line shown based on calendar day difference
+    // 3. Calculate dialogue index (calendar day difference)
     const dIndex = getCharacterDialogueIndex(person);
-    const currentText = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
+    const text = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
 
-    if (isFirstTime) {
-        logEvent(`🤝 ${person.name} (${person.role}) ile TANIŞILDI [G1]: "${currentText}"`, "action");
-    } else {
-        logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${dIndex + 1}]: "${currentText}"`, "action");
-    }
+    // 4. Open dialogue bubble
+    gameState.activeConversationId = person.id;
 
-    // 3. Close inline dialogue
-    gameState.activeConversationId = null;
+    // 5. Log event
+    logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${dIndex + 1}]: "${text}"`, "action");
 
-    // 4. Persist and update UI
+    // 6. Save & Render
     saveGameState();
     renderAll();
 }
 
+// 3. Close dialogue bubble
+function closeDialogue(personId) {
+    if (gameState.activeConversationId === personId || !personId) {
+        gameState.activeConversationId = null;
+    }
+    renderPersonnel();
+}
+
+// Backward compatibility alias if needed
 function cancelInterview() {
     gameState.activeConversationId = null;
     renderPersonnel();
@@ -884,11 +901,23 @@ function handleCardClick(personId) {
                 flashNotice("Bu mahkûmun görüşme programı henüz açılmadı.");
                 return;
             }
-            if (person.lastSpokenDay === gameState.day) {
-                flashNotice(`${person.name} ile bugün zaten görüşüldü. Yarın tekrar konuşabilirsin.`);
+            if (person.isDead) {
+                flashNotice(`${person.introduced ? person.name : "Mahkûm"} artık tesiste değil.`);
                 return;
             }
-            startInterview(person.id);
+            if (!person.introduced) {
+                introducePerson(person.id);
+            } else if (person.lastSpokenDay === gameState.day) {
+                // If spoken today, toggling the card simply opens/closes today's already-spoken speech bubble without spending energy
+                if (gameState.activeConversationId === person.id) {
+                    gameState.activeConversationId = null;
+                } else {
+                    gameState.activeConversationId = person.id;
+                }
+                renderPersonnel();
+            } else {
+                speakToPerson(person.id);
+            }
             break;
         case STAGE.TESTING:
             testPerson(person.id);
@@ -1209,79 +1238,106 @@ function isInterred(person) {
     return person.isDead && person.diedOnDay !== undefined && person.diedOnDay < gameState.day;
 }
 
+// Build Character Card
 function buildRosterCard(person, stage) {
     const isDead = person.isDead;
     const isUnlocked = person.arrivalDay !== null && person.arrivalDay <= gameState.day;
-    const isIntroduced = person.introduced;
-    const spokenToday = person.lastSpokenDay === gameState.day;
+    const card = document.createElement("div");
+
+    // =========================================================================
+    // 1. UNINTRODUCED CHARACTER CARD (STRICT ANONYMITY)
+    // =========================================================================
+    if (!person.introduced) {
+        let buttonOrTagHtml = "";
+        if (isDead) {
+            buttonOrTagHtml = `<span class="tag tag-dead">💀 TESİSTE DEĞİL</span>`;
+        } else if (!isUnlocked) {
+            buttonOrTagHtml = `<span class="tag tag-locked">🔒 GÖRÜŞME PROGRAMINDA DEĞİL</span>`;
+        } else {
+            if (stage === STAGE.MEETING) {
+                buttonOrTagHtml = `<button class="btn btn-action-card btn-tag-introduce" onclick="event.stopPropagation(); introducePerson('${person.id}');">TANIŞ ⚡2</button>`;
+            } else {
+                buttonOrTagHtml = `<span class="tag tag-not-met">Tanışılmadı</span>`;
+            }
+        }
+
+        const isActionable = stage === STAGE.MEETING && isUnlocked && !isDead && gameState.energy >= ENERGY_COST.INTERVIEW;
+
+        card.className = [
+            "person-card",
+            "is-unintroduced",
+            isDead ? "is-dead" : "",
+            isActionable ? "is-actionable" : "",
+            isUnlocked && stage === STAGE.ARRIVAL && gameState.lastArrivals.includes(person.id) ? "is-arriving" : ""
+        ].filter(Boolean).join(" ");
+        card.dataset.id = person.id;
+
+        // NO <img>, NO name, NO role, NO dialogue box, NO "Görüşmeyi Bitir"
+        card.innerHTML = `
+            <div class="arrival-chip">G${person.arrivalDay || "—"}</div>
+            <div class="character-avatar avatar-circle unknown-avatar">
+                <span class="avatar-fallback" style="display:flex; font-size:1.8rem; font-weight:900; color:var(--text-muted);">?</span>
+            </div>
+            <div class="person-name unknown-name">BİLİNMEYEN MAHKÛM</div>
+            <div class="person-role unknown-role">—</div>
+            <div class="card-status-tags">${buttonOrTagHtml}</div>
+        `;
+
+        card.addEventListener("click", () => handleCardClick(person.id));
+        return card;
+    }
+
+    // =========================================================================
+    // 2. INTRODUCED CHARACTER CARD
+    // =========================================================================
     const resting = !isDead && isResting(person.id);
     const isSelected = gameState.selectedTeam.includes(person.id);
-    const isNew = gameState.lastArrivals.includes(person.id);
+    const spokenToday = person.lastSpokenDay === gameState.day;
     const isConversing = gameState.activeConversationId === person.id;
 
     let actionable = false;
     if (!isDead && isUnlocked) {
-        if (stage === STAGE.MEETING) actionable = !spokenToday && gameState.energy >= ENERGY_COST.INTERVIEW;
-        else if (stage === STAGE.TESTING) actionable = isIntroduced && !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
-        else if (stage === STAGE.EXECUTION) actionable = isIntroduced && executionsLeft() > 0;
-        else if (stage === STAGE.DISPATCH) actionable = isIntroduced && !resting && !person.pendingReturnCheck;
+        if (stage === STAGE.MEETING) actionable = !spokenToday && !resting && gameState.energy >= ENERGY_COST.INTERVIEW;
+        else if (stage === STAGE.TESTING) actionable = !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
+        else if (stage === STAGE.EXECUTION) actionable = executionsLeft() > 0;
+        else if (stage === STAGE.DISPATCH) actionable = !resting && !person.pendingReturnCheck;
     }
 
-    const card = document.createElement("div");
     card.className = [
         "person-card",
-        isIntroduced ? "is-met" : "is-unintroduced",
+        "is-met",
         spokenToday ? "is-spoken-today" : "",
         resting ? "is-tired" : "",
         isSelected ? "selected-team" : "",
         isDead ? "is-dead" : "",
         person.isExecuted ? "is-executed" : "",
-        isDead ? "is-departing" : "",
         isConversing ? "is-conversing active-dialogue-card" : "",
-        actionable ? (stage === STAGE.EXECUTION ? "is-executable" : "is-actionable") : "",
-        isNew && stage === STAGE.ARRIVAL ? "is-arriving" : ""
+        actionable ? (stage === STAGE.EXECUTION ? "is-executable" : "is-actionable") : ""
     ].filter(Boolean).join(" ");
     card.dataset.id = person.id;
 
     const genderClass = person.gender === "Erkek" ? "male" : "female";
 
-    // AVATAR RENDERING:
-    // If NOT introduced: Render dark unknown avatar with '?' (NO <img> in DOM at all!)
-    // If INTRODUCED: Render <img> element with real local PNG
-    let avatarHtml = "";
-    let nameHtml = "";
-    let roleHtml = "";
-
-    if (isIntroduced) {
-        avatarHtml = `
-            <div class="character-avatar avatar-circle ${genderClass}">
-                <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
-                <span class="avatar-fallback" style="display:none;">${person.name.charAt(0)}</span>
-            </div>
-        `;
-        let debugHtml = "";
-        if (gameState.debugMode) {
-            if (person.secretIdentity === "Human") {
-                debugHtml = `<span class="debug-badge badge-human">Human</span>`;
-            } else if (person.secretIdentity === "Corrupted") {
-                debugHtml = `<span class="debug-badge badge-corrupted">Corrupted</span>`;
-            } else if (person.secretIdentity === "Random") {
-                debugHtml = `<span class="debug-badge badge-random">Random (${person.actualIdentity})</span>`;
-            }
+    // Avatar with real PNG
+    let debugHtml = "";
+    if (gameState.debugMode) {
+        if (person.secretIdentity === "Human") {
+            debugHtml = `<span class="debug-badge badge-human">Human</span>`;
+        } else if (person.secretIdentity === "Corrupted") {
+            debugHtml = `<span class="debug-badge badge-corrupted">Corrupted</span>`;
+        } else if (person.secretIdentity === "Random") {
+            debugHtml = `<span class="debug-badge badge-random">Random (${person.actualIdentity})</span>`;
         }
-        nameHtml = `<div class="person-name">${person.name}${debugHtml}</div>`;
-        roleHtml = `<div class="person-role">${person.role}</div>`;
-    } else {
-        // Unknown avatar - NO <img> element in DOM
-        avatarHtml = `
-            <div class="character-avatar avatar-circle unknown-avatar ${genderClass}">
-                <span class="avatar-fallback" style="display:flex; font-size:1.8rem; font-weight:900; color:var(--text-muted);">?</span>
-            </div>
-        `;
-        nameHtml = `<div class="person-name unknown-name">BİLİNMEYEN MAHKÛM</div>`;
-        roleHtml = `<div class="person-role unknown-role">—</div>`;
     }
 
+    const avatarHtml = `
+        <div class="character-avatar avatar-circle ${genderClass}">
+            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+            <span class="avatar-fallback" style="display:none;">${person.name.charAt(0)}</span>
+        </div>
+    `;
+
+    // Reading Gauge
     let readingHtml = "";
     if (person.isTested && !isDead) {
         const baseAngle = -55 + (person.reading / 100) * 110;
@@ -1301,86 +1357,62 @@ function buildRosterCard(person, stage) {
         readingHtml = `<div class="reading-badge untested" title="Test Edilmedi">—</div>`;
     }
 
-    // Static Dialogue Preview: Only shown if spoken today
-    let dialogueHtml = "";
+    // Dialogue Calculation
     const dIndex = getCharacterDialogueIndex(person);
     const currentSpeech = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
 
-    if (isIntroduced && spokenToday && currentSpeech && !isDead && !isConversing) {
-        dialogueHtml = `<div class="person-dialogue" title="${currentSpeech}"><span class="dialogue-stage-chip">G${dIndex + 1}</span> "${currentSpeech}"</div>`;
-    }
-
-    // Active Inline Dialogue Box
-    let inlineConversationHtml = "";
-    if (isConversing) {
-        const chipText = isIntroduced ? `G${dIndex + 1}` : "G1 (Tanışma)";
-        inlineConversationHtml = `
+    // Inline Active Dialogue Box (Shown when activeConversationId === person.id)
+    let inlineDialogueHtml = "";
+    if (isConversing && !isDead) {
+        inlineDialogueHtml = `
             <div class="inline-dialogue-active-container">
                 <div class="inline-dialogue-speech">
-                    <span class="dialogue-stage-chip" style="background:var(--accent-blue); color:#fff;">${chipText}</span>
+                    <span class="dialogue-stage-chip" style="background:var(--accent-blue); color:#fff;">G${dIndex + 1}</span>
                     💬 "${currentSpeech}"
                 </div>
                 <div class="inline-dialogue-actions">
-                    <button class="btn btn-finish-interview" onclick="event.stopPropagation(); finishInterview('${person.id}');">
-                        Görüşmeyi Bitir (⚡2)
-                    </button>
-                    <button class="btn btn-cancel-interview" onclick="event.stopPropagation(); cancelInterview();">
-                        ✕
+                    <button class="btn btn-close-dialogue" onclick="event.stopPropagation(); closeDialogue('${person.id}');">
+                        Kapat ✕
                     </button>
                 </div>
             </div>
         `;
     }
 
-    let tagsHtml = "";
+    // Single Status Tag or Action Button
+    let buttonOrTagHtml = "";
     if (isDead) {
-        tagsHtml += `<span class="tag tag-cell-empty">Hücre: BOŞ</span>`;
-        if (person.isExecuted) {
-            tagsHtml += `<span class="tag tag-executed">⚡ İNFAZ EDİLDİ</span>`;
-        } else if (person.isEscaped) {
-            tagsHtml += `<span class="tag tag-escaped">🚪 KAÇTI</span>`;
-        } else if (person.isMissing) {
-            tagsHtml += `<span class="tag tag-missing">🌫️ KAYIP</span>`;
-        } else {
-            tagsHtml += `<span class="tag tag-dead">💀 ÖLDÜ</span>`;
-        }
+        buttonOrTagHtml = `<span class="tag tag-cell-empty">Hücre: BOŞ</span>`;
+        if (person.isExecuted) buttonOrTagHtml += `<span class="tag tag-executed">⚡ İNFAZ EDİLDİ</span>`;
+        else if (person.isEscaped) buttonOrTagHtml += `<span class="tag tag-escaped">🚪 KAÇTI</span>`;
+        else if (person.isMissing) buttonOrTagHtml += `<span class="tag tag-missing">🌫️ KAYIP</span>`;
+        else buttonOrTagHtml += `<span class="tag tag-dead">💀 ÖLDÜ</span>`;
+    } else if (resting) {
+        buttonOrTagHtml = `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
+    } else if (person.pendingReturnCheck) {
+        buttonOrTagHtml = `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
+    } else if (spokenToday) {
+        buttonOrTagHtml = `<span class="tag tag-spoken-today">✓ BUGÜN GÖRÜŞÜLDÜ</span>`;
     } else {
-        if (!isUnlocked) {
-            tagsHtml += `<span class="tag tag-locked">🔒 GÖRÜŞME PROGRAMINDA DEĞİL</span>`;
-        } else if (!isIntroduced) {
-            if (stage === STAGE.MEETING) {
-                tagsHtml += `<button class="btn btn-action-card btn-tag-introduce" onclick="event.stopPropagation(); startInterview('${person.id}');">TANIŞ ⚡2</button>`;
-            } else {
-                tagsHtml += `<span class="tag tag-not-met">Tanışılmadı</span>`;
-            }
+        if (stage === STAGE.MEETING) {
+            buttonOrTagHtml = `<button class="btn btn-action-card btn-tag-speak" onclick="event.stopPropagation(); speakToPerson('${person.id}');">KONUŞ ⚡2</button>`;
         } else {
-            if (spokenToday) {
-                tagsHtml += `<span class="tag tag-spoken-today">✓ BUGÜN GÖRÜŞÜLDÜ</span>`;
-            } else {
-                if (stage === STAGE.MEETING) {
-                    tagsHtml += `<button class="btn btn-action-card btn-tag-speak" onclick="event.stopPropagation(); startInterview('${person.id}');">KONUŞ ⚡2 (G${dIndex + 1})</button>`;
-                } else {
-                    tagsHtml += `<span class="tag tag-met">Görüşülebilir (G${dIndex + 1})</span>`;
-                }
-            }
+            buttonOrTagHtml = `<span class="tag tag-met">Görüşülebilir (G${dIndex + 1})</span>`;
         }
+    }
 
-        if (person.pendingReturnCheck) {
-            tagsHtml += `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
-        }
-        if (resting) tagsHtml += `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
-        if (isSelected) tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
+    if (isSelected && !isDead) {
+        buttonOrTagHtml += `<span class="tag tag-team">✅ Görevde</span>`;
     }
 
     card.innerHTML = `
         ${readingHtml}
         <div class="arrival-chip">G${person.arrivalDay || "—"}</div>
         ${avatarHtml}
-        ${nameHtml}
-        ${roleHtml}
-        ${dialogueHtml}
-        ${inlineConversationHtml}
-        <div class="card-status-tags">${tagsHtml}</div>
+        <div class="person-name">${person.name}${debugHtml}</div>
+        <div class="person-role">${person.role}</div>
+        ${inlineDialogueHtml}
+        <div class="card-status-tags">${buttonOrTagHtml}</div>
     `;
 
     const gaugeEl = card.querySelector(".tested-gauge");
@@ -1586,8 +1618,10 @@ function renderStagePanel() {
                 if (!person) return;
                 const pill = document.createElement("div");
                 pill.className = "team-member-pill";
+                const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
+                const displayRole = person.introduced ? person.role : "—";
                 const readingText = person.isTested ? "Test Edildi ⚡" : "Test Edilmedi";
-                pill.innerHTML = `<span><strong>${person.name}</strong> (${person.role})</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
+                pill.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
                 const removeBtn = pill.querySelector(".btn-remove-pill");
                 if (removeBtn) {
                     removeBtn.addEventListener("click", (e) => {
