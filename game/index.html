@@ -307,7 +307,48 @@
 
                     <!-- DISPATCH -->
                     <div id="panel-dispatch" class="stage-content hidden">
-                        <div class="box-title"><span class="icon">🚀</span><h3>GÖREV SEVKİ</h3></div>
+                        <div class="dispatch-header-container">
+                            <div class="box-title"><span class="icon">🚀</span><h3>GÖREV SEVKİ</h3></div>
+                            <button class="btn-guide-toggle-small" id="btn-toggle-dispatch-guide" type="button" title="Görev Rehberini Aç/Kapat">
+                                <span class="guide-toggle-icon">?</span> GÖREV REHBERİ
+                            </button>
+                        </div>
+
+                        <!-- Mini Dispatch Guide Panel (Collapsible) -->
+                        <div id="dispatch-guide-panel" class="dispatch-mini-guide hidden">
+                            <div class="dispatch-mini-guide-header">
+                                <h4>GÖREV PERSONELİ DEĞERLENDİRMESİ</h4>
+                                <button class="btn-close-mini-guide" id="btn-close-dispatch-guide" type="button" title="Kapat">✕</button>
+                            </div>
+                            <div class="dispatch-mini-guide-body">
+                                <p class="guide-lead-text">Bir mahkûmun göreve uygunluğu iki ayrı ölçüte bağlıdır:</p>
+
+                                <div class="guide-item">
+                                    <div class="guide-item-title">1. GÖREV YETKİNLİĞİ</div>
+                                    <p class="guide-item-desc">Yetkinlik, mahkûmun saha görevini başarıyla tamamlama kapasitesini gösterir.</p>
+                                    <div class="guide-competency-pills">
+                                        <span class="person-competency competency-low">DÜŞÜK</span>
+                                        <span class="person-competency competency-medium">ORTA</span>
+                                        <span class="person-competency competency-high">YÜKSEK</span>
+                                        <span class="person-competency competency-very_high">ÇOK YÜKSEK</span>
+                                    </div>
+                                    <p class="guide-item-note">Ekibin ortalama yetkinliği yükseldikçe görevin başarı ihtimali artar. İnsan olmak tek başına görevin tamamlanacağını garanti etmez.</p>
+                                </div>
+
+                                <div class="guide-item">
+                                    <div class="guide-item-title">2. İNSANLIK DURUMU</div>
+                                    <p class="guide-item-desc">Corrupted kişiler yüksek yetkinliğe sahip olabilir ve görevi tamamlayabilir. Ancak ekibe gönderilen her Corrupted operasyon riskini artırır ve görev başarı ihtimalini düşürür.</p>
+                                    <div class="guide-warning-card">
+                                        ⚠️ <strong>Yüksek yetkinlikli bir anomali ile düşük yetkinlikli bir insan arasında seçim yapmak zorunda kalabilirsiniz.</strong>
+                                    </div>
+                                </div>
+
+                                <div class="guide-footer-callout">
+                                    Başarılı bir ekip için hem yetkinliği hem de insanlık durumunu değerlendirin.
+                                </div>
+                            </div>
+                        </div>
+
                         <p class="box-desc">
                             Bugün tam olarak <strong id="dispatch-required">1</strong> kişi göndermelisin.
                             Seçili: <strong id="dispatch-selected">0</strong>
@@ -326,7 +367,7 @@
                         <div class="rules-card">
                             <div class="rule-title">Görev Kuralları:</div>
                             <ul>
-                                <li>Ekipteki insan sayısı arttıkça görev başarı ihtimali yükselir.</li>
+                                <li>Ekibin yetkinliği arttıkça operasyon başarı şansı yükselir.</li>
                                 <li>Saha tehlikeli — insanlar veya kaçan anomaliler <strong>kayıplara karışabilir</strong>.</li>
                                 <li>Görevden dönen personel <strong>1 veya 2 gün</strong> dinlenir ve o süre boyunca test edilemez.</li>
                             </ul>

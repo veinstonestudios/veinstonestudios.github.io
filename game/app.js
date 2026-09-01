@@ -776,6 +776,23 @@ function closeBrainTestGuide() {
 }
 
 // ==========================================
+// DISPATCH GUIDE (MINI PANEL CONTROLS)
+// ==========================================
+function toggleDispatchGuide() {
+    const guidePanel = document.getElementById("dispatch-guide-panel");
+    if (guidePanel) {
+        guidePanel.classList.toggle("hidden");
+    }
+}
+
+function closeDispatchGuide() {
+    const guidePanel = document.getElementById("dispatch-guide-panel");
+    if (guidePanel) {
+        guidePanel.classList.add("hidden");
+    }
+}
+
+// ==========================================
 // STAGE FLOW
 // ==========================================
 function advanceStage() {
@@ -2043,6 +2060,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnCloseGuide) btnCloseGuide.addEventListener("click", closeBrainTestGuide);
     const btnCloseGuideX = document.getElementById("btn-close-guide-modal-x");
     if (btnCloseGuideX) btnCloseGuideX.addEventListener("click", closeBrainTestGuide);
+
+    const btnToggleDispatchGuide = document.getElementById("btn-toggle-dispatch-guide");
+    if (btnToggleDispatchGuide) btnToggleDispatchGuide.addEventListener("click", toggleDispatchGuide);
+    const btnCloseDispatchGuide = document.getElementById("btn-close-dispatch-guide");
+    if (btnCloseDispatchGuide) btnCloseDispatchGuide.addEventListener("click", closeDispatchGuide);
 
     const btnRevealClose = document.getElementById("btn-reveal-close");
     if (btnRevealClose) btnRevealClose.addEventListener("click", closeModals);
