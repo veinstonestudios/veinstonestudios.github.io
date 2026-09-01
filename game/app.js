@@ -80,7 +80,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "İşsiz",
-        image: "/characters/bob.png",
+        image: "characters/bob.png",
         reading: 16,
         dialogues: [
             "Heyoooo! Naber?",
@@ -96,7 +96,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Eski Akademisyen",
-        image: "/characters/ted-karinsky.png",
+        image: "characters/ted-karinsky.png",
         reading: 92,
         dialogues: [
             "Gerçekleri örtbas ederek makalemi yayımlamamı engellediler. Ben ise yayımladım.",
@@ -112,7 +112,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Otomobil Tamircisi",
-        image: "/characters/m-cole-morgan.png",
+        image: "characters/m-cole-morgan.png",
         reading: 32,
         dialogues: [
             "Karımı ve kızımı dışarıdaki tehlikeden korumak istiyorum. Buradan ne kadar erken çıkarsam o kadar iyi.",
@@ -128,7 +128,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Kız",
         role: "Edebiyat Mezunu",
-        image: "/characters/alicia-winston.png",
+        image: "characters/alicia-winston.png",
         reading: null,
         dialogues: [
             "Zamanında birilerine çok güvendim. Artık kimseye o kadar güvenemiyorum.",
@@ -144,7 +144,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Kız",
         role: "Garson",
-        image: "/characters/evie-hill.png",
+        image: "characters/evie-hill.png?v=3",
         reading: 86,
         dialogues: [
             "Birileri odama girip eşyalarımı karıştırıyor. Onu yakalarsam fena yapacağım.",
@@ -160,7 +160,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Erkek",
         role: "Obezite Hastası",
-        image: "/characters/dakota-ahmadii.png",
+        image: "characters/dakota-ahmadii.png?v=3",
         reading: null,
         dialogues: [
             "Yemekhanede çıkardığım kavga için özür dilerim ama o gün yemekte ıspanak olması sinirlerimi feci gerdi.",
@@ -176,7 +176,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Egzotik Hayvan Tüccarı",
-        image: "/characters/hasan-kahveci.png",
+        image: "characters/hasan-kahveci.png",
         reading: 19,
         dialogues: [
             "Gittiğimiz görevlerden para kazanıyor muyuz? Buradan cebim dolu çıkmak istiyorum.",
@@ -192,7 +192,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Psikoloji Eğitimli Ev Hanımı",
-        image: "/characters/katarina-jovanovic.png",
+        image: "characters/katarina-jovanovic.png",
         reading: 28,
         dialogues: [
             "Ne bakıyorsun? Gıcık mı oldun?",
@@ -208,7 +208,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Eski Ünlü Müzisyen",
-        image: "/characters/milena-marvic.png",
+        image: "characters/milena-marvic.png",
         reading: 8,
         dialogues: [
             "Bugün çok kötü görünüyorum. Fanlarım beni böyle görmediği için mutluyum.",
@@ -224,7 +224,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Market Çalışanı",
-        image: "/characters/shane-smith.png",
+        image: "characters/shane-smith.png",
         reading: 78,
         dialogues: [
             "Ne bakıyovsun lan? Komik biv şev mi vav?",
@@ -240,7 +240,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Sokak Performansçısı",
-        image: "/characters/paul-h-simmons.png",
+        image: "characters/paul-h-simmons.png",
         reading: 88,
         dialogues: [
             "Vay Henry Başkan. Seni görmeyeli uzun zaman olmuştu.",
@@ -256,7 +256,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Huzurevi Çalışanı",
-        image: "/characters/sergio-galvez.png",
+        image: "characters/sergio-galvez.png",
         reading: 42,
         dialogues: [
             "Herkesle anlaşabilmek gibi garip bir huya sahibim. Sanırım bende şeytan tüyü var, hehehe.",
@@ -272,7 +272,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Din Adamı",
-        image: "/characters/father-gregory.png",
+        image: "characters/father-gregory.png",
         reading: 84,
         dialogues: [
             "Affedersin, Warden. İncil okumaya daldım, sizi fark edemedim.",
@@ -288,7 +288,7 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Çizer",
-        image: "/characters/nina-grace.png",
+        image: "characters/nina-grace.png?v=3",
         reading: 14,
         dialogues: [
             "Bugün hava çok güzel. İçeride yağlı boya tabloma mı devam etsem yoksa müzik mi dinlesem?",
