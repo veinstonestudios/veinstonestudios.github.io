@@ -15,6 +15,10 @@
 //
 // Formula: dialogueIndex = Math.min(Math.max(currentDay - character.introducedDay, 0), character.dialogues.length - 1)
 //
+// DAY 1 FLOW (NO TESTING STAGE ON DAY 1):
+// Day 1: Tanışma -> Görev Sevki -> Rapor
+// Day 2+: Tanışma -> Test -> Görev Sevki -> Rapor (Day 3+: İnfaz included)
+//
 // Unintroduced characters are completely anonymous (? avatar, "BİLİNMEYEN MAHKÛM", no PNG in DOM, NO dialogue in DOM).
 // Single click "TANIŞ ⚡2" completes introduction immediately and shows G1 with a simple "Kapat ✕" button.
 //
@@ -68,7 +72,7 @@ const STAGE_INFO = {
     report:    { label: "GÜN RAPORU",       clock: "18:00", next: null }
 };
 
-// ---- 14 FIXED INMATES DATA ----------------
+// ---- 14 FIXED INMATES DATA (CANONICAL ASSETS) ----------------
 const FACILITY_61_ROSTER = [
     {
         id: "bob",
@@ -330,7 +334,6 @@ function generateManifest() {
         const p = { ...base };
 
         if (p.secretIdentity === "Random") {
-            // Independent 50/50 roll for Alicia Winston and Dakota Ahmadii
             const isCorrupted = Math.random() < 0.5;
             p.isAnomaly = isCorrupted;
             p.actualIdentity = isCorrupted ? "Corrupted" : "Human";
@@ -367,7 +370,7 @@ function generateManifest() {
 }
 
 // ==========================================
-// STATE MANAGEMENT & PERSISTENCE
+// STATE MANAGEMENT & HYDRATION PERSISTENCE
 // ==========================================
 const SAVE_KEY = "facility61_inmate_state_v2";
 
@@ -397,31 +400,60 @@ function saveGameState() {
     }
 }
 
+// Hydrates ONLY dynamic fields onto fresh canonical roster entries to prevent old save data from corrupting image/name/role assets
 function loadSavedGameState() {
     try {
         const data = localStorage.getItem(SAVE_KEY);
         if (data) {
             const parsed = JSON.parse(data);
             if (parsed && Array.isArray(parsed.manifest) && parsed.manifest.length === ROSTER_SIZE) {
+                const savedMap = {};
                 parsed.manifest.forEach((p, idx) => {
-                    const base = FACILITY_61_ROSTER.find(b => b.id === p.id || b.name === p.name || String(b.id) === String(p.id)) || FACILITY_61_ROSTER[idx];
-                    if (base) {
-                        p.id = base.id;
-                        p.image = base.image;
-                        p.dialogues = base.dialogues;
-                    }
-
-                    if (typeof p.introduced !== "boolean") {
-                        p.introduced = Boolean(p.isMet);
-                    }
-                    if (p.introduced && (p.introducedDay === undefined || p.introducedDay === null)) {
-                        p.introducedDay = p.arrivalDay || 1;
-                    }
-                    if (p.lastSpokenDay === undefined) {
-                        p.lastSpokenDay = p.isMet ? (p.introducedDay || 1) : null;
-                    }
-                    p.isMet = p.introduced;
+                    const key = p.id || p.name || FACILITY_61_ROSTER[idx].id;
+                    savedMap[key] = p;
                 });
+
+                parsed.manifest = FACILITY_61_ROSTER.map((canonical, idx) => {
+                    const saved = savedMap[canonical.id] || savedMap[canonical.name] || parsed.manifest[idx] || {};
+
+                    const introduced = typeof saved.introduced === "boolean" ? saved.introduced : Boolean(saved.isMet);
+                    const introducedDay = (saved.introducedDay !== undefined && saved.introducedDay !== null)
+                        ? saved.introducedDay
+                        : (introduced ? (saved.arrivalDay || 1) : null);
+                    const lastSpokenDay = (saved.lastSpokenDay !== undefined && saved.lastSpokenDay !== null)
+                        ? saved.lastSpokenDay
+                        : (introduced ? introducedDay : null);
+
+                    return {
+                        // Canonical static data (NEVER overwritten by old save!)
+                        id: canonical.id,
+                        name: canonical.name,
+                        role: canonical.role,
+                        gender: canonical.gender,
+                        image: canonical.image,
+                        dialogues: canonical.dialogues,
+                        secretIdentity: canonical.secretIdentity,
+
+                        // Dynamic state data
+                        arrivalDay: saved.arrivalDay !== undefined ? saved.arrivalDay : (DAILY_INTERVIEW_SCHEDULE[1].includes(canonical.id) ? 1 : null),
+                        introduced: introduced,
+                        introducedDay: introducedDay,
+                        lastSpokenDay: lastSpokenDay,
+                        isMet: introduced,
+                        isTested: Boolean(saved.isTested),
+                        isDead: Boolean(saved.isDead),
+                        isExecuted: Boolean(saved.isExecuted),
+                        isMissing: Boolean(saved.isMissing),
+                        isEscaped: Boolean(saved.isEscaped),
+                        status: saved.status || (introduced ? "Tesiste ve müsait" : "Görüşülmedi"),
+                        diedOnDay: saved.diedOnDay ?? null,
+                        pendingReturnCheck: Boolean(saved.pendingReturnCheck),
+                        isAnomaly: saved.isAnomaly !== undefined ? saved.isAnomaly : (canonical.secretIdentity === "Corrupted"),
+                        actualIdentity: saved.actualIdentity || canonical.secretIdentity,
+                        reading: (saved.reading !== undefined && saved.reading !== null) ? saved.reading : canonical.reading
+                    };
+                });
+
                 return parsed;
             }
         }
@@ -682,8 +714,14 @@ function advanceStage() {
             break;
 
         case STAGE.MEETING:
-            gameState.stage = STAGE.TESTING;
-            logEvent(`Test aşaması açıldı. Test maliyeti: ⚡1 enerji.`, "system");
+            if (gameState.day === 1) {
+                // Day 1 has NO testing stage: Tanışma -> Görev Sevki
+                gameState.stage = STAGE.DISPATCH;
+                logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin. (Test sistemi 2. gün açılır)`, "system");
+            } else {
+                gameState.stage = STAGE.TESTING;
+                logEvent(`Test aşaması açıldı. Test maliyeti: ⚡1 enerji.`, "system");
+            }
             break;
 
         case STAGE.TESTING:
@@ -882,7 +920,6 @@ function closeDialogue(personId) {
     renderPersonnel();
 }
 
-// Backward compatibility alias if needed
 function cancelInterview() {
     gameState.activeConversationId = null;
     renderPersonnel();
@@ -908,7 +945,6 @@ function handleCardClick(personId) {
             if (!person.introduced) {
                 introducePerson(person.id);
             } else if (person.lastSpokenDay === gameState.day) {
-                // If spoken today, toggling the card simply opens/closes today's already-spoken speech bubble without spending energy
                 if (gameState.activeConversationId === person.id) {
                     gameState.activeConversationId = null;
                 } else {
@@ -934,6 +970,10 @@ function handleCardClick(personId) {
 }
 
 function testPerson(personId) {
+    if (gameState.day === 1) {
+        flashNotice("Test sistemi 2. günden itibaren aktif olacaktır.");
+        return;
+    }
     const person = findPerson(personId);
     if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
     if (gameState.stage !== STAGE.TESTING) return;
@@ -1222,8 +1262,13 @@ function renderStatus() {
     const living = present.filter(p => !p.isDead);
     document.getElementById("met-count").textContent =
         `Tanışılan: ${living.filter(p => p.introduced).length}/${living.length}`;
-    document.getElementById("tested-count").textContent =
-        `Test Edilen: ${living.filter(p => p.isTested).length}/${living.length}`;
+
+    if (gameState.day === 1) {
+        document.getElementById("tested-count").textContent = "Testler 2. Gün Açılır";
+    } else {
+        document.getElementById("tested-count").textContent =
+            `Test Edilen: ${living.filter(p => p.isTested).length}/${living.length}`;
+    }
 
     const lostCount = present.length - living.length;
     const lostBadge = document.getElementById("lost-count");
@@ -1298,7 +1343,7 @@ function buildRosterCard(person, stage) {
     let actionable = false;
     if (!isDead && isUnlocked) {
         if (stage === STAGE.MEETING) actionable = !spokenToday && !resting && gameState.energy >= ENERGY_COST.INTERVIEW;
-        else if (stage === STAGE.TESTING) actionable = !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
+        else if (stage === STAGE.TESTING) actionable = (gameState.day > 1) && !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
         else if (stage === STAGE.EXECUTION) actionable = executionsLeft() > 0;
         else if (stage === STAGE.DISPATCH) actionable = !resting && !person.pendingReturnCheck;
     }
@@ -1522,7 +1567,9 @@ function renderStagePanel() {
 
     const advanceBtn = document.getElementById("btn-advance-stage");
     let nextText = null;
-    if (stage === STAGE.TESTING) {
+    if (stage === STAGE.MEETING) {
+        nextText = (gameState.day === 1) ? "GÖREV AŞAMASINA GEÇ" : "TEST AŞAMASINA GEÇ";
+    } else if (stage === STAGE.TESTING) {
         nextText = canExecuteToday() ? "İNFAZ AŞAMASINA GEÇ" : "GÖREV AŞAMASINA GEÇ";
     } else {
         const nextInfo = STAGE_INFO[stage];
@@ -1576,7 +1623,7 @@ function renderStagePanel() {
         if (meetingUnmet) meetingUnmet.textContent = unmet;
     }
 
-    // ---- Testing ----
+    // ---- Testing (Day 2+) ----
     if (stage === STAGE.TESTING) {
         const testRem = document.getElementById("testing-remaining");
         if (testRem) testRem.textContent = `⚡${gameState.energy}`;
@@ -1585,7 +1632,7 @@ function renderStagePanel() {
         if (testAvail) testAvail.textContent = testable;
     }
 
-    // ---- Execution ----
+    // ---- Execution (Day 3+) ----
     if (stage === STAGE.EXECUTION) {
         const execRem = document.getElementById("execution-remaining");
         if (execRem) execRem.textContent = executionsLeft();
@@ -2105,8 +2152,8 @@ function simulateSingleGame(botType) {
             }
         });
 
-        // ---- TESTING ----
-        if (botType !== "random") {
+        // ---- TESTING (Day 2+) ----
+        if (day > 1 && botType !== "random") {
             let testable = present.filter(p => p.introduced && !p.isTested && !rest(p));
             testable.slice(0, 2).forEach(p => {
                 if (energy >= 1) {
