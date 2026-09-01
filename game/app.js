@@ -3,9 +3,18 @@
 // ============================================================================
 //
 // 14 Inmates: 7 Human, 5 Corrupted, 2 Random
-// Daily Energy: 8 points (Each finished interview consumes 2 energy)
-// Dialogue index progression: G1 (0) -> G2 (1) -> G3 (2) -> G4 (3) -> G5 (4)
-// Inline dialogue inside the page (NO popups/modals for interviews)
+// Daily Energy: 8 points (Each finished interview/introduction consumes 2 energy)
+// Rule: Max 1 interview per character per day.
+// Dialogue progression is calendar-day based:
+//   - Day introduced: G1 (index 0)
+//   - Day + 1: G2 (index 1)
+//   - Day + 2: G3 (index 2)
+//   - Day + 3: G4 (index 3)
+//   - Day + 4+: G5 (index 4)
+// If a character is not spoken to on a day, that day's dialogue is skipped
+// because dialogue index = min(currentDay - introducedDay, 4).
+// Unintroduced characters are completely anonymous (? avatar, "BİLİNMEYEN MAHKÛM", no PNG in DOM).
+// Inline dialogue inside the page (NO popups/modals for interviews).
 //
 // Henry's Interview Unlock Schedule (All 14 exist in facility from Day 1):
 // Day 1: Bob, Ted Karinsky, M. Cole Morgan, Alicia Winston
@@ -65,7 +74,7 @@ const STAGE_INFO = {
     report:    { label: "GÜN RAPORU",       clock: "18:00", next: null }
 };
 
-// ---- 14 FIXED INMATES DATA (Direct ID to Image Mapping) ----------------
+// ---- 14 FIXED INMATES DATA ----------------
 const FACILITY_61_ROSTER = [
     {
         id: "bob",
@@ -312,6 +321,15 @@ function drawRandomHumanReading() {
     return Math.floor(Math.random() * 45) + 5;
 }
 
+// Compute dialogue index based on calendar day difference since introduction
+function getCharacterDialogueIndex(person) {
+    if (!person.introduced || person.introducedDay === null) {
+        return 0; // G1
+    }
+    const offset = gameState.day - person.introducedDay;
+    return Math.min(Math.max(0, offset), person.dialogues.length - 1);
+}
+
 // Generate Manifest for a New Campaign
 function generateManifest() {
     return FACILITY_61_ROSTER.map(base => {
@@ -338,8 +356,10 @@ function generateManifest() {
         return {
             ...p,
             arrivalDay: null,
+            introduced: false,
+            introducedDay: null,
+            lastSpokenDay: null,
             isMet: false,
-            dialogueIndex: 0,
             isTested: false,
             isDead: false,
             isExecuted: false,
@@ -389,17 +409,25 @@ function loadSavedGameState() {
         if (data) {
             const parsed = JSON.parse(data);
             if (parsed && Array.isArray(parsed.manifest) && parsed.manifest.length === ROSTER_SIZE) {
-                // Ensure backward compatibility of dialogueIndex, id, and images
+                // Ensure backward compatibility of introduced, introducedDay, lastSpokenDay, id, and images
                 parsed.manifest.forEach((p, idx) => {
-                    if (typeof p.dialogueIndex !== "number") {
-                        p.dialogueIndex = p.dialogueStage ? (p.dialogueStage - 1) : 0;
-                    }
                     const base = FACILITY_61_ROSTER.find(b => b.id === p.id || b.name === p.name || String(b.id) === String(p.id)) || FACILITY_61_ROSTER[idx];
                     if (base) {
                         p.id = base.id;
                         p.image = base.image;
                         p.dialogues = base.dialogues;
                     }
+
+                    if (typeof p.introduced !== "boolean") {
+                        p.introduced = Boolean(p.isMet);
+                    }
+                    if (p.introduced && (p.introducedDay === undefined || p.introducedDay === null)) {
+                        p.introducedDay = p.arrivalDay || 1;
+                    }
+                    if (p.lastSpokenDay === undefined) {
+                        p.lastSpokenDay = p.isMet ? (p.introducedDay || 1) : null;
+                    }
+                    p.isMet = p.introduced;
                 });
                 return parsed;
             }
@@ -457,12 +485,13 @@ function getCharacterCurrentStatus(person) {
     if (person.pendingReturnCheck) return "Dönüş kontrolü bekliyor";
     if (isResting(person.id)) return "Dinleniyor";
     if (gameState.selectedTeam.includes(person.id)) return "Görevde";
-    if (!person.isMet) return "Görüşülmedi";
+    if (!person.introduced) return "Tanışılmadı";
+    if (person.lastSpokenDay === gameState.day) return "Bugün görüşüldü";
     return "Tesiste ve müsait";
 }
 
 function isDeployable(person) {
-    if (!person.isMet || person.isDead || isResting(person.id) || person.pendingReturnCheck) {
+    if (!person.introduced || person.isDead || isResting(person.id) || person.pendingReturnCheck) {
         return false;
     }
     return true;
@@ -758,10 +787,21 @@ function nextDay() {
 // INLINE INTERVIEW SYSTEM (NO POPUPS)
 // ==========================================
 function startInterview(personId) {
+    if (gameState.stage !== STAGE.MEETING) {
+        flashNotice("Görüşmeler yalnızca Tanışma aşamasında yapılabilir.");
+        return;
+    }
     const person = findPerson(personId);
-    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) {
+        flashNotice("Bu mahkûmun görüşme programı henüz açılmadı.");
+        return;
+    }
     if (person.isDead) {
-        flashNotice(`${person.name} artık tesiste değil (${getCharacterCurrentStatus(person)}).`);
+        flashNotice(`${person.introduced ? person.name : "Mahkûm"} artık tesiste değil (${getCharacterCurrentStatus(person)}).`);
+        return;
+    }
+    if (person.lastSpokenDay === gameState.day) {
+        flashNotice(`${person.name} ile bugün zaten görüşüldü. Sonraki gün tekrar konuşabilirsin.`);
         return;
     }
 
@@ -784,6 +824,13 @@ function finishInterview(personId) {
     const person = findPerson(personId);
     if (!person || person.isDead) return;
 
+    if (person.lastSpokenDay === gameState.day) {
+        flashNotice(`${person.name} ile bugün zaten görüşüldü.`);
+        gameState.activeConversationId = null;
+        renderPersonnel();
+        return;
+    }
+
     if (gameState.energy < ENERGY_COST.INTERVIEW) {
         flashNotice(`Yetersiz Enerji! Görüşmeyi tamamlamak için ⚡${ENERGY_COST.INTERVIEW} enerji gerekli.`);
         return;
@@ -792,22 +839,29 @@ function finishInterview(personId) {
     // 1. Consume energy exactly once
     gameState.energy -= ENERGY_COST.INTERVIEW;
 
-    // 2. Mark as met
+    // 2. Mark as introduced and set days
+    const isFirstTime = !person.introduced;
+    person.introduced = true;
+    if (person.introducedDay === null) {
+        person.introducedDay = gameState.day;
+    }
+    person.lastSpokenDay = gameState.day;
     person.isMet = true;
 
-    // Current dialogue line shown
-    const currentIndex = person.dialogueIndex ?? 0;
-    const currentText = person.dialogues[currentIndex] || person.dialogues[person.dialogues.length - 1];
+    // Current dialogue line shown based on calendar day difference
+    const dIndex = getCharacterDialogueIndex(person);
+    const currentText = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
 
-    logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${currentIndex + 1}]: "${currentText}"`, "action");
+    if (isFirstTime) {
+        logEvent(`🤝 ${person.name} (${person.role}) ile TANIŞILDI [G1]: "${currentText}"`, "action");
+    } else {
+        logEvent(`💬 ${person.name} (${person.role}) ile görüşüldü [G${dIndex + 1}]: "${currentText}"`, "action");
+    }
 
-    // 3. Advance dialogue index (Max index = 4 for G5)
-    person.dialogueIndex = Math.min(currentIndex + 1, person.dialogues.length - 1);
-
-    // 4. Close inline dialogue
+    // 3. Close inline dialogue
     gameState.activeConversationId = null;
 
-    // 5. Persist and update UI
+    // 4. Persist and update UI
     saveGameState();
     renderAll();
 }
@@ -822,10 +876,18 @@ function cancelInterview() {
 // ==========================================
 function handleCardClick(personId) {
     const person = findPerson(personId);
-    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
+    if (!person) return;
 
     switch (gameState.stage) {
         case STAGE.MEETING:
+            if (person.arrivalDay === null || person.arrivalDay > gameState.day) {
+                flashNotice("Bu mahkûmun görüşme programı henüz açılmadı.");
+                return;
+            }
+            if (person.lastSpokenDay === gameState.day) {
+                flashNotice(`${person.name} ile bugün zaten görüşüldü. Yarın tekrar konuşabilirsin.`);
+                return;
+            }
             startInterview(person.id);
             break;
         case STAGE.TESTING:
@@ -848,11 +910,11 @@ function testPerson(personId) {
     if (gameState.stage !== STAGE.TESTING) return;
 
     if (person.isDead) {
-        flashNotice(`${person.name} artık tesiste değil.`);
+        flashNotice(`${person.introduced ? person.name : "Mahkûm"} artık tesiste değil.`);
         return;
     }
-    if (!person.isMet) {
-        flashNotice(`${person.name} ile henüz görüşmedin. Tanışmadığın mahkûma test uygulanamaz.`);
+    if (!person.introduced) {
+        flashNotice("Bu mahkûm ile henüz tanışmadın. Tanışmadığın mahkûma test uygulanamaz.");
         return;
     }
     if (isResting(person.id)) {
@@ -884,11 +946,11 @@ function executePerson(personId) {
     if (gameState.stage !== STAGE.EXECUTION) return;
 
     if (person.isDead) {
-        flashNotice(`${person.name} zaten kadrodan düştü.`);
+        flashNotice(`${person.introduced ? person.name : "Mahkûm"} zaten kadrodan düştü.`);
         return;
     }
-    if (!person.isMet) {
-        flashNotice(`${person.name} ile görüşmedin. Kimliği doğrulanmamış mahkûm infaz edilemez.`);
+    if (!person.introduced) {
+        flashNotice("Bu mahkûm ile tanışmadın. Kimliği doğrulanmamış mahkûm infaz edilemez.");
         return;
     }
     if (executionsLeft() <= 0) {
@@ -925,11 +987,11 @@ function toggleTeamMember(personId) {
     if (gameState.stage !== STAGE.DISPATCH) return;
 
     if (person.isDead) {
-        flashNotice(`${person.name} aktif kadroda değil (${getCharacterCurrentStatus(person)}).`);
+        flashNotice(`${person.introduced ? person.name : "Mahkûm"} aktif kadroda değil (${getCharacterCurrentStatus(person)}).`);
         return;
     }
-    if (!person.isMet) {
-        flashNotice(`${person.name} ile görüşmedin. Görüşmediğin mahkûm göreve gönderilemez.`);
+    if (!person.introduced) {
+        flashNotice("Bu mahkûm ile tanışmadın. Tanışmadığın mahkûm göreve gönderilemez.");
         return;
     }
     if (isResting(person.id)) {
@@ -1130,7 +1192,7 @@ function renderStatus() {
     const present = presentPersonnel();
     const living = present.filter(p => !p.isDead);
     document.getElementById("met-count").textContent =
-        `Görüşülen: ${living.filter(p => p.isMet).length}/${living.length}`;
+        `Tanışılan: ${living.filter(p => p.introduced).length}/${living.length}`;
     document.getElementById("tested-count").textContent =
         `Test Edilen: ${living.filter(p => p.isTested).length}/${living.length}`;
 
@@ -1149,23 +1211,27 @@ function isInterred(person) {
 
 function buildRosterCard(person, stage) {
     const isDead = person.isDead;
+    const isUnlocked = person.arrivalDay !== null && person.arrivalDay <= gameState.day;
+    const isIntroduced = person.introduced;
+    const spokenToday = person.lastSpokenDay === gameState.day;
     const resting = !isDead && isResting(person.id);
     const isSelected = gameState.selectedTeam.includes(person.id);
     const isNew = gameState.lastArrivals.includes(person.id);
     const isConversing = gameState.activeConversationId === person.id;
 
     let actionable = false;
-    if (!isDead) {
-        if (stage === STAGE.MEETING) actionable = gameState.energy >= ENERGY_COST.INTERVIEW;
-        else if (stage === STAGE.TESTING) actionable = person.isMet && !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
-        else if (stage === STAGE.EXECUTION) actionable = person.isMet && executionsLeft() > 0;
-        else if (stage === STAGE.DISPATCH) actionable = person.isMet && !resting && !person.pendingReturnCheck;
+    if (!isDead && isUnlocked) {
+        if (stage === STAGE.MEETING) actionable = !spokenToday && gameState.energy >= ENERGY_COST.INTERVIEW;
+        else if (stage === STAGE.TESTING) actionable = isIntroduced && !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
+        else if (stage === STAGE.EXECUTION) actionable = isIntroduced && executionsLeft() > 0;
+        else if (stage === STAGE.DISPATCH) actionable = isIntroduced && !resting && !person.pendingReturnCheck;
     }
 
     const card = document.createElement("div");
     card.className = [
         "person-card",
-        person.isMet ? "is-met" : "",
+        isIntroduced ? "is-met" : "is-unintroduced",
+        spokenToday ? "is-spoken-today" : "",
         resting ? "is-tired" : "",
         isSelected ? "selected-team" : "",
         isDead ? "is-dead" : "",
@@ -1179,13 +1245,42 @@ function buildRosterCard(person, stage) {
 
     const genderClass = person.gender === "Erkek" ? "male" : "female";
 
-    // Avatar Container with img and fallback
-    const avatarHtml = `
-        <div class="character-avatar avatar-circle ${genderClass}">
-            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
-            <span class="avatar-fallback" style="display:none;">${person.name.charAt(0)}</span>
-        </div>
-    `;
+    // AVATAR RENDERING:
+    // If NOT introduced: Render dark unknown avatar with '?' (NO <img> in DOM at all!)
+    // If INTRODUCED: Render <img> element with real local PNG
+    let avatarHtml = "";
+    let nameHtml = "";
+    let roleHtml = "";
+
+    if (isIntroduced) {
+        avatarHtml = `
+            <div class="character-avatar avatar-circle ${genderClass}">
+                <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+                <span class="avatar-fallback" style="display:none;">${person.name.charAt(0)}</span>
+            </div>
+        `;
+        let debugHtml = "";
+        if (gameState.debugMode) {
+            if (person.secretIdentity === "Human") {
+                debugHtml = `<span class="debug-badge badge-human">Human</span>`;
+            } else if (person.secretIdentity === "Corrupted") {
+                debugHtml = `<span class="debug-badge badge-corrupted">Corrupted</span>`;
+            } else if (person.secretIdentity === "Random") {
+                debugHtml = `<span class="debug-badge badge-random">Random (${person.actualIdentity})</span>`;
+            }
+        }
+        nameHtml = `<div class="person-name">${person.name}${debugHtml}</div>`;
+        roleHtml = `<div class="person-role">${person.role}</div>`;
+    } else {
+        // Unknown avatar - NO <img> element in DOM
+        avatarHtml = `
+            <div class="character-avatar avatar-circle unknown-avatar ${genderClass}">
+                <span class="avatar-fallback" style="display:flex; font-size:1.8rem; font-weight:900; color:var(--text-muted);">?</span>
+            </div>
+        `;
+        nameHtml = `<div class="person-name unknown-name">BİLİNMEYEN MAHKÛM</div>`;
+        roleHtml = `<div class="person-role unknown-role">—</div>`;
+    }
 
     let readingHtml = "";
     if (person.isTested && !isDead) {
@@ -1206,22 +1301,23 @@ function buildRosterCard(person, stage) {
         readingHtml = `<div class="reading-badge untested" title="Test Edilmedi">—</div>`;
     }
 
-    // Static Dialogue Preview if already met and not currently conversing
+    // Static Dialogue Preview: Only shown if spoken today
     let dialogueHtml = "";
-    const currentIndex = person.dialogueIndex ?? 0;
-    const currentSpeech = person.dialogues[currentIndex] || person.dialogues[person.dialogues.length - 1];
+    const dIndex = getCharacterDialogueIndex(person);
+    const currentSpeech = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
 
-    if (person.isMet && currentSpeech && !isDead && !isConversing) {
-        dialogueHtml = `<div class="person-dialogue" title="${currentSpeech}"><span class="dialogue-stage-chip">G${currentIndex + 1}</span> "${currentSpeech}"</div>`;
+    if (isIntroduced && spokenToday && currentSpeech && !isDead && !isConversing) {
+        dialogueHtml = `<div class="person-dialogue" title="${currentSpeech}"><span class="dialogue-stage-chip">G${dIndex + 1}</span> "${currentSpeech}"</div>`;
     }
 
-    // Active Inline Dialogue Box (When player is actively conversing with this character)
+    // Active Inline Dialogue Box
     let inlineConversationHtml = "";
     if (isConversing) {
+        const chipText = isIntroduced ? `G${dIndex + 1}` : "G1 (Tanışma)";
         inlineConversationHtml = `
             <div class="inline-dialogue-active-container">
                 <div class="inline-dialogue-speech">
-                    <span class="dialogue-stage-chip" style="background:var(--accent-blue); color:#fff;">G${currentIndex + 1}</span>
+                    <span class="dialogue-stage-chip" style="background:var(--accent-blue); color:#fff;">${chipText}</span>
                     💬 "${currentSpeech}"
                 </div>
                 <div class="inline-dialogue-actions">
@@ -1249,37 +1345,39 @@ function buildRosterCard(person, stage) {
             tagsHtml += `<span class="tag tag-dead">💀 ÖLDÜ</span>`;
         }
     } else {
-        if (!person.isMet) {
-            tagsHtml += `<span class="tag tag-not-met">Görüşülmedi</span>`;
+        if (!isUnlocked) {
+            tagsHtml += `<span class="tag tag-locked">🔒 GÖRÜŞME PROGRAMINDA DEĞİL</span>`;
+        } else if (!isIntroduced) {
+            if (stage === STAGE.MEETING) {
+                tagsHtml += `<button class="btn btn-action-card btn-tag-introduce" onclick="event.stopPropagation(); startInterview('${person.id}');">TANIŞ ⚡2</button>`;
+            } else {
+                tagsHtml += `<span class="tag tag-not-met">Tanışılmadı</span>`;
+            }
         } else {
-            tagsHtml += `<span class="tag tag-met">Görüşüldü (G${currentIndex + 1})</span>`;
+            if (spokenToday) {
+                tagsHtml += `<span class="tag tag-spoken-today">✓ BUGÜN GÖRÜŞÜLDÜ</span>`;
+            } else {
+                if (stage === STAGE.MEETING) {
+                    tagsHtml += `<button class="btn btn-action-card btn-tag-speak" onclick="event.stopPropagation(); startInterview('${person.id}');">KONUŞ ⚡2 (G${dIndex + 1})</button>`;
+                } else {
+                    tagsHtml += `<span class="tag tag-met">Görüşülebilir (G${dIndex + 1})</span>`;
+                }
+            }
         }
+
         if (person.pendingReturnCheck) {
             tagsHtml += `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
         }
         if (resting) tagsHtml += `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
         if (isSelected) tagsHtml += `<span class="tag tag-team">✅ Görevde</span>`;
-        if (isNew) tagsHtml += `<span class="tag tag-new">🆕 Görüşmeye Açıldı</span>`;
-    }
-
-    // Developer / Debug Mode indicator (Only visible when debug mode is ON)
-    let debugHtml = "";
-    if (gameState.debugMode) {
-        if (person.secretIdentity === "Human") {
-            debugHtml = `<span class="debug-badge badge-human">Human</span>`;
-        } else if (person.secretIdentity === "Corrupted") {
-            debugHtml = `<span class="debug-badge badge-corrupted">Corrupted</span>`;
-        } else if (person.secretIdentity === "Random") {
-            debugHtml = `<span class="debug-badge badge-random">Random (${person.actualIdentity})</span>`;
-        }
     }
 
     card.innerHTML = `
         ${readingHtml}
-        <div class="arrival-chip">G${person.arrivalDay}</div>
+        <div class="arrival-chip">G${person.arrivalDay || "—"}</div>
         ${avatarHtml}
-        <div class="person-name">${person.name}${debugHtml}</div>
-        <div class="person-role">${person.role}</div>
+        ${nameHtml}
+        ${roleHtml}
         ${dialogueHtml}
         ${inlineConversationHtml}
         <div class="card-status-tags">${tagsHtml}</div>
@@ -1318,13 +1416,17 @@ function buildRecordCard(person, arrivingIndex) {
     else if (person.isEscaped) cause = `<span class="record-cause">🚪 Kaçtı</span>`;
     else if (person.isMissing) cause = `<span class="record-cause">🌫️ Kayıp</span>`;
 
+    const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
+    const avatarContent = person.introduced
+        ? `<img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" /><span class="avatar-fallback" style="display:none; font-size:0.9rem;">💀</span>`
+        : `<span class="avatar-fallback" style="display:flex; font-size:0.9rem; color:var(--text-muted);">?</span>`;
+
     card.innerHTML = `
-        <div class="record-avatar character-avatar" style="width:32px; height:32px;">
-            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
-            <span class="avatar-fallback" style="display:none; font-size:0.9rem;">💀</span>
+        <div class="record-avatar character-avatar ${person.introduced ? "" : "unknown-avatar"}" style="width:32px; height:32px;">
+            ${avatarContent}
         </div>
         <div class="record-body">
-            <div class="record-name">${person.name}</div>
+            <div class="record-name">${displayName}</div>
             <div class="record-meta">${cause}<span class="record-day">G${person.diedOnDay || "—"}</span></div>
         </div>
         ${verdict}
@@ -1413,13 +1515,22 @@ function renderStagePanel() {
         arrivals.forEach(person => {
             const row = document.createElement("div");
             row.className = "arrival-row";
-            row.innerHTML = `
-                <div class="character-avatar" style="width:28px; height:28px;">
-                    <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
-                    <span class="avatar-fallback" style="display:none; font-size:0.8rem;">👤</span>
-                </div>
-                <span><strong>${person.name}</strong> (${person.role}) — Görüşme programı açıldı</span>
-            `;
+            if (person.introduced) {
+                row.innerHTML = `
+                    <div class="character-avatar" style="width:28px; height:28px;">
+                        <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+                        <span class="avatar-fallback" style="display:none; font-size:0.8rem;">👤</span>
+                    </div>
+                    <span><strong>${person.name}</strong> (${person.role}) — Görüşme programı açıldı</span>
+                `;
+            } else {
+                row.innerHTML = `
+                    <div class="character-avatar unknown-avatar" style="width:28px; height:28px;">
+                        <span class="avatar-fallback" style="display:flex; font-size:1rem; color:var(--text-muted);">?</span>
+                    </div>
+                    <span><strong>Bilinmeyen Mahkûm</strong> — Görüşme programı açıldı</span>
+                `;
+            }
             list.appendChild(row);
         });
     }
@@ -1428,7 +1539,7 @@ function renderStagePanel() {
     if (stage === STAGE.MEETING) {
         const meetingRem = document.getElementById("meeting-remaining");
         if (meetingRem) meetingRem.textContent = `⚡${gameState.energy}`;
-        const unmet = presentPersonnel().filter(p => !p.isMet && !p.isDead).length;
+        const unmet = presentPersonnel().filter(p => !p.introduced && !p.isDead).length;
         const meetingUnmet = document.getElementById("meeting-unmet");
         if (meetingUnmet) meetingUnmet.textContent = unmet;
     }
@@ -1437,7 +1548,7 @@ function renderStagePanel() {
     if (stage === STAGE.TESTING) {
         const testRem = document.getElementById("testing-remaining");
         if (testRem) testRem.textContent = `⚡${gameState.energy}`;
-        const testable = presentPersonnel().filter(p => p.isMet && !p.isTested && !p.isDead && !isResting(p.id)).length;
+        const testable = presentPersonnel().filter(p => p.introduced && !p.isTested && !p.isDead && !isResting(p.id)).length;
         const testAvail = document.getElementById("testing-available");
         if (testAvail) testAvail.textContent = testable;
     }
@@ -1446,7 +1557,7 @@ function renderStagePanel() {
     if (stage === STAGE.EXECUTION) {
         const execRem = document.getElementById("execution-remaining");
         if (execRem) execRem.textContent = executionsLeft();
-        const eligible = presentPersonnel().filter(p => p.isMet && !p.isDead).length;
+        const eligible = presentPersonnel().filter(p => p.introduced && !p.isDead).length;
         const execElig = document.getElementById("execution-eligible");
         if (execElig) execElig.textContent = eligible;
 
@@ -1475,8 +1586,10 @@ function renderStagePanel() {
                 if (!person) return;
                 const pill = document.createElement("div");
                 pill.className = "team-member-pill";
+                const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
+                const displayRole = person.introduced ? person.role : "—";
                 const readingText = person.isTested ? "Test Edildi ⚡" : "Test Edilmedi";
-                pill.innerHTML = `<span><strong>${person.name}</strong> (${person.role})</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
+                pill.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
                 const removeBtn = pill.querySelector(".btn-remove-pill");
                 if (removeBtn) {
                     removeBtn.addEventListener("click", (e) => {
@@ -1561,15 +1674,23 @@ function renderVoltmeterHtml(reading) {
 }
 
 function showTestReveal(person) {
-    document.getElementById("reveal-name").textContent = person.name;
-    document.getElementById("reveal-role").textContent = person.role;
+    document.getElementById("reveal-name").textContent = person.introduced ? person.name : "BİLİNMEYEN MAHKÛM";
+    document.getElementById("reveal-role").textContent = person.introduced ? person.role : "—";
 
-    document.getElementById("reveal-avatar").innerHTML = `
-        <div class="character-avatar" style="width:80px; height:80px; margin:0 auto;">
-            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
-            <span class="avatar-fallback" style="display:none; font-size:2rem;">👤</span>
-        </div>
-    `;
+    if (person.introduced) {
+        document.getElementById("reveal-avatar").innerHTML = `
+            <div class="character-avatar" style="width:80px; height:80px; margin:0 auto;">
+                <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+                <span class="avatar-fallback" style="display:none; font-size:2rem;">👤</span>
+            </div>
+        `;
+    } else {
+        document.getElementById("reveal-avatar").innerHTML = `
+            <div class="character-avatar unknown-avatar" style="width:80px; height:80px; margin:0 auto;">
+                <span class="avatar-fallback" style="display:flex; font-size:2.4rem; color:var(--text-muted);">?</span>
+            </div>
+        `;
+    }
 
     document.getElementById("reveal-body").innerHTML = renderVoltmeterHtml(person.reading);
     document.getElementById("test-reveal-modal").classList.remove("hidden");
@@ -1580,8 +1701,8 @@ function showExecutionReveal(person) {
     const verdict = document.getElementById("execution-verdict");
     const body = document.getElementById("execution-reveal-body");
 
-    document.getElementById("execution-reveal-name").textContent = person.name;
-    document.getElementById("execution-reveal-role").textContent = person.role;
+    document.getElementById("execution-reveal-name").textContent = person.introduced ? person.name : "BİLİNMEYEN MAHKÛM";
+    document.getElementById("execution-reveal-role").textContent = person.introduced ? person.role : "—";
 
     verdict.textContent = "⚡ İNFAZ EDİLDİ";
     verdict.className = "execution-verdict verdict-executed";
@@ -1608,12 +1729,14 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
         const isMissing = missingPeople && missingPeople.some(m => m.id === person.id);
         const row = document.createElement("div");
         row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
+        const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
+        const displayRole = person.introduced ? person.role : "—";
         const statusBadge = isMissing
             ? (person.isAnomaly
                 ? `<span class="badge badge-missing" style="color: var(--accent-orange);">🚪 Kaçtı / Firar</span>`
                 : `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`)
             : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü (Kontrol Bekliyor)</span>`;
-        row.innerHTML = `<span><strong>${person.name}</strong> (${person.role})</span>${statusBadge}`;
+        row.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${statusBadge}`;
         breakdownList.appendChild(row);
     });
 
@@ -1939,18 +2062,20 @@ function simulateSingleGame(botType) {
 
         // ---- MEETING ----
         let energy = MAX_DAILY_ENERGY;
-        let unmet = present.filter(p => !p.isMet);
+        let unmet = present.filter(p => !p.introduced);
         unmet.slice(0, 3).forEach(p => {
             if (energy >= 2) {
+                p.introduced = true;
+                p.introducedDay = day;
+                p.lastSpokenDay = day;
                 p.isMet = true;
-                p.dialogueIndex = Math.min((p.dialogueIndex ?? 0) + 1, 4);
                 energy -= 2;
             }
         });
 
         // ---- TESTING ----
         if (botType !== "random") {
-            let testable = present.filter(p => p.isMet && !p.isTested && !rest(p));
+            let testable = present.filter(p => p.introduced && !p.isTested && !rest(p));
             testable.slice(0, 2).forEach(p => {
                 if (energy >= 1) {
                     p.isTested = true;
@@ -1961,7 +2086,7 @@ function simulateSingleGame(botType) {
 
         // ---- EXECUTION (Day 3+) ----
         if (day >= EXECUTION_START_DAY && botType !== "random") {
-            const candidates = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.isMet && p.isTested);
+            const candidates = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.introduced && p.isTested);
             let target = null;
             const proven = candidates.filter(p => p.reading >= 70).sort((a, b) => b.reading - a.reading);
             if (proven.length) {
@@ -1979,7 +2104,7 @@ function simulateSingleGame(botType) {
         }
 
         // ---- DISPATCH ----
-        const deployable = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.isMet && !rest(p));
+        const deployable = manifest.filter(p => p.arrivalDay !== null && p.arrivalDay <= day && !p.isDead && p.introduced && !rest(p));
         const teamSize = Math.max(1, Math.min(DAILY_DISPATCH_QUOTA[day] || 2, Math.max(1, deployable.length)));
 
         let team = [];

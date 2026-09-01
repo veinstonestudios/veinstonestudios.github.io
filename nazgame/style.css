@@ -2484,3 +2484,84 @@ body {
     border: 1px solid rgba(210, 153, 34, 0.6);
 }
 
+/* Unknown Inmate & Daily Interview UI */
+.unknown-avatar {
+    background: #090e17 !important;
+    border: 2px dashed rgba(255, 255, 255, 0.25) !important;
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8);
+}
+
+.unknown-name {
+    color: var(--text-muted, #8b949e) !important;
+    font-style: italic;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
+.unknown-role {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.person-card.is-unintroduced {
+    background: rgba(13, 19, 29, 0.85);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.person-card.is-spoken-today {
+    border-color: rgba(255, 255, 255, 0.12);
+    opacity: 0.92;
+}
+
+.btn-action-card {
+    border: none;
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    display: inline-block;
+}
+
+.btn-tag-introduce {
+    background: #238636;
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(35, 134, 54, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-tag-introduce:hover {
+    background: #2ea043;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(46, 160, 67, 0.6);
+}
+
+.btn-tag-speak {
+    background: #1f6feb;
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(31, 111, 235, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-tag-speak:hover {
+    background: #388bfd;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(56, 139, 253, 0.6);
+}
+
+.tag-spoken-today {
+    background: rgba(139, 148, 158, 0.15) !important;
+    color: var(--text-muted, #8b949e) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    font-weight: 600;
+    cursor: default;
+}
+
+.tag-locked {
+    background: rgba(218, 54, 51, 0.1) !important;
+    color: rgba(248, 81, 73, 0.8) !important;
+    border: 1px solid rgba(218, 54, 51, 0.2) !important;
+    cursor: default;
+}
+
+
