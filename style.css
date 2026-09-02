@@ -239,10 +239,11 @@ section h2::after {
 }
 
 .team-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    justify-content: center;
     gap: 3rem;
     margin-top: 4rem;
+    flex-wrap: wrap;
 }
 
 #vision {
@@ -270,6 +271,7 @@ section h2::after {
 }
 
 .team-member {
+    flex: 0 1 220px;
     text-align: center;
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
