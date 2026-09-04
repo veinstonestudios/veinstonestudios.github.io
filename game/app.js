@@ -68,6 +68,13 @@ const VOICE_TEST_FILES = {
     "nina-grace": "sounds/voice-tests/nina-grace.mp3"
 };
 
+const AUDIO_VERSION = "2026-09-04-2";
+
+function getVersionedAudioPath(path) {
+    if (!path) return "";
+    return `${path}?v=${AUDIO_VERSION}`;
+}
+
 // Dispatch Requirements per Day
 const DAILY_DISPATCH_QUOTA = {
     1: 1,
@@ -131,7 +138,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/bob.png",
         reading: 16,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "En sevdiğim pastel boyamın tadını anlatmayı unuttum.",
         dialogues: [
             "Heyoooo! Naber?",
             "Arkadaşım buranın dışında çöküş olduğunu söylüyor. Ama onu şu an dinleyemem, puzzle’ı tamamlamam lazım.",
@@ -149,7 +156,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/ted-karinsky.png",
         reading: 92,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Odamda çok eşya olmadığı için ses yankılı gelebilir.",
         dialogues: [
             "Gerçekleri örtbas ederek makalemi yayımlamamı engellediler. Ben ise yayımladım.",
             "Gerçekler, siyasetin veya kamu düzeninin ihtiyaçlarına göre değiştirilemez.",
@@ -167,7 +174,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "very_high",
         image: "characters/m-cole-morgan.png",
         reading: 32,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Kendi sesini duymak biraz utanç verici.",
         dialogues: [
             "Karımı ve kızımı dışarıdaki tehlikeden korumak istiyorum. Buradan ne kadar erken çıkarsam o kadar iyi.",
             "Hâlâ kendi tamirhanemi açma hayalim var. Buradaki görevler bu hayalimi kamçılıyor.",
@@ -185,7 +192,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/alicia-winston.png",
         reading: null,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Evet..? Beklediğiniz gibi mi?",
         dialogues: [
             "Zamanında birilerine çok güvendim. Artık kimseye o kadar güvenemiyorum.",
             "Buranın kütüphanesindeki kitaplar çok sıkıcı. Aradığım hiçbir kitabı bulamıyorum.",
@@ -203,7 +210,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/evie-hill.png?v=3",
         reading: 86,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Grip salgınını yeni yeni atlatıyorum. Sesimin kusuruna bakma.",
         dialogues: [
             "Birileri odama girip eşyalarımı karıştırıyor. Onu yakalarsam fena yapacağım.",
             "Bu tesis gereğinden fazla mı soğuk, yoksa bir tek benim hücrem mi böyle?",
@@ -221,7 +228,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/dakota-ahmadii.png?v=3",
         reading: null,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Kaydı bir daha deneyebilir miyiz? Olmadı sanki.",
         dialogues: [
             "Yemekhanede çıkardığım kavga için özür dilerim ama o gün yemekte ıspanak olması sinirlerimi feci gerdi.",
             "Sesten ötürü üzgünüm, Warden. Ispanak bende gaz yapıyor.",
@@ -239,7 +246,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "very_high",
         image: "characters/hasan-kahveci.png",
         reading: 19,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Boyuma aldanma Warden, içimde bir aslan yatıyor.",
         dialogues: [
             "Gittiğimiz görevlerden para kazanıyor muyuz? Buradan cebim dolu çıkmak istiyorum.",
             "Hayır, o kısa kollu kıyafetlerden giymeyeceğim. Böyle iyiyim.",
@@ -257,7 +264,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/katarina-jovanovic.png",
         reading: 28,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Kayıt cihazı örgüme takıldı.",
         dialogues: [
             "Ne bakıyorsun? Gıcık mı oldun?",
             "İplerimle arama girilmesinden hoşlanmam.",
@@ -275,7 +282,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/milena-marvic.png",
         reading: 8,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Bu cihaz cızırdıyor! Doğru düzgün bir kayıt cihazı yok mu?",
         dialogues: [
             "Bugün çok kötü görünüyorum. Fanlarım beni böyle görmediği için mutluyum.",
             "Şu mektuplara bir bakın! Herkes benim bir an önce sahnelere geri dönmemi istiyor gibi.",
@@ -293,7 +300,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/shane-smith.png",
         reading: 78,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Kaseti neveden aldınız Wavden? Bu cihaz için uygun boyda devil.",
         dialogues: [
             "Ne bakıyovsun lan? Komik biv şev mi vav?",
             "Kimseyle konuşmak istemiyovum. Rahat bıvak beni.",
@@ -311,7 +318,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/paul-h-simmons.png",
         reading: 88,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Buradan çıkınca bu şarkıyı gitarla çalacağım.",
         dialogues: [
             "Vay Henry Başkan. Seni görmeyeli uzun zaman olmuştu.",
             "Tesiste beğendiğim bir fıstık var. Onun da beni beğendiğini biliyorum.",
@@ -329,7 +336,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/sergio-galvez.png",
         reading: 42,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Hmm. Unuttuğum bir şey var mı?",
         dialogues: [
             "Herkesle anlaşabilmek gibi garip bir huya sahibim. Sanırım bende şeytan tüyü var, hehehe.",
             "Gelenekselliğe ayak uyduramayanları anlamıyorum. Zaten teknolojilerle aram yok.",
@@ -347,7 +354,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/father-gregory.png",
         reading: 84,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "İşiniz bittiyse istirahat edebilir miyim?",
         dialogues: [
             "Affedersin, Warden. İncil okumaya daldım, sizi fark edemedim.",
             "Tanrı bizi gözetliyor. Burada veya dışarıda yaşanan hiçbir şey gizli kalmaz.",
@@ -365,7 +372,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/nina-grace.png?v=3",
         reading: 14,
-        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
+        voiceTestReaction: "Sesimin güzel olduğunu sanıyordum da bu ne böyle?",
         dialogues: [
             "Bugün hava çok güzel. İçeride yağlı boya tabloma mı devam etsem yoksa müzik mi dinlesem?",
             "Birkaç sene önce ailemle hayatımın en güzel kışını geçirmiştim. O zamanlar kar yağarken içtiğim sıcak çikolatayı ve evimin manzarasını resmettim.",
@@ -949,7 +956,8 @@ function openVoicePlayer(person) {
     }
 
     try {
-        const audio = new Audio(soundPath);
+        const audioUrl = getVersionedAudioPath(soundPath);
+        const audio = new Audio(audioUrl);
         currentAudio = audio;
         currentVoicePersonId = person.id;
 
