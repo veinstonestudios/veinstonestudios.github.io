@@ -258,7 +258,7 @@ const FACILITY_61_ROSTER = [
     {
         id: "katarina-jovanovic",
         name: "Katarina Jovanovic",
-        secretIdentity: "Human",
+        secretIdentity: "Corrupted",
         gender: "Kız",
         role: "Psikoloji Eğitimli Ev Hanımı",
         taskCompetency: "high",
@@ -563,8 +563,12 @@ function loadSavedGameState() {
                         status: saved.status || (introduced ? "Tesiste ve müsait" : "Görüşülmedi"),
                         diedOnDay: saved.diedOnDay ?? null,
                         pendingReturnCheck: Boolean(saved.pendingReturnCheck),
-                        isAnomaly: saved.isAnomaly !== undefined ? saved.isAnomaly : (canonical.secretIdentity === "Corrupted"),
-                        actualIdentity: saved.actualIdentity || canonical.secretIdentity,
+                        isAnomaly: canonical.secretIdentity === "Random"
+                            ? (saved.isAnomaly !== undefined ? saved.isAnomaly : false)
+                            : (canonical.secretIdentity === "Corrupted"),
+                        actualIdentity: canonical.secretIdentity === "Random"
+                            ? (saved.actualIdentity || "Human")
+                            : canonical.secretIdentity,
                         reading: (saved.reading !== undefined && saved.reading !== null) ? saved.reading : canonical.reading
                     };
                 });
@@ -2538,7 +2542,7 @@ function bandRisk(reading) {
     return 0.00;
 }
 
-const BASE_ANOMALY_RATE = 6 / 14;
+const BASE_ANOMALY_RATE = 7 / 14;
 
 function untestedRisk(manifest) {
     const tested = manifest.filter(p => p.isTested);
