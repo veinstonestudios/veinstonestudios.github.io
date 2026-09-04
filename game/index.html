@@ -193,6 +193,9 @@
                 <button class="btn btn-guide-toggle hidden" id="btn-open-guide-modal">
                     📋 BEYİN TESTİ REHBERİ
                 </button>
+                <button class="btn btn-guide-toggle hidden" id="btn-open-voice-guide-modal">
+                    🎙️ SES TESTİ REHBERİ
+                </button>
                 <button class="btn btn-bot-suite" id="btn-open-bot-modal">
                     🤖 BOT SİMÜLASYONU
                 </button>
@@ -412,6 +415,110 @@
             </div>
             <div class="modal-footer" style="display:flex; justify-content:center; margin-top:10px;">
                 <button class="btn btn-primary" id="btn-close-guide-modal">KAPAT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VOICE TEST GUIDE MODAL -->
+    <div class="modal-overlay hidden" id="voice-guide-modal">
+        <div class="modal-card voice-guide-card">
+            <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">
+                <h3 style="margin:0; font-size:1.1rem; color:var(--text-primary);">🎙️ SES TESTİ REHBERİ</h3>
+                <button class="btn-close" id="btn-close-voice-guide-modal-x">&times;</button>
+            </div>
+            <div class="modal-body voice-guide-modal-body">
+                <div class="voice-guide-content">
+                    <div class="voice-guide-badge">GİZLİ PROTOKOL // SES ANALİZİ</div>
+                    <h4 class="voice-guide-title">SES KAYDI TESTİ</h4>
+                    <p class="voice-guide-desc">
+                        Corrupted varlıklar insan sesini ve konuşma düzenini her zaman kusursuz biçimde taklit edemez.
+                    </p>
+                    <p class="voice-guide-desc">
+                        Kaydı dikkatle dinleyin. Tekrarlar, bozuk heceler, uygunsuz duraklamalar, üst üste binen sesler ve açıklanamayan parazitler şüphe oluşturabilir.
+                    </p>
+                    <div class="voice-guide-warning-box">
+                        <span class="warning-icon">⚠️</span>
+                        <p class="warning-text">Kayıt tek başına kesin kanıt değildir. Karar Warden’a aittir.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="display:flex; justify-content:center; margin-top:14px;">
+                <button class="btn btn-primary" id="btn-close-voice-guide-modal">KAPAT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VOICE PLAYER MODAL (ANALOG CASSETTE UNIT) -->
+    <div class="modal-overlay hidden" id="voice-player-modal">
+        <div class="modal-card voice-player-card">
+            <div class="modal-header voice-player-header">
+                <div class="voice-player-inmate-info">
+                    <div class="character-avatar avatar-circle" style="width:38px; height:38px; min-width:38px;">
+                        <img id="voice-player-avatar" src="" alt="" onerror="handleImageError(this, 'Mahkûm', '')" />
+                    </div>
+                    <div>
+                        <div id="voice-player-name" class="voice-player-name">Mahkûm Adı</div>
+                        <div id="voice-player-role" class="voice-player-role">Meslek / Rol</div>
+                    </div>
+                </div>
+                <button class="btn-close" id="btn-voice-player-close-x">&times;</button>
+            </div>
+
+            <div class="modal-body voice-player-body">
+                <!-- Analog Cassette Deck Visualization -->
+                <div class="cassette-deck">
+                    <div class="cassette-header-label">
+                        <span>ANALOG TAPE UNIT // MODEL V-61</span>
+                        <span class="tape-status-tag">4.75 CM/S - MONO</span>
+                    </div>
+
+                    <div class="cassette-body">
+                        <div class="cassette-window">
+                            <div class="tape-reel reel-left">
+                                <div class="reel-spindle"></div>
+                                <div class="reel-cog"></div>
+                            </div>
+                            <div class="tape-bridge">
+                                <div class="tape-ribbon"></div>
+                            </div>
+                            <div class="tape-reel reel-right">
+                                <div class="reel-spindle"></div>
+                                <div class="reel-cog"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="voice-waveform-decor">
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Progress & Timeline -->
+                <div class="voice-timeline-container">
+                    <div class="voice-progress-track" id="voice-progress-track">
+                        <div class="voice-progress-fill" id="voice-progress-bar"></div>
+                    </div>
+                    <div class="voice-time-row">
+                        <span class="voice-time-label">SÜRE</span>
+                        <span class="voice-time-display" id="voice-time-display">00:00 / 00:00</span>
+                    </div>
+                </div>
+
+                <!-- Deck Controls -->
+                <div class="voice-controls-row">
+                    <button class="btn-voice-ctrl btn-voice-rewind" id="btn-voice-rewind" type="button" title="Başa Al">
+                        ↻ BAŞA AL
+                    </button>
+                    <button class="btn-voice-ctrl btn-voice-play-toggle" id="btn-voice-toggle-play" type="button">
+                        ▶ OYNAT
+                    </button>
+                    <button class="btn-voice-ctrl btn-voice-close-ctrl" id="btn-voice-player-close" type="button">
+                        ✕ KAPAT
+                    </button>
+                </div>
             </div>
         </div>
     </div>

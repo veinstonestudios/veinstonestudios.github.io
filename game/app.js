@@ -43,8 +43,27 @@ const MAX_DAILY_ENERGY = 8;
 const ENERGY_COST = {
     INTERVIEW: 2,
     TEST: 1,
+    VOICE_TEST: 2,
     RETURN_CHECK: 1,
     DISPATCH: 0
+};
+
+// Voice Test Sound File Mapping (Canonical Roster IDs to Local MP3 Assets)
+const VOICE_TEST_FILES = {
+    "bob": "sounds/voice-tests/bob.mp3",
+    "ted-karinsky": "sounds/voice-tests/ted-karinsky.mp3",
+    "m-cole-morgan": "sounds/voice-tests/m-cole-morgan.mp3",
+    "alicia-winston": "sounds/voice-tests/alicia-winston.mp3",
+    "evie-hill": "sounds/voice-tests/evie-hill.mp3",
+    "dakota-ahmadii": "sounds/voice-tests/dakota-ahmadii.mp3",
+    "hasan-kahveci": "sounds/voice-tests/hasan-kahveci.mp3",
+    "katarina-jovanovic": "sounds/voice-tests/katarina-jovanovic.mp3",
+    "milena-marvic": "sounds/voice-tests/milena-marvic.mp3",
+    "shane-smith": "sounds/voice-tests/shane-smith.mp3",
+    "paul-h-simmons": "sounds/voice-tests/paul-h-simmons.mp3",
+    "sergio-galvez": "sounds/voice-tests/sergio-galvez-ii.mp3",
+    "father-gregory": "sounds/voice-tests/father-gregory.mp3",
+    "nina-grace": "sounds/voice-tests/nina-grace.mp3"
 };
 
 // Dispatch Requirements per Day
@@ -411,6 +430,7 @@ function generateManifest() {
             lastSpokenDay: null,
             isMet: false,
             isTested: false,
+            voiceTestCompleted: false,
             isDead: false,
             isExecuted: false,
             isMissing: false,
@@ -436,6 +456,7 @@ let gameState = {
     endReason: null,
     day3BriefingShown: false,
     brainTestGuideSeen: false,
+    voiceTestGuideSeen: false,
     selectedTeam: [],
     tiredMap: {},
     missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
@@ -502,6 +523,7 @@ function loadSavedGameState() {
                         lastSpokenDay: lastTalkedDay,
                         isMet: introduced,
                         isTested: Boolean(saved.isTested),
+                        voiceTestCompleted: Boolean(saved.voiceTestCompleted),
                         isDead: Boolean(saved.isDead),
                         isExecuted: Boolean(saved.isExecuted),
                         isMissing: Boolean(saved.isMissing),
@@ -516,6 +538,7 @@ function loadSavedGameState() {
                 });
 
                 parsed.brainTestGuideSeen = Boolean(parsed.brainTestGuideSeen);
+                parsed.voiceTestGuideSeen = Boolean(parsed.voiceTestGuideSeen);
                 return parsed;
             }
         }
@@ -731,6 +754,7 @@ function initGame() {
         endReason: null,
         day3BriefingShown: false,
         brainTestGuideSeen: false,
+        voiceTestGuideSeen: false,
         selectedTeam: [],
         tiredMap: {},
         missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
@@ -786,6 +810,212 @@ function closeBrainTestGuide() {
 }
 
 // ==========================================
+// VOICE TEST GUIDE & CASSETTE PLAYER CONTROLS
+// ==========================================
+let currentAudio = null;
+let currentVoicePersonId = null;
+
+function openVoiceTestGuide() {
+    const guideModal = document.getElementById("voice-guide-modal");
+    if (guideModal) guideModal.classList.remove("hidden");
+}
+
+function closeVoiceTestGuide() {
+    const guideModal = document.getElementById("voice-guide-modal");
+    if (guideModal) guideModal.classList.add("hidden");
+    if (!gameState.voiceTestGuideSeen) {
+        gameState.voiceTestGuideSeen = true;
+        saveGameState();
+    }
+}
+
+function stopVoiceAudio() {
+    if (currentAudio) {
+        try {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        } catch (e) {
+            console.warn("Error stopping voice audio", e);
+        }
+        currentAudio = null;
+        currentVoicePersonId = null;
+    }
+    const reels = document.querySelectorAll(".tape-reel");
+    reels.forEach(r => r.classList.remove("spinning"));
+}
+
+function closeVoicePlayer() {
+    stopVoiceAudio();
+    const modal = document.getElementById("voice-player-modal");
+    if (modal) modal.classList.add("hidden");
+}
+
+function toggleVoicePlay() {
+    if (!currentAudio) return;
+    if (currentAudio.paused) {
+        currentAudio.play().catch(e => console.warn("Play error:", e));
+    } else {
+        currentAudio.pause();
+    }
+}
+
+function rewindVoiceAudio() {
+    if (!currentAudio) return;
+    try {
+        currentAudio.currentTime = 0;
+        currentAudio.play().catch(e => console.warn("Rewind play error:", e));
+    } catch (e) {
+        console.warn("Rewind error:", e);
+    }
+}
+
+function openVoicePlayer(person) {
+    const soundPath = VOICE_TEST_FILES[person.id];
+    if (!soundPath) {
+        console.error("Ses dosyası bulunamadı (ID eşleşmedi):", person.id);
+        flashNotice("SES KAYDI YÜKLENEMEDİ");
+        return;
+    }
+
+    // Stop any previously playing audio
+    stopVoiceAudio();
+
+    const modal = document.getElementById("voice-player-modal");
+    const nameEl = document.getElementById("voice-player-name");
+    const roleEl = document.getElementById("voice-player-role");
+    const avatarImg = document.getElementById("voice-player-avatar");
+    const timeDisplay = document.getElementById("voice-time-display");
+    const progressBar = document.getElementById("voice-progress-bar");
+    const playBtn = document.getElementById("btn-voice-toggle-play");
+    const reels = document.querySelectorAll(".tape-reel");
+
+    if (nameEl) nameEl.textContent = (person.introduced || person.isIntroduced) ? person.name : "BİLİNMEYEN MAHKÛM";
+    if (roleEl) roleEl.textContent = (person.introduced || person.isIntroduced) ? person.role : "—";
+    if (avatarImg) {
+        avatarImg.src = person.image;
+        avatarImg.alt = person.name;
+    }
+    if (timeDisplay) timeDisplay.textContent = "00:00 / 00:00";
+    if (progressBar) progressBar.style.width = "0%";
+    if (playBtn) playBtn.innerHTML = "▶ OYNAT";
+
+    function formatTime(sec) {
+        if (isNaN(sec) || !isFinite(sec)) return "00:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    try {
+        const audio = new Audio(soundPath);
+        currentAudio = audio;
+        currentVoicePersonId = person.id;
+
+        audio.addEventListener("loadedmetadata", () => {
+            if (timeDisplay) {
+                timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            }
+        });
+
+        audio.addEventListener("timeupdate", () => {
+            if (timeDisplay && audio.duration) {
+                timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+                const pct = (audio.currentTime / audio.duration) * 100;
+                if (progressBar) progressBar.style.width = `${pct}%`;
+            }
+        });
+
+        audio.addEventListener("play", () => {
+            if (playBtn) playBtn.innerHTML = "⏸ DURAKLAT";
+            reels.forEach(r => r.classList.add("spinning"));
+        });
+
+        audio.addEventListener("pause", () => {
+            if (playBtn) playBtn.innerHTML = "▶ OYNAT";
+            reels.forEach(r => r.classList.remove("spinning"));
+        });
+
+        audio.addEventListener("ended", () => {
+            if (playBtn) playBtn.innerHTML = "▶ OYNAT";
+            reels.forEach(r => r.classList.remove("spinning"));
+            if (progressBar) progressBar.style.width = "100%";
+        });
+
+        audio.addEventListener("error", (e) => {
+            console.error("Ses dosyası yüklenirken hata oluştu:", soundPath, e);
+            flashNotice("SES KAYDI YÜKLENEMEDİ");
+            reels.forEach(r => r.classList.remove("spinning"));
+        });
+
+        if (modal) modal.classList.remove("hidden");
+
+        audio.play().catch(err => {
+            console.warn("Autoplay was prevented, waiting for user play click:", err);
+        });
+    } catch (err) {
+        console.error("Audio başlatılamadı:", err);
+        flashNotice("SES KAYDI YÜKLENEMEDİ");
+    }
+}
+
+function startVoiceTest(personId) {
+    if (gameState.day < 3) {
+        flashNotice("Ses Kaydı Testi 3. günden itibaren kullanılabilir.");
+        return;
+    }
+    const person = findPerson(personId);
+    if (!person || person.arrivalDay === null || person.arrivalDay > gameState.day) return;
+    if (gameState.stage !== STAGE.TESTING) {
+        flashNotice("Ses testi yalnızca Test aşamasında yapılabilir.");
+        return;
+    }
+
+    if (person.isDead) {
+        flashNotice(`${(person.introduced || person.isIntroduced) ? person.name : "Mahkûm"} artık tesiste değil.`);
+        return;
+    }
+    if (!person.introduced && !person.isIntroduced) {
+        flashNotice("Bu mahkûm ile henüz tanışmadın. Tanışmadığın mahkûma ses testi uygulanamaz.");
+        return;
+    }
+    if (isResting(person.id)) {
+        flashNotice(`${person.name} dinleniyor (${restDaysLeft(person.id)} gün). Dinlenen mahkûma test yapılamaz.`);
+        return;
+    }
+    if (person.voiceTestCompleted) {
+        playVoiceRecord(person.id);
+        return;
+    }
+
+    if (gameState.energy < ENERGY_COST.VOICE_TEST) {
+        flashNotice(`Yetersiz Enerji! Ses testi uygulamak için ⚡${ENERGY_COST.VOICE_TEST} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
+        return;
+    }
+
+    const soundPath = VOICE_TEST_FILES[person.id];
+    if (!soundPath) {
+        console.error("Ses dosyası eşleşmesi bulunamadı:", person.id);
+        flashNotice("SES KAYDI YÜKLENEMEDİ");
+        return;
+    }
+
+    gameState.energy -= ENERGY_COST.VOICE_TEST;
+    person.voiceTestCompleted = true;
+
+    logEvent(`🎙️ ${person.name} üzerinde ses kaydı testi uygulandı (⚡${ENERGY_COST.VOICE_TEST} enerji).`, "action");
+
+    saveGameState();
+    renderAll();
+    openVoicePlayer(person);
+}
+
+function playVoiceRecord(personId) {
+    const person = findPerson(personId);
+    if (!person || person.isDead) return;
+    openVoicePlayer(person);
+}
+
+// ==========================================
 // DISPATCH GUIDE (MINI PANEL CONTROLS)
 // ==========================================
 function toggleDispatchGuide() {
@@ -823,8 +1053,10 @@ function advanceStage() {
             } else {
                 gameState.stage = STAGE.TESTING;
                 logEvent(`Test aşaması açıldı. Test maliyeti: ⚡1 enerji.`, "system");
-                if (gameState.day >= 2 && !gameState.brainTestGuideSeen) {
+                if (gameState.day === 2 && !gameState.brainTestGuideSeen) {
                     openBrainTestGuide();
+                } else if (gameState.day >= 3 && !gameState.voiceTestGuideSeen) {
+                    openVoiceTestGuide();
                 }
             }
             break;
@@ -1290,6 +1522,16 @@ function renderStatus() {
         }
     }
 
+    // Voice Test Guide button visibility (visible from Day 3+)
+    const btnVoiceGuide = document.getElementById("btn-open-voice-guide-modal");
+    if (btnVoiceGuide) {
+        if (gameState.day >= 3) {
+            btnVoiceGuide.classList.remove("hidden");
+        } else {
+            btnVoiceGuide.classList.add("hidden");
+        }
+    }
+
     // Energy display
     const energyVal = document.getElementById("energy-value");
     if (energyVal) {
@@ -1503,6 +1745,11 @@ function buildRosterCard(person, stage) {
         readingHtml = `<div class="reading-badge untested" title="Test Edilmedi">—</div>`;
     }
 
+    let voiceBadgeHtml = "";
+    if (person.voiceTestCompleted && !isDead) {
+        voiceBadgeHtml = `<div class="reading-badge voice-recorded-badge" title="Ses Kaydını Dinle (Ücretsiz)">🎙️ SES</div>`;
+    }
+
     const dIndex = getCharacterDialogueIndex(person);
     const currentSpeech = person.dialogues[dIndex] || person.dialogues[person.dialogues.length - 1];
 
@@ -1536,11 +1783,25 @@ function buildRosterCard(person, stage) {
     } else if (person.pendingReturnCheck) {
         buttonOrTagHtml = `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
     } else if (stage === STAGE.TESTING) {
+        let brainBtnHtml = "";
         if (person.isTested) {
-            buttonOrTagHtml = `<span class="tag tag-tested-neutral" onclick="event.stopPropagation(); showTestReveal(findPerson('${person.id}'));">🧠 TEST UYGULANDI</span>`;
+            brainBtnHtml = `<span class="tag tag-tested-neutral" onclick="event.stopPropagation(); showTestReveal(findPerson('${person.id}'));">🧠 TEST UYGULANDI</span>`;
         } else {
-            buttonOrTagHtml = `<button class="btn btn-action-card btn-tag-test" onclick="event.stopPropagation(); testPerson('${person.id}');">TEST ET ⚡1</button>`;
+            const disabledBrain = gameState.energy < ENERGY_COST.TEST ? "disabled style='opacity:0.5; cursor:not-allowed;'" : "";
+            brainBtnHtml = `<button class="btn btn-action-card btn-tag-test" ${disabledBrain} onclick="event.stopPropagation(); testPerson('${person.id}');">TEST ET ⚡1</button>`;
         }
+
+        let voiceBtnHtml = "";
+        if (gameState.day >= 3) {
+            if (person.voiceTestCompleted) {
+                voiceBtnHtml = `<button class="btn btn-action-card btn-tag-voice-recorded" onclick="event.stopPropagation(); playVoiceRecord('${person.id}');" title="Ses Kaydını Yeniden Dinle">📼 SES KAYDI <small style="color:var(--accent-cyan); font-weight:bold;">▶ DİNLE</small></button>`;
+            } else {
+                const disabledVoice = gameState.energy < ENERGY_COST.VOICE_TEST ? "disabled style='opacity:0.5; cursor:not-allowed;'" : "";
+                voiceBtnHtml = `<button class="btn btn-action-card btn-tag-voice" ${disabledVoice} onclick="event.stopPropagation(); startVoiceTest('${person.id}');">SES TESTİ ⚡2</button>`;
+            }
+        }
+
+        buttonOrTagHtml = `${brainBtnHtml}${voiceBtnHtml}`;
     } else if (spokenToday) {
         buttonOrTagHtml = `<span class="tag tag-spoken-today">✓ BUGÜN KONUŞULDU</span>`;
     } else if (canTalk) {
@@ -1566,7 +1827,10 @@ function buildRosterCard(person, stage) {
     `;
 
     card.innerHTML = `
-        ${readingHtml}
+        <div class="card-badges-top-right">
+            ${readingHtml}
+            ${voiceBadgeHtml}
+        </div>
         <div class="arrival-chip">G${person.arrivalDay || "—"}</div>
         ${avatarHtml}
         <div class="person-name">${person.name}${debugHtml}</div>
@@ -1581,6 +1845,14 @@ function buildRosterCard(person, stage) {
         gaugeEl.addEventListener("click", (e) => {
             e.stopPropagation();
             showTestReveal(person);
+        });
+    }
+
+    const voiceBadgeEl = card.querySelector(".voice-recorded-badge");
+    if (voiceBadgeEl) {
+        voiceBadgeEl.addEventListener("click", (e) => {
+            e.stopPropagation();
+            playVoiceRecord(person.id);
         });
     }
 
@@ -1922,6 +2194,9 @@ function closeModals() {
     if (execModal) execModal.classList.add("hidden");
     const guideModal = document.getElementById("brain-guide-modal");
     if (guideModal) closeBrainTestGuide();
+    const voiceGuideModal = document.getElementById("voice-guide-modal");
+    if (voiceGuideModal) closeVoiceTestGuide();
+    closeVoicePlayer();
 }
 
 function showGameOver(reason = "complete") {
@@ -2088,6 +2363,33 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnCloseGuide) btnCloseGuide.addEventListener("click", closeBrainTestGuide);
     const btnCloseGuideX = document.getElementById("btn-close-guide-modal-x");
     if (btnCloseGuideX) btnCloseGuideX.addEventListener("click", closeBrainTestGuide);
+
+    const btnOpenVoiceGuide = document.getElementById("btn-open-voice-guide-modal");
+    if (btnOpenVoiceGuide) btnOpenVoiceGuide.addEventListener("click", openVoiceTestGuide);
+    const btnCloseVoiceGuide = document.getElementById("btn-close-voice-guide-modal");
+    if (btnCloseVoiceGuide) btnCloseVoiceGuide.addEventListener("click", closeVoiceTestGuide);
+    const btnCloseVoiceGuideX = document.getElementById("btn-close-voice-guide-modal-x");
+    if (btnCloseVoiceGuideX) btnCloseVoiceGuideX.addEventListener("click", closeVoiceTestGuide);
+
+    const btnVoicePlay = document.getElementById("btn-voice-toggle-play");
+    if (btnVoicePlay) btnVoicePlay.addEventListener("click", toggleVoicePlay);
+    const btnVoiceRewind = document.getElementById("btn-voice-rewind");
+    if (btnVoiceRewind) btnVoiceRewind.addEventListener("click", rewindVoiceAudio);
+    const btnVoiceClose = document.getElementById("btn-voice-player-close");
+    if (btnVoiceClose) btnVoiceClose.addEventListener("click", closeVoicePlayer);
+    const btnVoiceCloseX = document.getElementById("btn-voice-player-close-x");
+    if (btnVoiceCloseX) btnVoiceCloseX.addEventListener("click", closeVoicePlayer);
+
+    const progressTrack = document.getElementById("voice-progress-track");
+    if (progressTrack) {
+        progressTrack.addEventListener("click", (e) => {
+            if (!currentAudio || !currentAudio.duration) return;
+            const rect = progressTrack.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const pct = Math.max(0, Math.min(1, clickX / rect.width));
+            currentAudio.currentTime = pct * currentAudio.duration;
+        });
+    }
 
     const btnToggleDispatchGuide = document.getElementById("btn-toggle-dispatch-guide");
     if (btnToggleDispatchGuide) btnToggleDispatchGuide.addEventListener("click", toggleDispatchGuide);
