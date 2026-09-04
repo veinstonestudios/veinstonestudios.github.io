@@ -86,7 +86,7 @@ const DAILY_DISPATCH_QUOTA = {
     7: 3
 };
 
-// Task Competency Definitions
+// Task Competency Definitions & Scores
 const COMPETENCY_LABELS = {
     low: "DÜŞÜK",
     medium: "ORTA",
@@ -100,6 +100,193 @@ const COMPETENCY_SCORES = {
     high: 75,
     very_high: 95
 };
+
+// Daily Field Missions with per-character competency tables
+const DAILY_TASKS = {
+    1: {
+        id: "task_day1_mechanical",
+        day: 1,
+        title: "Mekanik Onarım ve Jeneratör Bakımı",
+        desc: "Tesisin arızalanan yedek jeneratör ünitesini ve havalandırma motorlarını sahada yeniden çalışır hâle getirme görevi.",
+        competencyByCharacter: {
+            "m-cole-morgan": "very_high",
+            "shane-smith": "very_high",
+            "dakota-ahmadii": "very_high",
+            "sergio-galvez": "high",
+            "paul-h-simmons": "high",
+            "alicia-winston": "high",
+            "evie-hill": "high",
+            "hasan-kahveci": "medium",
+            "nina-grace": "medium",
+            "father-gregory": "medium",
+            "ted-karinsky": "medium",
+            "bob": "low",
+            "milena-marvic": "low",
+            "katarina-jovanovic": "low"
+        }
+    },
+    2: {
+        id: "task_day2_archive",
+        day: 2,
+        title: "Arşiv Kayıtları ve Teknik Analiz",
+        desc: "Eski tesis kütüphanesindeki şifreli evrakları, kimyasal envanter listelerini ve log kayıtlarını inceleme görevi.",
+        competencyByCharacter: {
+            "ted-karinsky": "very_high",
+            "alicia-winston": "very_high",
+            "nina-grace": "very_high",
+            "katarina-jovanovic": "high",
+            "father-gregory": "high",
+            "m-cole-morgan": "high",
+            "milena-marvic": "high",
+            "sergio-galvez": "medium",
+            "evie-hill": "medium",
+            "hasan-kahveci": "medium",
+            "dakota-ahmadii": "medium",
+            "bob": "low",
+            "shane-smith": "low",
+            "paul-h-simmons": "low"
+        }
+    },
+    3: {
+        id: "task_day3_logistics",
+        day: 3,
+        title: "Dış Saha Lojistik ve Erzak Sevkiyatı",
+        desc: "Kırsal tedarik rotasından ağır yük ve kritik gıda erzaklarını güvenli biçimde tesise ulaştırma görevi.",
+        competencyByCharacter: {
+            "hasan-kahveci": "very_high",
+            "shane-smith": "very_high",
+            "evie-hill": "very_high",
+            "dakota-ahmadii": "high",
+            "sergio-galvez": "high",
+            "bob": "high",
+            "paul-h-simmons": "high",
+            "m-cole-morgan": "medium",
+            "alicia-winston": "medium",
+            "father-gregory": "medium",
+            "katarina-jovanovic": "medium",
+            "ted-karinsky": "low",
+            "milena-marvic": "low",
+            "nina-grace": "low"
+        }
+    },
+    4: {
+        id: "task_day4_diplomacy",
+        day: 4,
+        title: "Yerel Temas ve İnsani İkna Operasyonu",
+        desc: "Çevre bölgedeki yerel sakinlerle temas kurarak gerilimi yatıştırma, moral sağlama ve kritik bilgi toplama görevi.",
+        competencyByCharacter: {
+            "katarina-jovanovic": "very_high",
+            "father-gregory": "very_high",
+            "sergio-galvez": "very_high",
+            "milena-marvic": "high",
+            "hasan-kahveci": "high",
+            "alicia-winston": "high",
+            "evie-hill": "high",
+            "bob": "medium",
+            "nina-grace": "medium",
+            "paul-h-simmons": "medium",
+            "dakota-ahmadii": "medium",
+            "m-cole-morgan": "low",
+            "ted-karinsky": "low",
+            "shane-smith": "low"
+        }
+    },
+    5: {
+        id: "task_day5_reconnaissance",
+        day: 5,
+        title: "Saha Gözlemi ve Görsel Denetim",
+        desc: "Tesis çevresindeki ormanlık sınırlarda anomali izlerini, güvenlik kör noktalarını ve çevre anomalilerini haritalama görevi.",
+        competencyByCharacter: {
+            "nina-grace": "very_high",
+            "dakota-ahmadii": "very_high",
+            "ted-karinsky": "very_high",
+            "katarina-jovanovic": "high",
+            "alicia-winston": "high",
+            "hasan-kahveci": "high",
+            "paul-h-simmons": "high",
+            "sergio-galvez": "medium",
+            "m-cole-morgan": "medium",
+            "shane-smith": "medium",
+            "bob": "medium",
+            "evie-hill": "low",
+            "milena-marvic": "low",
+            "father-gregory": "low"
+        }
+    },
+    6: {
+        id: "task_day6_medical",
+        day: 6,
+        title: "Sıhhiye ve Tesis Sağlık Karantinası",
+        desc: "Saha barınaklarında hijyen kontrolü, yaralı bakımı, kimyasal temizlik ve tıbbi tecrit sağlama görevi.",
+        competencyByCharacter: {
+            "sergio-galvez": "very_high",
+            "alicia-winston": "very_high",
+            "evie-hill": "very_high",
+            "katarina-jovanovic": "high",
+            "father-gregory": "high",
+            "m-cole-morgan": "high",
+            "hasan-kahveci": "high",
+            "dakota-ahmadii": "medium",
+            "shane-smith": "medium",
+            "nina-grace": "medium",
+            "milena-marvic": "medium",
+            "bob": "low",
+            "ted-karinsky": "low",
+            "paul-h-simmons": "low"
+        }
+    },
+    7: {
+        id: "task_day7_emergency",
+        day: 7,
+        title: "Kritik Kriz Operasyonu ve Tahliye Hazırlığı",
+        desc: "Son günde tesisi dış dünyadan gelecek teftişe ve olası felakete karşı koordine etme, ekipmanları tahliyeye hazır kılma görevi.",
+        competencyByCharacter: {
+            "m-cole-morgan": "very_high",
+            "ted-karinsky": "very_high",
+            "katarina-jovanovic": "very_high",
+            "hasan-kahveci": "high",
+            "shane-smith": "high",
+            "sergio-galvez": "high",
+            "dakota-ahmadii": "high",
+            "nina-grace": "medium",
+            "alicia-winston": "medium",
+            "father-gregory": "medium",
+            "evie-hill": "medium",
+            "bob": "low",
+            "milena-marvic": "low",
+            "paul-h-simmons": "low"
+        }
+    }
+};
+
+function getCurrentTask(day = (typeof gameState !== "undefined" && gameState ? gameState.day : 1)) {
+    return DAILY_TASKS[day] || DAILY_TASKS[1];
+}
+
+function getCharacterTaskCompetency(task, personOrId) {
+    if (!task) task = getCurrentTask();
+    if (!task || !task.competencyByCharacter) return "medium";
+    const id = (typeof personOrId === "string") ? personOrId : (personOrId && personOrId.id ? personOrId.id : "");
+    if (!id) return "medium";
+
+    if (task.competencyByCharacter[id]) {
+        return task.competencyByCharacter[id];
+    }
+    // Camelcase fallback e.g. "ted-karinsky" -> "tedKarinsky"
+    const camelId = id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+    if (task.competencyByCharacter[camelId]) {
+        return task.competencyByCharacter[camelId];
+    }
+    // Kebab case fallback if camelCase id was provided e.g. "tedKarinsky" -> "ted-karinsky"
+    const kebabId = id.replace(/([A-Z])/g, "-$1").toLowerCase();
+    if (task.competencyByCharacter[kebabId]) {
+        return task.competencyByCharacter[kebabId];
+    }
+    if (typeof personOrId === "object" && personOrId && personOrId.taskCompetency) {
+        return personOrId.taskCompetency;
+    }
+    return "medium";
+}
 
 // Electric Chair & Riot Days
 const EXECUTION_START_DAY = 3;
@@ -712,23 +899,42 @@ function requiredTeamSize() {
 // ==========================================
 // MISSION RESOLUTION (TASK COMPETENCY BASED)
 // ==========================================
-function resolveMission(team) {
+function resolveMission(teamOrTask, maybeTeam) {
+    let task = null;
+    let team = [];
+    if (Array.isArray(teamOrTask)) {
+        team = teamOrTask;
+        task = getCurrentTask();
+    } else if (teamOrTask && typeof teamOrTask === "object" && Array.isArray(maybeTeam)) {
+        task = teamOrTask;
+        team = maybeTeam;
+    } else if (Array.isArray(maybeTeam)) {
+        task = teamOrTask;
+        team = maybeTeam;
+    } else {
+        team = teamOrTask || [];
+        task = getCurrentTask();
+    }
+
     const size = team.length;
     const anomalyCount = team.filter(p => p.isAnomaly).length;
 
-    // 1. Calculate Base Success Chance from Competency Scores
-    const totalCompetencyScore = team.reduce((total, character) => {
-        const score = COMPETENCY_SCORES[character.taskCompetency] || 50;
-        return total + score;
-    }, 0);
-    const baseSuccessChance = totalCompetencyScore / size;
+    // 1. Calculate Base Success Chance from Selected Characters' Task Competency Scores
+    const selectedScores = team.map(character => {
+        const level = getCharacterTaskCompetency(task, character);
+        return COMPETENCY_SCORES[level] || 50;
+    });
+
+    const baseSuccessChance = selectedScores.length > 0
+        ? (selectedScores.reduce((sum, score) => sum + score, 0) / size)
+        : 50;
 
     // 2. Apply Corrupted Penalty (10 points per Corrupted)
     const corruptedPenalty = anomalyCount * 10;
     const calculatedSuccessChance = baseSuccessChance - corruptedPenalty;
 
     // 3. Clamp final success chance strictly between 10% and 95%
-    const finalSuccessChance = Math.max(10, Math.min(95, calculatedSuccessChance));
+    const finalSuccessChance = Math.max(10, Math.min(95, Math.round(calculatedSuccessChance)));
 
     const missingPeople = [];
 
@@ -1486,6 +1692,7 @@ function dispatchMission() {
 
     const team = gameState.selectedTeam.map(findPerson);
 
+    const currentTask = getCurrentTask();
     let isSuccess;
     let missingPeople = [];
     let explanation;
@@ -1494,7 +1701,7 @@ function dispatchMission() {
         isSuccess = false;
         explanation = "Sahaya sürecek yeterli mahkûm kalmadı. Görev daha başlamadan başarısız sayıldı.";
     } else {
-        const outcome = resolveMission(team);
+        const outcome = resolveMission(currentTask, team);
         isSuccess = outcome.isSuccess;
         missingPeople = outcome.missingPeople || [];
         explanation = outcome.explanation;
@@ -1537,6 +1744,7 @@ function dispatchMission() {
         }
     });
 
+    gameState.lastTask = currentTask;
     gameState.lastOutcome = { isSuccess, explanation, team, missingPeople };
     gameState.stage = STAGE.REPORT;
     saveGameState();
@@ -1872,12 +2080,17 @@ function buildRosterCard(person, stage) {
         buttonOrTagHtml += `<span class="tag tag-team">✅ Görevde</span>`;
     }
 
-    const competencyLabel = COMPETENCY_LABELS[person.taskCompetency] || "—";
-    const competencyHtml = `
-        <div class="person-competency competency-${person.taskCompetency}">
-            GÖREV YETKİNLİĞİ: ${competencyLabel}
-        </div>
-    `;
+    let competencyHtml = "";
+    if (stage === STAGE.DISPATCH && (person.introduced || person.isIntroduced) && !isDead && person.arrivalDay !== null && person.arrivalDay <= gameState.day) {
+        const currentTask = getCurrentTask();
+        const compLevel = getCharacterTaskCompetency(currentTask, person);
+        const competencyLabel = COMPETENCY_LABELS[compLevel] || "ORTA";
+        competencyHtml = `
+            <div class="person-competency competency-${compLevel}">
+                BU GÖREVDEKİ YETKİNLİK: ${competencyLabel}
+            </div>
+        `;
+    }
 
     const isVoiceReactionActive = gameState.activeVoiceReactionId === person.id;
     let voiceReactionHtml = "";
@@ -2106,6 +2319,16 @@ function renderStagePanel() {
 
     // ---- Dispatch ----
     if (stage === STAGE.DISPATCH) {
+        const currentTask = getCurrentTask();
+        const taskTitleEl = document.getElementById("dispatch-task-title");
+        if (taskTitleEl) {
+            taskTitleEl.textContent = `GÜN ${gameState.day} GÖREVİ: ${currentTask.title.toUpperCase()}`;
+        }
+        const taskDescEl = document.getElementById("dispatch-task-desc");
+        if (taskDescEl) {
+            taskDescEl.textContent = currentTask.desc;
+        }
+
         const needed = requiredTeamSize();
         document.getElementById("dispatch-required").textContent = needed;
         document.getElementById("dispatch-selected").textContent = gameState.selectedTeam.length;
@@ -2123,8 +2346,9 @@ function renderStagePanel() {
                 const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
                 const displayRole = person.introduced ? person.role : "—";
                 const readingText = person.isTested ? "Test Edildi ⚡" : "Test Edilmedi";
-                const competencyText = person.introduced && person.taskCompetency
-                    ? `<span class="pill-competency competency-${person.taskCompetency}">${COMPETENCY_LABELS[person.taskCompetency]}</span>`
+                const compLevel = getCharacterTaskCompetency(currentTask, person);
+                const competencyText = person.introduced
+                    ? `<span class="pill-competency competency-${compLevel}">${COMPETENCY_LABELS[compLevel]}</span>`
                     : "";
 
                 pill.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${competencyText}<span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
@@ -2223,6 +2447,7 @@ function showExecutionReveal(person) {
 }
 
 function showMissionResultModal(isSuccess, explanation, team, missingPeople = []) {
+    const currentTask = gameState.lastTask || getCurrentTask();
     document.getElementById("result-title").textContent = `GÜN ${gameState.day} GÖREV RAPORU`;
     const badge = document.getElementById("result-badge");
     badge.textContent = isSuccess ? "GÖREV BAŞARILI ✅" : "GÖREV BAŞARISIZ ❌";
@@ -2237,8 +2462,9 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
         row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
         const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
         const displayRole = person.introduced ? person.role : "—";
-        const competencyText = person.introduced && person.taskCompetency
-            ? `<span class="badge competency-${person.taskCompetency}" style="margin-right:6px;">${COMPETENCY_LABELS[person.taskCompetency]}</span>`
+        const compLevel = getCharacterTaskCompetency(currentTask, person);
+        const competencyText = person.introduced
+            ? `<span class="badge competency-${compLevel}" style="margin-right:6px;">${COMPETENCY_LABELS[compLevel]}</span>`
             : "";
         const statusBadge = isMissing
             ? (person.isAnomaly
@@ -2692,7 +2918,8 @@ function simulateSingleGame(botType) {
             isSuccess = false;
         } else {
             anomaliesSent += team.filter(p => p.isAnomaly).length;
-            const outcome = resolveMission(team);
+            const dayTask = DAILY_TASKS[day] || getCurrentTask(day);
+            const outcome = resolveMission(dayTask, team);
             isSuccess = outcome.isSuccess;
             missingPeople = outcome.missingPeople || [];
             missingPeople.forEach(p => {
