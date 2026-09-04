@@ -42,7 +42,9 @@ const MAX_DAILY_ENERGY = 8;
 // Energy Action Costs
 const ENERGY_COST = {
     INTERVIEW: 2,
-    TEST: 1,
+    TALK: 0,
+    TEST: 2,
+    BRAIN_TEST: 2,
     VOICE_TEST: 2,
     RETURN_CHECK: 1,
     DISPATCH: 0
@@ -430,6 +432,7 @@ function generateManifest() {
             lastSpokenDay: null,
             isMet: false,
             isTested: false,
+            brainTestCompleted: false,
             voiceTestCompleted: false,
             isDead: false,
             isExecuted: false,
@@ -503,6 +506,8 @@ function loadSavedGameState() {
                             ? saved.lastSpokenDay
                             : (introduced ? introducedDay : null));
 
+                    const isTested = Boolean(saved.isTested || saved.brainTestCompleted);
+
                     return {
                         // Canonical static data (NEVER overwritten by old save!)
                         id: canonical.id,
@@ -522,7 +527,8 @@ function loadSavedGameState() {
                         lastTalkedDay: lastTalkedDay,
                         lastSpokenDay: lastTalkedDay,
                         isMet: introduced,
-                        isTested: Boolean(saved.isTested),
+                        isTested: isTested,
+                        brainTestCompleted: isTested,
                         voiceTestCompleted: Boolean(saved.voiceTestCompleted),
                         isDead: Boolean(saved.isDead),
                         isExecuted: Boolean(saved.isExecuted),
@@ -1052,7 +1058,7 @@ function advanceStage() {
                 logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin. (Test sistemi 2. gün açılır)`, "system");
             } else {
                 gameState.stage = STAGE.TESTING;
-                logEvent(`Test aşaması açıldı. Test maliyeti: ⚡1 enerji.`, "system");
+                logEvent(`Test aşaması açıldı. Test maliyeti: ⚡${ENERGY_COST.TEST} enerji.`, "system");
                 if (gameState.day === 2 && !gameState.brainTestGuideSeen) {
                     openBrainTestGuide();
                 } else if (gameState.day >= 3 && !gameState.voiceTestGuideSeen) {
@@ -1223,12 +1229,6 @@ function speakToPerson(personId) {
         flashNotice(`${person.name} ile tanışma bugün gerçekleşti. Sonraki gün tekrar konuşabilirsin.`);
         return;
     }
-    if (gameState.energy < ENERGY_COST.INTERVIEW) {
-        flashNotice(`Yetersiz Enerji! Konuşmak için ⚡${ENERGY_COST.INTERVIEW} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
-        return;
-    }
-
-    gameState.energy -= ENERGY_COST.INTERVIEW;
 
     person.lastTalkedDay = gameState.day;
     person.lastSpokenDay = gameState.day;
@@ -1315,7 +1315,7 @@ function testPerson(personId) {
         flashNotice(`${person.introduced ? person.name : "Mahkûm"} artık tesiste değil.`);
         return;
     }
-    if (!person.introduced) {
+    if (!person.introduced && !person.isIntroduced) {
         flashNotice("Bu mahkûm ile henüz tanışmadın. Tanışmadığın mahkûma test uygulanamaz.");
         return;
     }
@@ -1323,20 +1323,21 @@ function testPerson(personId) {
         flashNotice(`${person.name} dinleniyor (${restDaysLeft(person.id)} gün). Dinlenen mahkûma test yapılamaz.`);
         return;
     }
-    if (person.isTested) {
+    if (person.isTested || person.brainTestCompleted) {
         showTestReveal(person);
         return;
     }
 
     if (gameState.energy < ENERGY_COST.TEST) {
-        flashNotice(`Yetersiz Enerji! Test uygulamak için ⚡${ENERGY_COST.TEST} enerji gerekli.`);
+        flashNotice(`Yetersiz Enerji! Beyin testi uygulamak için ⚡${ENERGY_COST.TEST} enerji gerekli (Mevcut: ⚡${gameState.energy}).`);
         return;
     }
 
     gameState.energy -= ENERGY_COST.TEST;
     person.isTested = true;
+    person.brainTestCompleted = true;
 
-    logEvent(`🧠 ${person.name} üzerinde beyin testi uygulandı.`, "action");
+    logEvent(`🧠 ${person.name} üzerinde beyin testi uygulandı (⚡${ENERGY_COST.TEST} enerji).`, "action");
     saveGameState();
     showTestReveal(person);
     renderAll();
@@ -1698,8 +1699,8 @@ function buildRosterCard(person, stage) {
 
     let actionable = false;
     if (!isDead && isUnlocked) {
-        if (stage === STAGE.MEETING) actionable = canTalk && gameState.energy >= ENERGY_COST.INTERVIEW;
-        else if (stage === STAGE.TESTING) actionable = (gameState.day > 1) && !person.isTested && !resting && gameState.energy >= ENERGY_COST.TEST;
+        if (stage === STAGE.MEETING) actionable = canTalk;
+        else if (stage === STAGE.TESTING) actionable = (gameState.day > 1) && (!person.isTested && gameState.energy >= ENERGY_COST.TEST || (gameState.day >= 3 && !person.voiceTestCompleted && gameState.energy >= ENERGY_COST.VOICE_TEST));
         else if (stage === STAGE.EXECUTION) actionable = executionsLeft() > 0;
         else if (stage === STAGE.DISPATCH) actionable = !resting && !person.pendingReturnCheck;
     }
@@ -1784,11 +1785,11 @@ function buildRosterCard(person, stage) {
         buttonOrTagHtml = `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
     } else if (stage === STAGE.TESTING) {
         let brainBtnHtml = "";
-        if (person.isTested) {
+        if (person.isTested || person.brainTestCompleted) {
             brainBtnHtml = `<span class="tag tag-tested-neutral" onclick="event.stopPropagation(); showTestReveal(findPerson('${person.id}'));">🧠 TEST UYGULANDI</span>`;
         } else {
             const disabledBrain = gameState.energy < ENERGY_COST.TEST ? "disabled style='opacity:0.5; cursor:not-allowed;'" : "";
-            brainBtnHtml = `<button class="btn btn-action-card btn-tag-test" ${disabledBrain} onclick="event.stopPropagation(); testPerson('${person.id}');">TEST ET ⚡1</button>`;
+            brainBtnHtml = `<button class="btn btn-action-card btn-tag-test" ${disabledBrain} onclick="event.stopPropagation(); testPerson('${person.id}');">BEYİN TESTİ ⚡2</button>`;
         }
 
         let voiceBtnHtml = "";
@@ -1806,8 +1807,7 @@ function buildRosterCard(person, stage) {
         buttonOrTagHtml = `<span class="tag tag-spoken-today">✓ BUGÜN KONUŞULDU</span>`;
     } else if (canTalk) {
         if (stage === STAGE.MEETING) {
-            const disabledAttr = gameState.energy < ENERGY_COST.INTERVIEW ? "disabled style='opacity:0.5; cursor:not-allowed;'" : "";
-            buttonOrTagHtml = `<button class="btn btn-action-card btn-tag-speak" ${disabledAttr} onclick="event.stopPropagation(); speakToPerson('${person.id}');">KONUŞ ⚡2</button>`;
+            buttonOrTagHtml = `<button class="btn btn-action-card btn-tag-speak" onclick="event.stopPropagation(); speakToPerson('${person.id}');">KONUŞ</button>`;
         } else {
             buttonOrTagHtml = `<span class="tag tag-met">Görüşülebilir (G${dIndex + 1})</span>`;
         }
