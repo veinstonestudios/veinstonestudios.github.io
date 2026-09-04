@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Required by the YouTube embed: without a referer it throws error 153. -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>The Facility — Press Kit | Veinstone Studios</title>
+<meta name="description" content="Press kit for The Facility, a PSX-inspired psychological horror game by Veinstone Studios.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://veinstonestudios.github.io/presskit-v3.html">
+<meta property="og:title" content="The Facility — Press Kit">
+<meta property="og:description" content="Trust no one. Anomalies are hiding among your inmates.">
+<meta property="og:image" content="https://veinstonestudios.github.io/Photos/NewScreenshots/CellInspection.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://veinstonestudios.github.io/Photos/NewScreenshots/CellInspection.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Barlow+Condensed:wght@500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="Fulllogo.png" type="image/png">
+
+<!-- Design lives here -->
+<link rel="stylesheet" href="presskit-v3.css">
+<!-- All editable text and images live here -->
+<script src="presskit-content.js"></script>
+</head>
+<body>
+
+<div class="topbar" id="topbar"></div>
+<header class="hero" id="hero"></header>
+<div class="gallery" id="gallery"></div>
+<section id="about"></section>
+<section id="play"></section>
+<section id="notices"></section>
+<section id="studio"></section>
+<footer class="wrap" id="footer"></footer>
+<div id="toast">Copied</div>
+
+<script>
+/* ===========================================================================
+   Renderer. You should not need to touch this file to change content —
+   edit presskit-content.js instead.
+   Every lookup is guarded: a missing or empty field just omits that piece
+   rather than throwing and taking the rest of the page down with it.
+   ========================================================================= */
+(function(){
+'use strict';
+
+var C = window.PRESSKIT;
+if (!C) {
+  document.body.innerHTML =
+    '<p style="padding:60px;font:16px system-ui;color:#d24b4b">' +
+    'presskit-content.js did not load. Check it sits next to this file, and ' +
+    'look in the browser console for a syntax error (usually a missing quote ' +
+    'or comma).</p>';
+  return;
+}
+
+/* ---------- helpers ---------- */
+function $(id){ return document.getElementById(id); }
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+// Filenames may contain spaces, parentheses or semicolons. Encode them so the
+// author can just type the real name in the content file.
+function url(p){ return encodeURI(String(p || '')).replace(/;/g,'%3B'); }
+function has(v){ return v != null && String(v).trim() !== ''; }
+// Marks TODO placeholders red without the author needing to add markup.
+function todo(s){
+  return String(s || '').replace(/TODO[^.]*\.?/g,
+    function(m){ return '<span class="todo">' + m + '</span>'; });
+}
+function set(id, html){ var el = $(id); if (el) el.innerHTML = html; }
+
+// Body text may be one string, a string containing line breaks, or a list of
+// strings. Each line/entry becomes its own paragraph.
+function blocks(v){
+  var arr = Array.isArray(v) ? v : String(v == null ? '' : v).split(/\n+/);
+  return arr.map(function(x){ return String(x).trim(); })
+            .filter(Boolean)
+            .map(function(x){ return '<p>' + todo(esc(x)) + '</p>'; })
+            .join('');
+}
+// Optional bulleted list, e.g. for listing individual content warnings.
+function bullets(v){
+  if (!Array.isArray(v) || !v.length) return '';
+  return '<ul class="bullets">' + v.map(function(x){
+    return '<li>' + todo(esc(x)) + '</li>';
+  }).join('') + '</ul>';
+}
+
+/* ---------- header ---------- */
+(function(){
+  var h = C.hero || {};
+  var video = has(h.bgVideo)
+    ? '<video class="hero-bg" autoplay muted loop playsinline aria-hidden="true" tabindex="-1">' +
+      '<source src="' + url(h.bgVideo) + '" type="video/webm"></video>' : '';
+
+  // YouTube refuses to configure the player (error 153) unless it receives a
+  // valid HTTP Referer. referrerpolicy + the <meta name="referrer"> in <head>
+  // supply it. Note this can only ever work over http(s) - opening the page as
+  // a file:// document sends no referer at all and will always show 153.
+  // Swap youtube-nocookie.com for youtube.com below if you prefer.
+  var player = has(h.youtubeId)
+    ? '<iframe src="https://www.youtube-nocookie.com/embed/' + esc(h.youtubeId) + '"' +
+      ' title="' + esc((h.titleLines || []).join(' ')) + ' — Trailer"' +
+      ' frameborder="0" referrerpolicy="strict-origin-when-cross-origin"' +
+      ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;' +
+      ' picture-in-picture" allowfullscreen></iframe>'
+    : '<div class="placeholder"><p class="todo">No trailer yet — add the YouTube ' +
+      'video id to presskit-content.js</p></div>';
+
+  var actions = '';
+  if (has(h.steamUrl))
+    actions += '<a class="btn solid" href="' + esc(h.steamUrl) + '" target="_blank" rel="noopener">Steam Page</a>';
+  if (has(h.assetKitUrl))
+    actions += '<a class="btn" data-role="asset-kit" href="' + esc(h.assetKitUrl) +
+               '" target="_blank" rel="noopener">Download Asset Kit</a>';
+  actions += '<button class="btn" id="sheet-toggle" type="button" aria-expanded="false" ' +
+             'aria-controls="sheet">Fact Sheet <span aria-hidden="true" id="sheet-caret">+</span></button>';
+
+  var facts = (C.facts || []).map(function(f){
+    return '<div class="fact"><dt>' + esc(f.label) + '</dt><dd>' + todo(esc(f.value)) + '</dd></div>';
+  }).join('');
+  if (has(h.pressEmail))
+    facts += '<div class="fact"><dt>Press contact</dt><dd><a href="mailto:' +
+             esc(h.pressEmail) + '">' + esc(h.pressEmail) + '</a></dd></div>';
+
+  var langs = (C.languages || []);
+  var langBlock = langs.length
+    ? '<p class="eyebrow" style="margin-top:30px">Localisation — ' + langs.length + ' languages</p>' +
+      '<ul class="langs">' + langs.map(function(l){ return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>'
+    : '';
+
+  set('hero',
+    video +
+    '<div class="hero-veil"></div>' +
+    '<div class="wrap">' +
+      '<div class="hero-main">' +
+        '<div class="hero-video">' + player + '</div>' +
+        '<div class="hero-copy">' +
+          '<h1>' + (h.titleLines || []).map(esc).join('<br>') + '</h1>' +
+          (has(h.hook)    ? '<p class="hero-hook">' + esc(h.hook) + '</p>' : '') +
+          (has(h.tagline) ? '<p class="hero-tags">' + esc(h.tagline) + '</p>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="hero-actions">' + actions + '</div>' +
+      '<div class="sheet" id="sheet"><div class="sheet-inner">' +
+        '<dl class="facts">' + facts + '</dl>' + langBlock +
+      '</div></div>' +
+    '</div>');
+})();
+
+/* ---------- sticky topbar ----------
+   Mirrors the three hero buttons. Hidden until the hero's own button row has
+   scrolled out of view, so the actions stay reachable without duplicating
+   them on screen at the same time. */
+(function(){
+  var tb = $('topbar');
+  if (!tb) return;
+  var h = C.hero || {};
+  var title = (h.titleLines || []).join(' ');
+
+  var links = '';
+  if (has(h.steamUrl))
+    links += '<a class="btn solid" href="' + esc(h.steamUrl) + '" target="_blank" rel="noopener">Steam Page</a>';
+  if (has(h.assetKitUrl))
+    links += '<a class="btn" data-role="asset-kit" href="' + esc(h.assetKitUrl) +
+             '" target="_blank" rel="noopener">Download Asset Kit</a>';
+  links += '<button class="btn" id="topbar-sheet-toggle" type="button" aria-expanded="false" ' +
+           'aria-controls="sheet">Fact Sheet <span aria-hidden="true" id="topbar-sheet-caret">+</span></button>';
+
+  if (!has(title) && !links) return;
+
+  tb.innerHTML =
+    '<div class="wrap topbar-inner">' +
+      (has(title) ? '<span class="topbar-title">' + esc(title) + '</span>' : '<span></span>') +
+      '<div class="topbar-actions">' + links + '</div>' +
+    '</div>';
+
+  // Watch the hero's own action row. Once it scrolls above the viewport
+  // (not just "not yet reached"), reveal the topbar copy of the same buttons.
+  var anchor = document.querySelector('#hero .hero-actions');
+  if (anchor && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      var e = entries[0];
+      tb.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top < 0);
+    }, { threshold: 0 });
+    io.observe(anchor);
+  }
+})();
+
+/* ---------- gallery ---------- */
+(function(){
+  var items = C.gallery || [];
+  var el = $('gallery');
+  if (!el || !items.length) { if (el) el.remove(); return; }
+
+  var STRIPS = 3, SPEEDS = ['64s','78s','70s'], MIN_TILE = 240;
+  var rows = [[],[],[]];
+  items.forEach(function(it, i){ rows[i % STRIPS].push(it); });
+
+  function tile(it){
+    return '<figure class="tile"><img src="' + url(it.src) + '" alt="' +
+      esc(it.alt || it.caption || '') + '">' +
+      (has(it.caption) ? '<figcaption>' + todo(esc(it.caption)) + '</figcaption>' : '') +
+      '</figure>';
+  }
+
+  // One pass must be wider than the screen or the strip shows gaps. Size
+  // against screen.width so maximising the window later can't reintroduce them.
+  var target  = Math.max(window.innerWidth, (window.screen && screen.width) || 0);
+  var perPass = Math.ceil(target / MIN_TILE) + 2;
+
+  var gh = C.galleryHead || {};
+  var head = (has(gh.eyebrow) || has(gh.heading) || has(gh.description))
+    ? '<div class="gallery-head wrap">' +
+        '<div>' +
+          (has(gh.eyebrow) ? '<p class="eyebrow">' + esc(gh.eyebrow) + '</p>' : '') +
+          (has(gh.heading) ? '<h2>' + esc(gh.heading) + '</h2>' : '') +
+        '</div>' +
+        (has(gh.description) ? '<p class="gallery-desc">' + todo(esc(gh.description)) + '</p>' : '') +
+      '</div>'
+    : '';
+
+  var strips = rows.map(function(row, i){
+    if (!row.length) return '';
+    var n = Math.max(row.length, perPass);
+    var pass = '';
+    for (var k = 0; k < n; k++) pass += tile(row[k % row.length]);
+    return '<div class="strip"><div class="track' + (i === 1 ? ' rev' : '') +
+           '" style="--dur:' + SPEEDS[i] + '">' + pass + pass + '</div></div>';
+  }).join('');
+
+  el.innerHTML = head + strips;
+})();
+
+/* ---------- about + copy buttons ---------- */
+(function(){
+  var a = C.about || {}, d = C.descriptions || {};
+  var paras = (a.paragraphs || []);
+  if (!paras.length && !has(d.short)) { var s = $('about'); if (s) s.remove(); return; }
+
+  var longText = has(d.long) ? d.long : paras.join('\n\n');
+  var texts = { one: d.one || '', short: d.short || '', long: longText };
+  var NAMES  = { one: 'One line', short: 'Short', long: 'Long' };
+  var DEFAULT_KEY = 'long';   // shown at rest, and restored when the mouse leaves the buttons
+
+  function label(key){
+    var t = texts[key];
+    var note = !has(t) ? '<span class="count todo">TODO</span>'
+                       : '<span class="count">' + t.split(/\s+/).filter(Boolean).length + ' words</span>';
+    return '<button class="btn quiet copy-btn" data-copy="' + key + '"' +
+           (has(t) ? '' : ' disabled') + '><span>' + NAMES[key] + '</span>' + note + '</button>';
+  }
+
+  set('about',
+    '<div class="wrap">' +
+      (has(a.eyebrow) ? '<p class="eyebrow">' + esc(a.eyebrow) + '</p>' : '') +
+      (has(a.heading) ? '<h2>' + esc(a.heading) + '</h2>' : '') +
+      '<div class="about-grid"><div class="about-body">' +
+        '<p class="preview-tag" id="about-preview-tag">' + NAMES[DEFAULT_KEY] + ' description</p>' +
+        '<div class="preview-text" id="about-preview-text">' +
+          blocks(texts[DEFAULT_KEY]) +
+        '</div>' +
+      '</div><div class="copy-stack">' +
+        '<span class="label">Copy a description</span>' +
+        label('one') + label('short') + label('long') +
+      '</div></div>' +
+    '</div>');
+
+  /* ---- hover/focus preview: show what each button would actually copy ---- */
+  (function(){
+    var tag = $('about-preview-tag'), box = $('about-preview-text');
+    var stack = document.querySelector('.copy-stack');
+    if (!tag || !box || !stack) return;
+
+    // Keep in sync with .preview-text's transition-duration in the CSS.
+    var FADE_MS = 140;
+    var current = DEFAULT_KEY, swapToken = 0;
+
+    function show(key){
+      if (key === current) return;   // skip re-triggering the fade for no reason
+      current = key;
+      var token = ++swapToken;       // lets a later hover cancel an in-flight swap
+      tag.textContent = NAMES[key] + ' description';   // label flips instantly, only the body crossfades
+      box.classList.add('fading');
+      setTimeout(function(){
+        if (token !== swapToken) return;   // superseded by a newer hover mid-fade
+        box.innerHTML = has(texts[key])
+          ? blocks(texts[key])
+          : '<p class="todo">Nothing written yet for the ' + NAMES[key].toLowerCase() +
+            ' description — add it in presskit-content.js.</p>';
+        box.classList.remove('fading');
+      }, FADE_MS);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(function(b){
+      b.addEventListener('mouseenter', function(){ show(b.dataset.copy); });
+      b.addEventListener('focus',      function(){ show(b.dataset.copy); });
+    });
+    // Reverting on the stack's own mouseleave (rather than per-button) means
+    // moving between adjacent buttons doesn't flash back to the default in
+    // between - it only resets once the pointer leaves the whole group.
+    stack.addEventListener('mouseleave', function(){ show(DEFAULT_KEY); });
+    stack.addEventListener('focusout', function(e){
+      if (!stack.contains(e.relatedTarget)) show(DEFAULT_KEY);
+    });
+  })();
+
+  /* clipboard with a fallback — the async API throws on file:// */
+  var toast = $('toast'), timer;
+  function flash(msg){
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('on');
+    clearTimeout(timer);
+    timer = setTimeout(function(){ toast.classList.remove('on'); }, 1800);
+  }
+  function legacy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly','');
+    ta.style.cssText = 'position:fixed;top:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function copy(text, done){
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+          .then(function(){ done(true); })
+          .catch(function(){ done(legacy(text)); });
+        return;
+      }
+    } catch(e){}
+    done(legacy(text));
+  }
+  document.querySelectorAll('.copy-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = texts[b.dataset.copy];
+      if (!has(t)) return;
+      copy(t, function(ok){
+        flash(ok ? 'Copied — ' + t.split(/\s+/).filter(Boolean).length + ' words'
+                 : 'Copy failed — select the text manually');
+      });
+    });
+  });
+})();
+
+/* ---------- how to play ---------- */
+(function(){
+  var p = C.play || {};
+  if (!(p.phases || []).length) { var s = $('play'); if (s) s.remove(); return; }
+  var d = p.detail || {};
+
+  var phases = p.phases.map(function(ph, i){
+    return '<div class="phase">' +
+      '<span class="n">' + ('0' + (i + 1)).slice(-2) + '</span>' +
+      '<h3>' + esc(ph.title) + '</h3>' + blocks(ph.body) + '</div>';
+  }).join('');
+
+  var detail = '';
+  if (has(d.heading) || (d.paragraphs || []).length) {
+    detail = '<div class="detect"><div>' +
+      (has(d.heading) ? '<h3>' + esc(d.heading) + '</h3>' : '') +
+      (d.paragraphs || []).map(function(x){ return '<p>' + todo(esc(x)) + '</p>'; }).join('') +
+      (has(d.aside) ? '<p class="quiet">' + esc(d.aside) + '</p>' : '') +
+      '</div>' +
+      (has(d.image) ? '<img src="' + url(d.image) + '" alt="' + esc(d.imageAlt || '') +
+                      '" loading="lazy">' : '') +
+      '</div>';
+  }
+
+  set('play',
+    '<div class="wrap">' +
+      (has(p.eyebrow) ? '<p class="eyebrow">' + esc(p.eyebrow) + '</p>' : '') +
+      (has(p.heading) ? '<h2>' + esc(p.heading) + '</h2>' : '') +
+      '<div class="loop">' + phases + '</div>' + detail +
+    '</div>');
+})();
+
+/* ---------- notices ---------- */
+(function(){
+  var n = C.notices || {};
+  if (!(n.items || []).length) { var s = $('notices'); if (s) s.remove(); return; }
+  set('notices',
+    '<div class="wrap">' +
+      (has(n.eyebrow) ? '<p class="eyebrow">' + esc(n.eyebrow) + '</p>' : '') +
+      (has(n.heading) ? '<h2>' + esc(n.heading) + '</h2>' : '') +
+      '<div class="notices">' + n.items.map(function(it){
+        return '<div class="notice' + (it.warn ? ' warn' : '') + '">' +
+          '<h3>' + esc(it.title) + '</h3>' + blocks(it.body) + bullets(it.list) + '</div>';
+      }).join('') + '</div>' +
+    '</div>');
+})();
+
+/* ---------- studio ---------- */
+(function(){
+  var s = C.studio || {};
+  if (!has(s.heading) && !(s.crew || []).length) { var el = $('studio'); if (el) el.remove(); return; }
+  var h = C.hero || {};
+
+  var links = '';
+  if (has(h.pressEmail))
+    links += '<a class="btn solid" href="mailto:' + esc(h.pressEmail) + '">' + esc(h.pressEmail) + '</a>';
+  links += (s.links || []).map(function(l){
+    var ext = /^https?:/.test(l.url) ? ' target="_blank" rel="noopener"' : '';
+    return '<a class="btn quiet" href="' + esc(l.url) + '"' + ext + '>' + esc(l.label) + '</a>';
+  }).join('');
+
+  set('studio',
+    '<div class="wrap">' +
+      (has(s.eyebrow) ? '<p class="eyebrow">' + esc(s.eyebrow) + '</p>' : '') +
+      (has(s.heading) ? '<h2>' + esc(s.heading) + '</h2>' : '') +
+      '<div class="studio">' +
+        (has(s.logo) ? '<img class="mark" src="' + url(s.logo) + '" alt="' + esc(s.heading || '') +
+                       ' logo" loading="lazy">' : '') +
+        '<div>' +
+          (has(s.blurb) ? '<p>' + s.blurb + '</p>' : '') +
+          ((s.crew || []).length ? '<div class="crew">' + s.crew.map(function(c){
+            return '<div><div class="role">' + esc(c.role) + '</div>' + esc(c.name) + '</div>';
+          }).join('') + '</div>' : '') +
+          '<div class="studio-actions">' + links + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>');
+})();
+
+/* ---------- footer ---------- */
+(function(){
+  var f = C.footer || {};
+  set('footer', '<span>' + esc(f.left || '') + '</span><span>' + esc(f.right || '') + '</span>');
+})();
+
+/* ---------- fact sheet drawer ----------
+   Two triggers now open the same drawer: the button in the hero, and its
+   twin in the sticky topbar. Both stay in sync (aria-expanded + caret),
+   and opening from the topbar scrolls the drawer into view since it lives
+   further up the page, out of sight once the topbar is showing. */
+(function(){
+  var sheet = $('sheet');
+  if (!sheet) return;
+  var mainBtn = $('sheet-toggle'), mainCaret = $('sheet-caret');
+  var topBtn  = $('topbar-sheet-toggle'), topCaret = $('topbar-sheet-caret');
+  if (!mainBtn && !topBtn) return;
+
+  function isOpen(){
+    return (mainBtn || topBtn).getAttribute('aria-expanded') === 'true';
+  }
+  function apply(open){
+    [mainBtn, topBtn].forEach(function(b){ if (b) b.setAttribute('aria-expanded', String(open)); });
+    [mainCaret, topCaret].forEach(function(c){ if (c) c.textContent = open ? '–' : '+'; });
+    sheet.style.maxHeight = open ? sheet.scrollHeight + 'px' : '0px';
+  }
+  function toggle(fromTopbar){
+    var open = !isOpen();
+    apply(open);
+    if (open && fromTopbar)
+      requestAnimationFrame(function(){ sheet.scrollIntoView({behavior:'smooth', block:'start'}); });
+  }
+
+  if (mainBtn) mainBtn.addEventListener('click', function(){ toggle(false); });
+  if (topBtn)  topBtn.addEventListener('click', function(){ toggle(true); });
+
+  window.addEventListener('resize', function(){
+    if (isOpen()) sheet.style.maxHeight = sheet.scrollHeight + 'px';
+  }, {passive:true});
+})();
+
+})();
+</script>
+</body>
+</html>

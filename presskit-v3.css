@@ -1,0 +1,249 @@
+:root{
+  --ink:#0a0a0a; --panel:#131313; --rule:#262626;
+  --amber:#f3ca20; --blood:#8b0000;
+  --text:#e9e7e1; --paper:#cfccc4; --muted:#8b8b85;
+  --mono:'VT323',ui-monospace,monospace;
+  --disp:'Barlow Condensed',sans-serif;
+  --body:'Lato',system-ui,sans-serif;
+  --gut:clamp(20px,4vw,64px);
+  --measure:74ch;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--body);
+  line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--amber);text-decoration:none}
+img,video,iframe{display:block;max-width:100%}
+
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gut)}
+
+/* ---------- shared ---------- */
+.eyebrow{font-family:var(--mono);font-size:1.05rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+h2{font-family:var(--disp);font-size:clamp(2rem,3.4vw,2.9rem);font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-bottom:26px}
+h3{font-family:var(--disp);font-size:1.45rem;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;margin-bottom:8px}
+p{color:var(--paper)}
+section{padding:clamp(64px,9vw,120px) 0}
+
+/* line-height:1 matters here: <button> and <a> get different default
+   line-heights from the browser (buttons use the UA form-control default,
+   links just inherit the page's 1.7), so without this a Fact-Sheet <button>
+   sitting next to Steam Page / Download Asset Kit <a> tags renders shorter
+   even with identical padding and font-size. */
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--disp);
+  font-weight:600;font-size:1.02rem;line-height:1;letter-spacing:.11em;text-transform:uppercase;
+  padding:13px 24px;border:1px solid var(--amber);color:var(--amber);
+  background:transparent;cursor:pointer;transition:background .16s,color .16s}
+.btn:hover{background:var(--amber);color:var(--ink)}
+.btn.solid{background:var(--amber);color:var(--ink)}
+.btn.solid:hover{background:#fff;border-color:#fff}
+.btn.quiet{border-color:var(--rule);color:var(--text)}
+.btn.quiet:hover{background:transparent;border-color:var(--amber);color:var(--amber)}
+.todo{color:#d24b4b;font-style:italic}
+
+/* ---------- sticky topbar ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(10,10,10,.88);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+  transform:translateY(-100%);opacity:0;pointer-events:none;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .22s;
+}
+.topbar.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:13px var(--gut)}
+.topbar-title{font-family:var(--disp);font-weight:700;font-size:1.3rem;
+  letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.topbar-actions .btn{padding:9px 16px;font-size:.9rem;letter-spacing:.08em}
+@media(max-width:720px){
+  .topbar-title{display:none}
+  .topbar-inner{justify-content:center}
+}
+@media(max-width:460px){
+  .topbar-actions .btn{padding:8px 12px;font-size:.82rem;gap:5px}
+}
+@media(prefers-reduced-motion:reduce){.topbar{transition:none}}
+
+/* ================= 1. HEADER ================= */
+header.hero{position:relative;isolation:isolate;overflow:hidden;
+  padding-top:clamp(28px,4vw,52px);padding-bottom:clamp(56px,8vw,96px)}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.65) contrast(1.1) brightness(.42);z-index:-2}
+/* Bottom stop is exactly the page colour, so the header melts into the page
+   instead of ending on a line. */
+.hero-veil{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(10,10,10,.82) 0%,rgba(10,10,10,.42) 26%,
+                    rgba(10,10,10,.86) 72%,var(--ink) 100%)}
+
+.hero-meta{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:1.02rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);
+  padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
+
+.hero-main{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,64px);
+  align-items:center;padding:clamp(36px,5vw,68px) 0 clamp(30px,4vw,52px)}
+.hero-video{position:relative;aspect-ratio:16/9;background:#000;
+  border:1px solid rgba(255,255,255,.14);box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.hero-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.hero-video .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;text-align:center;padding:26px}
+
+.hero-copy{text-align:right}
+h1{font-family:var(--disp);font-weight:700;text-transform:uppercase;
+  font-size:clamp(3.4rem,8.5vw,7rem);line-height:.86;letter-spacing:.02em;
+  text-shadow:0 3px 30px rgba(0,0,0,.85)}
+.hero-hook{font-size:clamp(1.05rem,1.5vw,1.3rem);color:var(--paper);
+  margin-top:18px;margin-left:auto;max-width:34ch;text-shadow:0 1px 14px rgba(0,0,0,.9)}
+.hero-tags{margin-top:16px;font-family:var(--mono);font-size:1.05rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+
+/* factsheet drawer */
+.sheet{overflow:hidden;max-height:0;transition:max-height .45s cubic-bezier(.4,0,.2,1)}
+.sheet-inner{border-top:1px solid var(--rule);padding-top:30px;margin-top:34px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:0 44px}
+.fact{display:flex;justify-content:space-between;gap:14px;align-items:baseline;
+  padding:11px 0;border-bottom:1px dotted var(--rule)}
+.fact dt{font-family:var(--mono);font-size:1.05rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.fact dd{font-family:var(--disp);font-size:1.12rem;font-weight:600;text-align:right}
+.langs{margin-top:26px;font-family:var(--mono);font-size:1.05rem;letter-spacing:.07em;
+  color:var(--paper);columns:4;column-gap:30px;list-style:none}
+.langs li::before{content:'· ';color:var(--amber)}
+
+/* ================= 2. GALLERY ================= */
+.gallery{padding:clamp(56px,7vw,96px) 0;overflow:hidden}
+.gallery-head{display:flex;align-items:flex-end;justify-content:space-between;
+  gap:24px clamp(24px,4vw,60px);flex-wrap:wrap;margin-bottom:clamp(28px,4vw,44px)}
+.gallery-head h2{margin-bottom:0}
+.gallery-desc{max-width:34ch;font-size:1.02rem;color:var(--muted);
+  text-align:right;padding-bottom:.15em}
+@media(max-width:720px){.gallery-desc{text-align:left}}
+
+/* Highlighting the asset-kit button while hovering an unrelated gallery
+   tile needs to reach outside the gallery entirely (the button lives in
+   the hero and/or the topbar) - a job CSS :has() can do without any JS. */
+.btn[data-role="asset-kit"]{transition:background .16s,color .16s,box-shadow .2s}
+body:has(.tile:hover) .btn[data-role="asset-kit"]{
+  background:var(--amber);color:var(--ink);
+  box-shadow:0 0 0 4px rgba(243,202,32,.22),0 0 26px rgba(243,202,32,.5);
+}
+
+.strip{position:relative;padding:5px 0}
+.track{display:flex;gap:16px;width:max-content;
+  animation:slide var(--dur,60s) linear infinite;will-change:transform}
+.track.rev{animation-direction:reverse}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* Only the strip under the cursor stops; the other two keep moving. */
+.strip:hover .track{animation-play-state:paused}
+/* .track sets will-change, which makes each strip its own stacking context -
+   so lift the whole strip or an enlarged tile hides behind the next strip. */
+.strip:hover{z-index:5}
+
+.tile{position:relative;flex:none;height:clamp(150px,15vw,215px)}
+.tile img{height:100%;width:auto;object-fit:cover;
+  border:1px solid rgba(255,255,255,.09);
+  filter:saturate(.85) brightness(.82);
+  transition:transform .35s cubic-bezier(.4,0,.2,1),filter .35s,border-color .35s}
+.tile:hover{z-index:6}
+.tile:hover img{transform:scale(1.45);filter:saturate(1.05) brightness(1);
+  border-color:var(--amber)}
+/* Strips sit tight together now, so the caption lands over the next strip -
+   the dark pill keeps it readable wherever it falls. */
+.tile figcaption{position:absolute;left:50%;top:100%;translate:-50% 0;
+  margin-top:14px;white-space:nowrap;font-family:var(--mono);font-size:1.05rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--amber);
+  background:rgba(10,10,10,.92);padding:4px 13px;
+  opacity:0;transition:opacity .3s .05s,top .35s cubic-bezier(.4,0,.2,1);
+  pointer-events:none}
+/* Scaling by 1.45 pushes the image 22.5% of its height past the tile box, so
+   the caption drops by the same amount to stay clear of it. */
+.tile:hover figcaption{opacity:1;top:122.5%}
+@media(prefers-reduced-motion:reduce){
+  .track{animation:none}
+  .gallery{overflow-x:auto}
+}
+
+/* ================= 3. ABOUT ================= */
+.about-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(32px,5vw,80px)}
+.about-body p{font-size:1.1rem;max-width:var(--measure)}
+.about-body p + p{margin-top:1.1em}
+/* Swapped by the copy buttons on hover/focus so visitors see exactly what
+   they're about to copy before they click. */
+.preview-tag{font-family:var(--mono);font-size:1rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+/* .fading is toggled in JS a beat before the content actually changes, so
+   this plays as a real fade-out / fade-in rather than an instant swap. */
+.preview-text{transition:opacity .14s ease}
+.preview-text.fading{opacity:0}
+.copy-stack{display:flex;flex-direction:column;gap:12px;align-self:start}
+.copy-stack .label{font-family:var(--mono);font-size:1.02rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.copy-btn{justify-content:space-between;width:100%}
+.copy-btn span:last-child{font-family:var(--mono);opacity:.55;letter-spacing:.1em}
+
+/* ================= 4. HOW TO PLAY ================= */
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
+  border:1px solid var(--rule)}
+.phase{background:var(--ink);padding:28px 24px}
+.phase .n{font-family:var(--mono);font-size:1.5rem;color:var(--amber);
+  letter-spacing:.12em;display:block;margin-bottom:6px}
+.phase p{font-size:.96rem;color:var(--muted)}
+.detect{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);
+  align-items:center;margin-top:clamp(40px,5vw,72px)}
+.detect p{font-size:1.06rem}
+.detect p + p{margin-top:1em}
+.detect .quiet{color:var(--muted);font-style:italic}
+
+/* ================= 5. NOTICES ================= */
+.notices{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,44px)}
+.notice{border-left:2px solid var(--amber);padding:4px 0 4px 26px}
+.notice.warn{border-left-color:var(--blood)}
+.notice p{font-size:1.04rem}
+.notice p + p{margin-top:.7em}
+.bullets{list-style:none;margin-top:.7em}
+.bullets li{position:relative;padding-left:20px;font-size:1.04rem;color:var(--paper)}
+.bullets li + li{margin-top:.25em}
+.bullets li::before{content:'·';position:absolute;left:4px;color:var(--amber)}
+
+/* ================= 6. STUDIO ================= */
+.studio{display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,4vw,56px);
+  align-items:center}
+.studio img.mark{width:clamp(110px,11vw,150px);border:1px solid var(--rule)}
+.crew{display:flex;gap:30px;flex-wrap:wrap;margin:20px 0 24px}
+.crew .role{font-family:var(--mono);font-size:1.02rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.studio-actions{display:flex;gap:12px;flex-wrap:wrap}
+footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
+  font-size:1.02rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+#toast{position:fixed;left:50%;bottom:26px;
+  transform:translateX(-50%) translateY(calc(100% + 26px));
+  opacity:0;visibility:hidden;pointer-events:none;
+  background:var(--amber);color:var(--ink);font-family:var(--disp);font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;padding:11px 24px;z-index:100;
+  transition:transform .25s,opacity .25s,visibility 0s .25s}
+#toast.on{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible;
+  transition:transform .25s,opacity .25s,visibility 0s}
+
+@media(max-width:1000px){
+  .hero-main{grid-template-columns:1fr}
+  .hero-copy{text-align:left}
+  .hero-hook{margin-left:0}
+  .hero-actions{justify-content:flex-start}
+  .about-grid,.detect,.notices,.studio{grid-template-columns:1fr}
+  .loop{grid-template-columns:repeat(2,1fr)}
+  .langs{columns:2}
+}
+@media(max-width:600px){
+  .loop{grid-template-columns:1fr}
+  .langs{columns:1}
+  .facts{grid-template-columns:1fr}
+}

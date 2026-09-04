@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Facility — Press Kit | Veinstone Studios</title>
+<meta name="description" content="Press kit for The Facility, a PSX-inspired psychological horror strategy game by Veinstone Studios.">
+
+<!-- og:image MUST be absolute or scrapers ignore it -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://veinstonestudios.github.io/presskit-v2.html">
+<meta property="og:title" content="The Facility — Press Kit">
+<meta property="og:description" content="Trust no one. Anomalies are hiding among your inmates.">
+<meta property="og:image" content="https://veinstonestudios.github.io/Photos/NewScreenshots/CellInspection.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://veinstonestudios.github.io/Photos/NewScreenshots/CellInspection.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Barlow+Condensed:wght@500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="Fulllogo.png" type="image/png">
+
+<style>
+:root{
+  --ink:#0a0a0a; --panel:#121212; --panel-2:#1a1a1a;
+  --rule:#2e2e2e;
+  --amber:#f3ca20; --amber-dim:rgba(243,202,32,.14);
+  --blood:#8b0000; --paper:#d8d4c8;
+  --text:#e8e6e0; --muted:#8a8a84;
+  --mono:'VT323',ui-monospace,monospace;
+  --disp:'Barlow Condensed',sans-serif;
+  --body:'Lato',system-ui,sans-serif;
+  --maxw:1120px;
+  /* Page gutters. Equal both sides so the rail reads as a margin, not a pin.
+     4vw reaches the 64px cap at ~1600px and holds it on anything wider. */
+  --gut-l:clamp(20px,4vw,64px);
+  --gut-r:clamp(20px,4vw,64px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink); color:var(--text); font-family:var(--body);
+  line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+/* Scanline + vignette. Pure CSS - no image weight. */
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:9999;
+  background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),
+    radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.5) 100%);
+  mix-blend-mode:multiply; opacity:.55;
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+a{color:var(--amber);text-decoration:none}
+
+/* ---------- shared type ---------- */
+.label{font-family:var(--mono);font-size:1.05rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.val{font-family:var(--disp);font-size:1.12rem;font-weight:600;letter-spacing:.02em}
+.stamp{
+  display:inline-block;font-family:var(--mono);font-size:1rem;letter-spacing:.2em;
+  color:var(--amber);border:1px solid var(--amber);padding:1px 9px;
+  text-transform:uppercase;
+}
+.stamp.red{color:#d24b4b;border-color:#7a2020}
+
+/* ---------- two-column shell: sticky fact rail + content ---------- */
+main.shell{
+  max-width:none;margin:0;
+  padding-left:var(--gut-l);padding-right:var(--gut-r);
+  display:grid;grid-template-columns:clamp(250px,20vw,320px) minmax(0,1fr);
+  gap:0 clamp(28px,3.2vw,58px);
+  align-items:start;
+}
+.content{max-width:1300px}
+/* Sections keep their .wrap markup; inside the shell it must not re-constrain. */
+.shell .wrap{max-width:none;padding:0;margin:0}
+.rail{
+  position:sticky;top:22px;padding-top:34px;
+  max-height:calc(100vh - 44px);overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:var(--rule) transparent;
+}
+.rail::-webkit-scrollbar{width:6px}
+.rail::-webkit-scrollbar-thumb{background:var(--rule)}
+.rail .sec{padding:0;border-top:none}
+.rail .sec-head{margin-bottom:16px}
+.rail .sec-title{font-size:1.45rem}
+/* Narrow column - stack each field instead of label-left / value-right. */
+.rail .facts{grid-template-columns:1fr;gap:0}
+.rail .fact{flex-direction:column;align-items:flex-start;gap:0;padding:7px 0}
+.rail .fact .val{text-align:left;font-size:1.05rem}
+.content > section.sec:first-of-type{border-top:none;padding-top:34px}
+
+/* ---------- section headers: themed name + plain subtitle ---------- */
+.sec{padding:56px 0;border-top:1px solid var(--rule)}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+.sec-ref{font-family:var(--mono);color:var(--amber);font-size:1.05rem;letter-spacing:.16em}
+.sec-title{font-family:var(--disp);font-size:1.9rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;line-height:1}
+.sec-sub{font-family:var(--body);font-size:.82rem;color:var(--muted);
+  letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- 1. file header ---------- */
+header.file{
+  position:relative;overflow:hidden;
+  /* The loop is 1170x324 (3.6:1). Keeping the header shortish means object-fit
+     crops less of it horizontally, and keeps the fact sheet near the fold. */
+  min-height:clamp(340px,48vh,470px);
+  display:flex;flex-direction:column;
+  border-bottom:2px solid var(--amber);
+  background:var(--panel);
+}
+.file-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.7) contrast(1.1) brightness(.5);
+  z-index:0;
+}
+.file-veil{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(10,10,10,.88) 0%,rgba(10,10,10,.35) 38%,rgba(10,10,10,.94) 100%),
+    radial-gradient(ellipse at 74% 55%,transparent 0%,rgba(10,10,10,.55) 78%);
+}
+/* Header and footer share the shell's gutters so everything lines up edge to edge. */
+header.file > .wrap,footer.wrap{
+  max-width:none;padding-left:var(--gut-l);padding-right:var(--gut-r);margin:0;
+}
+header.file > .wrap{position:relative;z-index:2;display:flex;flex-direction:column;flex:1;width:100%}
+.file-strip{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:1rem;letter-spacing:.16em;color:var(--muted);
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,.14);text-transform:uppercase;
+}
+.file-body{flex:1;display:flex;flex-direction:column;justify-content:center;
+  align-items:flex-end;text-align:right;padding:44px 0 40px;max-width:62ch;margin-left:auto}
+h1{font-family:var(--disp);font-size:clamp(3rem,8vw,5.4rem);font-weight:700;
+  line-height:.9;letter-spacing:.03em;text-transform:uppercase;
+  text-shadow:0 2px 24px rgba(0,0,0,.8)}
+h1 .thin{display:block;font-size:.26em;letter-spacing:.35em;color:var(--amber);
+  font-weight:500;margin-bottom:.6em;text-shadow:none}
+.hook{font-size:1.18rem;color:var(--paper);margin:18px 0 24px;max-width:46ch;
+  text-shadow:0 1px 12px rgba(0,0,0,.9)}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn{
+  font-family:var(--disp);font-weight:600;font-size:1rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:11px 20px;border:1px solid var(--amber);
+  color:var(--amber);background:transparent;cursor:pointer;transition:.15s;
+}
+.btn:hover{background:var(--amber);color:var(--ink)}
+.btn.solid{background:var(--amber);color:var(--ink)}
+.btn.solid:hover{background:#fff;border-color:#fff}
+.btn.ghost{border-color:var(--rule);color:var(--text)}
+.btn.ghost:hover{border-color:var(--amber);background:transparent;color:var(--amber)}
+/* ---------- 2. fact sheet ---------- */
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px}
+.fact{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+  padding:9px 0;border-bottom:1px dotted var(--rule)}
+.fact .val{text-align:right}
+.fact.flag .val{color:var(--amber)}
+.manifest{margin-top:18px;border:1px solid var(--rule);background:var(--panel)}
+.manifest-head{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  flex-wrap:wrap;padding:11px 14px;cursor:pointer;list-style:none}
+.manifest-head::-webkit-details-marker{display:none}
+.manifest-head::after{content:'+';font-family:var(--mono);color:var(--amber);flex:none}
+.manifest[open] .manifest-head::after{content:'–'}
+.manifest[open] .manifest-head{border-bottom:1px solid var(--rule)}
+.lang-list{list-style:none;columns:1;column-gap:24px;padding:12px 14px;
+  font-family:var(--mono);font-size:1.02rem;letter-spacing:.06em;color:var(--paper)}
+.lang-list li{break-inside:avoid;padding:1px 0}
+.lang-list li::before{content:'· ';color:var(--amber)}
+
+/* ---------- 3. pitch ---------- */
+.pitch{display:grid;gap:16px}
+.pitch-block{border:1px solid var(--rule);background:var(--panel);padding:18px 20px;
+  position:relative}
+.pitch-block .label{display:block;margin-bottom:8px}
+.pitch-block p{max-width:78ch}
+.pitch-block .copy{position:absolute;top:12px;right:12px;font-family:var(--mono);
+  font-size:.95rem;letter-spacing:.1em;background:none;border:1px solid var(--rule);
+  color:var(--muted);padding:2px 9px;cursor:pointer;text-transform:uppercase}
+.pitch-block .copy:hover{color:var(--amber);border-color:var(--amber)}
+
+/* ---------- 4. loop ---------- */
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.phase{border:1px solid var(--rule);border-right:none;padding:20px 18px;background:var(--panel)}
+.phase:last-child{border-right:1px solid var(--rule)}
+.phase-no{font-family:var(--mono);color:var(--amber);font-size:1.5rem;letter-spacing:.1em}
+.phase h3{font-family:var(--disp);font-size:1.3rem;letter-spacing:.06em;
+  text-transform:uppercase;margin:2px 0 8px}
+.phase p{font-size:.92rem;color:var(--muted)}
+.phase.night{background:linear-gradient(180deg,rgba(139,0,0,.18),var(--panel))}
+.phase.night .phase-no{color:#d24b4b}
+
+/* ---------- 5. assets ---------- */
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:30px}
+.shot{border:1px solid var(--rule);background:var(--panel);overflow:hidden}
+.shot img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;
+  filter:saturate(.9);transition:.2s}
+.shot:hover img{filter:saturate(1.1)}
+.shot .meta{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:7px 10px;font-family:var(--mono);font-size:.95rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+.shot .meta a{color:var(--amber)}
+.sub-head{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+.pack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.asset{border:1px solid var(--rule);background:var(--panel-2);padding:14px 16px;
+  display:flex;flex-direction:column;gap:5px}
+.asset .n{font-family:var(--disp);font-size:1.12rem;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase}
+.asset .d{font-size:.85rem;color:var(--muted)}
+.asset .f{font-family:var(--mono);font-size:.95rem;color:var(--amber);letter-spacing:.12em;
+  margin-top:auto;padding-top:8px}
+.asset.hero-asset{border-color:var(--amber);background:var(--amber-dim)}
+
+/* ---------- 6. terms ---------- */
+.terms{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.demo-bar{margin-top:34px;border:1px dashed var(--rule);background:var(--panel);
+  padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.demo-bar .n{font-family:var(--disp);font-size:1.15rem;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase}
+.demo-bar p{font-size:.9rem;color:var(--muted);flex:1;min-width:240px}
+.term{border:1px solid var(--rule);background:var(--panel);padding:18px}
+.term h3{font-family:var(--disp);font-size:1.2rem;letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:10px}
+.term p{font-size:.92rem;color:var(--muted)}
+.term .ok{color:var(--amber);font-family:var(--mono);letter-spacing:.1em}
+
+/* ---------- 7. authority ---------- */
+.auth{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+.auth img{width:120px;border:1px solid var(--rule)}
+.crew{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 18px}
+.crew div{font-size:.9rem}
+.crew .r{font-family:var(--mono);color:var(--muted);letter-spacing:.1em;
+  text-transform:uppercase;font-size:.95rem}
+footer{border-top:1px solid var(--rule);padding:26px 0;font-family:var(--mono);
+  font-size:1rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* Draft markers - delete .pending / .todo rules once everything is filled in */
+.pending{border-style:dashed !important;opacity:.82}
+.todo{color:#d24b4b;font-style:italic;font-size:.88em}
+.asset.pending .f{color:#d24b4b}
+.trailer-embed{position:relative;aspect-ratio:16/9;border:1px solid var(--rule);
+  background:var(--panel);display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;text-align:center;padding:24px}
+.trailer-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* Must clear its own height AND the 24px bottom offset, or a sliver stays on
+   screen. opacity is the belt-and-braces so it can never peek regardless. */
+#toast{position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(calc(100% + 24px));
+  opacity:0;pointer-events:none;visibility:hidden;
+  background:var(--amber);color:var(--ink);font-family:var(--disp);font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;padding:10px 22px;z-index:10000;
+  transition:transform .25s,opacity .25s,visibility 0s .25s}
+#toast.on{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible;
+  transition:transform .25s,opacity .25s,visibility 0s}
+
+@media(max-width:900px){
+  main.shell{grid-template-columns:1fr;gap:0}
+  .rail{position:static;max-height:none;overflow:visible;padding-top:30px}
+  .rail .facts{grid-template-columns:repeat(2,1fr);gap:0 32px}
+  .rail .lang-list{columns:2}
+  .content > section.sec:first-of-type{border-top:1px solid var(--rule)}
+  .auth{grid-template-columns:1fr}
+  .loop,.shots,.pack,.terms{grid-template-columns:1fr}
+  .phase{border-right:1px solid var(--rule);border-bottom:none}
+  .phase:last-child{border-bottom:1px solid var(--rule)}
+  .file-body{max-width:none}
+}
+@media(max-width:560px){
+  .rail .facts{grid-template-columns:1fr}
+  .rail .lang-list{columns:1}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. FILE HEADER ============ -->
+<header class="file">
+  <!-- Swap the loop by changing this one filename: new gf (1)-(4).webm -->
+  <video class="file-bg" id="file-bg" autoplay muted loop playsinline
+         aria-hidden="true" tabindex="-1" preload="auto">
+    <source src="new gf (4).webm" type="video/webm">
+  </video>
+  <div class="file-veil"></div>
+  <div class="wrap">
+    <div class="file-strip">
+    </div>
+    <div class="file-body">
+      <h1>The Facility</h1>
+      <p class="hook">Trust no one. Anomalies are hiding among your inmates.</p>
+      <div class="cta-row">
+        <a class="btn solid" href="https://store.steampowered.com/app/3796790/The_Facility/">Steam Page</a>
+        <a class="btn" href="#archive">Download Assets</a>
+        <a class="btn ghost" href="mailto:veinstonestudios@gmail.com">Press Contact</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+
+<!-- ============ LEFT RAIL — FACT SHEET (sticky) ============ -->
+<aside class="rail">
+<section class="sec" id="facts">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-ref">58-A</span>
+      <h2 class="sec-title">Subject Record</h2>
+      <span class="sec-sub">/ fact sheet</span>
+    </div>
+    <div class="facts">
+      <div class="fact"><span class="label">Title</span><span class="val">The Facility</span></div>
+      <div class="fact"><span class="label">Developer</span><span class="val">Veinstone Studios</span></div>
+      <div class="fact"><span class="label">Genre</span><span class="val">Psychological Horror&nbsp;/&nbsp;Management Sim</span></div>
+      <div class="fact"><span class="label">Platform</span><span class="val">PC — Steam</span></div>
+      <div class="fact"><span class="label">Players</span><span class="val">Singleplayer</span></div>
+      <div class="fact flag"><span class="label">Release date</span><span class="val">Q4 2026</span></div>
+      <div class="fact"><span class="label">Runtime</span><span class="val">TBA</span></div>
+      <div class="fact"><span class="label">Steam</span><span class="val"><a href="https://store.steampowered.com/app/3796790/The_Facility/">store.steampowered.com&nbsp;↗</a></span></div>
+      <div class="fact"><span class="label">Press contact</span><span class="val"><a href="mailto:veinstonestudios@gmail.com">veinstonestudios@gmail.com</a></span></div>
+    </div>
+
+    <details class="manifest">
+      <summary class="manifest-head">
+        <span class="label">Localisation</span>
+        <span class="stamp">32 languages</span>
+      </summary>
+      <ul class="lang-list">
+        <li>English</li><li>Turkish</li><li>French</li><li>Italian</li><li>German</li>
+        <li>Spanish — Spain</li><li>Spanish — Latin America</li><li>Portuguese — Brazil</li>
+        <li>Portuguese — Portugal</li><li>Dutch</li><li>Danish</li><li>Norwegian</li>
+        <li>Swedish</li><li>Finnish</li><li>Polish</li><li>Czech</li><li>Hungarian</li>
+        <li>Romanian</li><li>Bulgarian</li><li>Greek</li><li>Croatian</li><li>Serbian</li>
+        <li>Ukrainian</li><li>Russian</li><li>Azerbaijani</li><li>Simplified Chinese</li>
+        <li>Traditional Chinese</li><li>Japanese</li><li>Korean</li><li>Thai</li>
+        <li>Vietnamese</li><li>Indonesian</li>
+      </ul>
+    </details>
+  </div>
+</section>
+</aside>
+
+<!-- ============ RIGHT COLUMN — CONTENT ============ -->
+<div class="content">
+
+<div class="demo-bar">
+  <span class="n">Playable demo</span>
+  <span class="stamp red">Not yet available</span>
+  <p><em class="todo">TODO — replace with the Steam demo link once it's live. Planned for Steam
+    Next Fest, 19–26 October 2026.</em></p>
+</div>
+
+<!-- ============ PITCH ============ -->
+<section class="sec" id="pitch">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-ref">58-B</span>
+      <h2 class="sec-title">Statement of Purpose</h2>
+      <span class="sec-sub">/ descriptions — click to copy</span>
+    </div>
+    <div class="pitch">
+      <div class="pitch-block pending">
+        <button class="copy">Copy</button>
+        <span class="label">One line <span class="stamp red">Pending</span></span>
+        <p>TODO — one quotable sentence under 15 words, naming the genre. This is the line that
+          ends up in video descriptions and news headlines, so it's the most-copied field here.</p>
+      </div>
+      <div class="pitch-block">
+        <button class="copy">Copy</button>
+        <span class="label">Short</span>
+        <p>Trust no one. In this PSX-inspired horror game, anomalies are hiding among your inmates.
+          It is your job to expose them before you accidentally deploy them into the world. Can you
+          tell the difference between a human and an anomaly?</p>
+      </div>
+      <div class="pitch-block">
+        <button class="copy">Copy</button>
+        <span class="label">Long</span>
+        <p>The Facility is a psychological horror strategy game with a retro PSX aesthetic. Set in a
+          world on the brink of collapse, you play as the newly appointed warden of Facility 61.
+          Your job is to manage a rehabilitation center for subjects required by the State for
+          dangerous reconstruction missions.</p>
+        <p style="margin-top:.8em">However, not everyone in your custody is human. Hidden among the
+          inmates are Anomalies — mimics capable of disguising themselves as humans. Your survival
+          depends on your ability to identify and contain these threats before they infiltrate the
+          State's workforce.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. DAILY LOOP ============ -->
+<section class="sec" id="loop">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-ref">58-C</span>
+      <h2 class="sec-title">Duty Roster</h2>
+      <span class="sec-sub">/ how it plays</span>
+    </div>
+    <div class="loop">
+      <div class="phase">
+        <div class="phase-no">01</div><h3>Orders</h3>
+        <p>The State faxes your quota at dawn. How many bodies, and for what.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-no">02</div><h3>Interrogation</h3>
+        <p>Question inmates face to face. Cross-check documents. Watch for what doesn't sit right.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-no">03</div><h3>Selection</h3>
+        <p>Choose who ships out. A human wasted is a resource lost. An Anomaly loosed is worse.</p>
+      </div>
+      <div class="phase night">
+        <div class="phase-no">04</div><h3>Night</h3>
+        <p>What you decided comes back. Survive until morning and do it again.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. MEDIA ARCHIVE ============ -->
+<section class="sec" id="archive">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-ref">58-D</span>
+      <h2 class="sec-title">Media Archive</h2>
+      <span class="sec-sub">/ screenshots, video &amp; creator assets</span>
+    </div>
+
+    <h3 class="sub-head"><span class="label">Screenshots</span> <span class="stamp red">Not packaged</span></h3>
+    <div class="shots">
+      <figure class="shot">
+        <img src="Photos/NewScreenshots/CellInspection.jpg" alt="Inspecting an inmate through the cell hatch">
+        <figcaption class="meta"><span>Cell inspection</span><a href="Photos/NewScreenshots/CellInspection.jpg" download>PNG ↓</a></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="Photos/NewScreenshots/JournalSystem.jpg" alt="The journal used to cross-reference inmate testimony">
+        <figcaption class="meta"><span>Journal system</span><a href="Photos/NewScreenshots/JournalSystem.jpg" download>PNG ↓</a></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="Photos/NewScreenshots/NpcSelection.jpg" alt="Choosing which inmates to deploy on the State's assignment">
+        <figcaption class="meta"><span>Selection</span><a href="Photos/NewScreenshots/NpcSelection.jpg" download>PNG ↓</a></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="Photos/NewScreenshots/TapeRecorder.jpg" alt="A tape recorder used to review a prior interrogation">
+        <figcaption class="meta"><span>Tape recorder</span><a href="Photos/NewScreenshots/TapeRecorder.jpg" download>PNG ↓</a></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="Photos/NewScreenshots/Waking Up !.jpg" alt="Waking up in the warden's quarters at the start of a shift">
+        <figcaption class="meta"><span>Morning shift</span><a href="Photos/NewScreenshots/Waking Up !.jpg" download>PNG ↓</a></figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="Photos/NewScreenshots/JournalSystem.jpg" alt="Placeholder — replace with a sixth screenshot">
+        <figcaption class="meta"><span>TODO — 6th shot</span><a href="#" download>PNG ↓</a></figcaption>
+      </figure>
+    </div>
+
+    <h3 class="sub-head"><span class="label">Teaser trailer</span> <span class="stamp">Ready</span></h3>
+    <div class="trailer-embed">
+      <p class="todo">TODO — paste the YouTube embed here once the teaser is uploaded to
+        @RealVeinstoneStudios. Embedding beats the self-hosted 70&nbsp;MB MP4: YouTube carries the
+        bandwidth and the video becomes a second discovery surface.</p>
+      <a class="btn ghost" href="https://www.youtube.com/@RealVeinstoneStudios">YouTube channel ↗</a>
+    </div>
+
+    <h3 class="sub-head"><span class="label">Creator asset pack</span> <span class="stamp red">In preparation</span></h3>
+    <div class="pack">
+      <div class="asset hero-asset pending">
+        <span class="n">Capsule — layered</span>
+        <span class="d">Steam capsule with layers intact, so you can reflow it into a video thumbnail.</span>
+        <span class="f">.PSD · pending</span>
+      </div>
+      <div class="asset hero-asset pending">
+        <span class="n">Anomaly cutout</span>
+        <span class="d">Transparent, high-res. Drop it straight onto a thumbnail.</span>
+        <span class="f">.PNG · pending</span>
+      </div>
+      <div class="asset pending">
+        <span class="n">Logo &amp; title text</span>
+        <span class="d">Transparent background, light and dark variants, title separate from mark.</span>
+        <span class="f">.PNG · pending</span>
+      </div>
+      <div class="asset pending">
+        <span class="n">Raw b-roll</span>
+        <span class="d">90 seconds of uncut gameplay. No music, no overlays, no captions.</span>
+        <span class="f">.MP4 · pending</span>
+      </div>
+      <div class="asset pending">
+        <span class="n">GIF pack</span>
+        <span class="d">Short loops for socials and article embeds.</span>
+        <span class="f">.GIF · pending</span>
+      </div>
+      <div class="asset pending">
+        <span class="n">Everything</span>
+        <span class="d">The full archive in one download, if you'd rather not pick.</span>
+        <span class="f">.ZIP · pending</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. TERMS ============ -->
+<section class="sec" id="terms">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-ref">58-E</span>
+      <h2 class="sec-title">Terms of Engagement</h2>
+      <span class="sec-sub">/ for streamers &amp; video creators</span>
+    </div>
+    <div class="terms">
+      <div class="term">
+        <h3>Audio safety</h3>
+        <p><span class="ok">✓ CLEARED</span><br>All audio in The Facility is original and
+          stream-safe. No DMCA concerns.</p>
+      </div>
+      <div class="term">
+        <h3>Content advisory</h3>
+        <p><span class="stamp red">Advisory</span><br>The Facility contains flashing lights and
+          body horror. <em class="todo">TODO — finish this sentence; creators use it to judge
+          advertiser-friendliness.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. AUTHORITY ============ -->
+<section class="sec" id="studio">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-ref">58-F</span>
+      <h2 class="sec-title">Issuing Authority</h2>
+      <span class="sec-sub">/ studio &amp; contact</span>
+    </div>
+    <div class="auth">
+      <img src="Logowithbackground.png" alt="Veinstone Studios logo">
+      <div>
+        <p>Veinstone Studios is an indie team in Ankara, Turkey, currently building
+          <em>The Facility</em>.</p>
+        <div class="crew">
+          <div><div class="r">3D Artist</div>Naz Sökmen</div>
+          <div><div class="r">Developer</div>Huzeyfe Celep</div>
+          <div><div class="r">2D Artist</div>Selin Pektaş</div>
+        </div>
+        <div class="cta-row">
+          <a class="btn solid" href="mailto:veinstonestudios@gmail.com">veinstonestudios@gmail.com</a>
+          <a class="btn ghost" href="https://www.youtube.com/@RealVeinstoneStudios">YouTube</a>
+          <a class="btn ghost" href="https://www.instagram.com/veinstonestudios">Instagram</a>
+          <a class="btn ghost" href="https://www.tiktok.com/@veinstonestudios">TikTok</a>
+          <a class="btn ghost" href="index.html">Studio Site</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.content -->
+</main>
+
+<footer class="wrap">
+</footer>
+
+<div id="toast">Copied</div>
+
+<script>
+document.querySelectorAll('.pitch-block .copy').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const text=btn.parentElement.querySelector('p').innerText.trim();
+    navigator.clipboard.writeText(text).then(()=>{
+      const t=document.getElementById('toast');
+      t.textContent='Copied — '+text.split(/\s+/).length+' words';
+      t.classList.add('on'); clearTimeout(t._id);
+      t._id=setTimeout(()=>t.classList.remove('on'),1800);
+    });
+  });
+});
+document.getElementById('rev').textContent =
+  new Date().toISOString().slice(0,7).replace('-','.');
+
+</script>
+</body>
+</html>
