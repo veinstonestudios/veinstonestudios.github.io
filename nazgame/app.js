@@ -131,6 +131,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/bob.png",
         reading: 16,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Heyoooo! Naber?",
             "Arkadaşım buranın dışında çöküş olduğunu söylüyor. Ama onu şu an dinleyemem, puzzle’ı tamamlamam lazım.",
@@ -148,6 +149,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/ted-karinsky.png",
         reading: 92,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Gerçekleri örtbas ederek makalemi yayımlamamı engellediler. Ben ise yayımladım.",
             "Gerçekler, siyasetin veya kamu düzeninin ihtiyaçlarına göre değiştirilemez.",
@@ -165,6 +167,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "very_high",
         image: "characters/m-cole-morgan.png",
         reading: 32,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Karımı ve kızımı dışarıdaki tehlikeden korumak istiyorum. Buradan ne kadar erken çıkarsam o kadar iyi.",
             "Hâlâ kendi tamirhanemi açma hayalim var. Buradaki görevler bu hayalimi kamçılıyor.",
@@ -182,6 +185,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/alicia-winston.png",
         reading: null,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Zamanında birilerine çok güvendim. Artık kimseye o kadar güvenemiyorum.",
             "Buranın kütüphanesindeki kitaplar çok sıkıcı. Aradığım hiçbir kitabı bulamıyorum.",
@@ -199,6 +203,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/evie-hill.png?v=3",
         reading: 86,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Birileri odama girip eşyalarımı karıştırıyor. Onu yakalarsam fena yapacağım.",
             "Bu tesis gereğinden fazla mı soğuk, yoksa bir tek benim hücrem mi böyle?",
@@ -216,6 +221,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/dakota-ahmadii.png?v=3",
         reading: null,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Yemekhanede çıkardığım kavga için özür dilerim ama o gün yemekte ıspanak olması sinirlerimi feci gerdi.",
             "Sesten ötürü üzgünüm, Warden. Ispanak bende gaz yapıyor.",
@@ -233,6 +239,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "very_high",
         image: "characters/hasan-kahveci.png",
         reading: 19,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Gittiğimiz görevlerden para kazanıyor muyuz? Buradan cebim dolu çıkmak istiyorum.",
             "Hayır, o kısa kollu kıyafetlerden giymeyeceğim. Böyle iyiyim.",
@@ -250,6 +257,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/katarina-jovanovic.png",
         reading: 28,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Ne bakıyorsun? Gıcık mı oldun?",
             "İplerimle arama girilmesinden hoşlanmam.",
@@ -267,6 +275,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/milena-marvic.png",
         reading: 8,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Bugün çok kötü görünüyorum. Fanlarım beni böyle görmediği için mutluyum.",
             "Şu mektuplara bir bakın! Herkes benim bir an önce sahnelere geri dönmemi istiyor gibi.",
@@ -284,6 +293,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/shane-smith.png",
         reading: 78,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Ne bakıyovsun lan? Komik biv şev mi vav?",
             "Kimseyle konuşmak istemiyovum. Rahat bıvak beni.",
@@ -301,6 +311,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "low",
         image: "characters/paul-h-simmons.png",
         reading: 88,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Vay Henry Başkan. Seni görmeyeli uzun zaman olmuştu.",
             "Tesiste beğendiğim bir fıstık var. Onun da beni beğendiğini biliyorum.",
@@ -318,6 +329,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/sergio-galvez.png",
         reading: 42,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Herkesle anlaşabilmek gibi garip bir huya sahibim. Sanırım bende şeytan tüyü var, hehehe.",
             "Gelenekselliğe ayak uyduramayanları anlamıyorum. Zaten teknolojilerle aram yok.",
@@ -335,6 +347,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "medium",
         image: "characters/father-gregory.png",
         reading: 84,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Affedersin, Warden. İncil okumaya daldım, sizi fark edemedim.",
             "Tanrı bizi gözetliyor. Burada veya dışarıda yaşanan hiçbir şey gizli kalmaz.",
@@ -352,6 +365,7 @@ const FACILITY_61_ROSTER = [
         taskCompetency: "high",
         image: "characters/nina-grace.png?v=3",
         reading: 14,
+        voiceTestReaction: "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
         dialogues: [
             "Bugün hava çok güzel. İçeride yağlı boya tabloma mı devam etsem yoksa müzik mi dinlesem?",
             "Birkaç sene önce ailemle hayatımın en güzel kışını geçirmiştim. O zamanlar kar yağarken içtiğim sıcak çikolatayı ve evimin manzarasını resmettim.",
@@ -434,6 +448,8 @@ function generateManifest() {
             isTested: false,
             brainTestCompleted: false,
             voiceTestCompleted: false,
+            voiceReactionShown: false,
+            voiceTestReaction: p.voiceTestReaction || "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
             isDead: false,
             isExecuted: false,
             isMissing: false,
@@ -467,6 +483,7 @@ let gameState = {
     newlyInterred: [],
     revealPersonId: null,
     activeConversationId: null,
+    activeVoiceReactionId: null,
     debugMode: false
 };
 
@@ -518,6 +535,7 @@ function loadSavedGameState() {
                         image: canonical.image,
                         dialogues: canonical.dialogues,
                         secretIdentity: canonical.secretIdentity,
+                        voiceTestReaction: canonical.voiceTestReaction || "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
 
                         // Dynamic state data
                         arrivalDay: saved.arrivalDay !== undefined ? saved.arrivalDay : (DAILY_INTERVIEW_SCHEDULE[1].includes(canonical.id) ? 1 : null),
@@ -530,6 +548,7 @@ function loadSavedGameState() {
                         isTested: isTested,
                         brainTestCompleted: isTested,
                         voiceTestCompleted: Boolean(saved.voiceTestCompleted),
+                        voiceReactionShown: Boolean(saved.voiceReactionShown),
                         isDead: Boolean(saved.isDead),
                         isExecuted: Boolean(saved.isExecuted),
                         isMissing: Boolean(saved.isMissing),
@@ -768,6 +787,7 @@ function initGame() {
         newlyInterred: [],
         revealPersonId: null,
         activeConversationId: null,
+        activeVoiceReactionId: null,
         debugMode: isDebug
     };
 
@@ -854,6 +874,22 @@ function closeVoicePlayer() {
     stopVoiceAudio();
     const modal = document.getElementById("voice-player-modal");
     if (modal) modal.classList.add("hidden");
+}
+
+function showVoiceReaction(personId) {
+    const person = findPerson(personId);
+    if (!person || person.isDead) return;
+    person.voiceReactionShown = true;
+    gameState.activeVoiceReactionId = person.id;
+    saveGameState();
+    renderPersonnel();
+}
+
+function closeVoiceReaction(personId) {
+    if (gameState.activeVoiceReactionId === personId || !personId) {
+        gameState.activeVoiceReactionId = null;
+    }
+    renderPersonnel();
 }
 
 function toggleVoicePlay() {
@@ -945,6 +981,11 @@ function openVoicePlayer(person) {
             if (playBtn) playBtn.innerHTML = "▶ OYNAT";
             reels.forEach(r => r.classList.remove("spinning"));
             if (progressBar) progressBar.style.width = "100%";
+
+            const targetPerson = findPerson(person.id);
+            if (targetPerson && !targetPerson.voiceReactionShown) {
+                showVoiceReaction(targetPerson.id);
+            }
         });
 
         audio.addEventListener("error", (e) => {
@@ -1826,6 +1867,19 @@ function buildRosterCard(person, stage) {
         </div>
     `;
 
+    const isVoiceReactionActive = gameState.activeVoiceReactionId === person.id;
+    let voiceReactionHtml = "";
+    if (isVoiceReactionActive && !isDead) {
+        const reactionText = person.voiceTestReaction || "Kaka yaparken kayıt aldım, o yüzden cızırtılı.";
+        voiceReactionHtml = `
+            <div class="voice-reaction-panel">
+                <button class="voice-reaction-close" onclick="event.stopPropagation(); closeVoiceReaction('${person.id}');" title="Kapat">✕</button>
+                <div class="voice-reaction-speaker">${person.name.toUpperCase()}</div>
+                <div class="voice-reaction-text">“${reactionText}”</div>
+            </div>
+        `;
+    }
+
     card.innerHTML = `
         <div class="card-badges-top-right">
             ${readingHtml}
@@ -1838,6 +1892,7 @@ function buildRosterCard(person, stage) {
         ${competencyHtml}
         ${inlineDialogueHtml}
         <div class="card-status-tags">${buttonOrTagHtml}</div>
+        ${voiceReactionHtml}
     `;
 
     const gaugeEl = card.querySelector(".tested-brain-badge");
