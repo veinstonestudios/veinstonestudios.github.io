@@ -2679,48 +2679,6 @@ body {
     cursor: pointer;
 }
 
-/* Task Competency Badges */
-.person-competency {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    margin: 4px 0 6px 0;
-    padding: 2px 6px;
-    border-radius: 4px;
-    display: inline-block;
-}
-
-.competency-low {
-    color: #f85149 !important;
-    background: rgba(248, 81, 73, 0.15) !important;
-    border: 1px solid rgba(248, 81, 73, 0.35) !important;
-}
-
-.competency-medium {
-    color: #e3b341 !important;
-    background: rgba(227, 179, 65, 0.15) !important;
-    border: 1px solid rgba(227, 179, 65, 0.35) !important;
-}
-
-.competency-high {
-    color: #3fb950 !important;
-    background: rgba(63, 185, 80, 0.15) !important;
-    border: 1px solid rgba(63, 185, 80, 0.35) !important;
-}
-
-.competency-very_high {
-    color: #22d3ee !important;
-    background: rgba(34, 211, 238, 0.15) !important;
-    border: 1px solid rgba(34, 211, 238, 0.35) !important;
-}
-
-.pill-competency {
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin: 0 4px;
-}
 
 /* ==========================================================================
    MINI DISPATCH GUIDE (GÖREV REHBERİ)
@@ -2857,18 +2815,7 @@ body {
     line-height: 1.35;
 }
 
-.guide-competency-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 6px;
-}
 
-.guide-competency-pills .person-competency {
-    margin: 0;
-    font-size: 0.66rem;
-    padding: 1px 5px;
-}
 
 .guide-item-note {
     margin: 0;

@@ -15,11 +15,12 @@
 //
 // Formula: dialogueIndex = Math.min(Math.max(currentDay - character.introducedDay, 0), character.dialogues.length - 1)
 //
-// TASK COMPETENCY SYSTEM:
-// - low: 25, medium: 50, high: 75, very_high: 95
-// - baseSuccessChance = average of selected characters' competency scores
-// - corruptedPenalty = corruptedCount * 10
-// - finalSuccessChance = Math.max(10, Math.min(95, baseSuccessChance - corruptedPenalty))
+// MISSION SUCCESS SYSTEM (HUMAN vs CORRUPTED):
+// - Base Success Chance: 35%
+// - Each Human: +30%
+// - Each Corrupted: -25%
+// - calculatedSuccessChance = 35 + (humanCount * 30) - (corruptedCount * 25)
+// - finalSuccessChance = Math.max(10, Math.min(95, calculatedSuccessChance))
 //
 // DAY 1 FLOW (NO TESTING STAGE ON DAY 1):
 // Day 1: Tanışma -> Görev Sevki -> Rapor (No test stage, no guide button)
@@ -86,206 +87,54 @@ const DAILY_DISPATCH_QUOTA = {
     7: 3
 };
 
-// Task Competency Definitions & Scores
-const COMPETENCY_LABELS = {
-    low: "DÜŞÜK",
-    medium: "ORTA",
-    high: "YÜKSEK",
-    very_high: "ÇOK YÜKSEK"
-};
-
-const COMPETENCY_SCORES = {
-    low: 25,
-    medium: 50,
-    high: 75,
-    very_high: 95
-};
-
-// Daily Field Missions with per-character competency tables
+// Daily Field Missions
 const DAILY_TASKS = {
     1: {
         id: "task_day1_mechanical",
         day: 1,
         title: "Mekanik Onarım ve Jeneratör Bakımı",
-        desc: "Tesisin arızalanan yedek jeneratör ünitesini ve havalandırma motorlarını sahada yeniden çalışır hâle getirme görevi.",
-        competencyByCharacter: {
-            "m-cole-morgan": "very_high",
-            "shane-smith": "very_high",
-            "dakota-ahmadii": "very_high",
-            "sergio-galvez": "high",
-            "paul-h-simmons": "high",
-            "alicia-winston": "high",
-            "evie-hill": "high",
-            "hasan-kahveci": "medium",
-            "nina-grace": "medium",
-            "father-gregory": "medium",
-            "ted-karinsky": "medium",
-            "bob": "low",
-            "milena-marvic": "low",
-            "katarina-jovanovic": "low"
-        }
+        desc: "Tesisin arızalanan yedek jeneratör ünitesini ve havalandırma motorlarını sahada yeniden çalışır hâle getirme görevi."
     },
     2: {
         id: "task_day2_archive",
         day: 2,
         title: "Arşiv Kayıtları ve Teknik Analiz",
-        desc: "Eski tesis kütüphanesindeki şifreli evrakları, kimyasal envanter listelerini ve log kayıtlarını inceleme görevi.",
-        competencyByCharacter: {
-            "ted-karinsky": "very_high",
-            "alicia-winston": "very_high",
-            "nina-grace": "very_high",
-            "katarina-jovanovic": "high",
-            "father-gregory": "high",
-            "m-cole-morgan": "high",
-            "milena-marvic": "high",
-            "sergio-galvez": "medium",
-            "evie-hill": "medium",
-            "hasan-kahveci": "medium",
-            "dakota-ahmadii": "medium",
-            "bob": "low",
-            "shane-smith": "low",
-            "paul-h-simmons": "low"
-        }
+        desc: "Eski tesis kütüphanesindeki şifreli evrakları, kimyasal envanter listelerini ve log kayıtlarını inceleme görevi."
     },
     3: {
         id: "task_day3_logistics",
         day: 3,
         title: "Dış Saha Lojistik ve Erzak Sevkiyatı",
-        desc: "Kırsal tedarik rotasından ağır yük ve kritik gıda erzaklarını güvenli biçimde tesise ulaştırma görevi.",
-        competencyByCharacter: {
-            "hasan-kahveci": "very_high",
-            "shane-smith": "very_high",
-            "evie-hill": "very_high",
-            "dakota-ahmadii": "high",
-            "sergio-galvez": "high",
-            "bob": "high",
-            "paul-h-simmons": "high",
-            "m-cole-morgan": "medium",
-            "alicia-winston": "medium",
-            "father-gregory": "medium",
-            "katarina-jovanovic": "medium",
-            "ted-karinsky": "low",
-            "milena-marvic": "low",
-            "nina-grace": "low"
-        }
+        desc: "Kırsal tedarik rotasından ağır yük ve kritik gıda erzaklarını güvenli biçimde tesise ulaştırma görevi."
     },
     4: {
         id: "task_day4_diplomacy",
         day: 4,
         title: "Yerel Temas ve İnsani İkna Operasyonu",
-        desc: "Çevre bölgedeki yerel sakinlerle temas kurarak gerilimi yatıştırma, moral sağlama ve kritik bilgi toplama görevi.",
-        competencyByCharacter: {
-            "katarina-jovanovic": "very_high",
-            "father-gregory": "very_high",
-            "sergio-galvez": "very_high",
-            "milena-marvic": "high",
-            "hasan-kahveci": "high",
-            "alicia-winston": "high",
-            "evie-hill": "high",
-            "bob": "medium",
-            "nina-grace": "medium",
-            "paul-h-simmons": "medium",
-            "dakota-ahmadii": "medium",
-            "m-cole-morgan": "low",
-            "ted-karinsky": "low",
-            "shane-smith": "low"
-        }
+        desc: "Çevre bölgedeki yerel sakinlerle temas kurarak gerilimi yatıştırma, moral sağlama ve kritik bilgi toplama görevi."
     },
     5: {
         id: "task_day5_reconnaissance",
         day: 5,
         title: "Saha Gözlemi ve Görsel Denetim",
-        desc: "Tesis çevresindeki ormanlık sınırlarda anomali izlerini, güvenlik kör noktalarını ve çevre anomalilerini haritalama görevi.",
-        competencyByCharacter: {
-            "nina-grace": "very_high",
-            "dakota-ahmadii": "very_high",
-            "ted-karinsky": "very_high",
-            "katarina-jovanovic": "high",
-            "alicia-winston": "high",
-            "hasan-kahveci": "high",
-            "paul-h-simmons": "high",
-            "sergio-galvez": "medium",
-            "m-cole-morgan": "medium",
-            "shane-smith": "medium",
-            "bob": "medium",
-            "evie-hill": "low",
-            "milena-marvic": "low",
-            "father-gregory": "low"
-        }
+        desc: "Tesis çevresindeki ormanlık sınırlarda anomali izlerini, güvenlik kör noktalarını ve çevre anomalilerini haritalama görevi."
     },
     6: {
         id: "task_day6_medical",
         day: 6,
         title: "Sıhhiye ve Tesis Sağlık Karantinası",
-        desc: "Saha barınaklarında hijyen kontrolü, yaralı bakımı, kimyasal temizlik ve tıbbi tecrit sağlama görevi.",
-        competencyByCharacter: {
-            "sergio-galvez": "very_high",
-            "alicia-winston": "very_high",
-            "evie-hill": "very_high",
-            "katarina-jovanovic": "high",
-            "father-gregory": "high",
-            "m-cole-morgan": "high",
-            "hasan-kahveci": "high",
-            "dakota-ahmadii": "medium",
-            "shane-smith": "medium",
-            "nina-grace": "medium",
-            "milena-marvic": "medium",
-            "bob": "low",
-            "ted-karinsky": "low",
-            "paul-h-simmons": "low"
-        }
+        desc: "Saha barınaklarında hijyen kontrolü, yaralı bakımı, kimyasal temizlik ve tıbbi tecrit sağlama görevi."
     },
     7: {
         id: "task_day7_emergency",
         day: 7,
         title: "Kritik Kriz Operasyonu ve Tahliye Hazırlığı",
-        desc: "Son günde tesisi dış dünyadan gelecek teftişe ve olası felakete karşı koordine etme, ekipmanları tahliyeye hazır kılma görevi.",
-        competencyByCharacter: {
-            "m-cole-morgan": "very_high",
-            "ted-karinsky": "very_high",
-            "katarina-jovanovic": "very_high",
-            "hasan-kahveci": "high",
-            "shane-smith": "high",
-            "sergio-galvez": "high",
-            "dakota-ahmadii": "high",
-            "nina-grace": "medium",
-            "alicia-winston": "medium",
-            "father-gregory": "medium",
-            "evie-hill": "medium",
-            "bob": "low",
-            "milena-marvic": "low",
-            "paul-h-simmons": "low"
-        }
+        desc: "Son günde tesisi dış dünyadan gelecek teftişe ve olası felakete karşı koordine etme, ekipmanları tahliyeye hazır kılma görevi."
     }
 };
 
 function getCurrentTask(day = (typeof gameState !== "undefined" && gameState ? gameState.day : 1)) {
     return DAILY_TASKS[day] || DAILY_TASKS[1];
-}
-
-function getCharacterTaskCompetency(task, personOrId) {
-    if (!task) task = getCurrentTask();
-    if (!task || !task.competencyByCharacter) return "medium";
-    const id = (typeof personOrId === "string") ? personOrId : (personOrId && personOrId.id ? personOrId.id : "");
-    if (!id) return "medium";
-
-    if (task.competencyByCharacter[id]) {
-        return task.competencyByCharacter[id];
-    }
-    // Camelcase fallback e.g. "ted-karinsky" -> "tedKarinsky"
-    const camelId = id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-    if (task.competencyByCharacter[camelId]) {
-        return task.competencyByCharacter[camelId];
-    }
-    // Kebab case fallback if camelCase id was provided e.g. "tedKarinsky" -> "ted-karinsky"
-    const kebabId = id.replace(/([A-Z])/g, "-$1").toLowerCase();
-    if (task.competencyByCharacter[kebabId]) {
-        return task.competencyByCharacter[kebabId];
-    }
-    if (typeof personOrId === "object" && personOrId && personOrId.taskCompetency) {
-        return personOrId.taskCompetency;
-    }
-    return "medium";
 }
 
 // Electric Chair & Riot Days
@@ -322,7 +171,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "İşsiz",
-        taskCompetency: "low",
         image: "characters/bob.png",
         reading: 16,
         voiceTestReaction: "En sevdiğim pastel boyamın tadını anlatmayı unuttum.",
@@ -340,7 +188,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Eski Akademisyen",
-        taskCompetency: "high",
         image: "characters/ted-karinsky.png",
         reading: 92,
         voiceTestReaction: "Odamda çok eşya olmadığı için ses yankılı gelebilir.",
@@ -358,7 +205,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Otomobil Tamircisi",
-        taskCompetency: "very_high",
         image: "characters/m-cole-morgan.png",
         reading: 32,
         voiceTestReaction: "Kendi sesini duymak biraz utanç verici.",
@@ -376,7 +222,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Kız",
         role: "Edebiyat Mezunu",
-        taskCompetency: "medium",
         image: "characters/alicia-winston.png",
         reading: null,
         voiceTestReaction: "Evet..? Beklediğiniz gibi mi?",
@@ -394,7 +239,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Kız",
         role: "Garson",
-        taskCompetency: "medium",
         image: "characters/evie-hill.png?v=3",
         reading: 86,
         voiceTestReaction: "Grip salgınını yeni yeni atlatıyorum. Sesimin kusuruna bakma.",
@@ -412,7 +256,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Random",
         gender: "Erkek",
         role: "Obezite Hastası",
-        taskCompetency: "low",
         image: "characters/dakota-ahmadii.png?v=3",
         reading: null,
         voiceTestReaction: "Kaydı bir daha deneyebilir miyiz? Olmadı sanki.",
@@ -430,7 +273,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Egzotik Hayvan Tüccarı",
-        taskCompetency: "very_high",
         image: "characters/hasan-kahveci.png",
         reading: 19,
         voiceTestReaction: "Boyuma aldanma Warden, içimde bir aslan yatıyor.",
@@ -448,7 +290,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Kız",
         role: "Psikoloji Eğitimli Ev Hanımı",
-        taskCompetency: "high",
         image: "characters/katarina-jovanovic.png",
         reading: 28,
         voiceTestReaction: "Kayıt cihazı örgüme takıldı.",
@@ -466,7 +307,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Eski Ünlü Müzisyen",
-        taskCompetency: "low",
         image: "characters/milena-marvic.png",
         reading: 8,
         voiceTestReaction: "Bu cihaz cızırdıyor! Doğru düzgün bir kayıt cihazı yok mu?",
@@ -484,7 +324,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Market Çalışanı",
-        taskCompetency: "medium",
         image: "characters/shane-smith.png",
         reading: 78,
         voiceTestReaction: "Kaseti neveden aldınız Wavden? Bu cihaz için uygun boyda devil.",
@@ -502,7 +341,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Sokak Performansçısı",
-        taskCompetency: "low",
         image: "characters/paul-h-simmons.png",
         reading: 88,
         voiceTestReaction: "Buradan çıkınca bu şarkıyı gitarla çalacağım.",
@@ -520,7 +358,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Erkek",
         role: "Huzurevi Çalışanı",
-        taskCompetency: "high",
         image: "characters/sergio-galvez.png",
         reading: 42,
         voiceTestReaction: "Hmm. Unuttuğum bir şey var mı?",
@@ -538,7 +375,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Corrupted",
         gender: "Erkek",
         role: "Din Adamı",
-        taskCompetency: "medium",
         image: "characters/father-gregory.png",
         reading: 84,
         voiceTestReaction: "İşiniz bittiyse istirahat edebilir miyim?",
@@ -556,7 +392,6 @@ const FACILITY_61_ROSTER = [
         secretIdentity: "Human",
         gender: "Kız",
         role: "Çizer",
-        taskCompetency: "high",
         image: "characters/nina-grace.png?v=3",
         reading: 14,
         voiceTestReaction: "Sesimin güzel olduğunu sanıyordum da bu ne böyle?",
@@ -725,7 +560,6 @@ function loadSavedGameState() {
                         name: canonical.name,
                         role: canonical.role,
                         gender: canonical.gender,
-                        taskCompetency: canonical.taskCompetency,
                         image: canonical.image,
                         dialogues: canonical.dialogues,
                         secretIdentity: canonical.secretIdentity,
@@ -897,7 +731,7 @@ function requiredTeamSize() {
 }
 
 // ==========================================
-// MISSION RESOLUTION (TASK COMPETENCY BASED)
+// MISSION RESOLUTION (HUMAN vs CORRUPTED SYSTEM)
 // ==========================================
 function resolveMission(teamOrTask, maybeTeam) {
     let task = null;
@@ -916,29 +750,16 @@ function resolveMission(teamOrTask, maybeTeam) {
         task = getCurrentTask();
     }
 
-    const size = team.length;
-    const anomalyCount = team.filter(p => p.isAnomaly).length;
+    const humanCount = team.filter(p => !p.isAnomaly).length;
+    const corruptedCount = team.filter(p => p.isAnomaly).length;
 
-    // 1. Calculate Base Success Chance from Selected Characters' Task Competency Scores
-    const selectedScores = team.map(character => {
-        const level = getCharacterTaskCompetency(task, character);
-        return COMPETENCY_SCORES[level] || 50;
-    });
-
-    const baseSuccessChance = selectedScores.length > 0
-        ? (selectedScores.reduce((sum, score) => sum + score, 0) / size)
-        : 50;
-
-    // 2. Apply Corrupted Penalty (10 points per Corrupted)
-    const corruptedPenalty = anomalyCount * 10;
-    const calculatedSuccessChance = baseSuccessChance - corruptedPenalty;
-
-    // 3. Clamp final success chance strictly between 10% and 95%
+    // Base chance: 35%, +30% per human, -25% per corrupted
+    const calculatedSuccessChance = 35 + (humanCount * 30) - (corruptedCount * 25);
     const finalSuccessChance = Math.max(10, Math.min(95, Math.round(calculatedSuccessChance)));
 
     const missingPeople = [];
 
-    const humanLossChance = 0.15 + (anomalyCount * 0.10);
+    const humanLossChance = 0.15 + (corruptedCount * 0.10);
     const humans = team.filter(p => !p.isAnomaly);
     if (humans.length > 0 && Math.random() < humanLossChance) {
         const lostHuman = humans[Math.floor(Math.random() * humans.length)];
@@ -956,20 +777,12 @@ function resolveMission(teamOrTask, maybeTeam) {
 
     let explanation;
     if (isSuccess) {
-        if (anomalyCount > 0) {
-            explanation = "Ekipte anomali şüphesi bulunmasına rağmen operasyon tamamlandı.";
-        } else {
-            explanation = "Ekibin yüksek operasyon yetkinliği görevin tamamlanmasını sağladı.";
-        }
+        explanation = "Operasyon başarıyla tamamlandı ve hedeflere ulaşıldı.";
     } else {
-        if (anomalyCount > 0 && baseSuccessChance >= 60) {
-            explanation = "Yeterli uzmanlık bulunmasına rağmen ekip içindeki anomali etkisi operasyonu aksattı.";
-        } else {
-            explanation = "Ekibin operasyon yetkinliği görev için yetersiz kaldı.";
-        }
+        explanation = "Operasyon sırasında karşılaşılan aksilikler nedeniyle görev başarısız oldu.";
     }
 
-    return { isSuccess, missingPeople, explanation, finalSuccessChance, baseSuccessChance };
+    return { isSuccess, missingPeople, explanation, finalSuccessChance, humanCount, corruptedCount };
 }
 
 // ==========================================
@@ -2080,18 +1893,6 @@ function buildRosterCard(person, stage) {
         buttonOrTagHtml += `<span class="tag tag-team">✅ Görevde</span>`;
     }
 
-    let competencyHtml = "";
-    if (stage === STAGE.DISPATCH && (person.introduced || person.isIntroduced) && !isDead && person.arrivalDay !== null && person.arrivalDay <= gameState.day) {
-        const currentTask = getCurrentTask();
-        const compLevel = getCharacterTaskCompetency(currentTask, person);
-        const competencyLabel = COMPETENCY_LABELS[compLevel] || "ORTA";
-        competencyHtml = `
-            <div class="person-competency competency-${compLevel}">
-                BU GÖREVDEKİ YETKİNLİK: ${competencyLabel}
-            </div>
-        `;
-    }
-
     const isVoiceReactionActive = gameState.activeVoiceReactionId === person.id;
     let voiceReactionHtml = "";
     if (isVoiceReactionActive && !isDead) {
@@ -2114,7 +1915,6 @@ function buildRosterCard(person, stage) {
         ${avatarHtml}
         <div class="person-name">${person.name}${debugHtml}</div>
         <div class="person-role">${person.role}</div>
-        ${competencyHtml}
         ${inlineDialogueHtml}
         <div class="card-status-tags">${buttonOrTagHtml}</div>
         ${voiceReactionHtml}
@@ -2346,12 +2146,8 @@ function renderStagePanel() {
                 const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
                 const displayRole = person.introduced ? person.role : "—";
                 const readingText = person.isTested ? "Test Edildi ⚡" : "Test Edilmedi";
-                const compLevel = getCharacterTaskCompetency(currentTask, person);
-                const competencyText = person.introduced
-                    ? `<span class="pill-competency competency-${compLevel}">${COMPETENCY_LABELS[compLevel]}</span>`
-                    : "";
 
-                pill.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${competencyText}<span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
+                pill.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span><span class="pill-reading">${readingText}</span><span class="btn-remove-pill" title="Çıkar">&times;</span>`;
                 const removeBtn = pill.querySelector(".btn-remove-pill");
                 if (removeBtn) {
                     removeBtn.addEventListener("click", (e) => {
@@ -2447,7 +2243,6 @@ function showExecutionReveal(person) {
 }
 
 function showMissionResultModal(isSuccess, explanation, team, missingPeople = []) {
-    const currentTask = gameState.lastTask || getCurrentTask();
     document.getElementById("result-title").textContent = `GÜN ${gameState.day} GÖREV RAPORU`;
     const badge = document.getElementById("result-badge");
     badge.textContent = isSuccess ? "GÖREV BAŞARILI ✅" : "GÖREV BAŞARISIZ ❌";
@@ -2462,16 +2257,12 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
         row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
         const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
         const displayRole = person.introduced ? person.role : "—";
-        const compLevel = getCharacterTaskCompetency(currentTask, person);
-        const competencyText = person.introduced
-            ? `<span class="badge competency-${compLevel}" style="margin-right:6px;">${COMPETENCY_LABELS[compLevel]}</span>`
-            : "";
         const statusBadge = isMissing
             ? (person.isAnomaly
                 ? `<span class="badge badge-missing" style="color: var(--accent-orange);">🚪 Kaçtı / Firar</span>`
                 : `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`)
             : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü (Kontrol Bekliyor)</span>`;
-        row.innerHTML = `<span><strong>${displayName}</strong> (${displayRole}) ${competencyText}</span>${statusBadge}`;
+        row.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${statusBadge}`;
         breakdownList.appendChild(row);
     });
 
