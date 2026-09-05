@@ -180,22 +180,24 @@ const MAX_MISSION_FAILURES = 3;
 
 // Stage Definitions
 const STAGE = {
-    INTRO:     "intro",
-    ARRIVAL:   "arrival",
-    MEETING:   "meeting",
-    TESTING:   "testing",
-    EXECUTION: "execution",
-    DISPATCH:  "dispatch",
-    REPORT:    "report"
+    INTRO:         "intro",
+    ARRIVAL:       "arrival",
+    MEETING:       "meeting",
+    VOICE_ARCHIVE: "voice_archive",
+    TESTING:       "testing",
+    EXECUTION:     "execution",
+    DISPATCH:      "dispatch",
+    REPORT:        "report"
 };
 
 const STAGE_INFO = {
-    arrival:   { label: "GÖRÜŞME PROGRAMI", clock: "08:00", next: "TANIŞMA AŞAMASINA GEÇ" },
-    meeting:   { label: "TANIŞMA",          clock: "09:00", next: "TEST AŞAMASINA GEÇ" },
-    testing:   { label: "TEST",             clock: "13:00", next: "GÖREV AŞAMASINA GEÇ" },
-    execution: { label: "İNFAZ",            clock: "15:00", next: "GÖREV AŞAMASINA GEÇ" },
-    dispatch:  { label: "GÖREV SEVKİ",      clock: "16:00", next: null },
-    report:    { label: "GÜN RAPORU",       clock: "18:00", next: null }
+    arrival:       { label: "GÖRÜŞME PROGRAMI", clock: "08:00", next: "TANIŞMA AŞAMASINA GEÇ" },
+    meeting:       { label: "TANIŞMA",          clock: "09:00", next: "TEST AŞAMASINA GEÇ" },
+    voice_archive: { label: "SES KAYITLARI",    clock: "12:00", next: "GÖREV SEÇİMİNE DEVAM ET" },
+    testing:       { label: "TEST",             clock: "13:00", next: "GÖREV AŞAMASINA GEÇ" },
+    execution:     { label: "İNFAZ",            clock: "15:00", next: "GÖREV AŞAMASINA GEÇ" },
+    dispatch:      { label: "GÖREV SEVKİ",      clock: "16:00", next: null },
+    report:        { label: "GÜN RAPORU",       clock: "18:00", next: null }
 };
 
 // ---- 14 FIXED INMATES DATA (CANONICAL ASSETS) ----------------
@@ -512,6 +514,7 @@ function generateManifest() {
             isTested: false,
             brainTestCompleted: false,
             voiceTestCompleted: false,
+            voiceRecordingAvailable: false,
             voiceReactionShown: false,
             voiceTestReaction: p.voiceTestReaction || "Kaka yaparken kayıt aldım, o yüzden cızırtılı.",
             isDead: false,
@@ -540,9 +543,11 @@ let gameState = {
     day3BriefingShown: false,
     brainTestGuideSeen: false,
     voiceTestGuideSeen: false,
+    firstDayGuardMessageShown: false,
+    firstDayVoiceArchiveOpened: false,
     selectedTeam: [],
     tiredMap: {},
-    missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
+    missionStats: { success: 0, fail: 0, total: 0, missionDeaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
     lastArrivals: [],
     newlyInterred: [],
     revealPersonId: null,
@@ -572,6 +577,9 @@ function loadSavedGameState() {
                     savedMap[key] = p;
                 });
 
+                parsed.firstDayGuardMessageShown = Boolean(parsed.firstDayGuardMessageShown);
+                parsed.firstDayVoiceArchiveOpened = Boolean(parsed.firstDayVoiceArchiveOpened);
+
                 parsed.manifest = FACILITY_61_ROSTER.map((canonical, idx) => {
                     const saved = savedMap[canonical.id] || savedMap[canonical.name] || parsed.manifest[idx] || {};
 
@@ -588,6 +596,9 @@ function loadSavedGameState() {
                             : (introduced ? introducedDay : null));
 
                     const isTested = Boolean(saved.isTested || saved.brainTestCompleted);
+                    const isFirstFour = FIRST_DAY_CHARACTER_IDS.includes(canonical.id);
+                    const voiceTestCompleted = Boolean(saved.voiceTestCompleted || (isFirstFour && parsed.firstDayVoiceArchiveOpened));
+                    const voiceRecordingAvailable = Boolean(saved.voiceRecordingAvailable || (isFirstFour && parsed.firstDayVoiceArchiveOpened));
 
                     return {
                         // Canonical static data (NEVER overwritten by old save!)
@@ -610,7 +621,8 @@ function loadSavedGameState() {
                         isMet: introduced,
                         isTested: isTested,
                         brainTestCompleted: isTested,
-                        voiceTestCompleted: Boolean(saved.voiceTestCompleted),
+                        voiceTestCompleted: voiceTestCompleted,
+                        voiceRecordingAvailable: voiceRecordingAvailable,
                         voiceReactionShown: Boolean(saved.voiceReactionShown),
                         isDead: Boolean(saved.isDead),
                         isExecuted: Boolean(saved.isExecuted),
@@ -862,10 +874,12 @@ function initGame() {
         day3BriefingShown: false,
         brainTestGuideSeen: false,
         voiceTestGuideSeen: false,
+        firstDayGuardMessageShown: false,
+        firstDayVoiceArchiveOpened: false,
         riotConsecutiveDays: 0,
         selectedTeam: [],
         tiredMap: {},
-        missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
+        missionStats: { success: 0, fail: 0, total: 0, missionDeaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0 },
         lastArrivals: day1Ids,
         newlyInterred: [],
         revealPersonId: null,
@@ -899,6 +913,53 @@ function logEvent(message, type = "system") {
     entry.className = `log-entry ${type}`;
     entry.innerHTML = `<small>[GÜN ${gameState.day}]</small> ${message}`;
     logsContainer.prepend(entry);
+}
+
+// ==========================================
+// GUARD BRIEFING & DAY 1 VOICE ARCHIVE CONTROLS
+// ==========================================
+const FIRST_DAY_CHARACTER_IDS = ["bob", "ted-karinsky", "m-cole-morgan", "alicia-winston"];
+
+function checkFirstDayGuardTrigger() {
+    if (gameState.day !== 1 || gameState.firstDayGuardMessageShown) return;
+
+    const allFourIntroduced = FIRST_DAY_CHARACTER_IDS.every(id => {
+        const p = findPerson(id);
+        return p && Boolean(p.introduced || p.isIntroduced);
+    });
+
+    if (allFourIntroduced) {
+        FIRST_DAY_CHARACTER_IDS.forEach(id => {
+            const p = findPerson(id);
+            if (p) {
+                p.voiceRecordingAvailable = true;
+                p.voiceTestCompleted = true;
+            }
+        });
+        openGuardModal();
+    }
+}
+
+function openGuardModal() {
+    const modal = document.getElementById("guard-modal");
+    if (modal) modal.classList.remove("hidden");
+}
+
+function closeGuardModalAndOpenArchive() {
+    const modal = document.getElementById("guard-modal");
+    if (modal) modal.classList.add("hidden");
+    gameState.firstDayGuardMessageShown = true;
+    gameState.firstDayVoiceArchiveOpened = true;
+    gameState.stage = STAGE.VOICE_ARCHIVE;
+    saveGameState();
+    renderAll();
+}
+
+function proceedFromArchiveToDispatch() {
+    gameState.stage = STAGE.DISPATCH;
+    logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
+    saveGameState();
+    renderAll();
 }
 
 // ==========================================
@@ -1195,9 +1256,28 @@ function advanceStage() {
 
         case STAGE.MEETING:
             if (gameState.day === 1) {
-                // Day 1 has NO testing stage: Tanışma -> Görev Sevki
-                gameState.stage = STAGE.DISPATCH;
-                logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin. (Test sistemi 2. gün açılır)`, "system");
+                const allFourIntroduced = FIRST_DAY_CHARACTER_IDS.every(id => {
+                    const p = findPerson(id);
+                    return p && Boolean(p.introduced || p.isIntroduced);
+                });
+                if (allFourIntroduced && !gameState.firstDayGuardMessageShown) {
+                    FIRST_DAY_CHARACTER_IDS.forEach(id => {
+                        const p = findPerson(id);
+                        if (p) {
+                            p.voiceRecordingAvailable = true;
+                            p.voiceTestCompleted = true;
+                        }
+                    });
+                    openGuardModal();
+                    return;
+                }
+                if (gameState.firstDayVoiceArchiveOpened) {
+                    gameState.stage = STAGE.VOICE_ARCHIVE;
+                    logEvent("Önceden alınmış ses kayıtları arşivi açıldı.", "system");
+                } else {
+                    gameState.stage = STAGE.DISPATCH;
+                    logEvent(`Görev sevki açıldı. Bugün ${requiredTeamSize()} kişi göndermelisin.`, "system");
+                }
             } else {
                 gameState.stage = STAGE.TESTING;
                 logEvent(`Test aşaması açıldı. Test maliyeti: ⚡${ENERGY_COST.TEST} enerji.`, "system");
@@ -1208,6 +1288,10 @@ function advanceStage() {
                 }
             }
             break;
+
+        case STAGE.VOICE_ARCHIVE:
+            proceedFromArchiveToDispatch();
+            return;
 
         case STAGE.TESTING:
             if (canExecuteToday()) {
@@ -1354,6 +1438,7 @@ function introducePerson(personId) {
 
     saveGameState();
     renderAll();
+    checkFirstDayGuardTrigger();
 }
 
 function speakToPerson(personId) {
@@ -1440,6 +1525,11 @@ function handleCardClick(personId) {
                 speakToPerson(person.id);
             } else {
                 flashNotice(`${person.name} ile bugün zaten konuşuldu.`);
+            }
+            break;
+        case STAGE.VOICE_ARCHIVE:
+            if (person.voiceTestCompleted || person.voiceRecordingAvailable) {
+                playVoiceRecord(person.id);
             }
             break;
         case STAGE.TESTING:
@@ -1855,6 +1945,7 @@ function buildRosterCard(person, stage) {
     let actionable = false;
     if (!isDead && isUnlocked) {
         if (stage === STAGE.MEETING) actionable = canTalk;
+        else if (stage === STAGE.VOICE_ARCHIVE) actionable = Boolean(person.voiceTestCompleted || person.voiceRecordingAvailable);
         else if (stage === STAGE.TESTING) {
             const canVoice = (gameState.day >= 2) && !person.voiceTestCompleted && (gameState.energy >= ENERGY_COST.VOICE_TEST);
             const canBrain = (gameState.day >= 3) && !person.isTested && (gameState.energy >= ENERGY_COST.TEST);
@@ -1919,12 +2010,10 @@ function buildRosterCard(person, stage) {
     let inlineDialogueHtml = "";
     if (isConversing && !isDead) {
         inlineDialogueHtml = `
-            <div class="inline-dialogue-active-container">
-                <div class="inline-dialogue-speech">
-                    <span class="dialogue-stage-chip" style="background:var(--accent-blue); color:#fff;">G${dIndex + 1}</span>
-                    💬 "${currentSpeech}"
-                </div>
-                <div class="inline-dialogue-actions">
+            <div class="inmate-speech-bubble">
+                <div class="speech-quote">“${currentSpeech}”</div>
+                <div class="speech-footer">
+                    <span class="speech-counter">Diyalog ${dIndex + 1} / 5</span>
                     <button class="btn btn-close-dialogue" onclick="event.stopPropagation(); closeDialogue('${person.id}');">
                         Kapat ✕
                     </button>
@@ -1965,6 +2054,12 @@ function buildRosterCard(person, stage) {
         }
 
         buttonOrTagHtml = `${voiceBtnHtml}${brainBtnHtml}`;
+    } else if (stage === STAGE.VOICE_ARCHIVE) {
+        if (person.voiceTestCompleted || person.voiceRecordingAvailable) {
+            buttonOrTagHtml = `<button class="btn btn-action-card btn-tag-voice-recorded" onclick="event.stopPropagation(); playVoiceRecord('${person.id}');" title="Ses Kaydını Dinle">📼 KAYDI DİNLE</button>`;
+        } else {
+            buttonOrTagHtml = `<span class="tag tag-met">Ses Kaydı Yok</span>`;
+        }
     } else if (spokenToday) {
         buttonOrTagHtml = `<span class="tag tag-spoken-today">✓ BUGÜN KONUŞULDU</span>`;
     } else if (canTalk) {
@@ -2110,6 +2205,8 @@ function renderStagePanel() {
     if (pArrival) pArrival.classList.toggle("hidden", stage !== STAGE.ARRIVAL);
     const pMeeting = document.getElementById("panel-meeting");
     if (pMeeting) pMeeting.classList.toggle("hidden", stage !== STAGE.MEETING);
+    const pVoiceArchive = document.getElementById("panel-voice-archive");
+    if (pVoiceArchive) pVoiceArchive.classList.toggle("hidden", stage !== STAGE.VOICE_ARCHIVE);
     const pTesting = document.getElementById("panel-testing");
     if (pTesting) pTesting.classList.toggle("hidden", stage !== STAGE.TESTING);
     const pExecution = document.getElementById("panel-execution");
@@ -2122,7 +2219,9 @@ function renderStagePanel() {
     const advanceBtn = document.getElementById("btn-advance-stage");
     let nextText = null;
     if (stage === STAGE.MEETING) {
-        nextText = (gameState.day === 1) ? "GÖREV AŞAMASINA GEÇ" : "TEST AŞAMASINA GEÇ";
+        nextText = (gameState.day === 1) ? (gameState.firstDayVoiceArchiveOpened ? "SES KAYITLARINA GEÇ" : "GÖREV AŞAMASINA GEÇ") : "TEST AŞAMASINA GEÇ";
+    } else if (stage === STAGE.VOICE_ARCHIVE) {
+        nextText = "GÖREV SEÇİMİNE DEVAM ET";
     } else if (stage === STAGE.TESTING) {
         nextText = canExecuteToday() ? "İNFAZ AŞAMASINA GEÇ" : "GÖREV AŞAMASINA GEÇ";
     } else {
@@ -2135,6 +2234,32 @@ function renderStagePanel() {
         advanceBtn.textContent = nextText;
     } else {
         advanceBtn.classList.add("hidden");
+    }
+
+    // ---- Voice Archive (Day 1 Intermediate Stage) ----
+    if (stage === STAGE.VOICE_ARCHIVE) {
+        const list = document.getElementById("voice-archive-list");
+        if (list) {
+            list.innerHTML = "";
+            FIRST_DAY_CHARACTER_IDS.forEach(id => {
+                const person = findPerson(id);
+                if (!person) return;
+                const row = document.createElement("div");
+                row.className = "voice-archive-item";
+                row.innerHTML = `
+                    <div class="voice-archive-info">
+                        <div class="voice-archive-avatar">
+                            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
+                        </div>
+                        <div class="voice-archive-name">${person.name}</div>
+                    </div>
+                    <button class="btn btn-action-card btn-tag-voice-recorded" onclick="playVoiceRecord('${person.id}');" title="Ses Kaydını Dinle">
+                        📼 KAYDI DİNLE
+                    </button>
+                `;
+                list.appendChild(row);
+            });
+        }
     }
 
     // ---- Arrival ----
@@ -2328,6 +2453,24 @@ function showExecutionReveal(person) {
     modal.classList.remove("hidden");
 }
 
+function closeModals() {
+    const testModal = document.getElementById("test-reveal-modal");
+    if (testModal) testModal.classList.add("hidden");
+    const resultModal = document.getElementById("mission-result-modal");
+    if (resultModal) resultModal.classList.add("hidden");
+    const execModal = document.getElementById("execution-reveal-modal");
+    if (execModal) execModal.classList.add("hidden");
+    const guideModal = document.getElementById("brain-guide-modal");
+    if (guideModal) closeBrainTestGuide();
+    const voiceGuideModal = document.getElementById("voice-guide-modal");
+    if (voiceGuideModal) closeVoiceTestGuide();
+    const guardModal = document.getElementById("guard-modal");
+    if (guardModal && !guardModal.classList.contains("hidden")) {
+        closeGuardModalAndOpenArchive();
+    }
+    closeVoicePlayer();
+}
+
 function showMissionResultModal(isSuccess, explanation, team, casualties = []) {
     document.getElementById("result-title").textContent = `GÜN ${gameState.day} GÖREV RAPORU`;
     const badge = document.getElementById("result-badge");
@@ -2351,20 +2494,6 @@ function showMissionResultModal(isSuccess, explanation, team, casualties = []) {
     });
 
     document.getElementById("mission-result-modal").classList.remove("hidden");
-}
-
-function closeModals() {
-    const testModal = document.getElementById("test-reveal-modal");
-    if (testModal) testModal.classList.add("hidden");
-    const resultModal = document.getElementById("mission-result-modal");
-    if (resultModal) resultModal.classList.add("hidden");
-    const execModal = document.getElementById("execution-reveal-modal");
-    if (execModal) execModal.classList.add("hidden");
-    const guideModal = document.getElementById("brain-guide-modal");
-    if (guideModal) closeBrainTestGuide();
-    const voiceGuideModal = document.getElementById("voice-guide-modal");
-    if (voiceGuideModal) closeVoiceTestGuide();
-    closeVoicePlayer();
 }
 
 function showGameOver(reason = "complete") {
@@ -2441,9 +2570,10 @@ async function computeSha256(text) {
 
 async function verifyAccessKey(inputKey) {
     const cleanKey = (inputKey || "").trim().toLowerCase();
+    if (!cleanKey) return false;
     if (cleanKey === "muhusena") return true;
-    const hash = await computeSha256(cleanKey);
-    return hash === FACILITY_PASS_HASH;
+    const computed = await computeSha256(cleanKey);
+    return computed === FACILITY_PASS_HASH;
 }
 
 function setupAuthGate() {
@@ -2453,27 +2583,27 @@ function setupAuthGate() {
     const authError = document.getElementById("auth-error-msg");
     const authBox = document.querySelector(".auth-box");
 
-    function startOrResume() {
-        const saved = loadSavedGameState();
-        if (saved) {
-            gameState = saved;
-            if (new URLSearchParams(window.location.search).has("debug")) {
-                gameState.debugMode = true;
-            }
-            if (gameState.stage === STAGE.INTRO) {
-                document.getElementById("intro-overlay").classList.remove("hidden");
-            } else {
-                document.getElementById("intro-overlay").classList.add("hidden");
-            }
-            renderAll();
-        } else {
-            initGame();
-        }
-    }
+    if (!authGate) return;
 
-    if (!authGate || !authForm) {
-        startOrResume();
-        return;
+    function startOrResume() {
+        authGate.classList.add("authenticated");
+        authGate.classList.add("auth-unlocked");
+        setTimeout(() => {
+            authGate.classList.add("hidden");
+            const hasExisting = Boolean(localStorage.getItem(SAVE_KEY));
+            if (hasExisting) {
+                const loaded = loadSavedGameState();
+                if (loaded) {
+                    gameState = loaded;
+                    renderAll();
+                    if (gameState.day === 1 && gameState.stage === STAGE.MEETING) {
+                        checkFirstDayGuardTrigger();
+                    }
+                    return;
+                }
+            }
+            initGame();
+        }, 500);
     }
 
     if (sessionStorage.getItem("thefacility_unlocked") === "1") {
@@ -2486,12 +2616,11 @@ function setupAuthGate() {
     if (authInput) authInput.focus();
 
     async function handleUnlock() {
-        const enteredKey = authInput.value.trim();
-        if (!enteredKey) return;
-
-        if (await verifyAccessKey(enteredKey)) {
+        const val = authInput ? authInput.value.trim() : "";
+        if (!val) return;
+        const isValid = await verifyAccessKey(val);
+        if (isValid) {
             sessionStorage.setItem("thefacility_unlocked", "1");
-            authGate.classList.add("authenticated");
             startOrResume();
         } else {
             if (authError) authError.classList.remove("hidden");
@@ -2505,7 +2634,9 @@ function setupAuthGate() {
         }
     }
 
-    authForm.addEventListener("submit", (e) => { e.preventDefault(); handleUnlock(); });
+    if (authForm) {
+        authForm.addEventListener("submit", (e) => { e.preventDefault(); handleUnlock(); });
+    }
     if (authInput) {
         authInput.addEventListener("input", () => {
             if (authError) authError.classList.add("hidden");
@@ -2522,6 +2653,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-begin-campaign").addEventListener("click", beginCampaign);
     document.getElementById("btn-advance-stage").addEventListener("click", advanceStage);
     document.getElementById("btn-dispatch").addEventListener("click", dispatchMission);
+
+    const btnGuardConfirm = document.getElementById("btn-guard-confirm");
+    if (btnGuardConfirm) btnGuardConfirm.addEventListener("click", closeGuardModalAndOpenArchive);
+    const btnArchiveProceed = document.getElementById("btn-archive-proceed-dispatch");
+    if (btnArchiveProceed) btnArchiveProceed.addEventListener("click", proceedFromArchiveToDispatch);
 
     const btnOpenGuide = document.getElementById("btn-open-guide-modal");
     if (btnOpenGuide) btnOpenGuide.addEventListener("click", openBrainTestGuide);
@@ -2727,7 +2863,7 @@ function simulateSingleGame(botType) {
         // ---- MEETING ----
         let energy = MAX_DAILY_ENERGY;
         let unmet = present.filter(p => !p.introduced && !p.isIntroduced);
-        unmet.slice(0, 3).forEach(p => {
+        unmet.slice(0, 4).forEach(p => {
             if (energy >= 2) {
                 p.introduced = true;
                 p.isIntroduced = true;
@@ -2738,6 +2874,16 @@ function simulateSingleGame(botType) {
                 energy -= 2;
             }
         });
+
+        if (day === 1) {
+            FIRST_DAY_CHARACTER_IDS.forEach(id => {
+                const p = manifest.find(x => x.id === id);
+                if (p && p.introduced) {
+                    p.voiceRecordingAvailable = true;
+                    p.voiceTestCompleted = true;
+                }
+            });
+        }
 
         // ---- TESTING (Day 2: Voice Test, Day 3+: Voice & Brain Test) ----
         if (day >= 2 && botType !== "random") {

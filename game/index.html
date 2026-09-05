@@ -274,6 +274,25 @@
                         </div>
                     </div>
 
+                    <!-- VOICE ARCHIVE (DAY 1 INTERMEDIATE STAGE) -->
+                    <div id="panel-voice-archive" class="stage-content hidden">
+                        <div class="box-title"><span class="icon">🎙️</span><h3>ÖNCEDEN ALINMIŞ SES KAYITLARI</h3></div>
+                        <p class="box-desc">
+                            Bugün tanıştığınız dört mahkûmun kabul sırasında alınan ses kayıtlarını inceleyebilirsiniz.
+                        </p>
+                        <div class="voice-archive-list" id="voice-archive-list"></div>
+                        <div class="rules-card" style="margin-top: 12px;">
+                            <div class="rule-title">Kayıt İnceleme:</div>
+                            <ul>
+                                <li>Bu kayıtlar tesise kabul sırasında alınmıştır ve <strong>enerji harcatmaz</strong>.</li>
+                                <li>Kayıtları dinlemek zorunlu değildir; istediğiniz zaman göreve devam edebilirsiniz.</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-primary btn-full-width" id="btn-archive-proceed-dispatch" style="margin-top: 14px; padding: 12px 16px; font-weight: 700; width: 100%;">
+                            GÖREV SEÇİMİNE DEVAM ET ➔
+                        </button>
+                    </div>
+
                     <!-- TESTING -->
                     <div id="panel-testing" class="stage-content hidden">
                         <div class="box-title"><span class="icon">🧬</span><h3>TEST AŞAMASI</h3></div>
@@ -514,6 +533,31 @@
                         ✕ KAPAT
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUARD BRIEFING MODAL (DAY 1 ONLY) -->
+    <div class="modal-overlay hidden" id="guard-modal">
+        <div class="modal-card guard-modal-card">
+            <div class="guard-modal-header">
+                <span class="guard-badge">GÜVENLİK BİLGİLENDİRMESİ // PROTOKOL</span>
+            </div>
+            <div class="guard-modal-body">
+                <div class="guard-avatar-container">
+                    <img src="characters/guard.png" alt="Güvenlik Görevlisi" class="guard-avatar-img" onerror="console.warn('Eksik dosya yolu: /characters/guard.png'); this.style.display='none';" />
+                </div>
+                <div class="guard-content">
+                    <h3 class="guard-title">GÜVENLİK GÖREVLİSİ</h3>
+                    <p class="guard-speech">
+                        Bay Henry, bugün tanıştığınız mahkûmların ses testleri önceden yapıldı. Buradan kontrol edebilirsiniz.
+                    </p>
+                </div>
+            </div>
+            <div class="guard-modal-footer">
+                <button class="btn btn-primary btn-guard-confirm" id="btn-guard-confirm">
+                    ANLADIM
+                </button>
             </div>
         </div>
     </div>
