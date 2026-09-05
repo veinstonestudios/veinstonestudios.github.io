@@ -56,17 +56,35 @@ const ENERGY_COST = {
 // Mission Success Probability Lookup Table
 const MISSION_SUCCESS_RATES = {
     "1h_0c": 80,
-    "0h_1c": 25,
+    "0h_1c": 20,
 
-    "2h_0c": 90,
+    "2h_0c": 95,
     "1h_1c": 50,
-    "0h_2c": 20,
+    "0h_2c": 0,
 
-    "3h_0c": 95,
+    "3h_0c": 100,
     "2h_1c": 75,
-    "1h_2c": 35,
-    "0h_3c": 15
+    "1h_2c": 25,
+    "0h_3c": 0
 };
+
+// Mission Operation Atmosphere Logs (Neutral - never leak identity)
+const MISSION_FAILURE_REASONS = [
+    "Operasyon bölgesine erişim sağlanamadı.",
+    "Ekipman arızası nedeniyle çalışma durduruldu.",
+    "Yapısal çökme nedeniyle ekip geri çekildi.",
+    "Bölgedeki tehlike seviyesi kabul edilebilir sınırı aştı.",
+    "Gerekli malzeme belirtilen konumda bulunamadı.",
+    "İletişim kesintisi nedeniyle tahliye emri verildi."
+];
+
+const MISSION_DEATH_REASONS = [
+    "Operasyon sırasında meydana gelen yapısal çökme ölümle sonuçlandı.",
+    "Kontrolsüz bir makine arızası ölümle sonuçlandı.",
+    "Personel, tehlikeli maddeye maruz kaldı.",
+    "Tahliye sırasında ölümcül bir kaza meydana geldi.",
+    "Operasyon bölgesindeki saldırı sonucunda personel kaybedildi."
+];
 
 // Voice Test Sound File Mapping (Canonical Roster IDs to Local MP3 Assets)
 const VOICE_TEST_FILES = {
@@ -664,8 +682,6 @@ function isResting(personId) {
 
 function getCharacterCurrentStatus(person) {
     if (person.isExecuted) return "İnfaz edildi";
-    if (person.isEscaped) return "Kaçtı";
-    if (person.isMissing) return "Kayıp";
     if (person.isDead) return "Öldü";
     if (person.pendingReturnCheck) return "Dönüş kontrolü bekliyor";
     if (isResting(person.id)) return "Dinleniyor";
@@ -777,33 +793,48 @@ function resolveMission(teamOrTask, maybeTeam, maybeDay) {
     const corruptedCount = team.filter(p => p.isAnomaly).length;
     const teamKey = `${humanCount}h_${corruptedCount}c`;
 
-    const finalSuccessChance = MISSION_SUCCESS_RATES[teamKey] !== undefined
+    const successChance = MISSION_SUCCESS_RATES[teamKey] !== undefined
         ? MISSION_SUCCESS_RATES[teamKey]
-        : Math.max(10, Math.min(95, 35 + (humanCount * 30) - (corruptedCount * 25)));
+        : 50;
 
-    const isSuccess = (Math.random() * 100) < finalSuccessChance;
-    const missingPeople = [];
+    const isSuccess = successChance === 100
+        ? true
+        : successChance === 0
+            ? false
+            : (Math.random() * 100) < successChance;
+
+    let casualty = null;
+    const casualties = [];
     let explanation;
 
     if (isSuccess) {
-        explanation = "Operasyon başarıyla tamamlandı ve hedeflere ulaşıldı.";
+        explanation = "Operasyon tamamlandı.\nGörevlendirilen personel Facility 61’e geri döndü.";
     } else {
-        if (day <= 1) {
-            // Day 1 tutorial protection: no death or escape
-            explanation = "Operasyon tamamlanamadı.";
+        const casualtyAllowed = day > 1;
+        const casualtyOccurs = casualtyAllowed && (Math.random() < 0.25) && team.length > 0;
+
+        if (casualtyOccurs) {
+            casualty = team[Math.floor(Math.random() * team.length)];
+            casualties.push(casualty);
+            const reason = MISSION_DEATH_REASONS[Math.floor(Math.random() * MISSION_DEATH_REASONS.length)];
+            explanation = `Operasyon tamamlanamadı.\n${casualty.name} görev sırasında hayatını kaybetti.\n${reason}`;
         } else {
-            // 75% all return, 25% single random loss
-            if (Math.random() < 0.25 && team.length > 0) {
-                const lostPerson = team[Math.floor(Math.random() * team.length)];
-                missingPeople.push(lostPerson);
-                explanation = `Operasyon tamamlanamadı.\n${lostPerson.name} geri dönmedi.`;
-            } else {
-                explanation = "Operasyon tamamlanamadı.";
-            }
+            const reason = MISSION_FAILURE_REASONS[Math.floor(Math.random() * MISSION_FAILURE_REASONS.length)];
+            explanation = `Operasyon tamamlanamadı.\nEkip Facility 61’e geri döndü.\n${reason}`;
         }
     }
 
-    return { isSuccess, missingPeople, explanation, finalSuccessChance, humanCount, corruptedCount };
+    return {
+        isSuccess,
+        casualty,
+        casualties,
+        missingPeople: casualties,
+        explanation,
+        finalSuccessChance: successChance,
+        successChance,
+        humanCount,
+        corruptedCount
+    };
 }
 
 // ==========================================
@@ -1558,28 +1589,21 @@ function dispatchMission() {
 
     const currentTask = getCurrentTask();
     let isSuccess;
-    let missingPeople = [];
+    let casualties = [];
     let explanation;
 
     if (understrength) {
         isSuccess = false;
-        explanation = "Sahaya sürecek yeterli mahkûm kalmadı. Görev daha başlamadan başarısız sayıldı.";
+        explanation = "Sahaya sürecek yeterli mahkûm kalmadı.\nGörev daha başlamadan başarısız sayıldı.";
     } else {
-        const outcome = resolveMission(currentTask, team);
+        const outcome = resolveMission(currentTask, team, gameState.day);
         isSuccess = outcome.isSuccess;
-        missingPeople = outcome.missingPeople || [];
+        casualties = outcome.casualties || [];
         explanation = outcome.explanation;
 
-        missingPeople.forEach(person => {
+        casualties.forEach(person => {
             person.isDead = true;
             person.diedOnDay = gameState.day;
-            if (person.isAnomaly) {
-                person.isEscaped = true;
-                explanation += ` 🚪 ${person.name} operasyon sırasında kaçarak kayıplara karıştı.`;
-            } else {
-                person.isMissing = true;
-                explanation += ` 🌫️ ${person.name} operasyon sırasında kayboldu.`;
-            }
         });
 
         team.forEach(person => {
@@ -1592,31 +1616,26 @@ function dispatchMission() {
     gameState.missionStats.total += 1;
     if (isSuccess) {
         gameState.missionStats.success += 1;
-        logEvent(`GÜN ${gameState.day} GÖREVİ BAŞARILI! ${explanation}`, "success");
+        logEvent(`GÜN ${gameState.day} GÖREVİ BAŞARILI! ${explanation.replace(/\n/g, " ")}`, "success");
     } else {
         gameState.missionStats.fail += 1;
-        logEvent(`GÜN ${gameState.day} GÖREVİ BAŞARISIZ! ${explanation}`, "fail");
+        logEvent(`GÜN ${gameState.day} GÖREVİ BAŞARISIZ! ${explanation.replace(/\n/g, " ")}`, "fail");
     }
 
-    missingPeople.forEach(person => {
-        if (person.isAnomaly) {
-            gameState.missionStats.anomaliesMissing = (gameState.missionStats.anomaliesMissing || 0) + 1;
-            logEvent(`🚪 KAÇTI: ${person.name} tesisten firar etti. Hücresi boşaltıldı.`, "fail");
-        } else {
-            gameState.missionStats.humansMissing = (gameState.missionStats.humansMissing || 0) + 1;
-            logEvent(`🌫️ KAYIP: ${person.name} adlı mahkûmdan haber alınamadı. Hücresi boşaltıldı.`, "fail");
-        }
+    casualties.forEach(person => {
+        gameState.missionStats.missionDeaths = (gameState.missionStats.missionDeaths || 0) + 1;
+        logEvent(`💀 ÖLÜM: ${person.name} görev sırasında hayatını kaybetti. Hücresi boşaltıldı.`, "fail");
     });
 
     gameState.lastTask = currentTask;
-    gameState.lastOutcome = { isSuccess, explanation, team, missingPeople };
+    gameState.lastOutcome = { isSuccess, explanation, team, casualties, missingPeople: casualties };
     gameState.stage = STAGE.REPORT;
     saveGameState();
     renderAll();
 
     if (checkCatastrophe()) return;
 
-    showMissionResultModal(isSuccess, explanation, team, missingPeople);
+    showMissionResultModal(isSuccess, explanation, team, casualties);
 }
 
 function flashNotice(message) {
@@ -1919,9 +1938,7 @@ function buildRosterCard(person, stage) {
     if (isDead) {
         buttonOrTagHtml = `<span class="tag tag-cell-empty">Hücre: BOŞ</span>`;
         if (person.isExecuted) buttonOrTagHtml += `<span class="tag tag-executed">⚡ İNFAZ EDİLDİ</span>`;
-        else if (person.isEscaped) buttonOrTagHtml += `<span class="tag tag-escaped">🚪 KAÇTI</span>`;
-        else if (person.isMissing) buttonOrTagHtml += `<span class="tag tag-missing">🌫️ KAYIP</span>`;
-        else buttonOrTagHtml += `<span class="tag tag-dead">💀 ÖLDÜ</span>`;
+        else buttonOrTagHtml += `<span class="tag tag-dead">💀 GÖREVDE ÖLDÜ</span>`;
     } else if (resting) {
         buttonOrTagHtml = `<span class="tag tag-tired">💤 Dinleniyor (${restDaysLeft(person.id)} gün)</span>`;
     } else if (person.pendingReturnCheck) {
@@ -2016,7 +2033,7 @@ function buildRecordCard(person, arrivingIndex) {
 
     card.className = [
         "record-card",
-        person.isExecuted ? "record-executed" : (person.isMissing ? "record-missing" : "record-lost"),
+        person.isExecuted ? "record-executed" : "record-lost",
         isArriving ? "record-arriving" : ""
     ].filter(Boolean).join(" ");
     card.dataset.id = person.id;
@@ -2026,10 +2043,9 @@ function buildRecordCard(person, arrivingIndex) {
     }
 
     const verdict = `<span class="record-verdict verdict-hidden">GİZLİ</span>`;
-    let cause = `<span class="record-cause">💀 ${getCharacterCurrentStatus(person)}</span>`;
-    if (person.isExecuted) cause = `<span class="record-cause">⚡ İnfaz Edildi</span>`;
-    else if (person.isEscaped) cause = `<span class="record-cause">🚪 Kaçtı</span>`;
-    else if (person.isMissing) cause = `<span class="record-cause">🌫️ Kayıp</span>`;
+    let cause = person.isExecuted
+        ? `<span class="record-cause">⚡ İnfaz Edildi</span>`
+        : `<span class="record-cause">💀 Görevde Öldü</span>`;
 
     const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
     const avatarContent = person.introduced
@@ -2079,10 +2095,10 @@ function renderPersonnel() {
 
         const summary = document.getElementById("records-summary");
         const executedCount = interred.filter(p => p.isExecuted).length;
-        const missingCount = interred.length - executedCount;
+        const deadCount = interred.length - executedCount;
         summary.innerHTML = `
             <span class="records-stat">⚡ ${executedCount} İnfaz</span>
-            <span class="records-stat">🌫️ ${missingCount} Kayıp/Kaçak</span>
+            <span class="records-stat">💀 ${deadCount} Görevde Ölüm</span>
         `;
     }
 }
@@ -2312,7 +2328,7 @@ function showExecutionReveal(person) {
     modal.classList.remove("hidden");
 }
 
-function showMissionResultModal(isSuccess, explanation, team, missingPeople = []) {
+function showMissionResultModal(isSuccess, explanation, team, casualties = []) {
     document.getElementById("result-title").textContent = `GÜN ${gameState.day} GÖREV RAPORU`;
     const badge = document.getElementById("result-badge");
     badge.textContent = isSuccess ? "GÖREV BAŞARILI ✅" : "GÖREV BAŞARISIZ ❌";
@@ -2322,13 +2338,13 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
     const breakdownList = document.getElementById("result-team-breakdown");
     breakdownList.innerHTML = "";
     team.forEach(person => {
-        const isMissing = missingPeople && missingPeople.some(m => m.id === person.id);
+        const isDeadCasualty = casualties && casualties.some(m => m.id === person.id);
         const row = document.createElement("div");
-        row.className = `team-result-row ${isMissing ? "is-missing" : ""}`;
+        row.className = `team-result-row ${isDeadCasualty ? "is-missing" : ""}`;
         const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
         const displayRole = person.introduced ? person.role : "—";
-        const statusBadge = isMissing
-            ? `<span class="badge badge-missing">🌫️ Geri Dönmedi</span>`
+        const statusBadge = isDeadCasualty
+            ? `<span class="badge badge-missing" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">💀 Hayatını Kaybetti</span>`
             : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü (Kontrol Bekliyor)</span>`;
         row.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${statusBadge}`;
         breakdownList.appendChild(row);
@@ -2365,15 +2381,13 @@ function showGameOver(reason = "complete") {
     const counts = livingCounts();
     const purged = gameState.missionStats.anomaliesPurged || 0;
     const wrongful = gameState.missionStats.humansExecuted || 0;
-    const humansMissing = gameState.missionStats.humansMissing || 0;
-    const anomaliesMissing = gameState.missionStats.anomaliesMissing || 0;
+    const missionDeaths = gameState.missionStats.missionDeaths || 0;
 
     statsElem.innerHTML = `
         Ulaşılan Gün: ${gameState.day} / ${TOTAL_DAYS}<br>
         Başarılı Görev: ${success} / ${total} (%${rate})<br>
         Başarısız Görev: ${gameState.missionStats.fail} / ${MAX_MISSION_FAILURES}<br>
-        Kayıp İnsan: ${humansMissing}<br>
-        Firar Eden Anomali: ${anomaliesMissing}<br>
+        Görevde Ölen Personel: ${missionDeaths}<br>
         İnfaz Edilen Anomali: ${purged}<br>
         İnfaz Edilen İnsan: ${wrongful}<br>
         Hayatta Kalan: ${counts.humans} insan / ${counts.anomalies} anomali
@@ -2791,7 +2805,7 @@ function simulateSingleGame(botType) {
         }
 
         let isSuccess = false;
-        let missingPeople = [];
+        let casualties = [];
 
         if (team.length !== teamSize) {
             isSuccess = false;
@@ -2800,21 +2814,16 @@ function simulateSingleGame(botType) {
             const dayTask = DAILY_TASKS[day] || getCurrentTask(day);
             const outcome = resolveMission(dayTask, team, day);
             isSuccess = outcome.isSuccess;
-            missingPeople = outcome.missingPeople || [];
-            missingPeople.forEach(p => {
+            casualties = outcome.casualties || [];
+            casualties.forEach(p => {
                 p.isDead = true;
-                if (p.isAnomaly) {
-                    p.isEscaped = true;
-                } else {
-                    p.isMissing = true;
-                    deaths++;
-                }
+                deaths++;
             });
         }
 
         if (isSuccess) successfulDays++; else failures++;
 
-        if (riotOn(day)) { endReason = "riot"; break; }
+        if (updateAndCheckRiot(day)) { endReason = "riot"; break; }
         if (failures >= MAX_MISSION_FAILURES) { endReason = "fired"; break; }
 
         // ---- FATIGUE ----
@@ -2858,8 +2867,19 @@ function runFullBenchmark(totalRuns) {
 
     const results = {};
     BOT_STRATEGIES.forEach(b => {
-        results[b.id] = { totalRuns: 0, wonGames: 0, perfectRuns: 0, totalSuccessDays: 0,
-                          totalAnomaliesSent: 0, totalDeaths: 0, riots: 0, fired: 0, totalPurged: 0 };
+        results[b.id] = {
+            totalRuns: 0,
+            wonGames: 0,
+            perfectRuns: 0,
+            totalSuccessDays: 0,
+            totalFailures: 0,
+            totalAnomaliesSent: 0,
+            totalDeaths: 0,
+            riots: 0,
+            fired: 0,
+            totalPurged: 0,
+            totalExecutions: 0
+        };
     });
 
     let currentStrategyIndex = 0;
@@ -2877,9 +2897,11 @@ function runFullBenchmark(totalRuns) {
             if (single.wonGame) res.wonGames++;
             if (single.perfectRun) res.perfectRuns++;
             res.totalSuccessDays += single.successfulDays;
+            res.totalFailures += single.failures;
             res.totalAnomaliesSent += single.anomaliesSentCount;
             res.totalDeaths += single.deathsCount;
             res.totalPurged += single.purged;
+            res.totalExecutions += (single.purged + single.wrongfulExecutions);
             if (single.endReason === "riot") res.riots++;
             if (single.endReason === "fired") res.fired++;
             runsDone++;
@@ -2927,11 +2949,11 @@ function renderBenchmarkResults(results, totalRuns) {
         const r = results[strat.id];
         const winRate = Math.round((r.wonGames / totalRuns) * 1000) / 10;
         const dailySuccessRate = Math.round((r.totalSuccessDays / (totalRuns * TOTAL_DAYS)) * 1000) / 10;
-        const avgAnomalies = Math.round((r.totalAnomaliesSent / totalRuns) * 10) / 10;
         const avgDeaths = Math.round((r.totalDeaths / totalRuns) * 10) / 10;
+        const failDeathRate = r.totalFailures > 0 ? Math.round((r.totalDeaths / r.totalFailures) * 1000) / 10 : 0;
+        const avgExecutions = Math.round((r.totalExecutions / totalRuns) * 10) / 10;
         const riotRate = Math.round((r.riots / totalRuns) * 1000) / 10;
         const firedRate = Math.round((r.fired / totalRuns) * 1000) / 10;
-        const avgPurged = Math.round((r.totalPurged / totalRuns) * 10) / 10;
         const isBest = strat.id === bestId;
 
         const card = document.createElement("div");
@@ -2950,10 +2972,10 @@ function renderBenchmarkResults(results, totalRuns) {
             <div class="strategy-meter-track"><div class="strategy-meter-fill" style="width: ${winRate}%;"></div></div>
             <div class="strategy-stats-list">
                 <div><span>Kazanılan Kampanya:</span> <strong>${r.wonGames.toLocaleString()} / ${totalRuns.toLocaleString()}</strong></div>
-                <div><span>Günlük Görev Başarısı:</span> <strong>%${dailySuccessRate}</strong></div>
-                <div><span>Maç Başı Anomali (Ort):</span> <strong>${avgAnomalies} kişi</strong></div>
-                <div><span>Maç Başı Kayıp (Ort):</span> <strong>${avgDeaths} kişi</strong></div>
-                <div><span>İnfaz Edilen Anomali (Ort):</span> <strong>${avgPurged} kişi</strong></div>
+                <div><span>Ort. Görev Başarısı:</span> <strong>%${dailySuccessRate}</strong></div>
+                <div><span>Görevde Ölüm (Ort):</span> <strong>${avgDeaths} kişi</strong></div>
+                <div><span>Başarısızlıkta Ölüm Oranı:</span> <strong>%${failDeathRate}</strong></div>
+                <div><span>İnfaz Edilen (Ort):</span> <strong>${avgExecutions} kişi</strong></div>
                 <div><span>Ayaklanma ile Biten:</span> <strong>%${riotRate}</strong></div>
                 <div><span>Görevden Alınma:</span> <strong>%${firedRate}</strong></div>
                 <div><span>Mükemmel Seri (7/7):</span> <strong>${r.perfectRuns.toLocaleString()} maç</strong></div>
@@ -2966,8 +2988,9 @@ function renderBenchmarkResults(results, totalRuns) {
             <td><strong>${strat.name}</strong></td>
             <td style="color: var(--accent-cyan); font-weight:bold;">%${winRate} (${r.wonGames.toLocaleString()})</td>
             <td>%${dailySuccessRate}</td>
-            <td style="color: ${avgAnomalies > 3 ? "var(--accent-red)" : "var(--accent-green)"}">${avgAnomalies}</td>
-            <td style="color: ${avgDeaths >= 2 ? "var(--accent-red)" : "var(--accent-orange)"}">${avgDeaths}</td>
+            <td style="color: ${avgDeaths >= 1.5 ? "var(--accent-red)" : "var(--accent-green)"}">${avgDeaths}</td>
+            <td style="color: var(--accent-orange);">%${failDeathRate}</td>
+            <td>${avgExecutions}</td>
             <td style="color: var(--accent-red);">%${riotRate}</td>
             <td style="color: var(--accent-orange);">%${firedRate}</td>
             <td>${r.perfectRuns.toLocaleString()}</td>
