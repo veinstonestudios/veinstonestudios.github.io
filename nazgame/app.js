@@ -2261,32 +2261,6 @@ function renderStagePanel() {
         advanceBtn.classList.add("hidden");
     }
 
-    // ---- Voice Archive (Day 1 Intermediate Stage) ----
-    if (stage === STAGE.VOICE_ARCHIVE) {
-        const list = document.getElementById("voice-archive-list");
-        if (list) {
-            list.innerHTML = "";
-            FIRST_DAY_CHARACTER_IDS.forEach(id => {
-                const person = findPerson(id);
-                if (!person) return;
-                const row = document.createElement("div");
-                row.className = "voice-archive-item";
-                row.innerHTML = `
-                    <div class="voice-archive-info">
-                        <div class="voice-archive-avatar">
-                            <img src="${person.image}" alt="${person.name}" onerror="handleImageError(this, '${person.name.replace(/'/g, "\\'")}', '${person.image}')" />
-                        </div>
-                        <div class="voice-archive-name">${person.name}</div>
-                    </div>
-                    <button class="btn btn-action-card btn-tag-voice-recorded" onclick="playVoiceRecord('${person.id}');" title="Ses Kaydını Dinle">
-                        📼 KAYDI DİNLE
-                    </button>
-                `;
-                list.appendChild(row);
-            });
-        }
-    }
-
     // ---- Arrival ----
     if (stage === STAGE.ARRIVAL) {
         const arrivals = gameState.manifest.filter(p => p.arrivalDay === gameState.day);
