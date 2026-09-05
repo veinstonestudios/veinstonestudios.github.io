@@ -60,8 +60,8 @@
                         <p>Her gün toplam <strong>8 enerji</strong> hakkın bulunur:</p>
                         <ol class="intro-stage-list">
                             <li><strong>TANIŞMA (2 Enerji)</strong> — Mahkûmla tanışır ve kimliğini doğrularsın (Günlük konuşmalar 0 enerjidir).</li>
-                            <li><strong>BEYİN TESTİ (2 Enerji)</strong> — Görüşülen mahkûma Nöro-Hücresel beyin taraması uygularsın.</li>
-                            <li><strong>SES TESTİ (2 Enerji)</strong> — 3. günden itibaren mahkûmun ses kaydı analizini alırsın.</li>
+                            <li><strong>SES TESTİ (2 Enerji)</strong> — 2. günden itibaren mahkûmun ses kaydı analizini alırsın.</li>
+                            <li><strong>BEYİN TESTİ (2 Enerji)</strong> — 3. günden itibaren görüşülen mahkûma Nöro-Hücresel beyin taraması uygularsın.</li>
                             <li><strong>GÖREV SEVKİ (0 Enerji)</strong> — Gün sonunda belirlenen sayıda ekibi sahaya gönderirsin.</li>
                         </ol>
                     </div>
@@ -215,6 +215,14 @@
                         <span class="badge count-badge" id="met-count">Tanışılan: 0/0</span>
                         <span class="badge count-badge" id="tested-count">Test Edilen: 0/0</span>
                         <span class="badge count-badge lost-badge" id="lost-count">☠️ Kayıp: 0</span>
+                    </div>
+                </div>
+
+                <div id="uprising-warning-banner" class="uprising-warning-banner hidden">
+                    <div class="uprising-warning-icon">⚠️</div>
+                    <div class="uprising-warning-body">
+                        <strong class="uprising-warning-title">ANOMALİ DENGESİ KRİTİK</strong>
+                        <p class="uprising-warning-desc">Tesisteki Corrupted yoğunluğu güvenlik sınırına yaklaşıyor. Denge sağlanmazsa kontrol kaybedilebilir.</p>
                     </div>
                 </div>
 
@@ -394,6 +402,9 @@
                 <div class="brain-guide-img-container">
                     <img src="brain-tests/brain-test-guide.png" alt="Beyin Testi Rehberi" class="brain-guide-img" onerror="handleImageError(this, 'Beyin Testi Rehberi', 'brain-tests/brain-test-guide.png')" />
                 </div>
+                <div class="brain-guide-warning-box" style="margin-top:12px; padding:10px 14px; background:rgba(218,54,51,0.12); border-left:3px solid var(--accent-red); border-radius:4px; font-size:0.84rem; color:var(--text-secondary); line-height:1.45;">
+                    <p style="margin:0;"><strong style="color:var(--accent-red);">⚠️ UYARI:</strong> Nöro-hücresel görüntü tek başına kesin kanıt değildir. Beyin taraması bazı insanlarda temiz çıkabileceği gibi, erken evre Corrupted dokularını her zaman net biçimde açığa çıkarmayabilir. Nihai kararı vermeden önce ses kayıtları ve diğer verilerle birlikte değerlendirin.</p>
+                </div>
             </div>
             <div class="modal-footer" style="display:flex; justify-content:center; margin-top:10px;">
                 <button class="btn btn-primary" id="btn-close-guide-modal">KAPAT</button>
@@ -413,15 +424,17 @@
                     <div class="voice-guide-badge">GİZLİ PROTOKOL // SES ANALİZİ</div>
                     <h4 class="voice-guide-title">SES KAYDI TESTİ</h4>
                     <p class="voice-guide-desc">
-                        Corrupted varlıklar insan sesini ve konuşma düzenini her zaman kusursuz biçimde taklit edemez.
+                        Corrupted varlıkların yakınında alınan ses kayıtlarında açıklanamayan parazitler oluşabilir.
                     </p>
                     <p class="voice-guide-desc">
-                        Kaydı dikkatle dinleyin. Tekrarlar, bozuk heceler, uygunsuz duraklamalar, üst üste binen sesler ve açıklanamayan parazitler şüphe oluşturabilir.
+                        Mahkûmların ses kayıtlarını dinleyerek konuşma arkasındaki sinyal bozulmalarını, frekans anomalilerini ve arka plan gürültülerini analiz edin.
                     </p>
-                    <div class="voice-guide-warning-box">
-                        <span class="warning-icon">⚠️</span>
-                        <p class="warning-text">Kayıt tek başına kesin kanıt değildir. Karar Warden’a aittir.</p>
-                    </div>
+                    <p class="voice-guide-desc">
+                        Her ses testi 2 enerji harcar. Testi yapılan mahkûmun kaydı o gün ve sonraki günlerde arşivden tekrar dinlenebilir.
+                    </p>
+                    <p class="voice-guide-desc">
+                        Ses kayıtlarındaki bozulmalar her zaman kesin kanıt sayılmaz; mahkûmun bulunduğu ortam veya kayıt cihazındaki geçici arızalar da seste parazite yol açabilir. Nihai kararı vermeden önce diğer verilerle birlikte değerlendirin.
+                    </p>
                 </div>
             </div>
             <div class="modal-footer" style="display:flex; justify-content:center; margin-top:14px;">

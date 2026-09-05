@@ -15,18 +15,20 @@
 //
 // Formula: dialogueIndex = Math.min(Math.max(currentDay - character.introducedDay, 0), character.dialogues.length - 1)
 //
-// MISSION SUCCESS SYSTEM (HUMAN vs CORRUPTED):
-// - Base Success Chance: 35%
-// - Each Human: +30%
-// - Each Corrupted: -25%
-// - calculatedSuccessChance = 35 + (humanCount * 30) - (corruptedCount * 25)
-// - finalSuccessChance = Math.max(10, Math.min(95, calculatedSuccessChance))
+// MISSION SUCCESS SYSTEM (FIXED LOOKUP TABLE):
+// - 1 Human: %80, 1 Corrupted: %25
+// - 2 Humans: %90, 1 Human + 1 Corrupted: %50, 2 Corrupted: %20
+// - 3 Humans: %95, 2 Humans + 1 Corrupted: %75, 1 Human + 2 Corrupted: %35, 3 Corrupted: %15
 //
-// DAY 1 FLOW (NO TESTING STAGE ON DAY 1):
-// Day 1: Tanışma -> Görev Sevki -> Rapor (No test stage, no guide button)
-// Day 2+: Tanışma -> Test -> Görev Sevki -> Rapor (Day 3+: İnfaz included)
-// Day 2 Auto-Guide: Opens brain test guide on first entry to testing stage if not seen.
-// Permanent Guide Button: Visible on all stages from Day 2+.
+// TEST UNLOCK ORDER:
+// Day 1: Test yok
+// Day 2: Ses Kaydı Testi açılır (Rehber otomatik gösterilir, SES TESTİ REHBERİ butonu görünür)
+// Day 3: Beyin Testi açılır (Rehber otomatik gösterilir, BEYİN TESTİ REHBERİ butonu görünür)
+//
+// ANOMALY UPRISING:
+// - Days 1 & 2: Ayaklanma yok
+// - Day 3+: Corrupted > İnsan ise tehlike uyarısı
+// - Corrupted - İnsan >= 2 dengesizliği 2 gün üst üste sürerse ayaklanma gerçekleşir.
 //
 // BRAIN SCAN VISUAL TESTING:
 // 0–19:   brain-human.png
@@ -49,6 +51,21 @@ const ENERGY_COST = {
     VOICE_TEST: 2,
     RETURN_CHECK: 1,
     DISPATCH: 0
+};
+
+// Mission Success Probability Lookup Table
+const MISSION_SUCCESS_RATES = {
+    "1h_0c": 80,
+    "0h_1c": 25,
+
+    "2h_0c": 90,
+    "1h_1c": 50,
+    "0h_2c": 20,
+
+    "3h_0c": 95,
+    "2h_1c": 75,
+    "1h_2c": 35,
+    "0h_3c": 15
 };
 
 // Voice Test Sound File Mapping (Canonical Roster IDs to Local MP3 Assets)
@@ -596,6 +613,7 @@ function loadSavedGameState() {
 
                 parsed.brainTestGuideSeen = Boolean(parsed.brainTestGuideSeen);
                 parsed.voiceTestGuideSeen = Boolean(parsed.voiceTestGuideSeen);
+                parsed.riotConsecutiveDays = Number(parsed.riotConsecutiveDays) || 0;
                 return parsed;
             }
         }
@@ -682,15 +700,16 @@ function livingCounts() {
 function isRiotCondition() {
     if (gameState.day < RIOT_START_DAY) return false;
     const c = livingCounts();
-    return c.anomalies > c.humans;
+    const diff = c.anomalies - c.humans;
+    return diff >= 2 && (gameState.riotConsecutiveDays || 0) >= 2;
 }
 
 function threatLevel() {
     const c = livingCounts();
-    const gap = c.humans - c.anomalies;
+    const diff = c.anomalies - c.humans;
     if (gameState.day < RIOT_START_DAY) return { label: "İZLENİYOR", color: "var(--text-muted)", key: "watch" };
-    if (gap <= 1) return { label: "KRİTİK", color: "var(--accent-red)", key: "critical" };
-    if (gap <= 3) return { label: "GERGİN", color: "var(--accent-orange)", key: "tense" };
+    if (diff >= 2) return { label: "ANOMALİ DENGESİ KRİTİK", color: "var(--accent-red)", key: "critical" };
+    if (diff >= 1) return { label: "TEHLİKE UYARISI", color: "var(--accent-orange)", key: "tense" };
     return { label: "STABİL", color: "var(--accent-green)", key: "stable" };
 }
 
@@ -731,55 +750,57 @@ function requiredTeamSize() {
 }
 
 // ==========================================
-// MISSION RESOLUTION (HUMAN vs CORRUPTED SYSTEM)
+// MISSION RESOLUTION (FIXED LOOKUP TABLE SYSTEM)
 // ==========================================
-function resolveMission(teamOrTask, maybeTeam) {
+function resolveMission(teamOrTask, maybeTeam, maybeDay) {
     let task = null;
     let team = [];
+    let day = 1;
+
     if (Array.isArray(teamOrTask)) {
         team = teamOrTask;
         task = getCurrentTask();
+        if (typeof maybeTeam === "number") day = maybeTeam;
+        else if (typeof gameState !== "undefined" && gameState) day = gameState.day;
     } else if (teamOrTask && typeof teamOrTask === "object" && Array.isArray(maybeTeam)) {
         task = teamOrTask;
         team = maybeTeam;
-    } else if (Array.isArray(maybeTeam)) {
-        task = teamOrTask;
-        team = maybeTeam;
+        if (typeof maybeDay === "number") day = maybeDay;
+        else if (typeof gameState !== "undefined" && gameState) day = gameState.day;
     } else {
         team = teamOrTask || [];
         task = getCurrentTask();
+        if (typeof gameState !== "undefined" && gameState) day = gameState.day;
     }
 
     const humanCount = team.filter(p => !p.isAnomaly).length;
     const corruptedCount = team.filter(p => p.isAnomaly).length;
+    const teamKey = `${humanCount}h_${corruptedCount}c`;
 
-    // Base chance: 35%, +30% per human, -25% per corrupted
-    const calculatedSuccessChance = 35 + (humanCount * 30) - (corruptedCount * 25);
-    const finalSuccessChance = Math.max(10, Math.min(95, Math.round(calculatedSuccessChance)));
+    const finalSuccessChance = MISSION_SUCCESS_RATES[teamKey] !== undefined
+        ? MISSION_SUCCESS_RATES[teamKey]
+        : Math.max(10, Math.min(95, 35 + (humanCount * 30) - (corruptedCount * 25)));
 
+    const isSuccess = (Math.random() * 100) < finalSuccessChance;
     const missingPeople = [];
-
-    const humanLossChance = 0.15 + (corruptedCount * 0.10);
-    const humans = team.filter(p => !p.isAnomaly);
-    if (humans.length > 0 && Math.random() < humanLossChance) {
-        const lostHuman = humans[Math.floor(Math.random() * humans.length)];
-        missingPeople.push(lostHuman);
-    }
-
-    const anomalies = team.filter(p => p.isAnomaly);
-    anomalies.forEach(anomaly => {
-        if (Math.random() < 0.45) {
-            missingPeople.push(anomaly);
-        }
-    });
-
-    const isSuccess = (missingPeople.length < team.length) && ((Math.random() * 100) < finalSuccessChance);
-
     let explanation;
+
     if (isSuccess) {
         explanation = "Operasyon başarıyla tamamlandı ve hedeflere ulaşıldı.";
     } else {
-        explanation = "Operasyon sırasında karşılaşılan aksilikler nedeniyle görev başarısız oldu.";
+        if (day <= 1) {
+            // Day 1 tutorial protection: no death or escape
+            explanation = "Operasyon tamamlanamadı.";
+        } else {
+            // 75% all return, 25% single random loss
+            if (Math.random() < 0.25 && team.length > 0) {
+                const lostPerson = team[Math.floor(Math.random() * team.length)];
+                missingPeople.push(lostPerson);
+                explanation = `Operasyon tamamlanamadı.\n${lostPerson.name} geri dönmedi.`;
+            } else {
+                explanation = "Operasyon tamamlanamadı.";
+            }
+        }
     }
 
     return { isSuccess, missingPeople, explanation, finalSuccessChance, humanCount, corruptedCount };
@@ -810,6 +831,7 @@ function initGame() {
         day3BriefingShown: false,
         brainTestGuideSeen: false,
         voiceTestGuideSeen: false,
+        riotConsecutiveDays: 0,
         selectedTeam: [],
         tiredMap: {},
         missionStats: { success: 0, fail: 0, total: 0, deaths: 0, executions: 0, anomaliesPurged: 0, humansExecuted: 0, humansMissing: 0, anomaliesMissing: 0 },
@@ -1037,8 +1059,8 @@ function openVoicePlayer(person) {
 }
 
 function startVoiceTest(personId) {
-    if (gameState.day < 3) {
-        flashNotice("Ses Kaydı Testi 3. günden itibaren kullanılabilir.");
+    if (gameState.day < 2) {
+        flashNotice("Ses Kaydı Testi 2. günden itibaren kullanılabilir.");
         return;
     }
     const person = findPerson(personId);
@@ -1131,10 +1153,10 @@ function advanceStage() {
             } else {
                 gameState.stage = STAGE.TESTING;
                 logEvent(`Test aşaması açıldı. Test maliyeti: ⚡${ENERGY_COST.TEST} enerji.`, "system");
-                if (gameState.day === 2 && !gameState.brainTestGuideSeen) {
-                    openBrainTestGuide();
-                } else if (gameState.day >= 3 && !gameState.voiceTestGuideSeen) {
+                if (gameState.day === 2 && !gameState.voiceTestGuideSeen) {
                     openVoiceTestGuide();
+                } else if (gameState.day >= 3 && !gameState.brainTestGuideSeen) {
+                    openBrainTestGuide();
                 }
             }
             break;
@@ -1215,6 +1237,18 @@ function nextDay() {
         logEvent(`--- GÜN ${gameState.day} --- ${scheduledIds.length} mahkûmun görüşme programı açıldı. Enerji yenilendi (⚡8).`, "system");
     } else {
         logEvent(`--- GÜN ${gameState.day} --- Yeni mahkûm açılmadı. Enerji yenilendi (⚡8).`, "system");
+    }
+
+    if (gameState.day >= RIOT_START_DAY) {
+        const c = livingCounts();
+        const diff = c.anomalies - c.humans;
+        if (diff >= 2) {
+            gameState.riotConsecutiveDays = (gameState.riotConsecutiveDays || 0) + 1;
+        } else {
+            gameState.riotConsecutiveDays = 0;
+        }
+    } else {
+        gameState.riotConsecutiveDays = 0;
     }
 
     saveGameState();
@@ -1375,8 +1409,8 @@ function handleCardClick(personId) {
 }
 
 function testPerson(personId) {
-    if (gameState.day === 1) {
-        flashNotice("Test sistemi 2. günden itibaren aktif olacaktır.");
+    if (gameState.day < 3) {
+        flashNotice("Beyin Testi 3. günden itibaren aktif olacaktır.");
         return;
     }
     const person = findPerson(personId);
@@ -1587,23 +1621,23 @@ function renderStatus() {
     document.getElementById("current-stage").textContent = info.label;
     document.getElementById("current-time").textContent = info.clock;
 
-    // Brain Test Guide button visibility (visible from Day 2+)
-    const btnGuide = document.getElementById("btn-open-guide-modal");
-    if (btnGuide) {
-        if (gameState.day >= 2) {
-            btnGuide.classList.remove("hidden");
-        } else {
-            btnGuide.classList.add("hidden");
-        }
-    }
-
-    // Voice Test Guide button visibility (visible from Day 3+)
+    // Voice Test Guide button visibility (visible from Day 2+)
     const btnVoiceGuide = document.getElementById("btn-open-voice-guide-modal");
     if (btnVoiceGuide) {
-        if (gameState.day >= 3) {
+        if (gameState.day >= 2) {
             btnVoiceGuide.classList.remove("hidden");
         } else {
             btnVoiceGuide.classList.add("hidden");
+        }
+    }
+
+    // Brain Test Guide button visibility (visible from Day 3+)
+    const btnGuide = document.getElementById("btn-open-guide-modal");
+    if (btnGuide) {
+        if (gameState.day >= 3) {
+            btnGuide.classList.remove("hidden");
+        } else {
+            btnGuide.classList.add("hidden");
         }
     }
 
@@ -1637,6 +1671,17 @@ function renderStatus() {
         threatBox.classList.remove("hidden");
         threatValue.textContent = threat.label;
         threatValue.style.color = threat.color;
+    }
+
+    // Uprising Warning Banner (visible from Day 3+ when anomalies > humans)
+    const uprisingBanner = document.getElementById("uprising-warning-banner");
+    if (uprisingBanner) {
+        const c = livingCounts();
+        if (gameState.day >= RIOT_START_DAY && c.anomalies > c.humans) {
+            uprisingBanner.classList.remove("hidden");
+        } else {
+            uprisingBanner.classList.add("hidden");
+        }
     }
 
     const allowLabel = document.getElementById("allowance-label");
@@ -1774,7 +1819,11 @@ function buildRosterCard(person, stage) {
     let actionable = false;
     if (!isDead && isUnlocked) {
         if (stage === STAGE.MEETING) actionable = canTalk;
-        else if (stage === STAGE.TESTING) actionable = (gameState.day > 1) && (!person.isTested && gameState.energy >= ENERGY_COST.TEST || (gameState.day >= 3 && !person.voiceTestCompleted && gameState.energy >= ENERGY_COST.VOICE_TEST));
+        else if (stage === STAGE.TESTING) {
+            const canVoice = (gameState.day >= 2) && !person.voiceTestCompleted && (gameState.energy >= ENERGY_COST.VOICE_TEST);
+            const canBrain = (gameState.day >= 3) && !person.isTested && (gameState.energy >= ENERGY_COST.TEST);
+            actionable = canVoice || canBrain;
+        }
         else if (stage === STAGE.EXECUTION) actionable = executionsLeft() > 0;
         else if (stage === STAGE.DISPATCH) actionable = !resting && !person.pendingReturnCheck;
     }
@@ -1858,16 +1907,8 @@ function buildRosterCard(person, stage) {
     } else if (person.pendingReturnCheck) {
         buttonOrTagHtml = `<span class="tag tag-check" style="background:rgba(210,153,34,0.2); color:#d29922;">🔍 Kontrol Bekliyor</span>`;
     } else if (stage === STAGE.TESTING) {
-        let brainBtnHtml = "";
-        if (person.isTested || person.brainTestCompleted) {
-            brainBtnHtml = `<span class="tag tag-tested-neutral" onclick="event.stopPropagation(); showTestReveal(findPerson('${person.id}'));">🧠 TEST UYGULANDI</span>`;
-        } else {
-            const disabledBrain = gameState.energy < ENERGY_COST.TEST ? "disabled style='opacity:0.5; cursor:not-allowed;'" : "";
-            brainBtnHtml = `<button class="btn btn-action-card btn-tag-test" ${disabledBrain} onclick="event.stopPropagation(); testPerson('${person.id}');">BEYİN TESTİ ⚡2</button>`;
-        }
-
         let voiceBtnHtml = "";
-        if (gameState.day >= 3) {
+        if (gameState.day >= 2) {
             if (person.voiceTestCompleted) {
                 voiceBtnHtml = `<button class="btn btn-action-card btn-tag-voice-recorded" onclick="event.stopPropagation(); playVoiceRecord('${person.id}');" title="Ses Kaydını Yeniden Dinle">📼 SES KAYDI <small style="color:var(--accent-cyan); font-weight:bold;">▶ DİNLE</small></button>`;
             } else {
@@ -1876,7 +1917,17 @@ function buildRosterCard(person, stage) {
             }
         }
 
-        buttonOrTagHtml = `${brainBtnHtml}${voiceBtnHtml}`;
+        let brainBtnHtml = "";
+        if (gameState.day >= 3) {
+            if (person.isTested || person.brainTestCompleted) {
+                brainBtnHtml = `<button class="btn btn-action-card btn-tag-tested" onclick="event.stopPropagation(); showTestReveal(findPerson('${person.id}'));" title="Beyin Taramasını İncele">🧠 BEYİN TARAMASI <small style="color:var(--accent-purple); font-weight:bold;">👁 GÖRÜNTÜLE</small></button>`;
+            } else {
+                const disabledBrain = gameState.energy < ENERGY_COST.TEST ? "disabled style='opacity:0.5; cursor:not-allowed;'" : "";
+                brainBtnHtml = `<button class="btn btn-action-card btn-tag-test" ${disabledBrain} onclick="event.stopPropagation(); testPerson('${person.id}');">BEYİN TESTİ ⚡2</button>`;
+            }
+        }
+
+        buttonOrTagHtml = `${voiceBtnHtml}${brainBtnHtml}`;
     } else if (spokenToday) {
         buttonOrTagHtml = `<span class="tag tag-spoken-today">✓ BUGÜN KONUŞULDU</span>`;
     } else if (canTalk) {
@@ -2258,9 +2309,7 @@ function showMissionResultModal(isSuccess, explanation, team, missingPeople = []
         const displayName = person.introduced ? person.name : "Bilinmeyen Mahkûm";
         const displayRole = person.introduced ? person.role : "—";
         const statusBadge = isMissing
-            ? (person.isAnomaly
-                ? `<span class="badge badge-missing" style="color: var(--accent-orange);">🚪 Kaçtı / Firar</span>`
-                : `<span class="badge badge-missing">🌫️ Haber Alınamadı</span>`)
+            ? `<span class="badge badge-missing">🌫️ Geri Dönmedi</span>`
             : `<span class="badge" style="color: var(--text-secondary); background: rgba(255,255,255,0.05);">🚀 Görevden Döndü (Kontrol Bekliyor)</span>`;
         row.innerHTML = `<span><strong>${displayName}</strong> (${displayRole})</span>${statusBadge}`;
         breakdownList.appendChild(row);
@@ -2595,15 +2644,25 @@ function simulateSingleGame(botType) {
     let wrongfulExecutions = 0;
     let endReason = "complete";
     let daysReached = 0;
+    let riotConsecutiveDays = 0;
 
     const rest = (p) => (tiredMap[p.id] || 0) > 0;
     const livingOn = (day) => manifest.filter(p => p.arrivalDay && p.arrivalDay <= day && !p.isDead);
 
-    const riotOn = (day) => {
-        if (day < RIOT_START_DAY) return false;
+    const updateAndCheckRiot = (day) => {
+        if (day < RIOT_START_DAY) {
+            riotConsecutiveDays = 0;
+            return false;
+        }
         const living = livingOn(day);
         const a = living.filter(p => p.isAnomaly).length;
-        return a > living.length - a;
+        const humans = living.length - a;
+        if (a - humans >= 2) {
+            riotConsecutiveDays++;
+        } else {
+            riotConsecutiveDays = 0;
+        }
+        return riotConsecutiveDays >= 2;
     };
 
     const gapOn = (day) => {
@@ -2628,7 +2687,7 @@ function simulateSingleGame(botType) {
             });
         }
 
-        if (riotOn(day)) { endReason = "riot"; break; }
+        if (updateAndCheckRiot(day)) { endReason = "riot"; break; }
 
         const present = manifest.filter(p => p.arrivalDay && p.arrivalDay <= day && !p.isDead);
 
@@ -2647,13 +2706,23 @@ function simulateSingleGame(botType) {
             }
         });
 
-        // ---- TESTING (Day 2+) ----
-        if (day > 1 && botType !== "random") {
-            let testable = present.filter(p => p.introduced && !p.isTested && !rest(p));
-            testable.slice(0, 2).forEach(p => {
-                if (energy >= 1) {
-                    p.isTested = true;
-                    energy -= 1;
+        // ---- TESTING (Day 2: Voice Test, Day 3+: Voice & Brain Test) ----
+        if (day >= 2 && botType !== "random") {
+            if (day >= 3) {
+                let brainTestable = present.filter(p => p.introduced && !p.isTested && !rest(p));
+                brainTestable.slice(0, 1).forEach(p => {
+                    if (energy >= 2) {
+                        p.isTested = true;
+                        p.brainTestCompleted = true;
+                        energy -= 2;
+                    }
+                });
+            }
+            let voiceTestable = present.filter(p => p.introduced && !p.voiceTestCompleted && !rest(p));
+            voiceTestable.slice(0, 1).forEach(p => {
+                if (energy >= 2) {
+                    p.voiceTestCompleted = true;
+                    energy -= 2;
                 }
             });
         }
@@ -2673,7 +2742,7 @@ function simulateSingleGame(botType) {
                 target.isExecuted = true;
                 target.isDead = true;
                 if (target.isAnomaly) purged++; else wrongfulExecutions++;
-                if (riotOn(day)) { endReason = "riot"; break; }
+                if (updateAndCheckRiot(day)) { endReason = "riot"; break; }
             }
         }
 
@@ -2710,13 +2779,17 @@ function simulateSingleGame(botType) {
         } else {
             anomaliesSent += team.filter(p => p.isAnomaly).length;
             const dayTask = DAILY_TASKS[day] || getCurrentTask(day);
-            const outcome = resolveMission(dayTask, team);
+            const outcome = resolveMission(dayTask, team, day);
             isSuccess = outcome.isSuccess;
             missingPeople = outcome.missingPeople || [];
             missingPeople.forEach(p => {
                 p.isDead = true;
-                p.isMissing = true;
-                if (!p.isAnomaly) deaths++;
+                if (p.isAnomaly) {
+                    p.isEscaped = true;
+                } else {
+                    p.isMissing = true;
+                    deaths++;
+                }
             });
         }
 

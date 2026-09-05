@@ -3301,6 +3301,72 @@ body {
     text-align: center;
 }
 
+.btn-tag-tested {
+    background: rgba(137, 87, 229, 0.1) !important;
+    color: #d2a8ff !important;
+    border: 1px solid rgba(137, 87, 229, 0.3) !important;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-tag-tested:hover {
+    background: rgba(137, 87, 229, 0.22) !important;
+    border-color: rgba(137, 87, 229, 0.6) !important;
+    box-shadow: 0 0 8px rgba(137, 87, 229, 0.3);
+}
+
+/* UPRISING WARNING BANNER */
+.uprising-warning-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(90deg, rgba(218, 54, 51, 0.2) 0%, rgba(218, 54, 51, 0.08) 100%);
+    border: 1px solid rgba(218, 54, 51, 0.5);
+    border-left: 4px solid var(--accent-red);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    animation: pulseUprising 2.5s infinite ease-in-out;
+}
+
+.uprising-warning-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.uprising-warning-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.uprising-warning-title {
+    color: var(--accent-red);
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    font-family: var(--font-mono);
+}
+
+.uprising-warning-desc {
+    color: #f0f6fc;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    margin: 0;
+}
+
+@keyframes pulseUprising {
+    0%, 100% {
+        border-color: rgba(218, 54, 51, 0.5);
+        box-shadow: 0 0 8px rgba(218, 54, 51, 0.15);
+    }
+    50% {
+        border-color: rgba(218, 54, 51, 0.85);
+        box-shadow: 0 0 16px rgba(218, 54, 51, 0.35);
+    }
+}
+
+
 
 
 
