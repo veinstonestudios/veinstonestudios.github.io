@@ -928,6 +928,18 @@ function closeVoicePlayer() {
     if (modal) modal.classList.add("hidden");
 }
 
+function openVoiceReaction(personId) {
+    showVoiceReaction(personId);
+}
+
+function setActiveVoiceReaction(personId) {
+    showVoiceReaction(personId);
+}
+
+function handleVoiceEnded(personId) {
+    showVoiceReaction(personId);
+}
+
 function showVoiceReaction(personId) {
     const person = findPerson(personId);
     if (!person || person.isDead) return;
@@ -941,6 +953,7 @@ function closeVoiceReaction(personId) {
     if (gameState.activeVoiceReactionId === personId || !personId) {
         gameState.activeVoiceReactionId = null;
     }
+    saveGameState();
     renderPersonnel();
 }
 
@@ -971,8 +984,12 @@ function openVoicePlayer(person) {
         return;
     }
 
-    // Stop any previously playing audio
+    // Stop any previously playing audio and close any open reaction
     stopVoiceAudio();
+    if (gameState.activeVoiceReactionId) {
+        gameState.activeVoiceReactionId = null;
+        renderPersonnel();
+    }
 
     const modal = document.getElementById("voice-player-modal");
     const nameEl = document.getElementById("voice-player-name");
@@ -1035,10 +1052,10 @@ function openVoicePlayer(person) {
             reels.forEach(r => r.classList.remove("spinning"));
             if (progressBar) progressBar.style.width = "100%";
 
-            const targetPerson = findPerson(person.id);
-            if (targetPerson && !targetPerson.voiceReactionShown) {
-                showVoiceReaction(targetPerson.id);
-            }
+            const modalEl = document.getElementById("voice-player-modal");
+            if (modalEl) modalEl.classList.add("hidden");
+
+            handleVoiceEnded(person.id);
         });
 
         audio.addEventListener("error", (e) => {
@@ -1828,6 +1845,8 @@ function buildRosterCard(person, stage) {
         else if (stage === STAGE.DISPATCH) actionable = !resting && !person.pendingReturnCheck;
     }
 
+    const isVoiceReactionActive = gameState.activeVoiceReactionId === person.id;
+
     card.className = [
         "person-card",
         "is-met",
@@ -1837,6 +1856,7 @@ function buildRosterCard(person, stage) {
         isDead ? "is-dead" : "",
         person.isExecuted ? "is-executed" : "",
         isConversing ? "is-conversing active-dialogue-card" : "",
+        isVoiceReactionActive ? "has-voice-reaction active-voice-reaction-card" : "",
         actionable ? (stage === STAGE.EXECUTION ? "is-executable" : "is-actionable") : ""
     ].filter(Boolean).join(" ");
     card.dataset.id = person.id;
@@ -1944,7 +1964,6 @@ function buildRosterCard(person, stage) {
         buttonOrTagHtml += `<span class="tag tag-team">✅ Görevde</span>`;
     }
 
-    const isVoiceReactionActive = gameState.activeVoiceReactionId === person.id;
     let voiceReactionHtml = "";
     if (isVoiceReactionActive && !isDead) {
         const reactionText = person.voiceTestReaction || "Kaka yaparken kayıt aldım, o yüzden cızırtılı.";

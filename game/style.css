@@ -3213,24 +3213,32 @@ body {
 /* ==========================================================================
    VOICE TEST REACTION PANEL (Speech bubble overlay on character card)
    ========================================================================== */
+.person-card.has-voice-reaction {
+    z-index: 50;
+    border-color: var(--accent-cyan) !important;
+    overflow: visible;
+}
+
 .voice-reaction-panel {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 30;
-    background: linear-gradient(145deg, rgba(13, 23, 42, 0.97) 0%, rgba(9, 32, 53, 0.98) 100%);
+    z-index: 100;
+    background: linear-gradient(145deg, rgba(13, 23, 42, 0.98) 0%, rgba(9, 32, 53, 0.99) 100%);
     border: 2px solid var(--accent-cyan, #39c5bb);
     border-radius: var(--radius-md, 8px);
     padding: 16px 14px 14px 14px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(57, 197, 187, 0.45), inset 0 0 15px rgba(57, 197, 187, 0.12);
+    box-shadow: 0 0 24px rgba(57, 197, 187, 0.5), inset 0 0 15px rgba(57, 197, 187, 0.15);
     backdrop-filter: blur(6px);
     animation: voiceReactionPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: default;
+    overflow: visible;
+    pointer-events: auto;
 }
 
 @keyframes voiceReactionPop {
