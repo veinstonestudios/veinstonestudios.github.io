@@ -906,6 +906,31 @@ function beginCampaign() {
     renderAll();
 }
 
+function resetCampaignWithConfirmation() {
+    const confirmed = window.confirm("Kampanya sıfırlanarak 1. güne dönülecek. Devam edilsin mi?");
+    if (confirmed) {
+        stopVoiceAudio();
+        const modalIds = [
+            "brain-guide-modal",
+            "voice-guide-modal",
+            "voice-player-modal",
+            "guard-modal",
+            "test-reveal-modal",
+            "day3-briefing-modal",
+            "execution-reveal-modal",
+            "mission-result-modal",
+            "game-over-modal",
+            "bot-modal"
+        ];
+        modalIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add("hidden");
+        });
+        initGame();
+        logEvent("Geliştirici kısayolu (Ctrl+Shift+1) ile kampanya sıfırlandı.", "system");
+    }
+}
+
 function logEvent(message, type = "system") {
     const logsContainer = document.getElementById("simulation-logs");
     if (!logsContainer) return;
@@ -2737,6 +2762,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-run-benchmark").addEventListener("click", () => {
         const count = parseInt(document.getElementById("benchmark-run-count").value, 10) || 5000;
         runFullBenchmark(count);
+    });
+
+    // Developer / Test Shortcut: Ctrl + Shift + 1 -> Reset campaign to Day 1
+    window.addEventListener("keydown", (e) => {
+        const isDigit1 = e.key === "1" || e.key === "!" || e.code === "Digit1" || e.code === "Numpad1" || e.keyCode === 49;
+        if (e.ctrlKey && e.shiftKey && isDigit1) {
+            e.preventDefault();
+            resetCampaignWithConfirmation();
+        }
     });
 });
 
