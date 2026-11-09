@@ -4,7 +4,9 @@ type: character
 role: Mahkûm
 categories: Mahkûmlar
 aliases: Cole Morgan, Morgan, Cole
-summary: M. Cole Morgan, Bozulmuş olduğu şüphesiyle Tesis 61'de tutulan bir mahkûmdur.
+summary: M. Cole Morgan, Tesis 61'de oyunun ilk gününde karşılaşılan mahkûmlardan biridir.
+spoilers: true
+spoiler-note: Morgan'ın gerçek kimliği gizli metin olarak verilmiştir; görmek için üzerine tıklayın.
 image: assets/img/characters/m-cole-morgan.jpg
 caption: Karakter çizimi
 created: 2026-11-09
@@ -16,34 +18,38 @@ infobox:
   Durumu: Mahkûm
   [Sınıflandırma]
   Tutulduğu yer: [[Tesis 61]]
-  Şüphe: Bozulma
-  İnsan mı, Bozulmuş mu: Bilinmiyor
-  [Göründüğü yapımlar]
+  İlk karşılaşma: 1. gün
+  Gerçek kimliği: ||İnsan (Human)||
+  [Oyunda]
   Oyun: [[The Facility]]
 ---
-**M. Cole Morgan**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Tesisteki her mahkûm gibi Morgan'ın da [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilmektedir.
+**M. Cole Morgan**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
-:::unknown Sınıflandırma
-Morgan'ın sıradan bir insan mı yoksa Bozulmuş bir birey mi olduğu **belirlenmemiştir**.
+:::spoiler Gerçek kimliği
+Morgan'ın gerçek kimliği ||insan (Human)|| olarak belirlenmiştir.
 :::
 
-## Genel bakış
-Morgan, Tesis 61'de tutulmaktadır. Müdür [[Henry Edaven]] burada mahkûmları sorgular ve Morgan'ın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
+## Genel bilgiler
+Morgan, Tesis 61'de tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Morgan'ın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Biyografi
+## Geçmiş ve biyografi
 {{missing}}
 
-## Kişiliği
+## Kişilik
 {{missing}}
 
-## Geçmişi
+## İlişkiler
 {{missing}}
 
-## İlişkileri
-{{missing}}
+## Hikâyedeki rolü
+Morgan, oyunun ilk gününde değerlendirilen mahkûmlardan biridir. Bkz. [[Oynanış]].
 
-## Göründüğü yapımlar
-- *[[The Facility]]*
+## Bilinen bilgiler ve gizemler
+:::unknown Henüz belirlenmedi
+- Yaşı ve suç geçmişi.
+- Kişiliği ve geçmişi.
+- Addaki "M." harfinin açılımı.
+:::
 
-## Bilgi notları
-- Addaki "M." harfinin neyin kısaltması olduğu belgelenmemiştir.
+## Görünüş
+Karakter çiziminde Morgan, örgülü saçlı ve turuncu mahkûm tulumlu, elleri kelepçeli ve oturur hâlde gösterilir.

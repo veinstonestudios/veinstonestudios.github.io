@@ -3,7 +3,7 @@ title: The Facility
 type: game
 categories: Oyun Bilgileri
 aliases: The Facility (oyun), Oyun, Game
-summary: The Facility, Veinstone Studios tarafından geliştirilen ve 2055 yılında geçen bir psikolojik korku oyunudur; oyuncu Tesis 61'in Müdürü olarak görev yapar.
+summary: The Facility, Veinstone Studios tarafından geliştirilen ve 2055 yılında geçen bir psikolojik korku oyunudur; oyuncu Tesis 61'in Gardiyanı olarak görev yapar.
 image: assets/img/screens/hall.jpg
 caption: [[Tesis 61]]'in içi (geliştirme sürümü ekran görüntüsü)
 created: 2026-11-09
@@ -26,7 +26,7 @@ infobox:
 ---
 ***The Facility***, Veinstone Studios tarafından geliştirilen bir psikolojik korku oyunudur. Oyun 2055 yılında, [[Teknoloji Tasfiyesi]]'nin ardından gelişmiş teknolojinin ve yapay zekânın yasaklandığı bir dünyada geçer.
 
-Oyuncu, **[[Tesis 61]]**'in Müdürü **[[Henry Edaven]]**'ı canlandırır. Tesis 61, [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen hükümlülerin tutulduğu bir hapishane ve rehabilitasyon merkezidir. Müdürün görevi mahkûmları sorgulamak, insanlıklarını değerlendirmek ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmektir.
+Oyuncu, **[[Tesis 61]]**'in Gardiyanı **[[Henry Edaven]]**'ı canlandırır. Tesis 61, [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen hükümlülerin tutulduğu bir hapishane ve rehabilitasyon merkezidir. Gardiyanın görevi mahkûmları sorgulamak, insanlıklarını değerlendirmek ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmektir.
 
 :::note Karıştırılmamalıdır
 *The Facility* oyunun adıdır. **[[Tesis 61]]** (İngilizce: Facility 61) ise oyundaki ana mekânın adıdır.
@@ -68,11 +68,14 @@ Oyundaki her gün dört aşamadan oluşur: **Emirler**, **Sorgu**, **Seçim** ve
 
 | Karakter | Rolü |
 |---|---|
-| [[Henry Edaven]] | Ana karakter; Tesis 61'in Müdürü |
-| [[Arthur Edaven]] | Henry'nin kardeşi; Tesis 60 olayı sırasında ortadan kayboldu |
-| [[Viktor Hale|Yüzbaşı Viktor Hale]] | Henry'yi bilgilendiren kıdemli subay |
-| [[Vera Collins|Teğmen Vera Collins]] | Hücre bloklarını denetleyen subay |
-| [[Ted Karinsky]], [[M. Cole Morgan]], [[Alicia Winston]], [[Bob]] | Tesis 61'in [[Kategori:Mahkûmlar|mahkûmları]] |
+| [[Henry Edaven]] | Oyuncu karakteri; Tesis 61'in Gardiyanı |
+| [[Arthur Edaven]] | Henry'nin ağabeyi; Tesis 60'ın düşüşü sırasında ortadan kayboldu |
+| [[Viktor Hale|Kaptan Viktor Hale]] | Henry'ye gardiyanlık görevini anlatan tesis personeli |
+| [[Vera Collins|Teğmen Vera Collins]] | Hücre bloklarından sorumlu subay |
+| [[Janitor]] | Tesisin temizlik görevlisi |
+| [[Ted Karinsky]], [[M. Cole Morgan]], [[Alicia Winston]], [[Bob]], [[Evangelyn Hilton]], [[Dakota Ahmadii]], [[Hasan Kahveci]], [[Katarina Jovanovic]], [[Shane Smith]] | Tesis 61'in [[Kategori:Mahkûmlar|mahkûmları]] (toplam 14 mahkûmdan belgelenenler) |
+| [[Nate Lawson]] | Alicia Winston'ın geçmişindeki önemli kişi |
+| [[Henry'nin Eşi]], [[Henry'nin Kızı]] | Henry'nin bir yangında hayatını kaybeden ailesi |
 
 ## İçerik uyarıları
 Resmî basın kitine göre *The Facility* şunları içerir:

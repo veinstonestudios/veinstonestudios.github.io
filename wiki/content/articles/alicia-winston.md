@@ -4,7 +4,7 @@ type: character
 role: Mahkûm
 categories: Mahkûmlar
 aliases: Alicia, Winston
-summary: Alicia Winston, Bozulmuş olduğu şüphesiyle Tesis 61'de tutulan bir mahkûmdur.
+summary: Alicia Winston, Tesis 61'de tutulan, 20'li yaşlarının başındaki eski bir edebiyat öğrencisidir.
 image: assets/img/characters/alicia-winston.jpg
 caption: Karakter çizimi
 created: 2026-11-09
@@ -12,38 +12,57 @@ updated: 2026-11-09
 infobox:
   [Kişisel bilgiler]
   Adı: Alicia Winston
-  Yaşı: Bilinmiyor
+  Yaşı: 20'li yaşlarının başı
   Durumu: Mahkûm
+  Eğitimi: Üniversite (edebiyat)
   [Sınıflandırma]
   Tutulduğu yer: [[Tesis 61]]
-  Şüphe: Bozulma
-  İnsan mı, Bozulmuş mu: Bilinmiyor
-  [Göründüğü yapımlar]
+  Gerçek kimliği: Bilinmiyor
+  [Bağlantılar]
+  İlişkili kişi: [[Nate Lawson]]
+  [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Alicia Winston**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Tesisteki her mahkûm gibi Alicia'nın da [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilmektedir.
+**Alicia Winston**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. 20'li yaşlarının başında genç bir kadındır.
 
 :::unknown Sınıflandırma
-Alicia'nın sıradan bir insan mı yoksa Bozulmuş bir birey mi olduğu **belirlenmemiştir**.
+Alicia'nın insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğu **henüz belirlenmemiştir**.
 :::
 
-## Genel bakış
-Alicia, Tesis 61'de tutulmaktadır. Müdür [[Henry Edaven]] burada mahkûmları sorgular ve Alicia'nın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
+## Genel bilgiler
+Tesis 61'e gelmeden önce Alicia bir üniversite öğrencisiydi ve edebiyat eğitimi alıyordu.
 
-## Biyografi
-{{missing}}
+## Geçmiş ve biyografi
+Alicia, kendisinden bahsederken eskiden oldukça başarılı bir öğrenci olduğunu, ancak [[Nate Lawson|Nate]] ile tanıştıktan sonra hayatının değiştiğini ima eder.
 
-## Kişiliği
-{{missing}}
+:::quote
+I was a university student. I studied literature.
+— Alicia (Türkçesi: "Üniversite öğrencisiydim. Edebiyat okudum.")
+:::
 
-## Geçmişi
-{{missing}}
+:::quote
+I used to be a really good student. Before I met Nate.
+— Alicia (Türkçesi: "Eskiden çok iyi bir öğrenciydim. Nate'le tanışmadan önce.")
+:::
 
-## İlişkileri
-{{missing}}
+## Kişilik
+Alicia **sessiz ve fazla konuşmayan** bir karakterdir. Konuşmaları doğal, samimi ve genç bir yetişkinin gündelik konuşma tarzındadır.
 
-## Göründüğü yapımlar
-- *[[The Facility]]*
+## İlişkiler
+| Karakter | İlişki |
+|---|---|
+| [[Nate Lawson]] | Alicia'nın geçmişinde önemli bir yere sahiptir. Onunla tanışması Alicia'nın hayatında önemli değişikliklere yol açmıştır. İlişkilerinin ayrıntıları belirlenmemiştir. |
 
-## Bilgi notları
-{{missing}}
+## Hikâyedeki rolü
+Alicia'nın sorgusunda kullanılan başlıklardan biri **Current Situation** (Mevcut Durum) olarak belirlenmiştir. Bu başlığın amacı Alicia'nın mevcut durumunu ve Tesis 61'e gelmeden önce yaşadıklarını anlamaktır. Bkz. [[Testler ve Tespit Yöntemleri]].
+
+## Bilinen bilgiler ve gizemler
+:::unknown Henüz belirlenmedi
+- Kesin yaşı.
+- Suç geçmişi.
+- Nate ile ilişkisinin ayrıntıları.
+- İnsan mı yoksa Bozulmuş mu olduğu.
+:::
+
+## Görünüş
+Karakter çiziminde Alicia, omuz hizasını geçen dalgalı koyu saçlı ve açık yeşil mahkûm kıyafetli (altında beyaz uzun kollu) olarak gösterilir.

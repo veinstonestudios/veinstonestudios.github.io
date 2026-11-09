@@ -1,13 +1,13 @@
 ---
 title: Henry Edaven
 type: character
-role: Müdür · Ana karakter
+role: Gardiyan · Oyuncu karakteri
 categories: Tesis Personeli
-aliases: Henry, Müdür, Warden, The Warden, Edaven
-summary: Henry Edaven, The Facility'nin ana karakteri ve Tesis 61'in Müdürüdür.
+aliases: Henry, Gardiyan, Warden, The Warden, Gardiyan, Edaven
+summary: Henry Edaven, The Facility'nin oyuncu karakteri ve Tesis 61'in Gardiyanıdır.
 spoilers: true
-image:
-caption: Resmî bir portre henüz yayımlanmadı.
+image: assets/img/characters/henry-edaven.jpg
+caption: Karakter portresi
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
@@ -16,58 +16,70 @@ infobox:
   Yaşı: Bilinmiyor
   Durumu: Hayatta (oyunun başında)
   [Aile]
-  Kardeşi: [[Arthur Edaven]]
-  Eşi: Hayatını kaybetti (adı belgelenmedi)
-  Kızı: Hayatını kaybetti (adı belgelenmedi)
+  Ağabeyi: [[Arthur Edaven]]
+  Eşi: [[Henry'nin Eşi]] (hayatını kaybetti)
+  Kızı: [[Henry'nin Kızı]] (hayatını kaybetti)
   [Görevi]
-  Unvanı: Müdür
+  Unvanı: Gardiyan (Warden)
   Tesis: [[Tesis 61]]
-  [Göründüğü yapımlar]
+  [Oyunda]
+  Karakter türü: Oyuncu karakteri
   Oyun: [[The Facility]]
-  Rolü: Ana karakter (oyuncu karakteri)
 ---
-**Henry Edaven**, *[[The Facility]]* oyununun ana karakteri ve oyuncu karakteridir. [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen kişiler için bir hapishane ve rehabilitasyon merkezi olan **[[Tesis 61]]'in Müdürüdür**.
+**Henry Edaven**, *[[The Facility]]* oyununun oyuncu karakteridir. [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen kişiler için bir hapishane ve rehabilitasyon merkezi olan **[[Tesis 61]]'in Gardiyanıdır** (İngilizce: Warden).
 
-## Genel bakış
-Müdür olarak Henry; Tesis 61'in mahkûmlarını sorgulamaktan, insanlıklarını değerlendirmekten ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmekten sorumludur. Tesisin işleyişi hakkında [[Viktor Hale|Yüzbaşı Viktor Hale]] tarafından bilgilendirilir ve [[Vera Collins|Teğmen Vera Collins]] ona yardımcı olur.
+## Genel bilgiler
+Henry, oyuncunun kontrol ettiği karakterdir. Tesis 61'e gelişinde [[Viktor Hale|Kaptan Viktor Hale]] ona gardiyanlık görevini ve tesisin çalışma düzenini anlatır; [[Vera Collins|Teğmen Vera Collins]] ise tesisin günlük işleyişini ve hücre bloklarını tanıtır.
 
-## Biyografi
+## Geçmiş ve biyografi
 ### Ailesi
-Henry'nin eşi ve kızı bir yangında hayatını kaybetti. Kızı Bozulma belirtileri göstermişti.
+Henry'nin geçmişinde, ailesinin kaybıyla sonuçlanan trajik bir olay vardır. [[Henry'nin Eşi|Eşi]] ve [[Henry'nin Kızı|kızı]] bir yangında hayatını kaybetmiştir. Kızı, ölümünden önce Bozulma (Corruption) belirtileri göstermeye başlamıştır.
 
-Henry'nin kardeşi [[Arthur Edaven]], [[Tesis 60]] olayı sırasında ortadan kayboldu.
-
-:::unknown Belirlenmemiş bilgiler
-- Henry'nin eşinin ve kızının adları.
-- Yangının nedeni ve koşulları.
-- Kızının gösterdiği Bozulma belirtilerinin neler olduğu.
-:::
+Henry'nin ağabeyi [[Arthur Edaven]], [[Tesis 60]]'ın düşüşü sırasında ortadan kaybolmuştur.
 
 ### Tesis 61'e atanması
-Henry daha sonra, geçmişiyle bağlantılı koşullar altında Tesis 61'in Müdürü olarak atandı. Resmî basın materyalleri onu oyunun başında tesisin yeni atanmış müdürü olarak tanımlar.
+Henry'nin Tesis 61'e atanması sıradan bir mesleki görevlendirme değildir; geçmişiyle bağlantılıdır.
 
-Atanmasının ardındaki koşulların tam niteliği belgelenmemiştir. {{unknown}}
+:::unknown Henüz belirlenmedi
+- Henry'nin yaşı ve fiziksel özellikleri.
+- Ayrıntılı kişiliği.
+- Tesis 61 öncesindeki yaşamı.
+- Eşinin ve kızının adları; yangının nedeni ve koşulları.
+:::
 
-## Kişiliği
-{{missing}}
+## Kişilik ve psikolojik durum
+Henry'nin geçmiş travmaları oyunun psikolojik korku unsurlarının önemli bir parçasıdır. [[Gece Olayları|Gece olaylarında]]; geçmişine, ailesine, suçluluk duygusuna ve gerçeklik algısının bozulmasına ilişkin sembolik sahneler görülür.
 
-## Geçmişi
-{{missing}}
+Ayrıntılı kişiliği henüz belirlenmemiştir. {{tba}}
 
-## İlişkileri
+## Hikâyedeki rolü
+Gardiyan olarak Henry'nin görevleri şunlardır:
+- [[Kategori:Mahkûmlar|Mahkûmlarla]] görüşmek ve onları sorgulamak.
+- Mahkûm dosyalarını incelemek.
+- Ses kayıtlarını dinlemek.
+- Bozulma tespit testlerini gerçekleştirmek. Bkz. [[Testler ve Tespit Yöntemleri]].
+- Günlük [[Görevlendirmeler|görevler]] için mahkûm seçmek.
+- Tesisin kaynaklarını ve çalışma saatlerini yönetmek.
+
+Oyuncunun kararları tesisteki insan ve anomali dengesini etkiler.
+
+## İlişkiler
 | Karakter | İlişki |
 |---|---|
-| [[Arthur Edaven]] | Kardeşi. Tesis 60 olayı sırasında ortadan kayboldu; akıbeti bilinmiyor. |
-| Eşi (adı bilinmiyor) | Bir yangında hayatını kaybetti. |
-| Kızı (adı bilinmiyor) | Bir yangında hayatını kaybetti. Bozulma belirtileri göstermişti. |
-| [[Viktor Hale]] | Henry'yi bilgilendiren ve tesisin işleyişini açıklayan kıdemli subay. |
-| [[Vera Collins]] | Hücre bloklarını denetleyen ve Müdüre yardımcı olan subay. |
+| [[Arthur Edaven]] | Ağabeyi. Tesis 60'ın düşüşü sırasında ortadan kayboldu; akıbeti bilinmiyor. |
+| [[Henry'nin Eşi]] | Bir yangında hayatını kaybetti. |
+| [[Henry'nin Kızı]] | Bir yangında hayatını kaybetti. Ölümünden önce Bozulma belirtileri gösterdi. |
+| [[Viktor Hale]] | Henry'yi gardiyanlık görevi ve tesisin çalışma düzeni hakkında bilgilendirir. |
+| [[Vera Collins]] | Henry'ye tesisin günlük işleyişini ve hücre bloklarını tanıtır. |
 
-## Göründüğü yapımlar
-- *[[The Facility]]* — ana karakter (oyuncu karakteri)
+## Bilinen bilgiler ve gizemler
+:::confirmed Kesinleşmiş
+- Tesis 61'in Gardiyanıdır ve oyuncu karakteridir.
+- Eşi ve kızı bir yangında hayatını kaybetmiştir; kızı ölmeden önce Bozulma belirtileri göstermiştir.
+- Ağabeyi Arthur, Tesis 60'ın düşüşü sırasında kaybolmuştur.
+:::
 
 ## Bilgi notları
-- Henry'nin resmî bir portresi veya karakter görseli henüz yayımlanmadı.
 - *The Facility*, Henry'nin bakış açısından oynanır.
 
 ## Ayrıca bakınız

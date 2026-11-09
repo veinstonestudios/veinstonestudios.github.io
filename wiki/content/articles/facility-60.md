@@ -24,23 +24,23 @@ infobox:
   [Göründüğü yapımlar]
   Oyun: [[The Facility]]
 ---
-**Tesis 60** (İngilizce: Facility 60), *[[The Facility]]* dünyasında önceki bir tesisti. **Anomaliler tarafından istila edildikten sonra sonunda kapatıldı.** Ana karakter [[Henry Edaven]]'ın kardeşi **[[Arthur Edaven]]**, olay sırasında ortadan kayboldu.
+**Tesis 60** (İngilizce: Facility 60), *[[The Facility]]* dünyasında önceki bir tesisti. **Anomaliler tarafından istila edildikten sonra sonunda kapatıldı.** Oyuncu karakteri [[Henry Edaven]]'ın ağabeyi **[[Arthur Edaven]]**, olaylar sırasında ortadan kayboldu.
 
 ## Genel bakış
 Tesis 60, oyunun geçtiği [[Tesis 61]]'den önceki bir tesistir. Olaydan önceki işleyişi hakkında çok az şey bilinmektedir.
 
 ## Tarihçe
 ### Tesis 60 olayı
-Tesis 60 anomaliler tarafından istila edildi ve sonunda kapatıldı. Arthur Edaven olay sırasında ortadan kayboldu.
+Tesis 60, anomalilerin tesisi **kontrol edilemeyecek boyutta ele geçirmesi** sonucunda kapatıldı. Arthur Edaven bu olaylar sırasında ortadan kayboldu.
 
 :::unknown Yanıtlanmamış bir soru
-Arthur'un gerçekten Bozulmuş bir birey mi olduğu, yoksa haksız yere mi suçlandığı **bilinmiyor**. Bu belirsizlik hikâyenin bir parçasıdır; wiki iki olasılıktan hiçbirini gerçek olarak sunmaz.
+Tesis 60'ın düşüşü sırasında Arthur'un Bozulmuş olduğu iddia edilmiş olabilir; ancak bu iddianın doğru olup olmadığı **hiçbir zaman kesinleşmez**. Bu belirsizlik hikâyenin bilinçli bir parçasıdır; wiki iki olasılıktan hiçbirini gerçek olarak sunmaz.
 :::
 
 :::unknown Belirlenmemiş bilgiler
 - Olayın ne zaman yaşandığı.
 - Tesis 60'ın amacının ne olduğu ve Tesis 61'inkiyle aynı olup olmadığı.
-- Tesisin nasıl istila edildiği.
+- Anomalilerin tesisi nasıl ele geçirdiği.
 - Personelinin ve mahkûmlarının başına ne geldiği.
 :::
 

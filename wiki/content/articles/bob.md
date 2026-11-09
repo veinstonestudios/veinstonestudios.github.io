@@ -3,7 +3,9 @@ title: Bob
 type: character
 role: Mahkûm
 categories: Mahkûmlar
-summary: Bob, Bozulmuş olduğu şüphesiyle Tesis 61'de tutulan bir mahkûmdur.
+summary: Bob, Tesis 61'de oyunun ilk gününde karşılaşılan mahkûmlardan biridir.
+spoilers: true
+spoiler-note: Bob'un gerçek kimliği gizli metin olarak verilmiştir; görmek için üzerine tıklayın.
 image: assets/img/characters/bob.jpg
 caption: Karakter çizimi
 created: 2026-11-09
@@ -16,15 +18,15 @@ infobox:
   Durumu: Mahkûm
   [Sınıflandırma]
   Tutulduğu yer: [[Tesis 61]]
-  Şüphe: Bozulma
-  İnsan mı, Bozulmuş mu: Bilinmiyor
-  [Göründüğü yapımlar]
+  İlk karşılaşma: 1. gün
+  Gerçek kimliği: ||İnsan (Human)||
+  [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Bob**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Tesisteki her mahkûm gibi Bob'un da [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilmektedir.
+**Bob**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
-:::unknown Sınıflandırma
-Bob'un sıradan bir insan mı yoksa Bozulmuş bir birey mi olduğu **belirlenmemiştir**.
+:::spoiler Gerçek kimliği
+Bob'un gerçek kimliği ||insan (Human)|| olarak belirlenmiştir.
 :::
 
 :::quote
@@ -32,29 +34,32 @@ Partinin neşesi geldi!
 — Bob, bir geliştirme sürümü ekran görüntüsünde (İngilizce aslı: "The life of the party has arrived!")
 :::
 
-## Genel bakış
-Bob, Tesis 61'de bir hücrede tutulmaktadır. Müdür [[Henry Edaven]] burada mahkûmları sorgular ve Bob'un bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
+## Genel bilgiler
+Bob, Tesis 61'de bir hücrede tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Bob'un bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Biyografi
+## Geçmiş ve biyografi
 {{missing}}
 
-## Kişiliği
+## Kişilik
 {{missing}}
 
-## Geçmişi
+## İlişkiler
 {{missing}}
 
-## İlişkileri
-{{missing}}
+## Hikâyedeki rolü
+Bob, oyunun ilk gününde değerlendirilen mahkûmlardan biridir. Bkz. [[Oynanış]].
 
-## Göründüğü yapımlar
-- *[[The Facility]]*
+## Bilinen bilgiler ve gizemler
+:::unknown Henüz belirlenmedi
+- Yaşı, soyadı ve suç geçmişi.
+- Kişiliği ve geçmişi.
+:::
+
+## Görünüş
+Karakter çiziminde Bob, kel ve geniş gülümsemeli, koyu yeşil mahkûm kıyafetli olarak gösterilir.
 
 ## Galeri
 :::gallery
 assets/img/characters/bob.jpg | Karakter çizimi
 assets/img/screens/bob-cell.jpg | Bob bir hücrede (geliştirme sürümü ekran görüntüsü)
 :::
-
-## Bilgi notları
-- Bob'un soyadı belgelenmemiştir.

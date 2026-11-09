@@ -4,10 +4,10 @@ type: character
 role: Kayıp
 categories: Diğer Karakterler
 aliases: Arthur
-summary: Arthur Edaven, Henry Edaven'ın kardeşidir. Tesis 60 olayı sırasında ortadan kayboldu; gerçek kimliği ve akıbeti bilinmiyor.
+summary: Arthur Edaven, Henry Edaven'ın ağabeyidir. Tesis 60'ın düşüşü sırasında ortadan kayboldu; gerçekten bir anomali olup olmadığı bilinmiyor.
 spoilers: true
-image:
-caption: Resmî bir portre henüz yayımlanmadı.
+image: assets/img/characters/arthur-edaven.jpg
+caption: Karakter çizimi
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
@@ -15,49 +15,56 @@ infobox:
   Tam adı: Arthur Edaven
   Yaşı: Bilinmiyor
   Durumu: Bilinmiyor (kayıp)
-  Kimliği: Bilinmiyor (insan mı Bozulmuş mu olduğu belirlenmedi)
+  Kimliği: Bilinmiyor (insan mı Bozulmuş mu olduğu kesinleşmez)
   [Aile]
-  Kardeşi: [[Henry Edaven]]
+  Kardeşi: [[Henry Edaven]] (Arthur ağabeyidir)
   [Bağlantılar]
-  Bilinen son konumu: [[Tesis 60]]
-  [Göründüğü yapımlar]
+  Bağlantılı olduğu yer: [[Tesis 60]]
+  [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Arthur Edaven**, *[[The Facility]]* oyununun ana karakteri **[[Henry Edaven]]**'ın kardeşidir. **[[Tesis 60]]**'taki olay sırasında ortadan kayboldu. Gerçek kimliği ve akıbeti bilinmiyor.
+**Arthur Edaven**, *[[The Facility]]* oyununun oyuncu karakteri **[[Henry Edaven]]**'ın ağabeyidir. **[[Tesis 60]]** ile bağlantılıdır ve tesisin düşüşü sırasında ortadan kaybolmuştur.
 
-:::unknown Yanıtlanmamış bir soru
-Arthur'un gerçekten Bozulmuş bir birey mi olduğu, yoksa haksız yere mi suçlandığı **bilinmiyor**. Bu wiki iki olasılıktan hiçbirini gerçek olarak sunmaz.
+:::unknown Hikâyenin bilinçli bir belirsizliği
+Arthur'un hikâyesindeki en önemli nokta, **gerçekten bir anomali olup olmadığının bilinmemesidir**. Tesis 60'ın düşüşü sırasında Arthur'un Bozulmuş olduğu iddia edilmiş olabilir; ancak bu iddianın doğru olup olmadığı hiçbir zaman kesinleşmez. Bu wiki Arthur'u ne insan ne de Bozulmuş olarak tanımlar.
 :::
 
-## Genel bakış
-Arthur, oyundan önce yaşanan olaylarla bağlantılıdır. Tesis 60 anomaliler tarafından istila edildikten sonra sonunda kapatıldı ve Arthur olay sırasında ortadan kayboldu.
+## Genel bilgiler
+Arthur, Henry'nin ağabeyidir ve Tesis 60 ile bağlantılıdır. Tesis 60, anomalilerin tesisi kontrol edilemeyecek boyutta ele geçirmesi sonucunda kapatılmıştır. Arthur bu olaylar sırasında ortadan kaybolmuştur.
 
-## Biyografi
+## Geçmiş ve biyografi
+Arthur'un Tesis 60 ile bağlantısının niteliği ve geçmişinin diğer ayrıntıları henüz belirlenmemiştir. {{tba}}
+
+## Kişilik
 {{missing}}
 
-## Kişiliği
-{{missing}}
-
-## Geçmişi
-### Tesis 60 olayı
-Arthur, Tesis 60'taki olay sırasında ortadan kayboldu. Başına ne geldiği bilinmiyor.
-
-:::unknown Belirlenmemiş bilgiler
-- Arthur'un Tesis 60 ile bağlantılı rolü veya görevi.
-- Arthur'un Bozulmuş bir birey mi olduğu, yoksa haksız yere mi suçlandığı.
-- Arthur'un hayatta olup olmadığı.
-:::
-
-## İlişkileri
+## İlişkiler
 | Karakter | İlişki |
 |---|---|
-| [[Henry Edaven]] | Kardeşi |
+| [[Henry Edaven]] | Küçük kardeşi |
 
-## Göründüğü yapımlar
-- *[[The Facility]]*
+## Hikâyedeki rolü
+Arthur'un hikâyesi şu konularla bağlantılıdır:
+- Tesis 60'ın geçmişi.
+- Henry ile olan aile ilişkisi.
+- Anomalilerin doğası.
+- Yanlış suçlamalar ve kimlik belirsizliği.
+- Bir tesisin anomaliler tarafından ele geçirilmesinin sonuçları.
 
-## Bilgi notları
-- Arthur'un resmî bir portresi henüz yayımlanmadı.
+## Bilinen bilgiler ve gizemler
+:::confirmed Kesinleşmiş
+- Henry Edaven'ın ağabeyidir.
+- Tesis 60 ile bağlantılıdır ve tesisin düşüşü sırasında ortadan kaybolmuştur.
+:::
+
+:::unknown Henüz belirlenmedi
+- Yaşı ve kişiliği.
+- Geçmişinin diğer ayrıntıları.
+- Akıbeti.
+:::
+
+## Görünüş
+Karakter çiziminde Arthur, kısa koyu saçlı ve zayıf yüzlü bir adam olarak, yeşil iş tulumuna benzer bir kıyafetle oturur hâlde gösterilir.
 
 ## Ayrıca bakınız
 - [[Tesis 60]]

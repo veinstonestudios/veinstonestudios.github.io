@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-09.2-tr',
+  version: '2026-11-09.3-tr',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
@@ -45,6 +45,15 @@ window.WIKI_CONFIG = {
     'm-cole-morgan',
     'alicia-winston',
     'bob',
+    'evangelyn-hilton',
+    'dakota-ahmadii',
+    'hasan-kahveci',
+    'katarina-jovanovic',
+    'shane-smith',
+    'janitor',
+    'nate-lawson',
+    'henrys-wife',
+    'henrys-daughter',
 
     // Mekânlar
     'facility-61',
@@ -131,12 +140,12 @@ window.WIKI_CONFIG = {
     intro: [
       '**[[The Facility]]**, Veinstone Studios tarafından geliştirilen ve 2055 yılında geçen bir psikolojik korku oyunudur. ' +
       'Oyuncu, [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen kişilerin tutulduğu bir hapishane ve rehabilitasyon merkezi olan ' +
-      '[[Tesis 61]]\'in Müdürü [[Henry Edaven]]\'ı canlandırır.',
+      '[[Tesis 61]]\'in Gardiyanı [[Henry Edaven]]\'ı canlandırır.',
       'Bu wiki; oyunun karakterlerini, mekânlarını ve evrenini belgeleyen bir topluluk ansiklopedisidir. ' +
       'Doğrulanmamış bilgiler açıkça bilinmiyor olarak işaretlenir.'
     ],
     featuredArticle: 'Tesis 61',
-    featuredCharacters: ['Henry Edaven', 'Arthur Edaven', 'Ted Karinsky', 'M. Cole Morgan', 'Alicia Winston', 'Bob'],
+    featuredCharacters: ['Henry Edaven', 'Arthur Edaven', 'Vera Collins', 'Alicia Winston', 'Ted Karinsky', 'Bob', "Henry'nin Kızı", 'Katarina Jovanovic'],
     importantLocations: ['Tesis 61', 'Tesis 60'],
     lore: ['Analog Çağ', 'Teknoloji Tasfiyesi', 'Bozulmuşlar', 'CORE Programı', 'Dünya', 'Zaman Çizelgesi'],
     gameInfo: ['Oynanış', 'Görevlendirmeler', 'Testler ve Tespit Yöntemleri', 'Gece Olayları', 'Sonlar'],

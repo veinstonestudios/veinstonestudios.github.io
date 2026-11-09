@@ -3,7 +3,7 @@ title: Testler ve Tespit Yöntemleri
 type: game
 categories: Oyun Bilgileri
 aliases: Tests & Detection Methods, Tests and Detection Methods, Testler, Tespit, Tespit yöntemleri, Sorgu, Sorgular, Günlük, Teyp, Hücre incelemesi
-summary: Müdürün bir mahkûmun insan mı yoksa Bozulmuş mu olduğunu belirlemek için kullandığı yöntemler — sorgu, belge kontrolü, ifadelerin karşılaştırılması ve görsel bozulmaların aranması.
+summary: Gardiyanın bir mahkûmun insan mı yoksa Bozulmuş mu olduğunu belirlemek için kullandığı yöntemler — sorgu, belge kontrolü, ifadelerin karşılaştırılması ve görsel bozulmaların aranması.
 image: assets/img/screens/tape-recorder.jpg
 caption: Kaydedilmiş bir sorgunun dinlenmesi (geliştirme sürümü ekran görüntüsü)
 created: 2026-11-09
@@ -11,32 +11,42 @@ updated: 2026-11-09
 infobox:
   [Genel bakış]
   Amacı: İnsanları [[Bozulmuşlar|Bozulmuşlardan]] ayırt etmek
-  Uygulayan: Müdür ([[Henry Edaven]])
+  Uygulayan: Gardiyan ([[Henry Edaven]])
   Aşama: Sorgu
   [Bilinen yöntemler]
-  Yöntemler: Sorgu; Belge incelemesi; İfadelerin karşılaştırılması; Görsel gözlem
+  Yöntemler: Sorgu; Belge incelemesi; İfadelerin karşılaştırılması; Ses testleri; Görsel gözlem
+  Görüşme süresi: 2 saat
 ---
-**Testler ve tespit yöntemleri**, [[Tesis 61]]'in Müdürünün bir mahkûmun sıradan bir insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğunu belirlemeye çalıştığı yollardır. Gerçek bir insanı Bozulmuş bir bireyden ayırt etmek her zaman kolay değildir.
+**Testler ve tespit yöntemleri**, [[Tesis 61]]'in Gardiyanının bir mahkûmun sıradan bir insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğunu belirlemeye çalıştığı yollardır. Gerçek bir insanı Bozulmuş bir bireyden ayırt etmek her zaman kolay değildir.
 
 :::dev
 *The Facility* hâlâ geliştirme aşamasındadır. Aşağıdaki yöntemler resmî materyallerde anlatılanlardır. Başka testler ileride belgelenebilir.
 :::
 
 ## Genel bakış
-Müdürün görevi mahkûmları sorgulamak ve insanlıklarını değerlendirmektir. Resmî basın kitine göre bu; mahkûm dosyalarını incelemeyi, anlattıklarını karşılaştırmayı ve görsel bozulmaları aramayı kapsar.
+Gardiyanın görevi mahkûmları sorgulamak ve insanlıklarını değerlendirmektir. Resmî basın kitine göre bu; mahkûm dosyalarını incelemeyi, anlattıklarını karşılaştırmayı ve görsel bozulmaları aramayı kapsar.
 
 ## Bilinen yöntemler
 ### Sorgu
-Müdür mahkûmları yüz yüze sorgular ve tuhaf görünen her şeye dikkat eder.
+Gardiyan mahkûmları yüz yüze sorgular ve tuhaf görünen her şeye dikkat eder.
 
 ### Belge incelemesi
 Mahkûmların belgeleri tutarsızlıklar açısından incelenir.
 
 ### İfadelerin karşılaştırılması
-Mahkûmların anlattıkları birbiriyle karşılaştırılır. Müdürün **günlüğü** ifadeleri karşılaştırmak için kullanılır; **teyp** ise kaydedilmiş sorguların yeniden dinlenmesini sağlar.
+Mahkûmların anlattıkları birbiriyle karşılaştırılır. Gardiyanın **günlüğü** ifadeleri karşılaştırmak için kullanılır; **teyp** ise kaydedilmiş sorguların yeniden dinlenmesini sağlar.
+
+### Ses testleri
+[[Vera Collins|Teğmen Vera Collins]]'in eğitim diyaloğuna göre:
+- İlk günün ses testleri önceden yapılmıştır.
+- Ses kayıtları günlükteki (Journal) mahkûm dosyalarında bulunur.
+- İkinci günden itibaren [[Henry Edaven|Henry]] ses testlerini **kasetçalar** kullanarak kendisi yapar.
+
+### Görüşmeler ve sorgu başlıkları
+Mahkûmlarla yapılan her görüşme **2 saat** sürer ve Gardiyanın çalışma saatlerinden harcar. Sorgular başlıklar üzerinden ilerler; örneğin [[Alicia Winston]]'ın sorgusundaki başlıklardan biri **Current Situation** (Mevcut Durum) olarak belirlenmiştir.
 
 ### Görsel gözlem
-Müdür, bir anomaliye işaret edebilecek görsel bozulmaları arar. **Hücre incelemesi** sırasında mahkûmlar hücrelerinin kapağından gözlemlenebilir.
+Gardiyan, bir anomaliye işaret edebilecek görsel bozulmaları arar. **Hücre incelemesi** sırasında mahkûmlar hücrelerinin kapağından gözlemlenebilir.
 
 ## Diğer testler
 {{missing}}

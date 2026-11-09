@@ -32,7 +32,7 @@ Analog Çağ, gelişmiş teknolojinin ve yapay zekânın yasaklandığı [[Tekno
 :::
 
 ## Ayrıntılı açıklama
-Analog Çağ'da iletişim ve bilgi işleme analog araçlarla yürütülür. Oyunda Müdürün [[Tesis 61]]'deki işi kâğıt bir günlük ve bir teyp gibi araçlarla yürütülür; resmî basın materyalleri ise günlük emirlerin faksla geldiğini anlatır.
+Analog Çağ'da iletişim ve bilgi işleme analog araçlarla yürütülür. Oyunda Gardiyanın [[Tesis 61]]'deki işi kâğıt bir günlük ve bir teyp gibi araçlarla yürütülür; resmî basın materyalleri ise günlük emirlerin faksla geldiğini anlatır.
 
 {{missing}}
 

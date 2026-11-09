@@ -315,6 +315,7 @@
 
   function plainText(md) {
     return md
+      .replace(/\|\|.+?\|\|/g, ' ') // sürprizbozanlar arama sonuçlarında görünmesin
       .replace(/^:::.*$/gm, ' ')
       .replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1')
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')

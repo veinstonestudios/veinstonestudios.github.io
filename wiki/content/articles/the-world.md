@@ -40,9 +40,9 @@ Bu dünyanın belirleyici tehdidi **[[Bozulmuşlar]]**dır: artık yasak olan ge
 Olayların bilinen sırası için [[Zaman Çizelgesi]] maddesine bakın.
 
 ## Devlet
-Resmî basın kitine göre oyundaki yönetici otoriteden **Devlet** (İngilizce: the State) olarak bahsedilir. Devlet, tehlikeli yeniden yapılanma görevleri için [[Tesis 61]]'den kişiler talep eder ve her günün başında Müdüre çalıştırılmak üzere gereken mahkûm kotasını gönderir. Bkz. [[Görevlendirmeler]].
+Resmî basın kitine göre oyundaki yönetici otoriteden **Devlet** (İngilizce: the State) olarak bahsedilir. Devlet, tehlikeli yeniden yapılanma görevleri için [[Tesis 61]]'den kişiler talep eder ve her günün başında Gardiyana çalıştırılmak üzere gereken mahkûm kotasını gönderir. Bkz. [[Görevlendirmeler]].
 
-Müdür, Bozulmuş bir bireyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Müdürü sorumlu tutar.
+Gardiyan, Bozulmuş bir bireyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Gardiyanı sorumlu tutar.
 
 Devlet'in yapısı ve tarihi hakkında başka ayrıntı belgelenmemiştir. {{tba}}
 

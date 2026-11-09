@@ -9,4 +9,4 @@ updated: 2026-11-09
 ---
 Bu kategori, [[Tesis 61]]'in ne personeli ne de mahkûmu olan karakterleri listeler.
 
-Henry Edaven'ın bir yangında hayatını kaybeden eşi ve kızından [[Henry Edaven]] maddesinde bahsedilir. Adları belgelenmediği için ayrı maddeleri yoktur.
+Henry Edaven'ın ailesi ([[Arthur Edaven]], [[Henry'nin Eşi]], [[Henry'nin Kızı]]) ve [[Alicia Winston]]'ın geçmişindeki [[Nate Lawson]] bu kategoridedir. Eşin ve kızın adları henüz belirlenmediği için maddeleri bu başlıklarla yer alır.

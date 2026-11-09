@@ -1,48 +1,52 @@
 ---
 title: Viktor Hale
 type: character
-role: Yüzbaşı
+role: Kaptan
 categories: Tesis Personeli
-aliases: Yüzbaşı Viktor Hale, Yüzbaşı Hale, Captain Viktor Hale, Captain Hale, Hale, Viktor
-summary: Yüzbaşı Viktor Hale, Henry Edaven'ı bilgilendiren ve Tesis 61'in işleyişini açıklayan kıdemli bir subaydır.
+aliases: Kaptan Viktor Hale, Kaptan Hale, Yüzbaşı Viktor Hale, Yüzbaşı Hale, Captain Viktor Hale, Captain Hale, Hale, Viktor
+summary: Kaptan Viktor Hale, Henry Edaven'a gardiyanlık görevini ve Tesis 61'in çalışma düzenini anlatan tesis personelidir.
 image:
-caption: Resmî bir portre henüz yayımlanmadı.
+caption: Bir karakter görseli henüz yayımlanmadı.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
   [Kişisel bilgiler]
   Tam adı: Viktor Hale
   Yaşı: Bilinmiyor
-  Durumu: Bilinmiyor
   [Görevi]
-  Rütbesi: Yüzbaşı
-  Rolü: Kıdemli subay
+  Rütbesi: Kaptan (Captain)
+  Rolü: Tesis personeli
   Tesis: [[Tesis 61]]
-  [Göründüğü yapımlar]
+  [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Yüzbaşı Viktor Hale**, *[[The Facility]]* oyununda kıdemli bir subaydır. [[Tesis 61]]'in Müdürü **[[Henry Edaven]]**'ı bilgilendirir ve tesisin işleyişini açıklar.
+**Kaptan Viktor Hale**, *[[The Facility]]* oyununda [[Tesis 61]]'in personelinden biridir. **[[Henry Edaven]]**'ın tesise geldiğinde karşılaştığı ilk önemli karakterlerden biridir.
 
-## Genel bakış
-Hale'in kesinleşmiş rolü, Müdürü bilgilendirmek ve Tesis 61'in nasıl işlediğini açıklamaktır. Karakter hakkında başka ayrıntı henüz belgelenmemiştir.
+## Genel bilgiler
+Viktor, Henry'ye gardiyanlık görevini ve tesisin çalışma düzenini anlatan ilk bilgilendirmeyi yapar.
 
-## Biyografi
+## Geçmiş ve biyografi
 {{missing}}
 
-## Kişiliği
-{{missing}}
+## Kişilik ve konuşma tarzı
+Viktor'un konuşmaları **doğrudan, profesyonel ve bilgilendiricidir**. Tesis içindeki herkesin insan olmayabileceğini ve bazı mahkûmların [[Bozulmuşlar|Bozulmuş]] olabileceğini açıklar.
 
-## Geçmişi
-{{missing}}
-
-## İlişkileri
+## İlişkiler
 | Karakter | İlişki |
 |---|---|
-| [[Henry Edaven]] | Henry'yi tesisin işleyişi hakkında bilgilendirir. |
-| [[Vera Collins]] | Subay arkadaşı. Aralarındaki çalışma ilişkisinin niteliği belgelenmemiştir. |
+| [[Henry Edaven]] | Henry'yi gardiyanlık görevi hakkında bilgilendirir. |
+| [[Vera Collins]] | Tesis personelinden. Aralarındaki ilişki henüz kesinleşmemiştir. |
 
-## Göründüğü yapımlar
-- *[[The Facility]]*
+## Hikâyedeki rolü
+Viktor, bilgilendirmesinde şu konuları açıklar:
+- Günlük [[Görevlendirmeler|görev sistemi]].
+- Her sabah gelen faks. Faks, görevin ayrıntılarını ve seçilmesi gereken mahkûm sayısını içerir ve Henry'nin günlüğü (Journal) içinden okunabilir.
+- Görevler için gereken mahkûm sayısı.
+- [[Bozulmuşlar|Bozulmuşların]] varlığı.
+- İnsanlarla anomalileri ayırt etmenin önemi.
 
-## Bilgi notları
-- Yüzbaşı Hale'in resmî bir portresi henüz yayımlanmadı.
+## Bilinen bilgiler ve gizemler
+:::unknown Henüz belirlenmedi
+- Yaşı ve fiziksel özellikleri.
+- Ailesi, geçmişi ve kişisel motivasyonları.
+:::

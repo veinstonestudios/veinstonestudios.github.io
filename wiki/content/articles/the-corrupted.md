@@ -25,7 +25,7 @@ infobox:
 Resmî basın materyalleri onlardan **Anomaliler** olarak da bahseder ve onları "kendilerini insan olarak gizleyebilen taklitçiler" diye tanımlar.
 
 ## Genel bakış
-**Gerçek bir insanı Bozulmuş bir bireyden ayırt etmek her zaman kolay değildir.** Bozulmuş olduğundan şüphelenilen kişiler [[Tesis 61]]'de tutulur; Müdür, mahkûmlardan hangilerinin insan olduğunu belirlemek zorundadır. Mahkûmların bazıları sıradan insanlardır, bazıları ise anomali olabilir.
+**Gerçek bir insanı Bozulmuş bir bireyden ayırt etmek her zaman kolay değildir.** Bozulmuş olduğundan şüphelenilen kişiler [[Tesis 61]]'de tutulur; Gardiyan, mahkûmlardan hangilerinin insan olduğunu belirlemek zorundadır. Mahkûmların bazıları sıradan insanlardır, bazıları ise anomali olabilir.
 
 ## Tarihsel arka plan
 Bozulmuşlar gelişmiş yapay zekâ ve teknolojiden kaynaklanır. İlk ortaya çıkışlarının koşulları belgelenmemiştir.
@@ -38,13 +38,13 @@ Bozulmuşlar gelişmiş yapay zekâ ve teknolojiden kaynaklanır. İlk ortaya ç
 
 ## Ayrıntılı açıklama
 ### Taklit
-Bozulmuşlar insanları taklit edebilir. Bu yüzden onları tespit etmek dikkatli gözlem gerektirir. Resmî basın materyallerine göre Müdür, mahkûm dosyalarını inceler, anlattıklarını karşılaştırır ve görsel bozulmaları arar. Bkz. [[Testler ve Tespit Yöntemleri]].
+Bozulmuşlar insanları taklit edebilir. Bu yüzden onları tespit etmek dikkatli gözlem gerektirir. Resmî basın materyallerine göre Gardiyan, mahkûm dosyalarını inceler, anlattıklarını karşılaştırır ve görsel bozulmaları arar. Bkz. [[Testler ve Tespit Yöntemleri]].
 
 ### Bozulma belirtileri
 Oyun dünyasında "Bozulma belirtileri göstermek" diye bir kavram vardır: [[Henry Edaven]]'ın kızı ölmeden önce bu tür belirtiler göstermişti. Bu belirtilerin neler olduğu belgelenmemiştir. {{unknown}}
 
 ### Yanlış tespitin sonuçları
-Müdür, Bozulmuş bir bireyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Müdürü sorumlu tutar. Bkz. [[Görevlendirmeler]].
+Gardiyan, Bozulmuş bir bireyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Gardiyanı sorumlu tutar. Bkz. [[Görevlendirmeler]].
 
 ## İlgili olaylar
 - [[Teknoloji Tasfiyesi]]

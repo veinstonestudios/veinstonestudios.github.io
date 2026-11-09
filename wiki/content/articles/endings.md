@@ -20,6 +20,10 @@ Bu madde *[[The Facility]]* oyununun **sonlarını** ele alır.
 Henüz hiçbir son belgelenmedi. Resmî bilgiler açıklandığında bu sayfa güncellenecektir. Olası sonlara dair tahminler bu wikide yer almaz.
 :::
 
+:::confirmed Kesinleşmiş
+Oyuncunun mahkûmlarla ilgili seçimleri, tesisteki insan ve anomali dengesini ve **oyunun sonunu** etkiler. Bkz. [[Oynanış]].
+:::
+
 ## Sonlar
 {{missing}}
 

@@ -26,14 +26,14 @@ Aşağıdaki olaylar oyunun başlangıcından önce yaşanmıştır. Birbirlerin
 | Olay | Ayrıntılar | Maddeler |
 |---|---|---|
 | Bozulmuşların ortaya çıkışı | Gelişmiş yapay zekâ ve teknolojiden kaynaklanan, insanları taklit edebilen anomaliler. | [[Bozulmuşlar]] |
-| Tesis 60 olayı | Tesis 60 anomaliler tarafından istila edilir ve sonunda kapatılır. Arthur Edaven olay sırasında ortadan kaybolur. | [[Tesis 60]], [[Arthur Edaven]] |
-| Yangın | Henry Edaven'ın eşi ve kızı bir yangında hayatını kaybeder. Kızı Bozulma belirtileri göstermiştir. | [[Henry Edaven]] |
+| Tesis 60 olayı | Anomaliler Tesis 60'ı kontrol edilemeyecek boyutta ele geçirir ve tesis kapatılır. Arthur Edaven olay sırasında ortadan kaybolur. | [[Tesis 60]], [[Arthur Edaven]] |
+| Yangın | Henry Edaven'ın eşi ve kızı bir yangında hayatını kaybeder. Kızı Bozulma belirtileri göstermiştir. | [[Henry Edaven]], [[Henry'nin Eşi]], [[Henry'nin Kızı]] |
 
 ## 2055
 | Olay | Ayrıntılar | Maddeler |
 |---|---|---|
-| Henry Edaven Tesis 61'e atanır | Henry, geçmişiyle bağlantılı koşullar altında Müdür olarak atanır. | [[Henry Edaven]], [[Tesis 61]] |
-| Oyunun olayları | Müdür mahkûmları sorgular, insanlıklarını değerlendirir ve günlük görevler için kişileri seçer. | [[Oynanış]] |
+| Henry Edaven Tesis 61'e atanır | Henry, geçmişiyle bağlantılı koşullar altında Gardiyan olarak atanır. | [[Henry Edaven]], [[Tesis 61]] |
+| Oyunun olayları | Gardiyan mahkûmları sorgular, insanlıklarını değerlendirir ve günlük görevler için kişileri seçer. | [[Oynanış]] |
 
 ## İlgili maddeler
 - [[Dünya]]
