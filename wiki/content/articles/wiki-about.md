@@ -1,34 +1,36 @@
 ---
-title: The Facility Wiki:About
+title: The Facility Wiki:Hakkında
 type: project
-aliases: About, Wiki:About, Editorial guidelines
-summary: About The Facility Wiki and its editorial standards.
+aliases: The Facility Wiki:About, Hakkında, About, Wiki:Hakkında, Editoryal ilkeler
+summary: The Facility Wiki ve editoryal ilkeleri hakkında.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-**The Facility Wiki** is an encyclopedia documenting *[[The Facility]]*, a psychological horror game by Veinstone Studios set in the year 2055.
+**The Facility Wiki**, Veinstone Studios'un 2055 yılında geçen psikolojik korku oyunu *[[The Facility]]*'yi belgeleyen bir ansiklopedidir.
 
-## Editorial standards
-This wiki documents a game that is still in development. To keep it accurate:
+## Editoryal ilkeler
+Bu wiki hâlâ geliştirilmekte olan bir oyunu belgeler. Doğruluğu korumak için:
 
-- **Only confirmed information is presented as fact.** Everything on this wiki is based on information provided by the developers or published in official material such as the press kit.
-- **Unknowns are marked as unknown.** Where something has not been established, articles say so explicitly, using the {{unknown}} and {{tba}} labels or an "Unknown" box.
-- **Theories are not facts.** Fan theories and speculation are not presented as canon.
-- **Mysteries are preserved.** Some questions in the story are intentionally unanswered. The wiki does not resolve them.
-- **Spoilers are marked.** Articles that contain plot details carry a spoiler warning at the top of the page and are listed in [[Category:Articles with spoilers]].
+- **Yalnızca doğrulanmış bilgiler gerçek olarak sunulur.** Bu wikideki her şey geliştiricilerin sağladığı bilgilere veya basın kiti gibi resmî materyallere dayanır.
+- **Bilinmeyenler bilinmiyor olarak işaretlenir.** Belirlenmemiş bir şey olduğunda maddeler bunu açıkça belirtir; {{unknown}} ve {{tba}} etiketleri ya da "Bilinmiyor" kutusu kullanılır.
+- **Teoriler gerçek değildir.** Hayran teorileri ve tahminler kanon olarak sunulmaz.
+- **Gizemler korunur.** Hikâyedeki bazı sorular bilerek yanıtsız bırakılmıştır. Wiki bunları çözmeye çalışmaz.
+- **Sürprizbozanlar işaretlenir.** Hikâye ayrıntısı içeren maddelerin en üstünde bir sürprizbozan uyarısı bulunur ve bu maddeler [[Kategori:Sürprizbozan içeren maddeler]] sayfasında listelenir.
 
-## Labels used on this wiki
-| Label | Meaning |
+## Bu wikide kullanılan etiketler
+| Etiket | Anlamı |
 |---|---|
-| {{confirmed}} | Stated by the developers or in official material. |
-| {{unknown}} | Not established in canon. |
-| {{tba}} | Expected to be documented once information is available. |
+| {{confirmed}} | Geliştiriciler tarafından veya resmî materyallerde belirtilmiş. |
+| {{unknown}} | Kanonda belirlenmemiş. |
+| {{tba}} | Bilgi açıklandığında belgelenmesi bekleniyor. |
 
-## Images
-Screenshots on this wiki come from development builds and may not reflect the final game. Where no official image exists, a placeholder is shown.
+## Görseller
+Bu wikideki ekran görüntüleri geliştirme sürümlerinden alınmıştır ve oyunun son hâlini yansıtmayabilir. Resmî bir görsel bulunmadığında yer tutucu gösterilir.
 
-## Naming
-*The Facility* is the title of the game. **[[Facility 61]]** is the name of a location within the game.
+## Adlandırma
+*The Facility* oyunun adıdır. **[[Tesis 61]]** ise oyundaki bir mekânın adıdır.
 
-## Contributing
-Articles are stored as plain text files in the wiki's source repository. Instructions for adding and editing articles are in the `wiki/README.md` file of the repository.
+Oyun içi terimlerin Türkçe karşılıkları (Tesis 61, Bozulmuşlar, Analog Çağ, Teknoloji Tasfiyesi vb.) bu wiki için seçilmiştir. İngilizce adlar ilgili maddelerde belirtilir ve aramada da çalışır.
+
+## Katkıda bulunma
+Maddeler, wikinin kaynak deposunda düz metin dosyaları olarak saklanır. Madde ekleme ve düzenleme talimatları deponun `wiki/README.md` dosyasındadır.

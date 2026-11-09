@@ -1,8 +1,9 @@
 ---
-title: Category:Locations
+title: Kategori:Mekânlar
 type: category
-summary: All documented locations of The Facility.
+aliases: Category:Locations
+summary: The Facility'nin belgelenmiş tüm mekânları.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This category lists every documented **location** in *[[The Facility]]*. See also [[Category:Other Locations]].
+Bu kategori *[[The Facility]]* oyununun belgelenmiş tüm **mekânlarını** listeler. Ayrıca bkz. [[Kategori:Diğer Mekânlar]].

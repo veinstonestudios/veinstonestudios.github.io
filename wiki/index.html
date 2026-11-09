@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Facility Wiki</title>
-  <meta name="description" content="The Facility Wiki — the encyclopedia for The Facility, a psychological horror game by Veinstone Studios set in 2055. Characters, locations, lore and game information.">
+  <meta name="description" content="The Facility Wiki — Veinstone Studios'un 2055 yılında geçen psikolojik korku oyunu The Facility için ansiklopedi. Karakterler, mekânlar, evren ve oyun bilgileri.">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="tr_TR">
   <meta property="og:title" content="The Facility Wiki">
-  <meta property="og:description" content="Characters, locations and lore of The Facility, a psychological horror game set in 2055.">
+  <meta property="og:description" content="2055 yılında geçen psikolojik korku oyunu The Facility'nin karakterleri, mekânları ve evreni.">
   <meta property="og:image" content="https://veinstonestudios.github.io/wiki/assets/img/screens/hall.jpg">
   <meta name="theme-color" content="#1b1a18">
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
@@ -17,68 +18,68 @@
   <link rel="stylesheet" href="assets/css/wiki.css">
 </head>
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
+  <a class="skip-link" href="#content">İçeriğe geç</a>
 
   <header class="topbar">
     <div class="topbar-inner">
-      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar">
+      <button class="nav-toggle" type="button" aria-label="Gezinme menüsünü aç" aria-controls="sidebar">
         <span></span><span></span><span></span>
       </button>
-      <a class="wordmark" href="./" data-internal aria-label="The Facility Wiki — Main Page">
+      <a class="wordmark" href="./" data-internal aria-label="The Facility Wiki — Ana Sayfa" lang="en">
         <span class="wm-game">The Facility</span>
         <span class="wm-wiki">Wiki</span>
       </a>
       <form class="searchbox" id="searchform" role="search" autocomplete="off">
         <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input id="search-input" type="search" placeholder="Search the archive" aria-label="Search The Facility Wiki"
+        <input id="search-input" type="search" placeholder="Arşivde ara" aria-label="The Facility Wiki'de ara"
                role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggest">
         <ul id="search-suggest" class="suggest" role="listbox" hidden></ul>
       </form>
-      <nav class="toplinks" aria-label="External">
-        <a href="?page=Special:Random" data-internal>Random page</a>
-        <a href="../">Studio</a>
+      <nav class="toplinks" aria-label="Bağlantılar">
+        <a href="?page=Özel:Rastgele" data-internal>Rastgele sayfa</a>
+        <a href="../">Stüdyo</a>
       </nav>
     </div>
   </header>
 
   <div class="layout">
-    <aside id="sidebar" class="sidebar" aria-label="Wiki navigation">
+    <aside id="sidebar" class="sidebar" aria-label="Wiki gezinmesi">
       <div class="sidebar-head">
-        <span class="sidebar-label">Navigation</span>
-        <span class="sidebar-count"><span id="article-count">—</span> articles</span>
+        <span class="sidebar-label">Gezinme</span>
+        <span class="sidebar-count"><span id="article-count">—</span> madde</span>
       </div>
       <nav id="sidebar-nav"></nav>
       <div class="sidebar-foot">
-        <div class="sidebar-stamp">Analog record<br>No digital copies permitted</div>
+        <div class="sidebar-stamp">Analog kayıt<br>Dijital kopyası yasaktır</div>
       </div>
     </aside>
 
     <main id="content" class="content" tabindex="-1" aria-busy="true" aria-live="polite">
-      <div class="loading"><span class="loading-dot"></span> Retrieving records…</div>
-      <noscript><p>This wiki requires JavaScript to display articles.</p></noscript>
+      <div class="loading"><span class="loading-dot"></span> Kayıtlar getiriliyor…</div>
+      <noscript><p>Bu wikinin maddeleri görüntüleyebilmesi için JavaScript gereklidir.</p></noscript>
     </main>
   </div>
 
   <footer class="site-footer">
     <div class="footer-inner">
       <div>
-        <strong>The Facility Wiki</strong> documents <em>The Facility</em>, a game in development by
-        <a href="../">Veinstone Studios</a>. Content reflects the current state of development and may change.
+        <strong lang="en">The Facility Wiki</strong>, <a href="../">Veinstone Studios</a> tarafından geliştirilmekte olan
+        <em>The Facility</em> oyununu belgeler. İçerik geliştirmenin mevcut durumunu yansıtır ve değişebilir.
       </div>
       <div class="footer-links">
-        <a href="?page=The_Facility_Wiki:About" data-internal>About this wiki</a>
-        <a href="?page=Special:AllPages" data-internal>All pages</a>
-        <a href="../presskit.html">Press kit</a>
+        <a href="?page=The_Facility_Wiki:Hakkında" data-internal>Bu wiki hakkında</a>
+        <a href="?page=Özel:TümSayfalar" data-internal>Tüm sayfalar</a>
+        <a href="../presskit.html">Basın kiti</a>
         <a href="https://store.steampowered.com/app/3796790/The_Facility/" target="_blank" rel="noopener">Steam</a>
       </div>
     </div>
   </footer>
 
-  <div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Image viewer">
-    <button class="lb-close" type="button" aria-label="Close">×</button>
-    <button class="lb-prev" type="button" aria-label="Previous image">‹</button>
+  <div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Görsel görüntüleyici">
+    <button class="lb-close" type="button" aria-label="Kapat">×</button>
+    <button class="lb-prev" type="button" aria-label="Önceki görsel">‹</button>
     <figure><img src="" alt=""><figcaption class="lb-caption"></figcaption></figure>
-    <button class="lb-next" type="button" aria-label="Next image">›</button>
+    <button class="lb-next" type="button" aria-label="Sonraki görsel">›</button>
   </div>
 
   <div class="crt-overlay" aria-hidden="true"></div>

@@ -1,13 +1,13 @@
 /* ============================================================================
-   THE FACILITY WIKI — SITE CONFIGURATION
+   THE FACILITY WIKI — SİTE AYARLARI
 
-   This file controls:
-     1. Which article files exist           (articles)
-     2. The left navigation sidebar          (sidebar)
-     3. What appears on the Main Page        (mainPage)
+   Bu dosya şunları belirler:
+     1. Hangi madde dosyalarının var olduğu   (articles)
+     2. Soldaki gezinme çubuğu                (sidebar)
+     3. Ana Sayfada nelerin görüneceği        (mainPage)
 
-   Article text itself lives in  wiki/content/articles/*.md
-   See wiki/README.md for the full editing guide.
+   Maddelerin metni wiki/content/articles/*.md dosyalarındadır.
+   Ayrıntılı düzenleme rehberi için wiki/README.md dosyasına bakın.
    ========================================================================== */
 
 window.WIKI_CONFIG = {
@@ -15,10 +15,10 @@ window.WIKI_CONFIG = {
   siteName:  'The Facility Wiki',
   gameTitle: 'The Facility',
 
-  /* Bump this number after editing articles so browsers fetch fresh copies. */
-  version: '2026-11-09.1',
+  /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
+  version: '2026-11-09.2-tr',
 
-  /* External links shown in the header and footer. */
+  /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
     studio:   '../',
     presskit: '../presskit.html',
@@ -26,17 +26,17 @@ window.WIKI_CONFIG = {
   },
 
   /* --------------------------------------------------------------------------
-     ARTICLES
-     One entry per file in content/articles/ (file name without ".md").
-     A new article will not appear anywhere until it is listed here.
+     MADDELER
+     content/articles/ içindeki her dosya için bir satır (".md" olmadan).
+     Buraya eklenmeyen bir madde sitede hiçbir yerde görünmez.
      ------------------------------------------------------------------------ */
   articles: [
-    // Main
+    // Ana
     'the-facility',
     'the-world',
     'timeline',
 
-    // Characters
+    // Karakterler
     'henry-edaven',
     'arthur-edaven',
     'viktor-hale',
@@ -46,25 +46,25 @@ window.WIKI_CONFIG = {
     'alicia-winston',
     'bob',
 
-    // Locations
+    // Mekânlar
     'facility-61',
     'facility-60',
 
-    // Lore
+    // Evren bilgisi
     'the-analog-era',
     'the-technology-purge',
     'the-corrupted',
     'core-program',
     'remnants',
 
-    // Game information
+    // Oyun bilgileri
     'gameplay',
     'assignments',
     'tests-and-detection-methods',
     'night-events',
     'endings',
 
-    // Category pages (introductions shown at the top of each category)
+    // Kategori sayfaları (her kategorinin başında gösterilen giriş metni)
     'category-characters',
     'category-facility-staff',
     'category-inmates',
@@ -75,77 +75,78 @@ window.WIKI_CONFIG = {
     'category-game-information',
     'category-the-world',
 
-    // Wiki project pages
+    // Wiki proje sayfaları
     'wiki-about'
   ],
 
   /* --------------------------------------------------------------------------
-     SIDEBAR
-     [ 'Text shown', 'Page title it links to' ]
+     KENAR ÇUBUĞU
+     [ 'Görünen metin', 'Bağlandığı sayfa başlığı' ]
      ------------------------------------------------------------------------ */
   sidebar: [
-    { heading: 'Main', links: [
-      ['Main Page',  'Main Page'],
-      ['The Facility', 'The Facility'],
-      ['The World',  'The World'],
-      ['Timeline',   'Timeline']
+    { heading: 'Ana', links: [
+      ['Ana Sayfa',         'Ana Sayfa'],
+      ['The Facility',      'The Facility'],
+      ['Dünya',             'Dünya'],
+      ['Zaman Çizelgesi',   'Zaman Çizelgesi']
     ]},
-    { heading: 'Characters', links: [
-      ['All Characters',   'Category:Characters'],
-      ['Facility Staff',   'Category:Facility Staff'],
-      ['Inmates',          'Category:Inmates'],
-      ['Other Characters', 'Category:Other Characters']
+    { heading: 'Karakterler', links: [
+      ['Tüm Karakterler',    'Kategori:Karakterler'],
+      ['Tesis Personeli',    'Kategori:Tesis Personeli'],
+      ['Mahkûmlar',          'Kategori:Mahkûmlar'],
+      ['Diğer Karakterler',  'Kategori:Diğer Karakterler']
     ]},
-    { heading: 'Locations', links: [
-      ['Facility 61',     'Facility 61'],
-      ['Facility 60',     'Facility 60'],
-      ['Other Locations', 'Category:Other Locations']
+    { heading: 'Mekânlar', links: [
+      ['Tesis 61',        'Tesis 61'],
+      ['Tesis 60',        'Tesis 60'],
+      ['Diğer Mekânlar',  'Kategori:Diğer Mekânlar']
     ]},
-    { heading: 'Lore', links: [
-      ['The Analog Era',       'The Analog Era'],
-      ['The Technology Purge', 'The Technology Purge'],
-      ['The Corrupted',        'The Corrupted'],
-      ['CORE Program',         'CORE Program'],
-      ['Remnants',             'Remnants']
+    { heading: 'Evren Bilgisi', links: [
+      ['Analog Çağ',            'Analog Çağ'],
+      ['Teknoloji Tasfiyesi',   'Teknoloji Tasfiyesi'],
+      ['Bozulmuşlar',           'Bozulmuşlar'],
+      ['CORE Programı',         'CORE Programı'],
+      ['Kalıntılar',            'Kalıntılar']
     ]},
-    { heading: 'Game Information', links: [
-      ['Gameplay',                    'Gameplay'],
-      ['Assignments',                 'Assignments'],
-      ['Tests & Detection Methods',   'Tests & Detection Methods'],
-      ['Night Events',                'Night Events'],
-      ['Endings',                     'Endings']
+    { heading: 'Oyun Bilgileri', links: [
+      ['Oynanış',                        'Oynanış'],
+      ['Görevlendirmeler',               'Görevlendirmeler'],
+      ['Testler ve Tespit Yöntemleri',   'Testler ve Tespit Yöntemleri'],
+      ['Gece Olayları',                  'Gece Olayları'],
+      ['Sonlar',                         'Sonlar']
     ]},
-    { heading: 'Wiki Tools', links: [
-      ['Random page',     'Special:Random'],
-      ['All pages',       'Special:AllPages'],
-      ['Recent changes',  'Special:RecentChanges'],
-      ['All categories',  'Special:Categories'],
-      ['About this wiki', 'The Facility Wiki:About']
+    { heading: 'Wiki Araçları', links: [
+      ['Rastgele sayfa',     'Özel:Rastgele'],
+      ['Tüm sayfalar',       'Özel:TümSayfalar'],
+      ['Son değişiklikler',  'Özel:SonDeğişiklikler'],
+      ['Tüm kategoriler',    'Özel:Kategoriler'],
+      ['Bu wiki hakkında',   'The Facility Wiki:Hakkında']
     ]}
   ],
 
   /* --------------------------------------------------------------------------
-     MAIN PAGE
+     ANA SAYFA
      ------------------------------------------------------------------------ */
   mainPage: {
     intro: [
-      '**[[The Facility]]** is a psychological horror game by Veinstone Studios, set in the year 2055. ' +
-      'The player takes the role of [[Henry Edaven]], the Warden of [[Facility 61]] — a prison and rehabilitation ' +
-      'center holding individuals suspected of being [[The Corrupted|Corrupted]].',
-      'This wiki is a community encyclopedia documenting the characters, locations and lore of the game. ' +
-      'Information that has not been confirmed is clearly marked as unknown.'
+      '**[[The Facility]]**, Veinstone Studios tarafından geliştirilen ve 2055 yılında geçen bir psikolojik korku oyunudur. ' +
+      'Oyuncu, [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen kişilerin tutulduğu bir hapishane ve rehabilitasyon merkezi olan ' +
+      '[[Tesis 61]]\'in Müdürü [[Henry Edaven]]\'ı canlandırır.',
+      'Bu wiki; oyunun karakterlerini, mekânlarını ve evrenini belgeleyen bir topluluk ansiklopedisidir. ' +
+      'Doğrulanmamış bilgiler açıkça bilinmiyor olarak işaretlenir.'
     ],
-    featuredArticle: 'Facility 61',
+    featuredArticle: 'Tesis 61',
     featuredCharacters: ['Henry Edaven', 'Arthur Edaven', 'Ted Karinsky', 'M. Cole Morgan', 'Alicia Winston', 'Bob'],
-    importantLocations: ['Facility 61', 'Facility 60'],
-    lore: ['The Analog Era', 'The Technology Purge', 'The Corrupted', 'CORE Program', 'The World', 'Timeline'],
+    importantLocations: ['Tesis 61', 'Tesis 60'],
+    lore: ['Analog Çağ', 'Teknoloji Tasfiyesi', 'Bozulmuşlar', 'CORE Programı', 'Dünya', 'Zaman Çizelgesi'],
+    gameInfo: ['Oynanış', 'Görevlendirmeler', 'Testler ve Tespit Yöntemleri', 'Gece Olayları', 'Sonlar'],
     shortcuts: [
-      ['Characters',       'Category:Characters'],
-      ['Locations',        'Category:Locations'],
-      ['Lore',             'Category:Lore'],
-      ['Game Information', 'Category:Game Information'],
-      ['Timeline',         'Timeline'],
-      ['The World',        'The World']
+      ['Karakterler',      'Kategori:Karakterler'],
+      ['Mekânlar',         'Kategori:Mekânlar'],
+      ['Evren Bilgisi',    'Kategori:Evren Bilgisi'],
+      ['Oyun Bilgileri',   'Kategori:Oyun Bilgileri'],
+      ['Zaman Çizelgesi',  'Zaman Çizelgesi'],
+      ['Dünya',            'Dünya']
     ]
   }
 };

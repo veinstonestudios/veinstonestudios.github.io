@@ -1,122 +1,129 @@
-# The Facility Wiki — editing guide
+# The Facility Wiki — düzenleme rehberi
 
-The wiki lives in this `wiki/` folder and is published at
-**https://veinstonestudios.github.io/wiki/**. It is plain static files: no build
-step, no backend. Commit and push, and GitHub Pages serves it.
+Wiki bu `wiki/` klasöründe yer alır ve **https://veinstonestudios.github.io/wiki/**
+adresinde yayımlanır. Tamamen statik dosyalardan oluşur: derleme adımı ya da sunucu
+tarafı yoktur. Değişiklikleri commit'leyip pushlayınca GitHub Pages yayımlar.
 
 ```
 wiki/
-├── index.html              App shell (header, sidebar, footer). Rarely edited.
+├── index.html              Uygulama iskeleti (üst bilgi, kenar çubuğu, alt bilgi). Nadiren düzenlenir.
 ├── content/
-│   ├── config.js           Article list, sidebar, Main Page settings
-│   └── articles/*.md       One Markdown file per article  ← you edit these
+│   ├── config.js           Madde listesi, kenar çubuğu, Ana Sayfa ayarları
+│   └── articles/*.md       Her madde için bir Markdown dosyası  ← düzenlediğiniz yer
 └── assets/
-    ├── css/wiki.css        Styles
-    ├── js/wiki.js          Engine (rendering, search, categories)
-    ├── fonts/              Wordmark font
-    └── img/                Optimised images (characters/, screens/)
+    ├── css/wiki.css        Stiller
+    ├── js/wiki.js          Motor (görüntüleme, arama, kategoriler)
+    ├── fonts/              Logo yazı tipi
+    └── img/                Optimize edilmiş görseller (characters/, screens/)
 ```
 
-## Add a new article
+## Yeni madde ekleme
 
-1. Copy an existing article of the same kind (for example `articles/bob.md` for an
-   inmate) to a new file, such as `articles/new-character.md`.
-2. Edit the front matter (between the `---` lines) and the text.
-3. Add the file name, without `.md`, to the `articles` list in `content/config.js`.
-4. Optional: add it to the `sidebar` or the `mainPage` lists in the same file.
-5. Bump `version` in `content/config.js` so visitors' browsers fetch the new files.
+1. Aynı türden mevcut bir maddeyi (örneğin bir mahkûm için `articles/bob.md`) yeni bir
+   dosyaya kopyalayın, örneğin `articles/yeni-karakter.md`.
+2. Ön bilgiyi (`---` satırlarının arası) ve metni düzenleyin.
+3. Dosya adını `.md` olmadan `content/config.js` içindeki `articles` listesine ekleyin.
+4. İsteğe bağlı: aynı dosyada `sidebar` veya `mainPage` listelerine ekleyin.
+5. Ziyaretçilerin tarayıcıları yeni dosyaları indirsin diye `content/config.js` içindeki
+   `version` değerini değiştirin.
 
-The article's address is created from its title: `?page=New_Character`.
-Pretty addresses such as `/wiki/New_Character` also work (handled by `/404.html`).
+Maddenin adresi başlığından oluşturulur: `?page=Yeni_Karakter`.
+`/wiki/Yeni_Karakter` gibi kısa adresler de çalışır (`/404.html` tarafından yönlendirilir).
 
-## Front matter reference
+## Ön bilgi alanları
 
 ```yaml
 ---
-title: Ted Karinsky                 # page title (must be unique)
+title: Ted Karinsky                 # sayfa başlığı (benzersiz olmalı)
 type: character                     # character | location | lore | game | world | timeline | category | project
-role: Inmate                        # short label on cards (optional)
-categories: Inmates                 # comma separated; first one drives the breadcrumb
-aliases: Ted, Karinsky              # other names that lead to this page and help search
-summary: One-sentence description.  # used on the Main Page, search and cards
-image: assets/img/characters/ted-karinsky.jpg   # leave empty for a placeholder
-caption: Character artwork
-spoilers: true                      # shows the spoiler banner
-spoiler-note: Optional extra text for the banner.
-stub: true                          # shows the "stub" banner
-created: 2026-11-09                 # used for "Latest additions"
-updated: 2026-11-09                 # used for "Recent changes" and the page footer
+role: Mahkûm                        # kartlarda görünen kısa etiket (isteğe bağlı)
+categories: Mahkûmlar               # virgülle ayrılır; ilki konum çubuğunu (breadcrumb) belirler
+aliases: Ted, Karinsky              # bu sayfaya yönlendiren ve aramaya yardım eden diğer adlar
+summary: Tek cümlelik açıklama.     # Ana Sayfada, aramada ve kartlarda kullanılır
+image: assets/img/characters/ted-karinsky.jpg   # yer tutucu için boş bırakın
+caption: Karakter çizimi
+spoilers: true                      # sürprizbozan uyarısını gösterir
+spoiler-note: Uyarı için isteğe bağlı ek metin.
+stub: true                          # "taslak" uyarısını gösterir
+created: 2026-11-09                 # "Son eklenenler" için
+updated: 2026-11-09                 # "Son değişiklikler" ve sayfa altı için
 infobox:
-  [Section heading]
-  Label: Value
-  Several values: First; Second     # semicolons become line breaks
-  Age: Unknown                      # "Unknown" renders as an Unknown tag
-  Height: TBA                       # "TBA" renders as "Not yet documented"
+  [Bölüm başlığı]
+  Etiket: Değer
+  Birden çok değer: Birinci; İkinci   # noktalı virgüller satır sonuna dönüşür
+  Yaşı: Bilinmiyor                    # "Bilinmiyor" etiketi olarak görünür
+  Boyu: Belgelenmedi                  # "Henüz belgelenmedi" etiketi olarak görünür
 ---
 ```
 
-## Writing syntax
+## Yazım kuralları
 
-| You write | You get |
+| Yazdığınız | Görünen |
 |---|---|
-| `## Heading` / `### Subheading` | Sections (listed in the table of contents once there are 3+) |
-| `[[Facility 61]]` | Link to an article |
-| `[[Facility 61\|the facility]]` | Link with different text |
-| `[[Henry Edaven#Family]]` | Link to a section |
-| `[[Category:Inmates]]` | Link to a category |
-| `[text](https://…)` | External link |
-| `**bold**`, `*italic*` | Bold, italic |
-| `{{unknown}}` `{{unconfirmed}}` `{{confirmed}}` `{{tba}}` | Status labels |
-| `{{missing}}` on its own line | "Not documented yet" placeholder box |
-| `\|\|hidden text\|\|` | Inline spoiler, revealed on click |
-| `[REDACTED]` | Black redaction bar |
-| `- item` / `1. item` | Lists |
-| `\| a \| b \|` rows | Tables (first row is the header) |
+| `## Başlık` / `### Alt başlık` | Bölümler (3 veya daha fazla olunca içindekiler tablosunda listelenir) |
+| `[[Tesis 61]]` | Bir maddeye bağlantı |
+| `[[Tesis 61\|tesis]]` | Farklı metinli bağlantı |
+| `[[Henry Edaven#Ailesi]]` | Bir bölüme bağlantı |
+| `[[Kategori:Mahkûmlar]]` | Bir kategoriye bağlantı |
+| `[metin](https://…)` | Dış bağlantı |
+| `**kalın**`, `*italik*` | Kalın, italik |
+| `{{bilinmiyor}}` `{{dogrulanmadi}}` `{{dogrulandi}}` `{{belgelenmedi}}` | Durum etiketleri (İngilizceleri de çalışır: `{{unknown}}` `{{confirmed}}` `{{tba}}`) |
+| Tek başına bir satırda `{{eksik}}` | "Henüz belgelenmedi" kutusu |
+| `\|\|gizli metin\|\|` | Tıklayınca açılan satır içi sürprizbozan |
+| `[SANSÜRLÜ]` | Siyah sansür çubuğu |
+| `- madde` / `1. madde` | Listeler |
+| `\| a \| b \|` satırları | Tablolar (ilk satır başlıktır) |
 
-Boxes use `:::type Optional title` … `:::`. Types: `unknown`, `confirmed`, `note`,
-`spoiler`, `warning`, `source`, `dev`, `quote`, `gallery`.
+Kutular `:::tür İsteğe bağlı başlık` … `:::` ile yazılır. Türler: `bilinmiyor`,
+`dogrulandi`, `not`, `surprizbozan`, `uyari`, `kaynak`, `gelistirme`, `alinti`, `galeri`
+(İngilizce adları da çalışır: `unknown`, `confirmed`, `note`, `spoiler`, `warning`,
+`source`, `dev`, `quote`, `gallery`).
 
 ```
-:::quote
-I've seen *them*.
-— Ted, as shown in a development screenshot
+:::alinti
+Onları gördüm.
+— Ted, bir geliştirme sürümü ekran görüntüsünde
 :::
 
-:::gallery
-assets/img/screens/hall.jpg | A hall inside the facility
-placeholder | Image coming soon
+:::galeri
+assets/img/screens/hall.jpg | Tesisin içindeki bir salon
+yer tutucu | Görsel yakında
 :::
 ```
 
-## Categories
+## Kategoriler
 
-Every value in `categories:` becomes a category page automatically. To give a
-category an introduction or a parent, create `articles/category-name.md` with
-`title: Category:Name`, `type: category` and, optionally, `parent: Characters`,
-and add it to `config.js`. `Stubs` and `Articles with spoilers` are filled in
-automatically from the `stub` and `spoilers` flags.
+`categories:` içindeki her değer otomatik olarak bir kategori sayfası olur. Bir
+kategoriye giriş metni veya üst kategori vermek için `title: Kategori:Ad`,
+`type: category` ve isteğe bağlı olarak `parent: Karakterler` içeren bir
+`articles/category-ad.md` dosyası oluşturup `config.js`'e ekleyin. `Taslaklar` ve
+`Sürprizbozan içeren maddeler` kategorileri `stub` ve `spoilers` alanlarından
+otomatik olarak doldurulur.
 
-## Images
+## Görseller
 
-Put web-sized images in `assets/img/` (JPG, about 1280 px wide for screenshots,
-about 520 px wide for portraits). The original multi-megabyte PNGs elsewhere in the
-repository are not used by the wiki. With ffmpeg:
+Web boyutundaki görselleri `assets/img/` içine koyun (ekran görüntüleri için yaklaşık
+1280 px, portreler için yaklaşık 520 px genişlikte JPG). Deponun başka yerlerindeki
+birkaç MB'lık orijinal PNG'ler wikide kullanılmaz. ffmpeg ile:
 
 ```
-ffmpeg -i input.png -vf "scale='min(1280,iw)':-2" -q:v 5 wiki/assets/img/screens/name.jpg
+ffmpeg -i girdi.png -vf "scale='min(1280,iw)':-2" -q:v 5 wiki/assets/img/screens/ad.jpg
 ```
 
-## Content rules
+## İçerik kuralları
 
-- Only confirmed information is written as fact. Mark everything else as unknown.
-- Never turn theories into facts, and do not resolve the story's intentional mysteries.
-- Do not invent characters, locations, ages, relationships or backstories.
-- *The Facility* is the game; **Facility 61** is a location inside it.
+- Yalnızca doğrulanmış bilgiler gerçek olarak yazılır. Geri kalan her şey bilinmiyor olarak işaretlenir.
+- Teoriler asla gerçeğe dönüştürülmez; hikâyenin bilinçli gizemleri çözülmez.
+- Karakter, mekân, yaş, ilişki veya geçmiş uydurulmaz.
+- *The Facility* oyunun adıdır; **Tesis 61** oyunun içindeki bir mekândır.
+- Oyun içi terimlerin Türkçe karşılıkları: Facility 61 → Tesis 61, The Corrupted → Bozulmuşlar,
+  The Analog Era → Analog Çağ, The Technology Purge → Teknoloji Tasfiyesi, Remnants → Kalıntılar,
+  Warden → Müdür, Inmates → Mahkûmlar. İngilizce adları `aliases:` alanında tutun.
 
-## Testing locally
+## Yerelde test etme
 
-Browsers will not load the article files from `file://`. Run any static server
-from the repository root and open `http://localhost:PORT/wiki/`, for example:
+Tarayıcılar madde dosyalarını `file://` üzerinden yüklemez. Depo kök klasöründen
+herhangi bir statik sunucu çalıştırıp `http://localhost:PORT/wiki/` adresini açın, örneğin:
 
 ```
 python -m http.server 8000

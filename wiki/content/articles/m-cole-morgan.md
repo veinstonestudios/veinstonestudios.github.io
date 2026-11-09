@@ -1,49 +1,49 @@
 ---
 title: M. Cole Morgan
 type: character
-role: Inmate
-categories: Inmates
+role: Mahkûm
+categories: Mahkûmlar
 aliases: Cole Morgan, Morgan, Cole
-summary: M. Cole Morgan is an inmate of Facility 61, held on suspicion of being Corrupted.
+summary: M. Cole Morgan, Bozulmuş olduğu şüphesiyle Tesis 61'de tutulan bir mahkûmdur.
 image: assets/img/characters/m-cole-morgan.jpg
-caption: Character artwork
+caption: Karakter çizimi
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Name: M. Cole Morgan
-  Age: Unknown
-  Status: Inmate
-  [Classification]
-  Held at: [[Facility 61]]
-  Suspected of: Corruption
-  Human or Corrupted: Unknown
-  [Appearances]
-  Game: [[The Facility]]
+  [Kişisel bilgiler]
+  Adı: M. Cole Morgan
+  Yaşı: Bilinmiyor
+  Durumu: Mahkûm
+  [Sınıflandırma]
+  Tutulduğu yer: [[Tesis 61]]
+  Şüphe: Bozulma
+  İnsan mı, Bozulmuş mu: Bilinmiyor
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**M. Cole Morgan** is one of the [[Category:Inmates|inmates]] held at **[[Facility 61]]** in *[[The Facility]]*. Like every inmate of the facility, Morgan is suspected of being [[The Corrupted|Corrupted]].
+**M. Cole Morgan**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Tesisteki her mahkûm gibi Morgan'ın da [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilmektedir.
 
-:::unknown Classification
-Whether Morgan is an ordinary human or a Corrupted individual has **not** been established.
+:::unknown Sınıflandırma
+Morgan'ın sıradan bir insan mı yoksa Bozulmuş bir birey mi olduğu **belirlenmemiştir**.
 :::
 
-## Overview
-Morgan is held at Facility 61, where the Warden, [[Henry Edaven]], interrogates inmates and decides whether to select Morgan for an [[Assignments|assignment]].
+## Genel bakış
+Morgan, Tesis 61'de tutulmaktadır. Müdür [[Henry Edaven]] burada mahkûmları sorgular ve Morgan'ın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Biography
+## Biyografi
 {{missing}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
+## Geçmişi
 {{missing}}
 
-## Relationships
+## İlişkileri
 {{missing}}
 
-## Appearances
+## Göründüğü yapımlar
 - *[[The Facility]]*
 
-## Trivia
-- What the initial "M." stands for has not been documented.
+## Bilgi notları
+- Addaki "M." harfinin neyin kısaltması olduğu belgelenmemiştir.

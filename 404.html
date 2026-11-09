@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>File not found | Veinstone Studios</title>
+  <title>Dosya bulunamadı | Veinstone Studios</title>
   <meta name="robots" content="noindex">
   <script>
-    /* Pretty wiki addresses: /wiki/Henry_Edaven  ->  /wiki/?page=Henry_Edaven
-       GitHub Pages serves this file for any missing path, so we forward
-       wiki article paths to the wiki app before showing an error. */
+    /* Kısa wiki adresleri: /wiki/Henry_Edaven  ->  /wiki/?page=Henry_Edaven
+       GitHub Pages eksik her adres için bu dosyayı sunar; bu yüzden wiki
+       madde adresleri hata gösterilmeden önce wiki uygulamasına yönlendirilir. */
     (function () {
       var m = location.pathname.match(/^(.*\/wiki)\/(?:wiki\/)?([^\/][^\/.]*(?:\.[^\/]*)?)\/?$/);
       if (m && !/\.(html?|js|css|md|png|jpe?g|gif|webp|svg|otf|woff2?)$/i.test(m[2])) {
@@ -43,13 +43,13 @@
 </head>
 <body>
   <main class="sheet">
-    <div class="strip"><span>Error 404</span><span>Record missing</span></div>
-    <div class="stamp">FILE NOT FOUND</div>
-    <h1>The requested record does not exist.</h1>
-    <p>No file is held at <code id="path"></code>. It may have been moved, renamed, or never existed.</p>
+    <div class="strip"><span>Hata 404</span><span>Kayıt eksik</span></div>
+    <div class="stamp">DOSYA BULUNAMADI</div>
+    <h1>İstenen kayıt mevcut değil.</h1>
+    <p><code id="path"></code> adresinde kayıtlı bir dosya yok. Taşınmış, yeniden adlandırılmış ya da hiç var olmamış olabilir.</p>
     <div class="links">
-      <a href="/wiki/">The Facility Wiki</a>
-      <a href="/">Veinstone Studios</a>
+      <a href="/wiki/" lang="en">The Facility Wiki</a>
+      <a href="/" lang="en">Veinstone Studios</a>
     </div>
   </main>
   <script>document.getElementById('path').textContent = location.pathname;</script>

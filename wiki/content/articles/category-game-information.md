@@ -1,8 +1,9 @@
 ---
-title: Category:Game Information
+title: Kategori:Oyun Bilgileri
 type: category
-summary: Articles about the game itself and how it is played.
+aliases: Category:Game Information
+summary: Oyunun kendisi ve nasıl oynandığı hakkındaki maddeler.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This category contains articles about *[[The Facility]]* as a game: its [[Gameplay|gameplay]], [[Assignments|assignments]], [[Tests & Detection Methods|tests]], [[Night Events|night events]] and [[Endings|endings]].
+Bu kategori bir oyun olarak *[[The Facility]]* hakkındaki maddeleri içerir: [[Oynanış|oynanış]], [[Görevlendirmeler|görevlendirmeler]], [[Testler ve Tespit Yöntemleri|testler]], [[Gece Olayları|gece olayları]] ve [[Sonlar|sonlar]].

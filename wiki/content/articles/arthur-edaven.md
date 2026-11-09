@@ -1,64 +1,64 @@
 ---
 title: Arthur Edaven
 type: character
-role: Missing
-categories: Other Characters
+role: Kayıp
+categories: Diğer Karakterler
 aliases: Arthur
-summary: Arthur Edaven is Henry Edaven's brother. He disappeared during the Facility 60 incident; his true identity and fate remain unknown.
+summary: Arthur Edaven, Henry Edaven'ın kardeşidir. Tesis 60 olayı sırasında ortadan kayboldu; gerçek kimliği ve akıbeti bilinmiyor.
 spoilers: true
 image:
-caption: No official portrait has been released.
+caption: Resmî bir portre henüz yayımlanmadı.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Full name: Arthur Edaven
-  Age: Unknown
-  Status: Unknown (disappeared)
-  Identity: Unknown (human or Corrupted not established)
-  [Family]
-  Brother: [[Henry Edaven]]
-  [Connections]
-  Last known location: [[Facility 60]]
-  [Appearances]
-  Game: [[The Facility]]
+  [Kişisel bilgiler]
+  Tam adı: Arthur Edaven
+  Yaşı: Bilinmiyor
+  Durumu: Bilinmiyor (kayıp)
+  Kimliği: Bilinmiyor (insan mı Bozulmuş mu olduğu belirlenmedi)
+  [Aile]
+  Kardeşi: [[Henry Edaven]]
+  [Bağlantılar]
+  Bilinen son konumu: [[Tesis 60]]
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Arthur Edaven** is the brother of **[[Henry Edaven]]**, the protagonist of *[[The Facility]]*. He disappeared during the incident at **[[Facility 60]]**. His true identity and fate remain unknown.
+**Arthur Edaven**, *[[The Facility]]* oyununun ana karakteri **[[Henry Edaven]]**'ın kardeşidir. **[[Tesis 60]]**'taki olay sırasında ortadan kayboldu. Gerçek kimliği ve akıbeti bilinmiyor.
 
-:::unknown An unresolved question
-Whether Arthur was actually a Corrupted individual or was falsely accused **remains unknown**. This wiki does not present either possibility as fact.
+:::unknown Yanıtlanmamış bir soru
+Arthur'un gerçekten Bozulmuş bir birey mi olduğu, yoksa haksız yere mi suçlandığı **bilinmiyor**. Bu wiki iki olasılıktan hiçbirini gerçek olarak sunmaz.
 :::
 
-## Overview
-Arthur is connected to the events that preceded the game. Facility 60 was eventually shut down after being overrun by anomalies, and Arthur disappeared during the incident.
+## Genel bakış
+Arthur, oyundan önce yaşanan olaylarla bağlantılıdır. Tesis 60 anomaliler tarafından istila edildikten sonra sonunda kapatıldı ve Arthur olay sırasında ortadan kayboldu.
 
-## Biography
+## Biyografi
 {{missing}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
-### The Facility 60 incident
-Arthur disappeared during the incident at Facility 60. It is not known what happened to him.
+## Geçmişi
+### Tesis 60 olayı
+Arthur, Tesis 60'taki olay sırasında ortadan kayboldu. Başına ne geldiği bilinmiyor.
 
-:::unknown Not established
-- Arthur's role or position in connection with Facility 60.
-- Whether Arthur was a Corrupted individual or was falsely accused.
-- Whether Arthur is alive.
+:::unknown Belirlenmemiş bilgiler
+- Arthur'un Tesis 60 ile bağlantılı rolü veya görevi.
+- Arthur'un Bozulmuş bir birey mi olduğu, yoksa haksız yere mi suçlandığı.
+- Arthur'un hayatta olup olmadığı.
 :::
 
-## Relationships
-| Character | Relationship |
+## İlişkileri
+| Karakter | İlişki |
 |---|---|
-| [[Henry Edaven]] | Brother |
+| [[Henry Edaven]] | Kardeşi |
 
-## Appearances
+## Göründüğü yapımlar
 - *[[The Facility]]*
 
-## Trivia
-- No official portrait of Arthur has been released yet.
+## Bilgi notları
+- Arthur'un resmî bir portresi henüz yayımlanmadı.
 
-## See also
-- [[Facility 60]]
-- [[The Corrupted]]
+## Ayrıca bakınız
+- [[Tesis 60]]
+- [[Bozulmuşlar]]

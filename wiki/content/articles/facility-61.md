@@ -1,92 +1,93 @@
 ---
-title: Facility 61
+title: Tesis 61
 type: location
-categories: Locations
-aliases: F61, Facility Sixty-One
-summary: Facility 61 is the primary location of The Facility — a prison and rehabilitation center for individuals suspected of being Corrupted, run by Warden Henry Edaven.
+categories: Mekânlar
+aliases: Facility 61, F61, Tesis Altmış Bir
+summary: Tesis 61, The Facility'nin ana mekânıdır — Müdür Henry Edaven tarafından yönetilen, Bozulmuş olduğundan şüphelenilen kişiler için bir hapishane ve rehabilitasyon merkezi.
 image: assets/img/screens/hall.jpg
-caption: A hall inside the facility (development screenshot)
+caption: Tesisin içindeki bir salon (geliştirme sürümü ekran görüntüsü)
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [General information]
-  Type: Prison and rehabilitation center
-  Status: Operational
-  Geographic location: Unknown
-  [Administration]
-  Warden: [[Henry Edaven]]
-  Staff: [[Viktor Hale|Capt. Viktor Hale]]; [[Vera Collins|Lt. Vera Collins]]
-  [Purpose]
-  Holds: Individuals suspected of being [[The Corrupted|Corrupted]]
-  Supplies: Inmates for State [[Assignments|assignments]]
-  [Appearances]
-  Game: [[The Facility]]
+  [Genel bilgiler]
+  İngilizce adı: Facility 61
+  Türü: Hapishane ve rehabilitasyon merkezi
+  Durumu: Faal
+  Coğrafi konumu: Bilinmiyor
+  [Yönetim]
+  Müdür: [[Henry Edaven]]
+  Personel: [[Viktor Hale|Yzb. Viktor Hale]]; [[Vera Collins|Tğm. Vera Collins]]
+  [Amacı]
+  Tuttukları: [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen kişiler
+  Sağladıkları: Devlet [[Görevlendirmeler|görevleri]] için mahkûmlar
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Facility 61** is the primary location of *[[The Facility]]*. It operates as a **prison and rehabilitation center** for convicted individuals suspected of being [[The Corrupted|Corrupted]]. The player, as Warden **[[Henry Edaven]]**, runs the facility.
+**Tesis 61** (İngilizce: Facility 61), *[[The Facility]]* oyununun ana mekânıdır. [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen hükümlüler için bir **hapishane ve rehabilitasyon merkezi** olarak faaliyet gösterir. Oyuncu, Müdür **[[Henry Edaven]]** olarak tesisi yönetir.
 
 :::note
-*The Facility* is the name of the game. **Facility 61** is the name of this location within it.
+*The Facility* oyunun adıdır. **Tesis 61** ise oyundaki bu mekânın adıdır.
 :::
 
-## Overview
-Facility 61 houses inmates who are suspected of being Corrupted. Some are ordinary humans, while others may be anomalies capable of imitating humans. The Warden's task is to interrogate the inmates, evaluate their humanity, and select individuals for daily [[Assignments|assignments]].
+## Genel bakış
+Tesis 61, Bozulmuş olduğundan şüphelenilen mahkûmları barındırır. Bunların bazıları sıradan insanlardır; bazıları ise insanları taklit edebilen anomaliler olabilir. Müdürün görevi mahkûmları sorgulamak, insanlıklarını değerlendirmek ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmektir.
 
-## History
-The history of Facility 61 before Henry Edaven's arrival has not been documented. {{tba}}
+## Tarihçe
+Tesis 61'in Henry Edaven'ın gelişinden önceki tarihi belgelenmemiştir. {{tba}}
 
-Henry was assigned to the facility under circumstances connected to his past. See [[Henry Edaven]].
+Henry, geçmişiyle bağlantılı koşullar altında tesise atanmıştır. Bkz. [[Henry Edaven]].
 
-## Purpose
-:::confirmed Established purpose
-- Holding convicted individuals suspected of being Corrupted.
-- Rehabilitation of its inmates.
-- Supplying inmates for daily assignments.
+## Amacı
+:::confirmed Kesinleşmiş amaçlar
+- Bozulmuş olduğundan şüphelenilen hükümlüleri tutmak.
+- Mahkûmların rehabilitasyonu.
+- Günlük görevler için mahkûm sağlamak.
 :::
 
-According to the official press kit, the State requires subjects from the facility for dangerous reconstruction missions. Sending a Corrupted individual out on an assignment is treated as a serious failure, for which the State holds the Warden responsible.
+Resmî basın kitine göre Devlet, tehlikeli yeniden yapılanma görevleri için tesisten kişiler talep eder. Bozulmuş bir bireyin bir göreve gönderilmesi ciddi bir başarısızlık sayılır ve Devlet bundan Müdürü sorumlu tutar.
 
-The facility's observation and rehabilitation framework is associated with the **[[CORE Program]]** (Cognitive Observation & Reformation Experiment).
+Tesisin gözlem ve rehabilitasyon çerçevesi **[[CORE Programı]]** (Cognitive Observation & Reformation Experiment) ile ilişkilendirilir.
 
-## Layout
-Areas seen in official screenshots include a common hall, corridors, inmate cells with inspection hatches, and the Warden's office, where inmates are selected.
+## Yerleşim
+Resmî ekran görüntülerinde görülen alanlar arasında ortak bir salon, koridorlar, inceleme kapaklı mahkûm hücreleri ve mahkûmların seçildiği Müdür odası bulunur.
 
 {{missing}}
 
-## Important events
-- **Henry Edaven's assignment** as Warden — the beginning of the game.
-- Daily interrogations and selections. See [[Gameplay]].
-- [[Night Events]]
+## Önemli olaylar
+- **Henry Edaven'ın Müdür olarak atanması** — oyunun başlangıcı.
+- Günlük sorgular ve seçimler. Bkz. [[Oynanış]].
+- [[Gece Olayları]]
 
-## Staff
-| Name | Position |
+## Personel
+| Adı | Görevi |
 |---|---|
-| [[Henry Edaven]] | Warden |
-| [[Viktor Hale]] | Captain; senior officer who briefs the Warden |
-| [[Vera Collins]] | Lieutenant; oversees the cell blocks and assists the Warden |
+| [[Henry Edaven]] | Müdür |
+| [[Viktor Hale]] | Yüzbaşı; Müdürü bilgilendiren kıdemli subay |
+| [[Vera Collins]] | Teğmen; hücre bloklarını denetler ve Müdüre yardımcı olur |
 
-## Related characters
-### Inmates
+## İlgili karakterler
+### Mahkûmlar
 - [[Ted Karinsky]]
 - [[M. Cole Morgan]]
 - [[Alicia Winston]]
 - [[Bob]]
 
-See [[Category:Inmates]] for all documented inmates.
+Belgelenmiş tüm mahkûmlar için [[Kategori:Mahkûmlar]] sayfasına bakın.
 
-## Gallery
+## Galeri
 :::gallery
-assets/img/screens/hall.jpg | A hall inside the facility
-assets/img/screens/corridor.jpg | A corridor
-assets/img/screens/corridor-night.jpg | A corridor, seen through a doorway
-assets/img/screens/cell-inspection.jpg | Inspecting an inmate through the cell hatch
-assets/img/screens/ted-cell.jpg | [[Ted Karinsky]] in a cell
-assets/img/screens/bob-cell.jpg | [[Bob]] in a cell
-assets/img/screens/selecting-inmates.jpg | The Warden's desk
-assets/img/screens/journal-2.jpg | The Warden's journal
+assets/img/screens/hall.jpg | Tesisin içindeki bir salon
+assets/img/screens/corridor.jpg | Bir koridor
+assets/img/screens/corridor-night.jpg | Bir kapı aralığından görülen koridor
+assets/img/screens/cell-inspection.jpg | Bir mahkûmun hücre kapağından incelenmesi
+assets/img/screens/ted-cell.jpg | Bir hücrede [[Ted Karinsky]]
+assets/img/screens/bob-cell.jpg | Bir hücrede [[Bob]]
+assets/img/screens/selecting-inmates.jpg | Müdürün masası
+assets/img/screens/journal-2.jpg | Müdürün günlüğü
 :::
-*Screenshots are from development builds and may not reflect the final game.*
+*Ekran görüntüleri geliştirme sürümlerinden alınmıştır ve oyunun son hâlini yansıtmayabilir.*
 
-## See also
-- [[Facility 60]]
-- [[The Corrupted]]
-- [[CORE Program]]
+## Ayrıca bakınız
+- [[Tesis 60]]
+- [[Bozulmuşlar]]
+- [[CORE Programı]]

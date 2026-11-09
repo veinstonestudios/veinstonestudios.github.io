@@ -1,60 +1,61 @@
 ---
-title: Facility 60
+title: Tesis 60
 type: location
-categories: Locations
-aliases: F60, Facility Sixty, Facility 60 incident
-summary: Facility 60 was a previous facility that was eventually shut down after being overrun by anomalies. Arthur Edaven disappeared during the incident.
+categories: Mekânlar
+aliases: Facility 60, F60, Tesis Altmış, Tesis 60 olayı, Facility 60 incident
+summary: Tesis 60, anomaliler tarafından istila edildikten sonra kapatılan önceki bir tesistir. Arthur Edaven olay sırasında ortadan kayboldu.
 spoilers: true
 image:
-caption: No image of Facility 60 has been released.
+caption: Tesis 60'a ait bir görsel yayımlanmadı.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [General information]
-  Type: Facility
-  Status: Shut down
-  Geographic location: Unknown
-  [History]
-  Fate: Overrun by anomalies; Eventually shut down
-  Date of incident: Unknown
-  [Connections]
-  Notable people: [[Arthur Edaven]] (disappeared)
-  Succeeded by: Unknown
-  [Appearances]
-  Game: [[The Facility]]
+  [Genel bilgiler]
+  İngilizce adı: Facility 60
+  Türü: Tesis
+  Durumu: Kapatıldı
+  Coğrafi konumu: Bilinmiyor
+  [Tarihçe]
+  Akıbeti: Anomaliler tarafından istila edildi; Sonunda kapatıldı
+  Olayın tarihi: Bilinmiyor
+  [Bağlantılar]
+  Önemli kişiler: [[Arthur Edaven]] (kayboldu)
+  Yerini alan: Bilinmiyor
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Facility 60** was a previous facility in the world of *[[The Facility]]*. It was eventually **shut down after being overrun by anomalies**. **[[Arthur Edaven]]**, the brother of protagonist [[Henry Edaven]], disappeared during the incident.
+**Tesis 60** (İngilizce: Facility 60), *[[The Facility]]* dünyasında önceki bir tesisti. **Anomaliler tarafından istila edildikten sonra sonunda kapatıldı.** Ana karakter [[Henry Edaven]]'ın kardeşi **[[Arthur Edaven]]**, olay sırasında ortadan kayboldu.
 
-## Overview
-Facility 60 preceded [[Facility 61]], where the game takes place. Little is known about its operation before the incident.
+## Genel bakış
+Tesis 60, oyunun geçtiği [[Tesis 61]]'den önceki bir tesistir. Olaydan önceki işleyişi hakkında çok az şey bilinmektedir.
 
-## History
-### The Facility 60 incident
-Facility 60 was overrun by anomalies and was eventually shut down. Arthur Edaven disappeared during the incident.
+## Tarihçe
+### Tesis 60 olayı
+Tesis 60 anomaliler tarafından istila edildi ve sonunda kapatıldı. Arthur Edaven olay sırasında ortadan kayboldu.
 
-:::unknown An unresolved question
-Whether Arthur was actually a Corrupted individual or was falsely accused **remains unknown**. This ambiguity is part of the story; the wiki does not present either possibility as fact.
+:::unknown Yanıtlanmamış bir soru
+Arthur'un gerçekten Bozulmuş bir birey mi olduğu, yoksa haksız yere mi suçlandığı **bilinmiyor**. Bu belirsizlik hikâyenin bir parçasıdır; wiki iki olasılıktan hiçbirini gerçek olarak sunmaz.
 :::
 
-:::unknown Not established
-- When the incident took place.
-- What Facility 60's purpose was, and whether it was the same as Facility 61's.
-- How the facility came to be overrun.
-- What happened to its staff and inmates.
+:::unknown Belirlenmemiş bilgiler
+- Olayın ne zaman yaşandığı.
+- Tesis 60'ın amacının ne olduğu ve Tesis 61'inkiyle aynı olup olmadığı.
+- Tesisin nasıl istila edildiği.
+- Personelinin ve mahkûmlarının başına ne geldiği.
 :::
 
-## Purpose
+## Amacı
 {{missing}}
 
-## Important events
-- **The Facility 60 incident** — the facility is overrun by anomalies and eventually shut down.
-- **Disappearance of Arthur Edaven** during the incident.
+## Önemli olaylar
+- **Tesis 60 olayı** — tesis anomaliler tarafından istila edilir ve sonunda kapatılır.
+- Olay sırasında **Arthur Edaven'ın ortadan kaybolması**.
 
-## Related characters
-- [[Arthur Edaven]] — disappeared during the incident.
-- [[Henry Edaven]] — Arthur's brother.
+## İlgili karakterler
+- [[Arthur Edaven]] — olay sırasında ortadan kayboldu.
+- [[Henry Edaven]] — Arthur'un kardeşi.
 
-## See also
-- [[Facility 61]]
-- [[The Corrupted]]
-- [[Timeline]]
+## Ayrıca bakınız
+- [[Tesis 61]]
+- [[Bozulmuşlar]]
+- [[Zaman Çizelgesi]]

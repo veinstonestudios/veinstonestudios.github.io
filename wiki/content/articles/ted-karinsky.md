@@ -1,60 +1,60 @@
 ---
 title: Ted Karinsky
 type: character
-role: Inmate
-categories: Inmates
+role: Mahkûm
+categories: Mahkûmlar
 aliases: Ted, Karinsky
-summary: Ted Karinsky is an inmate of Facility 61, held on suspicion of being Corrupted.
+summary: Ted Karinsky, Bozulmuş olduğu şüphesiyle Tesis 61'de tutulan bir mahkûmdur.
 image: assets/img/characters/ted-karinsky.jpg
-caption: Character artwork
+caption: Karakter çizimi
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Name: Ted Karinsky
-  Age: Unknown
-  Status: Inmate
-  [Classification]
-  Held at: [[Facility 61]]
-  Suspected of: Corruption
-  Human or Corrupted: Unknown
-  [Appearances]
-  Game: [[The Facility]]
+  [Kişisel bilgiler]
+  Adı: Ted Karinsky
+  Yaşı: Bilinmiyor
+  Durumu: Mahkûm
+  [Sınıflandırma]
+  Tutulduğu yer: [[Tesis 61]]
+  Şüphe: Bozulma
+  İnsan mı, Bozulmuş mu: Bilinmiyor
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Ted Karinsky** is one of the [[Category:Inmates|inmates]] held at **[[Facility 61]]** in *[[The Facility]]*. Like every inmate of the facility, Ted is suspected of being [[The Corrupted|Corrupted]].
+**Ted Karinsky**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Tesisteki her mahkûm gibi Ted'in de [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilmektedir.
 
-:::unknown Classification
-Whether Ted is an ordinary human or a Corrupted individual has **not** been established.
+:::unknown Sınıflandırma
+Ted'in sıradan bir insan mı yoksa Bozulmuş bir birey mi olduğu **belirlenmemiştir**.
 :::
 
 :::quote
-I've seen *them*.
-— Ted, as shown in a development screenshot
+Onları gördüm.
+— Ted, bir geliştirme sürümü ekran görüntüsünde (İngilizce aslı: "I've seen *them*.")
 :::
 
-## Overview
-Ted is held in a cell at Facility 61, where the Warden, [[Henry Edaven]], interrogates inmates and decides whether to select Ted for an [[Assignments|assignment]].
+## Genel bakış
+Ted, Tesis 61'de bir hücrede tutulmaktadır. Müdür [[Henry Edaven]] burada mahkûmları sorgular ve Ted'in bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Biography
+## Biyografi
 {{missing}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
+## Geçmişi
 {{missing}}
 
-## Relationships
+## İlişkileri
 {{missing}}
 
-## Appearances
+## Göründüğü yapımlar
 - *[[The Facility]]*
 
-## Gallery
+## Galeri
 :::gallery
-assets/img/characters/ted-karinsky.jpg | Character artwork
-assets/img/screens/ted-cell.jpg | Ted in a cell (development screenshot)
+assets/img/characters/ted-karinsky.jpg | Karakter çizimi
+assets/img/screens/ted-cell.jpg | Ted bir hücrede (geliştirme sürümü ekran görüntüsü)
 :::
 
-## Trivia
+## Bilgi notları
 {{missing}}

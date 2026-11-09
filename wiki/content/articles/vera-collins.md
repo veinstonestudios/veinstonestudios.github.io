@@ -1,48 +1,48 @@
 ---
 title: Vera Collins
 type: character
-role: Lieutenant
-categories: Facility Staff
-aliases: Lieutenant Vera Collins, Lieutenant Collins, Collins, Vera
-summary: Lieutenant Vera Collins is an officer responsible for overseeing the cell blocks of Facility 61 and assisting the Warden.
+role: Teğmen
+categories: Tesis Personeli
+aliases: Teğmen Vera Collins, Teğmen Collins, Lieutenant Vera Collins, Lieutenant Collins, Collins, Vera
+summary: Teğmen Vera Collins, Tesis 61'in hücre bloklarını denetlemekten ve Müdüre yardımcı olmaktan sorumlu bir subaydır.
 image:
-caption: No official portrait has been released.
+caption: Resmî bir portre henüz yayımlanmadı.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Full name: Vera Collins
-  Age: Unknown
-  Status: Unknown
-  [Career]
-  Rank: Lieutenant
-  Responsibilities: Overseeing the cell blocks; Assisting the Warden
-  Facility: [[Facility 61]]
-  [Appearances]
-  Game: [[The Facility]]
+  [Kişisel bilgiler]
+  Tam adı: Vera Collins
+  Yaşı: Bilinmiyor
+  Durumu: Bilinmiyor
+  [Görevi]
+  Rütbesi: Teğmen
+  Sorumlulukları: Hücre bloklarını denetlemek; Müdüre yardımcı olmak
+  Tesis: [[Tesis 61]]
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Lieutenant Vera Collins** is an officer in *[[The Facility]]*. She is responsible for overseeing the cell blocks of [[Facility 61]] and assisting the Warden, **[[Henry Edaven]]**.
+**Teğmen Vera Collins**, *[[The Facility]]* oyununda bir subaydır. [[Tesis 61]]'in hücre bloklarını denetlemekten ve Müdür **[[Henry Edaven]]**'a yardımcı olmaktan sorumludur.
 
-## Overview
-Collins works within Facility 61's cell blocks, where the [[Category:Inmates|inmates]] suspected of being [[The Corrupted|Corrupted]] are held.
+## Genel bakış
+Collins, [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen [[Kategori:Mahkûmlar|mahkûmların]] tutulduğu Tesis 61 hücre bloklarını denetler.
 
-## Biography
+## Biyografi
 {{missing}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
+## Geçmişi
 {{missing}}
 
-## Relationships
-| Character | Relationship |
+## İlişkileri
+| Karakter | İlişki |
 |---|---|
-| [[Henry Edaven]] | Assists the Warden. |
-| [[Viktor Hale]] | Fellow officer. The nature of their working relationship has not been documented. |
+| [[Henry Edaven]] | Müdüre yardımcı olur. |
+| [[Viktor Hale]] | Subay arkadaşı. Aralarındaki çalışma ilişkisinin niteliği belgelenmemiştir. |
 
-## Appearances
+## Göründüğü yapımlar
 - *[[The Facility]]*
 
-## Trivia
-- No official portrait of Lieutenant Collins has been released yet.
+## Bilgi notları
+- Teğmen Collins'in resmî bir portresi henüz yayımlanmadı.

@@ -1,10 +1,11 @@
 ---
-title: Category:Characters
+title: Kategori:Karakterler
 type: category
-summary: All documented characters of The Facility.
+aliases: Category:Characters
+summary: The Facility'nin belgelenmiş tüm karakterleri.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This category lists every documented character in *[[The Facility]]*, including the [[Category:Facility Staff|staff]] of [[Facility 61]], its [[Category:Inmates|inmates]], and [[Category:Other Characters|other characters]] connected to the story.
+Bu kategori *[[The Facility]]* oyununun belgelenmiş tüm karakterlerini listeler: [[Tesis 61]]'in [[Kategori:Tesis Personeli|personeli]], [[Kategori:Mahkûmlar|mahkûmları]] ve hikâyeyle bağlantılı [[Kategori:Diğer Karakterler|diğer karakterler]].
 
-Characters are only listed once their existence has been confirmed by the developers.
+Karakterler yalnızca varlıkları geliştiriciler tarafından doğrulandıktan sonra listelenir.

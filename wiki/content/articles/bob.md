@@ -1,60 +1,60 @@
 ---
 title: Bob
 type: character
-role: Inmate
-categories: Inmates
-summary: Bob is an inmate of Facility 61, held on suspicion of being Corrupted.
+role: Mahkûm
+categories: Mahkûmlar
+summary: Bob, Bozulmuş olduğu şüphesiyle Tesis 61'de tutulan bir mahkûmdur.
 image: assets/img/characters/bob.jpg
-caption: Character artwork
+caption: Karakter çizimi
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Name: Bob
-  Full name: Unknown
-  Age: Unknown
-  Status: Inmate
-  [Classification]
-  Held at: [[Facility 61]]
-  Suspected of: Corruption
-  Human or Corrupted: Unknown
-  [Appearances]
-  Game: [[The Facility]]
+  [Kişisel bilgiler]
+  Adı: Bob
+  Tam adı: Bilinmiyor
+  Yaşı: Bilinmiyor
+  Durumu: Mahkûm
+  [Sınıflandırma]
+  Tutulduğu yer: [[Tesis 61]]
+  Şüphe: Bozulma
+  İnsan mı, Bozulmuş mu: Bilinmiyor
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Bob** is one of the [[Category:Inmates|inmates]] held at **[[Facility 61]]** in *[[The Facility]]*. Like every inmate of the facility, Bob is suspected of being [[The Corrupted|Corrupted]].
+**Bob**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Tesisteki her mahkûm gibi Bob'un da [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilmektedir.
 
-:::unknown Classification
-Whether Bob is an ordinary human or a Corrupted individual has **not** been established.
+:::unknown Sınıflandırma
+Bob'un sıradan bir insan mı yoksa Bozulmuş bir birey mi olduğu **belirlenmemiştir**.
 :::
 
 :::quote
-The life of the party has arrived!
-— Bob, as shown in a development screenshot
+Partinin neşesi geldi!
+— Bob, bir geliştirme sürümü ekran görüntüsünde (İngilizce aslı: "The life of the party has arrived!")
 :::
 
-## Overview
-Bob is held in a cell at Facility 61, where the Warden, [[Henry Edaven]], interrogates inmates and decides whether to select Bob for an [[Assignments|assignment]].
+## Genel bakış
+Bob, Tesis 61'de bir hücrede tutulmaktadır. Müdür [[Henry Edaven]] burada mahkûmları sorgular ve Bob'un bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Biography
+## Biyografi
 {{missing}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
+## Geçmişi
 {{missing}}
 
-## Relationships
+## İlişkileri
 {{missing}}
 
-## Appearances
+## Göründüğü yapımlar
 - *[[The Facility]]*
 
-## Gallery
+## Galeri
 :::gallery
-assets/img/characters/bob.jpg | Character artwork
-assets/img/screens/bob-cell.jpg | Bob in a cell (development screenshot)
+assets/img/characters/bob.jpg | Karakter çizimi
+assets/img/screens/bob-cell.jpg | Bob bir hücrede (geliştirme sürümü ekran görüntüsü)
 :::
 
-## Trivia
-- Bob's surname has not been documented.
+## Bilgi notları
+- Bob'un soyadı belgelenmemiştir.

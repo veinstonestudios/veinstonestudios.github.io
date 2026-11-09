@@ -1,55 +1,55 @@
 ---
-title: Tests & Detection Methods
+title: Testler ve Tespit Yöntemleri
 type: game
-categories: Game Information
-aliases: Tests and Detection Methods, Tests, Detection, Detection methods, Interrogation, Interrogations, Journal, Tape recorder, Cell inspection
-summary: The methods the Warden uses to determine whether an inmate is human or Corrupted — interrogation, document checks, cross-referencing testimony and looking for visual distortions.
+categories: Oyun Bilgileri
+aliases: Tests & Detection Methods, Tests and Detection Methods, Testler, Tespit, Tespit yöntemleri, Sorgu, Sorgular, Günlük, Teyp, Hücre incelemesi
+summary: Müdürün bir mahkûmun insan mı yoksa Bozulmuş mu olduğunu belirlemek için kullandığı yöntemler — sorgu, belge kontrolü, ifadelerin karşılaştırılması ve görsel bozulmaların aranması.
 image: assets/img/screens/tape-recorder.jpg
-caption: Reviewing a recorded interrogation (development screenshot)
+caption: Kaydedilmiş bir sorgunun dinlenmesi (geliştirme sürümü ekran görüntüsü)
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Overview]
-  Purpose: Distinguishing humans from [[The Corrupted|Corrupted]]
-  Performed by: The Warden ([[Henry Edaven]])
-  Phase: Interrogation
-  [Known methods]
-  Methods: Interrogation; Document inspection; Cross-referencing testimony; Visual observation
+  [Genel bakış]
+  Amacı: İnsanları [[Bozulmuşlar|Bozulmuşlardan]] ayırt etmek
+  Uygulayan: Müdür ([[Henry Edaven]])
+  Aşama: Sorgu
+  [Bilinen yöntemler]
+  Yöntemler: Sorgu; Belge incelemesi; İfadelerin karşılaştırılması; Görsel gözlem
 ---
-**Tests & Detection Methods** are the ways in which the Warden of [[Facility 61]] tries to determine whether an inmate is an ordinary human or one of [[The Corrupted]]. It is not always easy to distinguish a real human from a Corrupted individual.
+**Testler ve tespit yöntemleri**, [[Tesis 61]]'in Müdürünün bir mahkûmun sıradan bir insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğunu belirlemeye çalıştığı yollardır. Gerçek bir insanı Bozulmuş bir bireyden ayırt etmek her zaman kolay değildir.
 
 :::dev
-*The Facility* is still in development. The methods below are those described in official material. Additional tests may be documented later.
+*The Facility* hâlâ geliştirme aşamasındadır. Aşağıdaki yöntemler resmî materyallerde anlatılanlardır. Başka testler ileride belgelenebilir.
 :::
 
-## Overview
-The Warden's responsibility is to interrogate inmates and evaluate their humanity. According to the official press kit, this involves investigating inmate files, cross-referencing their stories, and looking for visual distortions.
+## Genel bakış
+Müdürün görevi mahkûmları sorgulamak ve insanlıklarını değerlendirmektir. Resmî basın kitine göre bu; mahkûm dosyalarını incelemeyi, anlattıklarını karşılaştırmayı ve görsel bozulmaları aramayı kapsar.
 
-## Known methods
-### Interrogation
-The Warden questions inmates face to face, watching for anything that does not sit right.
+## Bilinen yöntemler
+### Sorgu
+Müdür mahkûmları yüz yüze sorgular ve tuhaf görünen her şeye dikkat eder.
 
-### Document inspection
-Inmates' documents are inspected for discrepancies.
+### Belge incelemesi
+Mahkûmların belgeleri tutarsızlıklar açısından incelenir.
 
-### Cross-referencing testimony
-Inmates' stories are compared against one another. The Warden's **journal** is used to cross-reference testimony, and a **tape recorder** allows recorded interrogations to be reviewed.
+### İfadelerin karşılaştırılması
+Mahkûmların anlattıkları birbiriyle karşılaştırılır. Müdürün **günlüğü** ifadeleri karşılaştırmak için kullanılır; **teyp** ise kaydedilmiş sorguların yeniden dinlenmesini sağlar.
 
-### Visual observation
-The Warden looks for visual distortions that may indicate an anomaly. Inmates can be observed through the hatch of their cell during **cell inspection**.
+### Görsel gözlem
+Müdür, bir anomaliye işaret edebilecek görsel bozulmaları arar. **Hücre incelemesi** sırasında mahkûmlar hücrelerinin kapağından gözlemlenebilir.
 
-## Other tests
+## Diğer testler
 {{missing}}
 
-## Gallery
+## Galeri
 :::gallery
-assets/img/screens/cell-inspection.jpg | Cell inspection
-assets/img/screens/journal.jpg | The journal, used to cross-reference testimony
-assets/img/screens/journal-2.jpg | The journal
-assets/img/screens/tape-recorder.jpg | Reviewing a recorded interrogation
+assets/img/screens/cell-inspection.jpg | Hücre incelemesi
+assets/img/screens/journal.jpg | İfadeleri karşılaştırmak için kullanılan günlük
+assets/img/screens/journal-2.jpg | Günlük
+assets/img/screens/tape-recorder.jpg | Kaydedilmiş bir sorgunun dinlenmesi
 :::
 
-## See also
-- [[The Corrupted]]
-- [[CORE Program]]
-- [[Gameplay]]
+## Ayrıca bakınız
+- [[Bozulmuşlar]]
+- [[CORE Programı]]
+- [[Oynanış]]

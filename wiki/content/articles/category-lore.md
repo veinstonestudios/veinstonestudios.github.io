@@ -1,8 +1,9 @@
 ---
-title: Category:Lore
+title: Kategori:Evren Bilgisi
 type: category
-summary: Articles about the history, setting and mysteries of The Facility.
+aliases: Category:Lore, Lore
+summary: The Facility'nin tarihi, dünyası ve gizemleri hakkındaki maddeler.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This category contains articles about the **lore** of *[[The Facility]]* — the history of its world, the [[The Corrupted|Corrupted]], and the institutions of 2055. See also [[The World]] and the [[Timeline]].
+Bu kategori *[[The Facility]]* oyununun **evreni** hakkındaki maddeleri içerir: dünyasının tarihi, [[Bozulmuşlar]] ve 2055'in kurumları. Ayrıca bkz. [[Dünya]] ve [[Zaman Çizelgesi]].

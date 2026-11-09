@@ -1,36 +1,36 @@
 ---
-title: Night Events
+title: Gece Olayları
 type: game
-categories: Game Information
-aliases: Night, Nights, Night phase
-summary: At night, the consequences of the Warden's decisions return. Scripted night events follow the player's choices.
+categories: Oyun Bilgileri
+aliases: Night Events, Gece, Geceler, Gece aşaması
+summary: Gece, Müdürün kararlarının sonuçları geri döner. Senaryolu gece olayları oyuncunun seçimlerini takip eder.
 stub: true
 image: assets/img/screens/corridor-night.jpg
-caption: A corridor (development screenshot)
+caption: Bir koridor (geliştirme sürümü ekran görüntüsü)
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Overview]
-  Phase: Night
-  Triggered by: The player's choices
-  Objective: Survive until morning
+  [Genel bakış]
+  Aşama: Gece
+  Tetikleyen: Oyuncunun seçimleri
+  Amaç: Sabaha kadar hayatta kalmak
 ---
-**Night Events** take place during the final phase of each day in *[[The Facility]]*.
+**Gece olayları**, *[[The Facility]]* oyununda her günün son aşamasında yaşanır.
 
-:::source Official description
-According to the official press kit, the Warden's decisions come back at night. Scripted night events follow the player's choices, and the player must **survive until morning**.
+:::source Resmî açıklama
+Resmî basın kitine göre Müdürün kararları gece geri döner. Senaryolu gece olayları oyuncunun seçimlerini takip eder ve oyuncu **sabaha kadar hayatta kalmalıdır**.
 :::
 
-## Overview
-The night phase follows the [[Assignments|selection]] of inmates. Official content warnings describe a threatening environment in which the player is in danger from hostile entities.
+## Genel bakış
+Gece aşaması mahkûmların [[Görevlendirmeler|seçiminden]] sonra gelir. Resmî içerik uyarıları, oyuncunun düşman varlıklar tarafından tehlike altında olduğu tehditkâr bir ortamı tarif eder.
 
-## Known night events
+## Bilinen gece olayları
 {{missing}}
 
 :::spoiler
-Specific night events may reveal story details. When they are documented, they will be marked as spoilers.
+Belirli gece olayları hikâyeye dair ayrıntıları açığa çıkarabilir. Belgelendiklerinde sürprizbozan olarak işaretlenecekler.
 :::
 
-## See also
-- [[Gameplay]]
-- [[Endings]]
+## Ayrıca bakınız
+- [[Oynanış]]
+- [[Sonlar]]

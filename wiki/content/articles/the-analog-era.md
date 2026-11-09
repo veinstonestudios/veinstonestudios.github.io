@@ -1,48 +1,49 @@
 ---
-title: The Analog Era
+title: Analog Çağ
 type: lore
-categories: Lore
-aliases: Analog Era, Analog
-summary: The Analog Era is the period in which advanced technology and artificial intelligence are banned and society has returned to analog methods of communication and information processing.
+categories: Evren Bilgisi
+aliases: The Analog Era, Analog Era, Analog Dönem, Analog
+summary: Analog Çağ, gelişmiş teknolojinin ve yapay zekânın yasaklandığı ve toplumun analog iletişim ve bilgi işleme yöntemlerine geri döndüğü dönemdir.
 image:
-caption: No illustration on file.
+caption: Kayıtlı bir görsel yok.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Overview]
-  Type: Historical era
-  Began: After [[The Technology Purge]]
-  Status: Ongoing (as of 2055)
-  [Characteristics]
-  Banned: Advanced technology; Artificial intelligence
-  Communication: Analog methods
+  [Genel bakış]
+  İngilizce adı: The Analog Era
+  Türü: Tarihsel dönem
+  Başlangıcı: [[Teknoloji Tasfiyesi]]'nden sonra
+  Durumu: Sürüyor (2055 itibarıyla)
+  [Özellikleri]
+  Yasaklananlar: Gelişmiş teknoloji; Yapay zekâ
+  İletişim: Analog yöntemler
 ---
-**The Analog Era** is the period of history in which *[[The Facility]]* takes place. Following [[The Technology Purge]], advanced technology and artificial intelligence have been banned, and society has returned to more primitive and analog methods of communication and information processing.
+**Analog Çağ** (İngilizce: The Analog Era), *[[The Facility]]* oyununun geçtiği tarihsel dönemdir. [[Teknoloji Tasfiyesi]]'nin ardından gelişmiş teknoloji ve yapay zekâ yasaklanmış, toplum daha ilkel ve analog iletişim ve bilgi işleme yöntemlerine geri dönmüştür.
 
-## Overview
-By 2055, the year in which the game is set, the world is living in the Analog Era. This is reflected in the game's retro-futuristic setting: institutional environments, bureaucratic documents and analog equipment rather than advanced digital technology.
+## Genel bakış
+Oyunun geçtiği 2055 yılında dünya Analog Çağ'ı yaşamaktadır. Bu durum oyunun retro-fütüristik atmosferine yansır: gelişmiş dijital teknoloji yerine kurumsal ortamlar, bürokratik belgeler ve analog ekipmanlar.
 
-## Historical background
-The Analog Era began as a result of [[The Technology Purge]], during which advanced technology and AI became forbidden.
+## Tarihsel arka plan
+Analog Çağ, gelişmiş teknolojinin ve yapay zekânın yasaklandığı [[Teknoloji Tasfiyesi]]'nin sonucu olarak başladı.
 
-:::unknown Not established
-- When the Analog Era began.
-- Which specific technologies are permitted and which are forbidden.
+:::unknown Belirlenmemiş bilgiler
+- Analog Çağ'ın ne zaman başladığı.
+- Hangi teknolojilerin serbest, hangilerinin yasak olduğu.
 :::
 
-## Detailed explanation
-In the Analog Era, communication and information processing rely on analog means. In the game, the Warden's work at [[Facility 61]] is carried out with tools such as a paper journal and a tape recorder, and official press material describes daily orders arriving by fax.
+## Ayrıntılı açıklama
+Analog Çağ'da iletişim ve bilgi işleme analog araçlarla yürütülür. Oyunda Müdürün [[Tesis 61]]'deki işi kâğıt bir günlük ve bir teyp gibi araçlarla yürütülür; resmî basın materyalleri ise günlük emirlerin faksla geldiğini anlatır.
 
 {{missing}}
 
-## Related events
-- [[The Technology Purge]]
-- The emergence of [[The Corrupted]]
+## İlgili olaylar
+- [[Teknoloji Tasfiyesi]]
+- [[Bozulmuşlar]]ın ortaya çıkışı
 
-## Related characters and locations
-- [[Facility 61]]
+## İlgili karakterler ve mekânlar
+- [[Tesis 61]]
 - [[Henry Edaven]]
 
-## See also
-- [[The World]]
-- [[Timeline]]
+## Ayrıca bakınız
+- [[Dünya]]
+- [[Zaman Çizelgesi]]

@@ -1,61 +1,89 @@
 /* ============================================================================
-   THE FACILITY WIKI — ENGINE
-   Loads the Markdown articles listed in content/config.js, renders pages,
-   categories, search and special pages entirely in the browser.
-   You should not need to edit this file to add or change content.
+   THE FACILITY WIKI — MOTOR
+   content/config.js içinde listelenen Markdown maddelerini yükler; maddeleri,
+   kategorileri, aramayı ve özel sayfaları tamamen tarayıcıda oluşturur.
+   İçerik eklemek veya değiştirmek için bu dosyayı düzenlemeniz gerekmez.
    ========================================================================== */
 (function () {
   'use strict';
 
   var CFG = window.WIKI_CONFIG || {};
   var CONTENT_DIR = 'content/articles/';
-  var MAIN = 'Main Page';
+  var MAIN = 'Ana Sayfa';
+  var MAIN_ALIASES = ['ana sayfa', 'main page'];
 
-  var pages = [];            // every loaded page object
-  var byKey = new Map();     // normalised title / alias -> page
-  var categories = new Map();// category name -> [pages]
+  /* Özel sayfalar: [Türkçe ad, İngilizce eski ad] */
+  var SPECIAL = {
+    search:     ['Özel:Ara', 'Special:Search'],
+    allpages:   ['Özel:TümSayfalar', 'Special:AllPages'],
+    categories: ['Özel:Kategoriler', 'Special:Categories'],
+    recent:     ['Özel:SonDeğişiklikler', 'Special:RecentChanges'],
+    random:     ['Özel:Rastgele', 'Special:Random']
+  };
+  var CAT_PREFIX = 'Kategori:';
+  var AUTO_STUB = 'Taslaklar';
+  var AUTO_SPOILER = 'Sürprizbozan içeren maddeler';
+
+  var pages = [];             // yüklenen tüm sayfalar
+  var byKey = new Map();      // normalize edilmiş başlık / takma ad -> sayfa
+  var categories = new Map(); // kategori adı -> [sayfalar]
   var app, sidebarEl, searchInput, suggestBox;
 
   /* ----------------------------------------------------------------------
-     Utilities
+     Yardımcılar
      -------------------------------------------------------------------- */
   function esc(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
+  function lower(s) {
+    return String(s || '').replace(/İ/g, 'i').replace(/I/g, 'ı').toLocaleLowerCase('tr');
+  }
+  function fold(s) { // aksanları ve Türkçe harfleri sadeleştirir (arama ve çapalar için)
+    return lower(s).replace(/ı/g, 'i').normalize('NFD').replace(/[̀-ͯ]/g, '');
+  }
   function key(title) {
-    return String(title || '').replace(/_/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+    return lower(String(title || '').replace(/_/g, ' ').replace(/\s+/g, ' ').trim());
   }
   function slugify(s) {
-    return String(s).toLowerCase().replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, '')
+    return fold(String(s).replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, ''))
       .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
   }
+  function isMain(t) { return MAIN_ALIASES.indexOf(key(t)) >= 0; }
+  function specialKind(t) {
+    var k = key(t);
+    for (var name in SPECIAL) {
+      if (SPECIAL[name].some(function (s) { return key(s) === k; })) return name;
+    }
+    return null;
+  }
+  function isSpecial(t) { return /^(özel|special):/i.test(String(t).trim()); }
   function pageUrl(title, hash) {
-    if (!title || key(title) === key(MAIN)) return './' + (hash ? '#' + hash : '');
-    var t = encodeURIComponent(String(title).replace(/ /g, '_'))
-      .replace(/%3A/gi, ':').replace(/%2C/gi, ',').replace(/%26/gi, '%26');
+    if (!title || isMain(title)) return './' + (hash ? '#' + hash : '');
+    var t = encodeURIComponent(String(title).replace(/ /g, '_')).replace(/%3A/gi, ':').replace(/%2C/gi, ',');
     return '?page=' + t + (hash ? '#' + hash : '');
   }
   function findPage(title) { return byKey.get(key(title)) || null; }
-  function isCategoryTitle(t) { return /^category:/i.test(String(t).trim()); }
-  function catName(t) { return String(t).replace(/^category:/i, '').replace(/_/g, ' ').trim(); }
+  function isCategoryTitle(t) { return /^(kategori|category):/i.test(String(t).trim()); }
+  function catName(t) { return String(t).replace(/^(kategori|category):/i, '').replace(/_/g, ' ').trim(); }
+  var MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   function fmtDate(d) {
     if (!d) return '';
     var m = String(d).match(/^(\d{4})-(\d{2})-(\d{2})/);
     if (!m) return esc(d);
-    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    return parseInt(m[3], 10) + ' ' + months[parseInt(m[2], 10) - 1] + ' ' + m[1];
+    return parseInt(m[3], 10) + ' ' + MONTHS[parseInt(m[2], 10) - 1] + ' ' + m[1];
   }
   function list(v) {
     if (Array.isArray(v)) return v;
     if (!v) return [];
     return String(v).split(',').map(function (s) { return s.trim(); }).filter(Boolean);
   }
-  function truthy(v) { return v === true || /^(true|yes|1)$/i.test(String(v || '')); }
+  function truthy(v) { return v === true || /^(true|yes|evet|1)$/i.test(String(v || '')); }
+  function siteName() { return CFG.siteName || 'Wiki'; }
 
   /* ----------------------------------------------------------------------
-     Front matter (a small YAML subset)
+     Ön bilgi (YAML'ın küçük bir alt kümesi)
      -------------------------------------------------------------------- */
   function parseFrontMatter(text) {
     text = text.replace(/\r\n?/g, '\n');
@@ -84,7 +112,7 @@
       if (v === '') { meta[k] = []; blockKey = k; }
       else { meta[k] = v.replace(/^(['"])(.*)\1$/, '$2'); blockKey = null; }
     });
-    // "image:" with nothing after it means "no value", not an empty list
+    // "image:" sonrası boşsa bu "değer yok" demektir, boş liste değil
     Object.keys(meta).forEach(function (k) {
       if (Array.isArray(meta[k]) && !meta[k].length) meta[k] = '';
     });
@@ -92,42 +120,50 @@
   }
 
   /* ----------------------------------------------------------------------
-     Inline Markdown + wiki syntax
+     Satır içi Markdown + wiki sözdizimi
      -------------------------------------------------------------------- */
+  var TAGS = {
+    unknown:     '<span class="tag tag-unknown">Bilinmiyor</span>',
+    unconfirmed: '<span class="tag tag-unknown">Doğrulanmadı</span>',
+    confirmed:   '<span class="tag tag-confirmed">Doğrulandı</span>',
+    tba:         '<span class="tag tag-tba">Henüz belgelenmedi</span>'
+  };
+  var TAG_ALIASES = { bilinmiyor: 'unknown', dogrulanmadi: 'unconfirmed', dogrulandi: 'confirmed', belgelenmedi: 'tba' };
+
   function inline(src) {
     var tokens = [];
     function hold(html) { tokens.push(html); return '\u0000' + (tokens.length - 1) + '\u0000'; }
     var s = esc(src);
 
-    // `code`
     s = s.replace(/`([^`]+)`/g, function (_, c) { return hold('<code>' + c + '</code>'); });
-    // [[Page#Section|Label]]
+    // [[Sayfa#Bölüm|Metin]]
     s = s.replace(/\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g, function (_, target, label) {
       var raw = target.replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
       var parts = raw.split('#');
       var title = parts[0].trim(), hash = parts[1] ? slugify(parts[1]) : '';
       var text = label || esc(parts[0].trim() || parts[1]);
       if (!title) return hold('<a href="#' + hash + '">' + text + '</a>');
-      var exists = findPage(title) || isCategoryTitle(title) || /^special:/i.test(title) || key(title) === key(MAIN);
-      return hold('<a href="' + esc(pageUrl(exists && findPage(title) ? findPage(title).title : title, hash)) +
-        '" data-internal' + (exists ? '' : ' class="new" title="' + esc(title) + ' (page does not exist)"') + '>' + text + '</a>');
+      var p = findPage(title);
+      var exists = p || isCategoryTitle(title) || isSpecial(title) || isMain(title);
+      return hold('<a href="' + esc(pageUrl(p ? p.title : title, hash)) + '" data-internal' +
+        (exists ? '' : ' class="new" title="' + esc(title) + ' (sayfa mevcut değil)"') + '>' + text + '</a>');
     });
-    // [label](url)
+    // [metin](adres)
     s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (_, label, url) {
       var ext = /^https?:/i.test(url);
       return hold('<a href="' + url + '"' + (ext ? ' class="external" target="_blank" rel="noopener"' : '') + '>' + label + '</a>');
     });
-    // Macros
-    s = s.replace(/\{\{unknown\}\}/gi, function () { return hold('<span class="tag tag-unknown">Unknown</span>'); });
-    s = s.replace(/\{\{unconfirmed\}\}/gi, function () { return hold('<span class="tag tag-unknown">Unconfirmed</span>'); });
-    s = s.replace(/\{\{confirmed\}\}/gi, function () { return hold('<span class="tag tag-confirmed">Confirmed</span>'); });
-    s = s.replace(/\{\{tba\}\}/gi, function () { return hold('<span class="tag tag-tba">Not yet documented</span>'); });
-    s = s.replace(/\[REDACTED\]/g, function () { return hold('<span class="redacted" title="Redacted">REDACTED</span>'); });
-    // ||spoiler||
-    s = s.replace(/\|\|(.+?)\|\|/g, function (_, t) {
-      return hold('<span class="spoiler-inline" tabindex="0" role="button" title="Click to reveal spoiler">' + t + '</span>');
+    // Makrolar
+    s = s.replace(/\{\{([a-zçğıöşü]+)\}\}/gi, function (all, name) {
+      var n = fold(name);
+      n = TAG_ALIASES[n] || n;
+      return TAGS[n] ? hold(TAGS[n]) : all;
     });
-    // Emphasis
+    s = s.replace(/\[(REDACTED|SANSÜRLÜ)\]/g, function () { return hold('<span class="redacted" title="Sansürlü">SANSÜRLÜ</span>'); });
+    // ||sürprizbozan||
+    s = s.replace(/\|\|(.+?)\|\|/g, function (_, t) {
+      return hold('<span class="spoiler-inline" tabindex="0" role="button" title="Göstermek için tıklayın">' + t + '</span>');
+    });
     s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     s = s.replace(/(^|[^\w*])\*(?!\s)(.+?)\*(?!\w)/g, '$1<em>$2</em>');
     s = s.replace(/ -- /g, ' — ');
@@ -135,28 +171,33 @@
   }
 
   /* ----------------------------------------------------------------------
-     Block Markdown
+     Blok Markdown
      -------------------------------------------------------------------- */
   var CALLOUTS = {
-    unknown:   { label: 'Unknown',            icon: '?' },
-    confirmed: { label: 'Confirmed',          icon: '✓' },
-    note:      { label: 'Note',               icon: 'i' },
-    spoiler:   { label: 'Spoiler',            icon: '!' },
-    warning:   { label: 'Warning',            icon: '!' },
-    source:    { label: 'Source',             icon: '§' },
-    dev:       { label: 'In development',     icon: '◐' }
+    unknown:   { label: 'Bilinmiyor',     icon: '?' },
+    confirmed: { label: 'Doğrulandı',     icon: '✓' },
+    note:      { label: 'Not',            icon: 'i' },
+    spoiler:   { label: 'Sürprizbozan',   icon: '!' },
+    warning:   { label: 'Uyarı',          icon: '!' },
+    source:    { label: 'Kaynak',         icon: '§' },
+    dev:       { label: 'Geliştirme aşamasında', icon: '◐' }
   };
+  var CALLOUT_ALIASES = { bilinmiyor: 'unknown', dogrulandi: 'confirmed', not: 'note', surprizbozan: 'spoiler',
+    uyari: 'warning', kaynak: 'source', gelistirme: 'dev', galeri: 'gallery', alinti: 'quote' };
+
+  function stripLinks(s) { return s.replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1'); }
 
   function renderGallery(lines) {
     var items = lines.filter(function (l) { return l.trim(); }).map(function (l) {
       var p = l.split('|');
       var src = p[0].trim(), cap = (p.slice(1).join('|') || '').trim();
-      if (!src || src === '-' || src.toLowerCase() === 'placeholder') {
-        return '<figure class="gallery-item"><div class="img-placeholder"><span>NO IMAGE<br>ON FILE</span></div>' +
+      if (!src || src === '-' || /^(placeholder|yer tutucu)$/i.test(src)) {
+        return '<figure class="gallery-item"><div class="img-placeholder"><span>GÖRSEL<br>YOK</span></div>' +
           (cap ? '<figcaption>' + inline(cap) + '</figcaption>' : '') + '</figure>';
       }
-      return '<figure class="gallery-item"><a href="' + esc(src) + '" class="lightbox-link" data-caption="' + esc(cap.replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1')) + '">' +
-        '<img src="' + esc(src) + '" alt="' + esc(cap.replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1')) + '" loading="lazy"></a>' +
+      var plain = stripLinks(cap);
+      return '<figure class="gallery-item"><a href="' + esc(src) + '" class="lightbox-link" data-caption="' + esc(plain) + '">' +
+        '<img src="' + esc(src) + '" alt="' + esc(plain) + '" loading="lazy"></a>' +
         (cap ? '<figcaption>' + inline(cap) + '</figcaption>' : '') + '</figure>';
     });
     return '<div class="gallery">' + items.join('') + '</div>';
@@ -182,11 +223,12 @@
 
       if (!t) { flush(); i++; continue; }
 
-      // ::: containers
-      var c = t.match(/^:::\s*([a-z]+)\s*(.*)$/i);
+      var c = t.match(/^:::\s*([a-zçğıöşü]+)\s*(.*)$/i);
       if (c) {
         flush();
-        var type = c[1].toLowerCase(), title = c[2], inner = [];
+        var type = fold(c[1]);
+        type = CALLOUT_ALIASES[type] || type;
+        var title = c[2], inner = [];
         i++;
         while (i < lines.length && lines[i].trim() !== ':::') { inner.push(lines[i]); i++; }
         i++;
@@ -202,38 +244,34 @@
           continue;
         }
         var info = CALLOUTS[type] || CALLOUTS.note;
-        out.push('<div class="callout callout-' + esc(type) + '"><div class="callout-icon" aria-hidden="true">' + info.icon + '</div><div class="callout-body">' +
+        out.push('<div class="callout callout-' + esc(CALLOUTS[type] ? type : 'note') + '"><div class="callout-icon" aria-hidden="true">' + info.icon + '</div><div class="callout-body">' +
           '<div class="callout-title">' + inline(title || info.label) + '</div>' + renderBlocks(inner.join('\n'), null) + '</div></div>');
         continue;
       }
 
-      // headings
       var h = t.match(/^(#{2,4})\s+(.+)$/);
       if (h) {
         flush();
         var level = h[1].length, text = h[2].replace(/\s+#+$/, '');
-        var id = slugify(text) || 'section';
+        var id = slugify(text) || 'bolum';
         if (headings) {
-          var n = 2; var base = id;
+          var n = 2, base = id;
           while (headings.some(function (x) { return x.id === id; })) id = base + '-' + (n++);
           headings.push({ level: level, text: text, id: id });
         }
         out.push('<h' + level + ' id="' + id + '"><span class="h-text">' + inline(text) + '</span>' +
-          (level === 2 ? '<a class="h-anchor" href="#' + id + '" aria-label="Link to this section">¶</a>' : '') + '</h' + level + '>');
+          (level === 2 ? '<a class="h-anchor" href="#' + id + '" aria-label="Bu bölümün bağlantısı">¶</a>' : '') + '</h' + level + '>');
         i++; continue;
       }
 
-      // horizontal rule
       if (/^-{3,}$/.test(t)) { flush(); out.push('<hr>'); i++; continue; }
 
-      // macros on their own line
-      if (/^\{\{missing\}\}$/i.test(t)) {
+      if (/^\{\{(missing|eksik)\}\}$/i.test(t)) {
         flush();
-        out.push('<div class="missing"><span class="missing-stamp">NO RECORD</span> This section has not been documented yet. It will be expanded as information is confirmed.</div>');
+        out.push('<div class="missing"><span class="missing-stamp">KAYIT YOK</span> Bu bölüm henüz belgelenmedi. Bilgiler doğrulandıkça genişletilecek.</div>');
         i++; continue;
       }
 
-      // tables
       if (t.charAt(0) === '|') {
         flush();
         var rows = [];
@@ -242,7 +280,6 @@
         continue;
       }
 
-      // block quote
       if (t.charAt(0) === '>') {
         flush();
         var q = [];
@@ -251,7 +288,6 @@
         continue;
       }
 
-      // lists
       if (/^([-*]|\d+\.)\s+/.test(t)) {
         flush();
         var ordered = /^\d+\./.test(t);
@@ -289,7 +325,7 @@
   }
 
   /* ----------------------------------------------------------------------
-     Loading
+     Yükleme
      -------------------------------------------------------------------- */
   function loadAll() {
     var files = CFG.articles || [];
@@ -298,7 +334,7 @@
       return fetch(CONTENT_DIR + name + '.md?v=' + v)
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
         .then(function (text) { return buildPage(name, text, index); })
-        .catch(function (e) { console.warn('[wiki] Could not load article "' + name + '":', e); return null; });
+        .catch(function (e) { console.warn('[wiki] "' + name + '" maddesi yüklenemedi:', e); return null; });
     })).then(function (list) {
       pages = list.filter(Boolean);
       indexPages();
@@ -315,7 +351,7 @@
       categories: list(m.categories),
       aliases: list(m.aliases),
       summary: m.summary || '',
-      image: m.image || '',
+      image: typeof m.image === 'string' ? m.image : '',
       caption: m.caption || '',
       spoilers: truthy(m.spoilers),
       stub: truthy(m.stub),
@@ -324,8 +360,8 @@
       infobox: Array.isArray(m.infobox) ? m.infobox : null
     };
     p.text = plainText(p.body);
-    if (p.stub && p.categories.indexOf('Stubs') < 0) p.categories.push('Stubs');
-    if (p.spoilers && p.categories.indexOf('Articles with spoilers') < 0) p.categories.push('Articles with spoilers');
+    if (p.stub && p.categories.indexOf(AUTO_STUB) < 0) p.categories.push(AUTO_STUB);
+    if (p.spoilers && p.categories.indexOf(AUTO_SPOILER) < 0) p.categories.push(AUTO_SPOILER);
     return p;
   }
 
@@ -334,6 +370,8 @@
     pages.forEach(function (p) {
       byKey.set(key(p.title), p);
       p.aliases.forEach(function (a) { if (!byKey.has(key(a))) byKey.set(key(a), p); });
+      // "Kategori:X" sayfalarına eski "Category:X" adresiyle de ulaşılabilsin
+      if (p.type === 'category') byKey.set(key('Category:' + catName(p.title)), p);
     });
     pages.forEach(function (p) {
       if (p.type === 'category') return;
@@ -342,7 +380,6 @@
         categories.get(c).push(p);
       });
     });
-    // categories that only exist as subcategories still need to be known
     pages.forEach(function (p) {
       if (p.type === 'category' && !categories.has(catName(p.title))) categories.set(catName(p.title), []);
     });
@@ -351,7 +388,7 @@
   function contentPages() {
     return pages.filter(function (p) { return p.type !== 'category' && p.type !== 'project'; });
   }
-  function categoryPage(name) { return findPage('Category:' + name); }
+  function categoryPage(name) { return findPage(CAT_PREFIX + name); }
   function categoryParent(name) {
     var cp = categoryPage(name);
     return cp && cp.meta.parent ? cp.meta.parent : null;
@@ -371,47 +408,49 @@
     });
     return set;
   }
+  function byTitle(a, b) { return a.title.localeCompare(b.title, 'tr'); }
 
   /* ----------------------------------------------------------------------
-     Shared fragments
+     Ortak parçalar
      -------------------------------------------------------------------- */
   function link(title, label) {
     var p = findPage(title);
-    var exists = p || isCategoryTitle(title) || /^special:/i.test(title) || key(title) === key(MAIN);
+    var exists = p || isCategoryTitle(title) || isSpecial(title) || isMain(title);
     return '<a href="' + esc(pageUrl(p ? p.title : title)) + '" data-internal' + (exists ? '' : ' class="new"') + '>' + esc(label || title) + '</a>';
   }
+  function catLink(name, label) { return link(CAT_PREFIX + name, label || name); }
 
   function breadcrumb(trail) {
-    var items = ['<a href="./" data-internal>' + esc(CFG.siteName || 'Wiki') + '</a>'];
+    var items = ['<a href="./" data-internal>' + esc(siteName()) + '</a>'];
     trail.forEach(function (t, i) {
       if (i === trail.length - 1) items.push('<span aria-current="page">' + esc(t[0]) + '</span>');
       else items.push('<a href="' + esc(pageUrl(t[1])) + '" data-internal>' + esc(t[0]) + '</a>');
     });
-    return '<nav class="breadcrumb" aria-label="Breadcrumb">' + items.join('<span class="sep" aria-hidden="true">›</span>') + '</nav>';
+    return '<nav class="breadcrumb" aria-label="Konum">' + items.join('<span class="sep" aria-hidden="true">›</span>') + '</nav>';
   }
 
   function categoryTrail(cat) {
     var chain = [], guard = 0;
-    while (cat && guard++ < 6) { chain.unshift([cat, 'Category:' + cat]); cat = categoryParent(cat); }
+    while (cat && guard++ < 6) { chain.unshift([cat, CAT_PREFIX + cat]); cat = categoryParent(cat); }
     return chain;
   }
 
   var TYPE_LABEL = {
-    character: 'Character file', location: 'Location record', lore: 'Lore document',
-    game: 'Game information', world: 'World record', category: 'Category index',
-    project: 'Wiki project page', article: 'Archive entry', timeline: 'Chronological record'
+    character: 'Karakter dosyası', location: 'Mekân kaydı', lore: 'Evren belgesi',
+    game: 'Oyun bilgisi', world: 'Dünya kaydı', category: 'Kategori dizini',
+    project: 'Wiki proje sayfası', article: 'Arşiv kaydı', timeline: 'Kronolojik kayıt'
   };
 
   function entryNo(p) { return ('000' + (p.order + 1)).slice(-3); }
 
   function placeholderImg(label) {
-    return '<div class="img-placeholder"><span>' + (label || 'NO IMAGE<br>ON FILE') + '</span></div>';
+    return '<div class="img-placeholder"><span>' + (label || 'GÖRSEL<br>YOK') + '</span></div>';
   }
 
   function thumb(p) {
     return p.image
       ? '<img src="' + esc(p.image) + '" alt="' + esc(p.title) + '" loading="lazy">'
-      : placeholderImg('NO IMAGE<br>ON FILE');
+      : placeholderImg('GÖRSEL<br>YOK');
   }
 
   function card(p) {
@@ -423,15 +462,15 @@
 
   function infobox(p) {
     var rows = p.infobox || [];
-    var h = '<aside class="infobox" aria-label="Information box">' +
+    var h = '<aside class="infobox" aria-label="Bilgi kutusu">' +
       '<div class="infobox-title">' + esc(p.meta['infobox-title'] || p.title) + '</div>';
     if (p.image) {
-      h += '<figure class="infobox-image"><a href="' + esc(p.image) + '" class="lightbox-link" data-caption="' + esc(p.caption || p.title) + '">' +
-        '<img src="' + esc(p.image) + '" alt="' + esc(p.caption || p.title) + '"></a>' +
+      h += '<figure class="infobox-image"><a href="' + esc(p.image) + '" class="lightbox-link" data-caption="' + esc(stripLinks(p.caption || p.title)) + '">' +
+        '<img src="' + esc(p.image) + '" alt="' + esc(stripLinks(p.caption || p.title)) + '"></a>' +
         (p.caption ? '<figcaption>' + inline(p.caption) + '</figcaption>' : '') + '</figure>';
     } else {
-      h += '<figure class="infobox-image">' + placeholderImg('IMAGE<br>PENDING') +
-        '<figcaption>' + (p.caption ? inline(p.caption) : 'No image is currently on file.') + '</figcaption></figure>';
+      h += '<figure class="infobox-image">' + placeholderImg('GÖRSEL<br>BEKLENİYOR') +
+        '<figcaption>' + (p.caption ? inline(p.caption) : 'Şu anda kayıtlı bir görsel yok.') + '</figcaption></figure>';
     }
     var open = false;
     rows.forEach(function (r) {
@@ -442,8 +481,8 @@
       } else if (r.label) {
         if (!open) { h += '<dl>'; open = true; }
         var val = r.value;
-        var vh = /^(unknown|\?)$/i.test(val) ? '<span class="tag tag-unknown">Unknown</span>'
-          : /^(tba|not yet documented|-)$/i.test(val) ? '<span class="tag tag-tba">Not yet documented</span>'
+        var vh = /^(unknown|bilinmiyor|\?)$/i.test(val) ? TAGS.unknown
+          : /^(tba|belgelenmedi|henüz belgelenmedi|-)$/i.test(val) ? TAGS.tba
           : val.split(/\s*;\s*/).map(inline).join('<br>');
         h += '<div class="infobox-row"><dt>' + esc(r.label) + '</dt><dd>' + vh + '</dd></div>';
       }
@@ -460,18 +499,18 @@
       if (x.level === 2) { n2++; n3 = 0; num = n2; } else { n3++; num = n2 + '.' + n3; }
       return '<li class="toc-l' + x.level + '"><a href="#' + x.id + '"><span class="toc-num">' + num + '</span> ' + inline(x.text) + '</a></li>';
     });
-    return '<nav class="toc" aria-label="Contents"><div class="toc-head"><span>Contents</span>' +
-      '<button type="button" class="toc-toggle" aria-expanded="true">hide</button></div><ol>' + items.join('') + '</ol></nav>';
+    return '<nav class="toc" aria-label="İçindekiler"><div class="toc-head"><span>İçindekiler</span>' +
+      '<button type="button" class="toc-toggle" aria-expanded="true">gizle</button></div><ol>' + items.join('') + '</ol></nav>';
   }
 
   function categoryFooter(p) {
     if (!p.categories.length) return '';
-    return '<div class="catlinks"><span class="catlinks-label">Categories:</span> ' +
-      p.categories.map(function (c) { return link('Category:' + c, c); }).join('<span class="sep">|</span>') + '</div>';
+    return '<div class="catlinks"><span class="catlinks-label">Kategoriler:</span> ' +
+      p.categories.map(function (c) { return catLink(c); }).join('<span class="sep">|</span>') + '</div>';
   }
 
   /* ----------------------------------------------------------------------
-     Page renderers
+     Sayfa oluşturucular
      -------------------------------------------------------------------- */
   function renderArticle(p) {
     var headings = [];
@@ -481,30 +520,29 @@
       var at = bodyHtml.search(/<h2[ >]/);
       bodyHtml = at >= 0 ? bodyHtml.slice(0, at) + tocHtml + bodyHtml.slice(at) : tocHtml + bodyHtml;
     }
-    var primary = p.categories.filter(function (c) { return c !== 'Stubs' && c !== 'Articles with spoilers'; })[0];
+    var primary = p.categories.filter(function (c) { return c !== AUTO_STUB && c !== AUTO_SPOILER; })[0];
     var trail = primary ? categoryTrail(primary) : [];
     if (p.type === 'project') trail = [];
     trail.push([p.title, p.title]);
 
     var notices = '';
     if (p.spoilers) {
-      notices += '<div class="notice notice-spoiler" role="note"><div class="notice-stamp">Classified</div><div>' +
-        '<strong>Spoiler warning.</strong> This article contains plot details about <em>The Facility</em>. ' +
-        (p.meta['spoiler-note'] ? inline(p.meta['spoiler-note']) : 'Read at your own discretion.') + '</div></div>';
+      notices += '<div class="notice notice-spoiler" role="note"><div class="notice-stamp">Gizli</div><div>' +
+        '<strong>Sürprizbozan uyarısı.</strong> Bu madde <em>The Facility</em> oyununun hikâyesine dair ayrıntılar içerir. ' +
+        (p.meta['spoiler-note'] ? inline(p.meta['spoiler-note']) : 'Okuma kararı size ait.') + '</div></div>';
     }
     if (p.stub) {
-      notices += '<div class="notice notice-stub" role="note"><div class="notice-stamp">Incomplete</div><div>' +
-        '<strong>This article is a stub.</strong> Very little about this subject has been confirmed. ' +
-        'It will be expanded as official information becomes available.</div></div>';
+      notices += '<div class="notice notice-stub" role="note"><div class="notice-stamp">Eksik</div><div>' +
+        '<strong>Bu madde bir taslaktır.</strong> Bu konu hakkında çok az bilgi doğrulanmıştır. ' +
+        'Resmî bilgiler açıklandıkça genişletilecek.</div></div>';
     }
 
-    var typeLabel = TYPE_LABEL[p.type] || TYPE_LABEL.article;
-    document.title = p.title + ' | ' + (CFG.siteName || 'Wiki');
+    document.title = p.title + ' | ' + siteName();
 
     return breadcrumb(trail) +
       '<article class="article page-' + esc(p.type) + '">' +
       '<header class="article-head">' +
-        '<div class="file-strip"><span>' + esc(typeLabel) + '</span><span>Wiki entry No. ' + entryNo(p) + '</span></div>' +
+        '<div class="file-strip"><span>' + esc(TYPE_LABEL[p.type] || TYPE_LABEL.article) + '</span><span>Madde No. ' + entryNo(p) + '</span></div>' +
         '<h1 class="page-title">' + esc(p.title) + '</h1>' +
         (p.meta.subtitle ? '<div class="page-subtitle">' + inline(p.meta.subtitle) + '</div>' : '') +
       '</header>' +
@@ -514,53 +552,52 @@
         '<div class="prose">' + bodyHtml + '</div>' +
       '</div>' +
       '<footer class="article-foot">' + categoryFooter(p) +
-        '<div class="lastmod">This page was last updated on ' + fmtDate(p.updated) + '.</div>' +
+        '<div class="lastmod">Bu sayfa en son ' + fmtDate(p.updated) + ' tarihinde güncellendi.</div>' +
       '</footer>' +
       '</article>';
   }
 
   function renderCategory(name) {
     var cp = categoryPage(name);
-    var members = (categories.get(name) || []).slice().sort(function (a, b) { return a.title.localeCompare(b.title); });
-    var deep = membersDeep(name).sort(function (a, b) { return a.title.localeCompare(b.title); });
+    var members = (categories.get(name) || []).slice().sort(byTitle);
+    var deep = membersDeep(name).sort(byTitle);
     var subs = subcategories(name);
     var trail = categoryTrail(name);
-    document.title = 'Category:' + name + ' | ' + (CFG.siteName || 'Wiki');
+    document.title = CAT_PREFIX + name + ' | ' + siteName();
 
-    var intro = cp ? renderBlocks(cp.body, null) : '<p>This category lists all pages filed under <strong>' + esc(name) + '</strong>.</p>';
+    var intro = cp ? renderBlocks(cp.body, null) : '<p>Bu kategori <strong>' + esc(name) + '</strong> başlığı altında dosyalanan tüm sayfaları listeler.</p>';
     var gallery = deep.length
       ? '<div class="card-grid">' + deep.map(card).join('') + '</div>'
-      : '<div class="missing"><span class="missing-stamp">EMPTY</span> There are currently no pages in this category.</div>';
+      : '<div class="missing"><span class="missing-stamp">BOŞ</span> Bu kategoride şu anda hiç sayfa yok.</div>';
 
     var alpha = '';
     if (members.length) {
       var groups = {};
       members.forEach(function (p) {
-        var L = p.title.charAt(0).toUpperCase();
+        var L = p.title.charAt(0).toLocaleUpperCase('tr');
         (groups[L] = groups[L] || []).push(p);
       });
-      alpha = '<h2 id="pages">Pages in category “' + esc(name) + '”</h2><p class="muted">The following ' + members.length +
-        ' page' + (members.length === 1 ? ' is' : 's are') + ' in this category.</p><div class="alpha-list">' +
-        Object.keys(groups).sort().map(function (L) {
+      alpha = '<h2 id="sayfalar">“' + esc(name) + '” kategorisindeki sayfalar</h2><p class="muted">Bu kategoride ' + members.length +
+        ' sayfa bulunuyor.</p><div class="alpha-list">' +
+        Object.keys(groups).sort(function (a, b) { return a.localeCompare(b, 'tr'); }).map(function (L) {
           return '<div class="alpha-group"><h3>' + esc(L) + '</h3><ul>' + groups[L].map(function (p) {
             return '<li>' + link(p.title) + '</li>';
           }).join('') + '</ul></div>';
         }).join('') + '</div>';
     }
 
-    var subHtml = subs.length ? '<h2 id="subcategories">Subcategories</h2><ul class="subcats">' + subs.map(function (s) {
-      var n = membersDeep(s).length;
-      return '<li>' + link('Category:' + s, s) + ' <span class="muted">(' + n + (n === 1 ? ' page' : ' pages') + ')</span></li>';
+    var subHtml = subs.length ? '<h2 id="alt-kategoriler">Alt kategoriler</h2><ul class="subcats">' + subs.map(function (s) {
+      return '<li>' + catLink(s) + ' <span class="muted">(' + membersDeep(s).length + ' sayfa)</span></li>';
     }).join('') + '</ul>' : '';
 
     return breadcrumb(trail) +
       '<article class="article page-category">' +
-      '<header class="article-head"><div class="file-strip"><span>Category index</span><span>' + deep.length + ' entries</span></div>' +
-      '<h1 class="page-title"><span class="title-ns">Category:</span>' + esc(name) + '</h1></header>' +
+      '<header class="article-head"><div class="file-strip"><span>Kategori dizini</span><span>' + deep.length + ' kayıt</span></div>' +
+      '<h1 class="page-title"><span class="title-ns">' + CAT_PREFIX + '</span>' + esc(name) + '</h1></header>' +
       '<div class="prose">' + intro + '</div>' +
       gallery + subHtml + '<div class="prose">' + alpha + '</div>' +
-      (cp && cp.meta.parent ? '<footer class="article-foot"><div class="catlinks"><span class="catlinks-label">Parent category:</span> ' +
-        link('Category:' + cp.meta.parent, cp.meta.parent) + '</div></footer>' : '') +
+      (cp && cp.meta.parent ? '<footer class="article-foot"><div class="catlinks"><span class="catlinks-label">Üst kategori:</span> ' +
+        catLink(cp.meta.parent) + '</div></footer>' : '') +
       '</article>';
   }
 
@@ -572,7 +609,7 @@
 
   function renderMain() {
     var M = CFG.mainPage || {};
-    document.title = (CFG.siteName || 'Wiki');
+    document.title = siteName();
     var feat = findPage(M.featuredArticle);
     var all = contentPages();
     var recent = all.slice().sort(function (a, b) {
@@ -588,70 +625,65 @@
           '<span class="lore-sum">' + esc(excerpt(p, 140)) + '</span></li>';
       }).join('') + '</ul>';
     }
+    function box(title, body) { return '<section class="mp-box"><h2 class="mp-h">' + title + '</h2>' + body + '</section>'; }
+    function more(target, label) { return '<p class="more">' + link(target, label) + '</p>'; }
 
-    var stats = all.length + ' articles · ' + Array.from(categories.keys()).length + ' categories';
+    var stats = all.length + ' madde · ' + Array.from(categories.keys()).length + ' kategori';
+    var L = CFG.links || {};
 
     return '<div class="mainpage">' +
       '<section class="mp-welcome">' +
         '<div class="mp-welcome-text">' +
-          '<div class="file-strip"><span>Public archive</span><span>' + esc(stats) + '</span></div>' +
-          '<h1>Welcome to <span>' + esc(CFG.siteName || 'the Wiki') + '</span></h1>' +
+          '<div class="file-strip"><span>Açık arşiv</span><span>' + esc(stats) + '</span></div>' +
+          '<h1>Hoş geldiniz<span lang="en">' + esc(siteName()) + '</span></h1>' +
           (M.intro || []).map(function (t) { return '<p>' + inline(t) + '</p>'; }).join('') +
         '</div>' +
-        '<nav class="mp-shortcuts" aria-label="Browse">' + (M.shortcuts || []).map(function (s) {
+        '<nav class="mp-shortcuts" aria-label="Göz at">' + (M.shortcuts || []).map(function (s) {
           return '<a href="' + esc(pageUrl(s[1])) + '" data-internal>' + esc(s[0]) + '</a>';
         }).join('') + '</nav>' +
       '</section>' +
-      '<div class="notice notice-spoiler mp-spoiler" role="note"><div class="notice-stamp">Notice</div><div>' +
-        '<strong>Spoiler warning.</strong> Some articles on this wiki contain story spoilers for <em>The Facility</em>. ' +
-        'Articles with spoilers are marked at the top of the page and listed in ' + link('Category:Articles with spoilers', 'this category') + '.</div></div>' +
+      '<div class="notice notice-spoiler mp-spoiler" role="note"><div class="notice-stamp">Duyuru</div><div>' +
+        '<strong>Sürprizbozan uyarısı.</strong> Bu wikideki bazı maddeler <em>The Facility</em> oyununun hikâyesine dair sürprizbozanlar içerir. ' +
+        'Bu maddeler sayfanın en üstünde işaretlenir ve ' + catLink(AUTO_SPOILER, 'bu kategoride') + ' listelenir.</div></div>' +
       '<div class="mp-columns">' +
         '<div class="mp-main">' +
-          (feat ? '<section class="mp-box"><h2 class="mp-h">Featured article</h2>' +
+          (feat ? box('Öne çıkan madde',
             '<div class="featured"><a class="featured-img" href="' + esc(pageUrl(feat.title)) + '" data-internal>' + thumb(feat) + '</a>' +
             '<div class="featured-text"><h3>' + link(feat.title) + '</h3><p>' + esc(excerpt(feat, 420)) + '</p>' +
-            '<p class="more">' + link(feat.title, 'Read the full article →') + '</p></div></div></section>' : '') +
-          '<section class="mp-box"><h2 class="mp-h">Featured characters</h2>' + cards(M.featuredCharacters) +
-            '<p class="more">' + link('Category:Characters', 'All characters →') + '</p></section>' +
-          '<section class="mp-box"><h2 class="mp-h">Important locations</h2>' + cards(M.importantLocations) +
-            '<p class="more">' + link('Category:Locations', 'All locations →') + '</p></section>' +
-          '<section class="mp-box"><h2 class="mp-h">Lore &amp; the world</h2>' + loreList(M.lore) +
-            '<p class="more">' + link('Category:Lore', 'All lore articles →') + '</p></section>' +
+            more(feat.title, 'Maddenin tamamını oku →') + '</div></div>') : '') +
+          box('Öne çıkan karakterler', cards(M.featuredCharacters) + more(CAT_PREFIX + 'Karakterler', 'Tüm karakterler →')) +
+          box('Önemli mekânlar', cards(M.importantLocations) + more(CAT_PREFIX + 'Mekânlar', 'Tüm mekânlar →')) +
+          box('Evren ve dünya', loreList(M.lore) + more(CAT_PREFIX + 'Evren Bilgisi', 'Tüm evren maddeleri →')) +
         '</div>' +
         '<aside class="mp-side">' +
-          '<section class="mp-box"><h2 class="mp-h">Latest additions</h2><ul class="recent">' + recent.map(function (p) {
+          box('Son eklenenler', '<ul class="recent">' + recent.map(function (p) {
             return '<li>' + link(p.title) + '<span class="muted">' + fmtDate(p.created) + '</span></li>';
-          }).join('') + '</ul><p class="more">' + link('Special:RecentChanges', 'Recent changes →') + '</p></section>' +
-          '<section class="mp-box"><h2 class="mp-h">Game information</h2><ul class="plain">' +
-            ['Gameplay', 'Assignments', 'Tests & Detection Methods', 'Night Events', 'Endings'].map(function (t) { return '<li>' + link(t) + '</li>'; }).join('') +
-          '</ul></section>' +
-          '<section class="mp-box mp-legend"><h2 class="mp-h">Reading this wiki</h2>' +
-            '<p>Only information confirmed by the developers is presented as fact. Everything else is marked:</p>' +
-            '<ul class="plain legend"><li><span class="tag tag-unknown">Unknown</span> not established in canon</li>' +
-            '<li><span class="tag tag-tba">Not yet documented</span> awaiting information</li>' +
-            '<li><span class="tag tag-confirmed">Confirmed</span> stated by the developers</li></ul>' +
-            '<p class="more">' + link('The Facility Wiki:About', 'About this wiki →') + '</p></section>' +
-          '<section class="mp-box"><h2 class="mp-h">Official links</h2><ul class="plain">' +
-            (CFG.links && CFG.links.steam ? '<li><a class="external" href="' + esc(CFG.links.steam) + '" target="_blank" rel="noopener">The Facility on Steam</a></li>' : '') +
-            (CFG.links && CFG.links.presskit ? '<li><a href="' + esc(CFG.links.presskit) + '">Press kit</a></li>' : '') +
-            (CFG.links && CFG.links.studio ? '<li><a href="' + esc(CFG.links.studio) + '">Veinstone Studios</a></li>' : '') +
-          '</ul></section>' +
+          }).join('') + '</ul>' + more(SPECIAL.recent[0], 'Son değişiklikler →')) +
+          box('Oyun bilgileri', '<ul class="plain">' + (M.gameInfo || []).map(function (t) { return '<li>' + link(t) + '</li>'; }).join('') + '</ul>') +
+          '<section class="mp-box mp-legend"><h2 class="mp-h">Bu wiki nasıl okunur?</h2>' +
+            '<p>Yalnızca geliştiriciler tarafından doğrulanan bilgiler gerçek olarak sunulur. Diğer her şey işaretlenir:</p>' +
+            '<ul class="plain legend"><li>' + TAGS.unknown + ' kanonda belirlenmemiş</li>' +
+            '<li>' + TAGS.tba + ' bilgi bekleniyor</li>' +
+            '<li>' + TAGS.confirmed + ' geliştiriciler tarafından belirtilmiş</li></ul>' +
+            more('The Facility Wiki:Hakkında', 'Bu wiki hakkında →') + '</section>' +
+          box('Resmî bağlantılar', '<ul class="plain">' +
+            (L.steam ? '<li><a class="external" href="' + esc(L.steam) + '" target="_blank" rel="noopener">Steam\'de The Facility</a></li>' : '') +
+            (L.presskit ? '<li><a href="' + esc(L.presskit) + '">Basın kiti</a></li>' : '') +
+            (L.studio ? '<li><a href="' + esc(L.studio) + '">Veinstone Studios</a></li>' : '') + '</ul>') +
         '</aside>' +
       '</div></div>';
   }
 
-  /* ---------- Search ---------- */
-  function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
-
+  /* ---------- Arama ---------- */
   function search(q, includeMeta) {
-    var nq = norm(q).trim();
+    var nq = fold(q).trim();
     if (!nq) return [];
     var terms = nq.split(/\s+/).filter(Boolean);
     var res = [];
     pages.forEach(function (p) {
       if (p.type === 'project' && !includeMeta) return;
-      var t = norm(p.title), al = norm(p.aliases.join(' ')), sm = norm(p.summary),
-          ct = norm(p.categories.join(' ')), bd = norm(p.text);
+      var t = fold(p.title), al = fold(p.aliases.join(' ')), sm = fold(p.summary),
+          ct = fold(p.categories.join(' ')), bd = fold(p.text);
       var all = t + ' ' + al + ' ' + sm + ' ' + ct + ' ' + bd;
       if (!terms.every(function (x) { return all.indexOf(x) >= 0; })) return;
       var s = 0;
@@ -662,123 +694,131 @@
         if (al.indexOf(x) >= 0) s += 10;
         if (sm.indexOf(x) >= 0) s += 6;
         if (ct.indexOf(x) >= 0) s += 3;
-        var c = bd.split(x).length - 1; s += Math.min(c, 8);
+        s += Math.min(bd.split(x).length - 1, 8);
       });
       if (p.type === 'category') s -= 5;
       res.push({ page: p, score: s });
     });
-    return res.sort(function (a, b) { return b.score - a.score || a.page.title.localeCompare(b.page.title); });
+    return res.sort(function (a, b) { return b.score - a.score || byTitle(a.page, b.page); });
   }
 
+  // fold() harf sayısını değiştirmediği için konumlar orijinal metinle eşleşir
   function highlight(text, q) {
-    var terms = norm(q).split(/\s+/).filter(function (t) { return t.length > 1; });
-    var h = esc(text);
+    var terms = fold(q).split(/\s+/).filter(function (t) { return t.length > 1; });
+    var f = fold(text), marks = new Array(text.length + 1).fill(0);
+    if (f.length !== text.length) return esc(text);
     terms.forEach(function (t) {
-      h = h.replace(new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>');
+      var at = f.indexOf(t);
+      while (at >= 0) { for (var i = at; i < at + t.length; i++) marks[i] = 1; at = f.indexOf(t, at + t.length); }
     });
-    return h;
+    var out = '', on = false;
+    for (var i = 0; i < text.length; i++) {
+      if (marks[i] && !on) { out += '<mark>'; on = true; }
+      if (!marks[i] && on) { out += '</mark>'; on = false; }
+      out += esc(text.charAt(i));
+    }
+    return out + (on ? '</mark>' : '');
   }
 
   function snippet(p, q) {
-    var text = p.text, nt = norm(text);
-    var first = norm(q).split(/\s+/).filter(Boolean)[0] || '';
-    var at = first ? nt.indexOf(first) : -1;
+    var text = p.text, nt = fold(text);
+    var first = fold(q).split(/\s+/).filter(Boolean)[0] || '';
+    var at = first && nt.length === text.length ? nt.indexOf(first) : -1;
     if (at < 0) return excerpt(p, 200);
     var start = Math.max(0, at - 80);
     var s = text.slice(start, at + 140);
-    return (start > 0 ? '…' : '') + s.replace(/^\S*\s/, start > 0 ? '' : '$&') + '…';
+    return (start > 0 ? '…' + s.replace(/^\S*\s/, '') : s) + '…';
+  }
+
+  function specialPage(title, strip, heading, body) {
+    return breadcrumb([[heading, title]]) +
+      '<article class="article"><header class="article-head"><div class="file-strip"><span>' + strip[0] + '</span><span>' + strip[1] + '</span></div>' +
+      '<h1 class="page-title">' + heading + '</h1></header>' + body + '</article>';
   }
 
   function renderSearch(q) {
-    document.title = 'Search results' + (q ? ' for “' + q + '”' : '') + ' | ' + (CFG.siteName || 'Wiki');
+    document.title = 'Arama sonuçları' + (q ? ': “' + q + '”' : '') + ' | ' + siteName();
     var results = search(q, true);
     var exact = findPage(q);
     var body;
-    if (!q) body = '<p>Enter a term in the search box at the top of the page.</p>';
-    else if (!results.length) body = '<div class="missing"><span class="missing-stamp">NO MATCH</span> No articles match “' + esc(q) + '”. ' +
-      'Try a different spelling, or browse ' + link('Special:AllPages', 'all pages') + '.</div>';
-    else body = '<p class="muted">' + results.length + ' result' + (results.length === 1 ? '' : 's') + ' for “' + esc(q) + '”.</p>' +
+    if (!q) body = '<p>Sayfanın üstündeki arama kutusuna bir terim yazın.</p>';
+    else if (!results.length) body = '<div class="missing"><span class="missing-stamp">EŞLEŞME YOK</span> “' + esc(q) + '” ile eşleşen madde bulunamadı. ' +
+      'Farklı bir yazım deneyin ya da ' + link(SPECIAL.allpages[0], 'tüm sayfalara') + ' göz atın.</div>';
+    else body = '<p class="muted">“' + esc(q) + '” için ' + results.length + ' sonuç.</p>' +
       '<ol class="search-results">' + results.map(function (r) {
         var p = r.page;
         return '<li><div class="sr-title">' + link(p.title) + ' <span class="sr-type">' + esc(TYPE_LABEL[p.type] || '') + '</span></div>' +
           '<div class="sr-snippet">' + highlight(snippet(p, q), q) + '</div>' +
           '<div class="sr-cats muted">' + esc(p.categories.join(' · ')) + '</div></li>';
       }).join('') + '</ol>';
-    return breadcrumb([['Search', 'Special:Search']]) +
-      '<article class="article"><header class="article-head"><div class="file-strip"><span>Archive query</span><span>Special page</span></div>' +
-      '<h1 class="page-title">Search results</h1></header>' +
-      '<form class="search-page-form" role="search" data-search-page><input type="search" name="q" value="' + esc(q) + '" aria-label="Search the wiki">' +
-      '<button type="submit">Search</button></form>' +
-      (exact && q ? '<p class="exact">There is a page named ' + link(exact.title) + ' on this wiki.</p>' : '') +
-      body + '</article>';
+    return specialPage(SPECIAL.search[0], ['Arşiv sorgusu', 'Özel sayfa'], 'Arama sonuçları',
+      '<form class="search-page-form" role="search" data-search-page><input type="search" name="q" value="' + esc(q) + '" aria-label="Wikide ara">' +
+      '<button type="submit">Ara</button></form>' +
+      (exact && q ? '<p class="exact">Bu wikide ' + link(exact.title) + ' adlı bir sayfa var.</p>' : '') + body);
   }
 
   function renderAllPages() {
-    document.title = 'All pages | ' + (CFG.siteName || 'Wiki');
-    var list = pages.slice().sort(function (a, b) { return a.title.localeCompare(b.title); });
-    return breadcrumb([['All pages', 'Special:AllPages']]) +
-      '<article class="article"><header class="article-head"><div class="file-strip"><span>Archive index</span><span>' + list.length + ' pages</span></div>' +
-      '<h1 class="page-title">All pages</h1></header><div class="prose"><ul class="columns">' +
-      list.map(function (p) { return '<li>' + link(p.title) + '</li>'; }).join('') + '</ul></div></article>';
+    document.title = 'Tüm sayfalar | ' + siteName();
+    var list = pages.slice().sort(byTitle);
+    return specialPage(SPECIAL.allpages[0], ['Arşiv dizini', list.length + ' sayfa'], 'Tüm sayfalar',
+      '<div class="prose"><ul class="columns">' + list.map(function (p) { return '<li>' + link(p.title) + '</li>'; }).join('') + '</ul></div>');
   }
 
   function renderCategories() {
-    document.title = 'Categories | ' + (CFG.siteName || 'Wiki');
-    var names = Array.from(categories.keys()).sort();
-    return breadcrumb([['Categories', 'Special:Categories']]) +
-      '<article class="article"><header class="article-head"><div class="file-strip"><span>Archive index</span><span>' + names.length + ' categories</span></div>' +
-      '<h1 class="page-title">Categories</h1></header><div class="prose"><ul class="columns">' +
-      names.map(function (n) { return '<li>' + link('Category:' + n, n) + ' <span class="muted">(' + membersDeep(n).length + ')</span></li>'; }).join('') +
-      '</ul></div></article>';
+    document.title = 'Kategoriler | ' + siteName();
+    var names = Array.from(categories.keys()).sort(function (a, b) { return a.localeCompare(b, 'tr'); });
+    return specialPage(SPECIAL.categories[0], ['Arşiv dizini', names.length + ' kategori'], 'Kategoriler',
+      '<div class="prose"><ul class="columns">' + names.map(function (n) {
+        return '<li>' + catLink(n) + ' <span class="muted">(' + membersDeep(n).length + ')</span></li>';
+      }).join('') + '</ul></div>');
   }
 
   function renderRecent() {
-    document.title = 'Recent changes | ' + (CFG.siteName || 'Wiki');
+    document.title = 'Son değişiklikler | ' + siteName();
     var list = pages.slice().sort(function (a, b) {
-      return (b.updated || '').localeCompare(a.updated || '') || a.title.localeCompare(b.title);
+      return (b.updated || '').localeCompare(a.updated || '') || byTitle(a, b);
     });
     var groups = {};
-    list.forEach(function (p) { (groups[p.updated || 'Undated'] = groups[p.updated || 'Undated'] || []).push(p); });
-    return breadcrumb([['Recent changes', 'Special:RecentChanges']]) +
-      '<article class="article"><header class="article-head"><div class="file-strip"><span>Revision log</span><span>Special page</span></div>' +
-      '<h1 class="page-title">Recent changes</h1></header><div class="prose">' +
-      Object.keys(groups).sort().reverse().map(function (d) {
+    list.forEach(function (p) { (groups[p.updated || 'Tarihsiz'] = groups[p.updated || 'Tarihsiz'] || []).push(p); });
+    return specialPage(SPECIAL.recent[0], ['Değişiklik kaydı', 'Özel sayfa'], 'Son değişiklikler',
+      '<div class="prose">' + Object.keys(groups).sort().reverse().map(function (d) {
         return '<h2>' + fmtDate(d) + '</h2><ul>' + groups[d].map(function (p) {
-          return '<li>' + link(p.title) + (p.created === p.updated ? ' <span class="tag tag-new">new</span>' : '') +
+          return '<li>' + link(p.title) + (p.created === p.updated ? ' <span class="tag tag-new">yeni</span>' : '') +
             (p.summary ? ' <span class="muted">— ' + esc(excerpt(p, 90)) + '</span>' : '') + '</li>';
         }).join('') + '</ul>';
-      }).join('') + '</div></article>';
+      }).join('') + '</div>');
   }
 
   function renderNotFound(title) {
-    document.title = 'Page not found | ' + (CFG.siteName || 'Wiki');
+    document.title = 'Sayfa bulunamadı | ' + siteName();
     var results = search(title).slice(0, 6);
     return breadcrumb([[title, title]]) +
-      '<article class="article page-404"><header class="article-head"><div class="file-strip"><span>Error 404</span><span>Record missing</span></div>' +
+      '<article class="article page-404"><header class="article-head"><div class="file-strip"><span>Hata 404</span><span>Kayıt eksik</span></div>' +
       '<h1 class="page-title">' + esc(title) + '</h1></header>' +
-      '<div class="notfound"><div class="stamp-big">FILE NOT FOUND</div>' +
-      '<p>There is currently no article titled <strong>“' + esc(title) + '”</strong> in this archive. ' +
-      'The record may have been moved, renamed, or never existed.</p>' +
-      (results.length ? '<p>Perhaps you were looking for:</p><ul>' + results.map(function (r) { return '<li>' + link(r.page.title) + '</li>'; }).join('') + '</ul>' : '') +
-      '<p>' + link(MAIN, 'Return to the Main Page') + ' · ' + link('Special:AllPages', 'Browse all pages') + ' · ' +
-      '<a href="' + esc(pageUrl('Special:Search') + '&q=' + encodeURIComponent(title)) + '" data-internal>Search for “' + esc(title) + '”</a></p></div></article>';
+      '<div class="notfound"><div class="stamp-big">DOSYA BULUNAMADI</div>' +
+      '<p>Bu arşivde <strong>“' + esc(title) + '”</strong> başlıklı bir madde bulunmuyor. ' +
+      'Kayıt taşınmış, yeniden adlandırılmış ya da hiç var olmamış olabilir.</p>' +
+      (results.length ? '<p>Şunu mu arıyordunuz?</p><ul>' + results.map(function (r) { return '<li>' + link(r.page.title) + '</li>'; }).join('') + '</ul>' : '') +
+      '<p>' + link(MAIN, 'Ana Sayfaya dön') + ' · ' + link(SPECIAL.allpages[0], 'Tüm sayfalara göz at') + ' · ' +
+      '<a href="' + esc(pageUrl(SPECIAL.search[0]) + '&q=' + encodeURIComponent(title)) + '" data-internal>“' + esc(title) + '” için ara</a></p></div></article>';
   }
 
   /* ----------------------------------------------------------------------
-     Router
+     Yönlendirici
      -------------------------------------------------------------------- */
   function route() {
     var params = new URLSearchParams(location.search);
     var title = (params.get('page') || MAIN).replace(/_/g, ' ').trim();
     var q = params.get('q') || '';
+    var kind = specialKind(title);
     var html;
 
-    if (key(title) === key(MAIN)) html = renderMain();
-    else if (/^special:search$/i.test(title)) html = renderSearch(q);
-    else if (/^special:allpages$/i.test(title)) html = renderAllPages();
-    else if (/^special:categories$/i.test(title)) html = renderCategories();
-    else if (/^special:recentchanges$/i.test(title)) html = renderRecent();
-    else if (/^special:random$/i.test(title)) {
+    if (isMain(title)) html = renderMain();
+    else if (kind === 'search') html = renderSearch(q);
+    else if (kind === 'allpages') html = renderAllPages();
+    else if (kind === 'categories') html = renderCategories();
+    else if (kind === 'recent') html = renderRecent();
+    else if (kind === 'random') {
       var pool = contentPages();
       var pick = pool[Math.floor(Math.random() * pool.length)];
       history.replaceState(null, '', pageUrl(pick.title));
@@ -786,26 +826,23 @@
     }
     else if (isCategoryTitle(title)) {
       var name = catName(title);
-      var known = categories.has(name) || categoryPage(name);
+      var known = categories.has(name) || !!categoryPage(name);
       if (!known) {
-        // case-insensitive match
         Array.from(categories.keys()).forEach(function (k) { if (key(k) === key(name)) { name = k; known = true; } });
       }
+      if (!known) { var cp = findPage(title); if (cp && cp.type === 'category') { name = catName(cp.title); known = true; } }
+      if (known && key(CAT_PREFIX + name) !== key(title)) history.replaceState(null, '', pageUrl(CAT_PREFIX + name) + location.hash);
       html = known ? renderCategory(name) : renderNotFound(title);
     } else {
       var p = findPage(title);
-      if (p && key(p.title) !== key(title)) {
-        // alias: update the address bar to the canonical title
-        history.replaceState(null, '', pageUrl(p.title) + location.hash);
-      }
+      if (p && key(p.title) !== key(title)) history.replaceState(null, '', pageUrl(p.title) + location.hash);
       html = p ? renderArticle(p) : renderNotFound(title);
     }
 
     app.innerHTML = html;
     app.removeAttribute('aria-busy');
     markActiveNav();
-    if (searchInput && !/^special:search$/i.test(title)) searchInput.value = '';
-    if (searchInput && /^special:search$/i.test(title)) searchInput.value = q;
+    if (searchInput) searchInput.value = kind === 'search' ? q : '';
     closeNav();
 
     if (location.hash) {
@@ -821,11 +858,10 @@
   }
 
   /* ----------------------------------------------------------------------
-     Sidebar
+     Kenar çubuğu
      -------------------------------------------------------------------- */
   function buildSidebar() {
-    var groups = CFG.sidebar || [];
-    sidebarEl.innerHTML = groups.map(function (g, gi) {
+    sidebarEl.innerHTML = (CFG.sidebar || []).map(function (g) {
       return '<details class="nav-group" open><summary>' + esc(g.heading) + '</summary><ul>' +
         g.links.map(function (l) {
           return '<li><a href="' + esc(pageUrl(l[1])) + '" data-internal data-target="' + esc(key(l[1])) + '">' + esc(l[0]) + '</a></li>';
@@ -835,7 +871,8 @@
 
   function markActiveNav() {
     var params = new URLSearchParams(location.search);
-    var cur = key(params.get('page') || MAIN);
+    var raw = params.get('page') || MAIN;
+    var cur = isMain(raw) ? key(MAIN) : key(raw);
     var p = findPage(cur);
     if (p) cur = key(p.title);
     sidebarEl.querySelectorAll('a[data-target]').forEach(function (a) {
@@ -851,7 +888,7 @@
   function closeNav() { document.body.classList.remove('nav-open'); }
 
   /* ----------------------------------------------------------------------
-     Search suggestions
+     Arama önerileri
      -------------------------------------------------------------------- */
   var sel = -1, current = [];
   function renderSuggest() {
@@ -861,13 +898,13 @@
     sel = -1;
     var items = current.map(function (r, i) {
       var p = r.page;
-      return '<li role="option" id="sugg-' + i + '" data-i="' + i + '"><a href="' + esc(pageUrl(p.title)) + '" data-internal tabindex="-1">' +
+      return '<li role="option" id="sugg-' + i + '"><a href="' + esc(pageUrl(p.title)) + '" data-internal tabindex="-1">' +
         '<span class="sugg-thumb">' + (p.image ? '<img src="' + esc(p.image) + '" alt="">' : '<span class="sugg-noimg"></span>') + '</span>' +
         '<span class="sugg-text"><span class="sugg-title">' + highlight(p.title, q) + '</span>' +
         '<span class="sugg-meta">' + esc(TYPE_LABEL[p.type] || '') + (p.summary ? ' — ' + esc(excerpt(p, 70)) : '') + '</span></span></a></li>';
     });
-    items.push('<li role="option" class="sugg-all" id="sugg-' + current.length + '" data-i="' + current.length + '"><a href="' +
-      esc(pageUrl('Special:Search') + '&q=' + encodeURIComponent(q)) + '" data-internal tabindex="-1">Search for pages containing <strong>' + esc(q) + '</strong></a></li>');
+    items.push('<li role="option" class="sugg-all" id="sugg-' + current.length + '"><a href="' +
+      esc(pageUrl(SPECIAL.search[0]) + '&q=' + encodeURIComponent(q)) + '" data-internal tabindex="-1"><strong>' + esc(q) + '</strong> içeren sayfaları ara</a></li>');
     suggestBox.innerHTML = items.join('');
     suggestBox.hidden = false;
     searchInput.setAttribute('aria-expanded', 'true');
@@ -890,11 +927,11 @@
     hideSuggest();
     searchInput.blur();
     var exact = findPage(q);
-    go(exact ? pageUrl(exact.title) : pageUrl('Special:Search') + '&q=' + encodeURIComponent(q));
+    go(exact ? pageUrl(exact.title) : pageUrl(SPECIAL.search[0]) + '&q=' + encodeURIComponent(q));
   }
 
   /* ----------------------------------------------------------------------
-     Lightbox
+     Görsel görüntüleyici
      -------------------------------------------------------------------- */
   var lb, lbImg, lbCap, lbSet = [], lbIndex = 0;
   function openLightbox(a) {
@@ -910,13 +947,14 @@
     var a = lbSet[lbIndex];
     lbImg.src = a.getAttribute('href');
     lbImg.alt = a.getAttribute('data-caption') || '';
-    lbCap.textContent = (a.getAttribute('data-caption') || '') + (lbSet.length > 1 ? ' (' +(lbIndex + 1) + ' / ' + lbSet.length + ')' : '');
+    lbCap.textContent = (a.getAttribute('data-caption') || '') + (lbSet.length > 1 ? ' (' + (lbIndex + 1) + ' / ' + lbSet.length + ')' : '');
     lb.classList.toggle('single', lbSet.length < 2);
   }
   function closeLightbox() { lb.hidden = true; lbImg.src = ''; document.body.classList.remove('lb-open'); }
+  function stepLb(d) { lbIndex = (lbIndex + d + lbSet.length) % lbSet.length; showLb(); }
 
   /* ----------------------------------------------------------------------
-     Events
+     Olaylar
      -------------------------------------------------------------------- */
   function bind() {
     document.addEventListener('click', function (e) {
@@ -925,9 +963,8 @@
 
       var tt = e.target.closest('.toc-toggle');
       if (tt) {
-        var tocEl = tt.closest('.toc');
-        var hidden = tocEl.classList.toggle('collapsed');
-        tt.textContent = hidden ? 'show' : 'hide';
+        var hidden = tt.closest('.toc').classList.toggle('collapsed');
+        tt.textContent = hidden ? 'göster' : 'gizle';
         tt.setAttribute('aria-expanded', String(!hidden));
         return;
       }
@@ -938,7 +975,7 @@
       var a = e.target.closest('a[data-internal]');
       if (a && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.button === 0) {
         var url = new URL(a.href, location.href);
-        if (url.pathname === location.pathname && url.search === location.search && url.hash) return; // in-page anchor
+        if (url.pathname === location.pathname && url.search === location.search && url.hash) return;
         e.preventDefault();
         hideSuggest();
         go(url.pathname + url.search + url.hash);
@@ -953,8 +990,8 @@
       if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('spoiler-inline')) e.target.classList.add('revealed');
       if (!lb.hidden) {
         if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbSet.length; showLb(); }
-        if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbSet.length) % lbSet.length; showLb(); }
+        if (e.key === 'ArrowRight') stepLb(1);
+        if (e.key === 'ArrowLeft') stepLb(-1);
         return;
       }
       if (e.key === 'Escape') closeNav();
@@ -962,15 +999,12 @@
     });
 
     document.addEventListener('submit', function (e) {
-      var f = e.target;
-      if (f.matches('[data-search-page]')) { e.preventDefault(); submitSearch(f.q.value); }
+      if (e.target.matches('[data-search-page]')) { e.preventDefault(); submitSearch(e.target.q.value); }
     });
 
     window.addEventListener('popstate', route);
 
-    // Header search
-    var form = document.getElementById('searchform');
-    form.addEventListener('submit', function (e) {
+    document.getElementById('searchform').addEventListener('submit', function (e) {
       e.preventDefault();
       var lis = suggestBox.querySelectorAll('li');
       if (sel >= 0 && lis[sel]) { go(lis[sel].querySelector('a').getAttribute('href')); hideSuggest(); searchInput.blur(); return; }
@@ -989,14 +1023,14 @@
     });
 
     lb.addEventListener('click', function (e) {
-      if (e.target.closest('.lb-next')) { lbIndex = (lbIndex + 1) % lbSet.length; showLb(); return; }
-      if (e.target.closest('.lb-prev')) { lbIndex = (lbIndex - 1 + lbSet.length) % lbSet.length; showLb(); return; }
+      if (e.target.closest('.lb-next')) { stepLb(1); return; }
+      if (e.target.closest('.lb-prev')) { stepLb(-1); return; }
       if (e.target === lb || e.target.closest('.lb-close')) closeLightbox();
     });
   }
 
   /* ----------------------------------------------------------------------
-     Boot
+     Başlatma
      -------------------------------------------------------------------- */
   function boot() {
     app = document.getElementById('content');
@@ -1011,9 +1045,9 @@
     bind();
 
     if (location.protocol === 'file:') {
-      app.innerHTML = '<div class="notice notice-spoiler"><div class="notice-stamp">Offline</div><div><strong>The wiki needs a web server.</strong> ' +
-        'Browsers block loading article files directly from disk. It works on GitHub Pages, or locally with a static server ' +
-        '(for example <code>npx serve</code> or <code>python -m http.server</code> in the repository folder).</div></div>';
+      app.innerHTML = '<div class="notice notice-spoiler"><div class="notice-stamp">Çevrimdışı</div><div><strong>Wiki bir web sunucusu gerektirir.</strong> ' +
+        'Tarayıcılar madde dosyalarının doğrudan diskten yüklenmesini engeller. Wiki GitHub Pages üzerinde ya da yerelde bir statik sunucuyla ' +
+        '(örneğin depo klasöründe <code>python -m http.server</code>) çalışır.</div></div>';
       return;
     }
 

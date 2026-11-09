@@ -1,31 +1,31 @@
 ---
-title: Endings
+title: Sonlar
 type: game
-categories: Game Information
-aliases: Ending, Game endings
-summary: The endings of The Facility. No endings have been documented yet.
+categories: Oyun Bilgileri
+aliases: Endings, Son, Oyun sonları, Ending
+summary: The Facility'nin sonları. Henüz hiçbir son belgelenmedi.
 spoilers: true
 stub: true
 image:
-caption: No image on file.
+caption: Kayıtlı bir görsel yok.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Overview]
-  Number of endings: Unknown
+  [Genel bakış]
+  Son sayısı: Bilinmiyor
 ---
-This article covers the **endings** of *[[The Facility]]*.
+Bu madde *[[The Facility]]* oyununun **sonlarını** ele alır.
 
-:::unknown Awaiting information
-No endings have been documented yet. This page will be updated once official information is available. Speculation about possible endings is not included on this wiki.
+:::unknown Bilgi bekleniyor
+Henüz hiçbir son belgelenmedi. Resmî bilgiler açıklandığında bu sayfa güncellenecektir. Olası sonlara dair tahminler bu wikide yer almaz.
 :::
 
-## Endings
+## Sonlar
 {{missing}}
 
-## Requirements
+## Gereksinimler
 {{missing}}
 
-## See also
-- [[Gameplay]]
-- [[Night Events]]
+## Ayrıca bakınız
+- [[Oynanış]]
+- [[Gece Olayları]]

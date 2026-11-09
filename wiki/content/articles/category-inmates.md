@@ -1,15 +1,16 @@
 ---
-title: Category:Inmates
+title: Kategori:Mahkûmlar
 type: category
-parent: Characters
-summary: Individuals held at Facility 61 on suspicion of being Corrupted.
+parent: Karakterler
+aliases: Category:Inmates
+summary: Bozulmuş oldukları şüphesiyle Tesis 61'de tutulan kişiler.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-**Inmates** are the individuals held at [[Facility 61]] on suspicion of being [[The Corrupted|Corrupted]]. Some are ordinary humans, while others may be anomalies capable of imitating humans.
+**Mahkûmlar**, [[Bozulmuşlar|Bozulmuş]] oldukları şüphesiyle [[Tesis 61]]'de tutulan kişilerdir. Bazıları sıradan insanlardır, bazıları ise insanları taklit edebilen anomaliler olabilir.
 
-:::unknown Classification
-Unless explicitly confirmed, whether a given inmate is human or Corrupted is **not** stated on this wiki. Inmate biographies are added only once they have been established.
+:::unknown Sınıflandırma
+Açıkça doğrulanmadıkça, bir mahkûmun insan mı yoksa Bozulmuş mu olduğu bu wikide **belirtilmez**. Mahkûm biyografileri ancak kesinleştikten sonra eklenir.
 :::
 
-The Warden, [[Henry Edaven]], interrogates the inmates, evaluates their humanity, and selects individuals for daily [[Assignments|assignments]].
+Müdür [[Henry Edaven]] mahkûmları sorgular, insanlıklarını değerlendirir ve günlük [[Görevlendirmeler|görevler]] için kişileri seçer.

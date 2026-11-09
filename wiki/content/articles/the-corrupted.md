@@ -1,61 +1,62 @@
 ---
-title: The Corrupted
+title: Bozulmuşlar
 type: lore
-categories: Lore
-aliases: Corrupted, Corruption, Anomalies, Anomaly, Mimics
-summary: The Corrupted are mysterious anomalies capable of imitating humans. They originate from advanced artificial intelligence and technology.
+categories: Evren Bilgisi
+aliases: The Corrupted, Corrupted, Bozulmuş, Bozulma, Corruption, Anomaliler, Anomali, Anomalies, Anomaly, Taklitçiler, Mimics
+summary: Bozulmuşlar, insanları taklit edebilen gizemli anomalilerdir. Gelişmiş yapay zekâ ve teknolojiden kaynaklanırlar.
 spoilers: true
-spoiler-note: Spoilers are limited to the "Signs of Corruption" and "Related characters" sections.
+spoiler-note: Sürprizbozanlar yalnızca "Bozulma belirtileri" ve "İlgili karakterler ve mekânlar" bölümlerindedir.
 image:
-caption: No official depiction has been released.
+caption: Resmî bir tasvir henüz yayımlanmadı.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Overview]
-  Also known as: Anomalies
-  Nature: Anomalies capable of imitating humans
-  Origin: Advanced artificial intelligence and technology
-  [In the game]
-  Held at: [[Facility 61]]
-  Detection: See [[Tests & Detection Methods]]
+  [Genel bakış]
+  İngilizce adı: The Corrupted
+  Diğer adları: Anomaliler
+  Doğası: İnsanları taklit edebilen anomaliler
+  Kökeni: Gelişmiş yapay zekâ ve teknoloji
+  [Oyunda]
+  Tutuldukları yer: [[Tesis 61]]
+  Tespit: Bkz. [[Testler ve Tespit Yöntemleri]]
 ---
-**The Corrupted** are mysterious anomalies in *[[The Facility]]* that are **capable of imitating humans**. They originate from advanced artificial intelligence and technology — the technology that became forbidden following [[The Technology Purge]].
+**Bozulmuşlar** (İngilizce: The Corrupted), *[[The Facility]]* oyunundaki **insanları taklit edebilen** gizemli anomalilerdir. [[Teknoloji Tasfiyesi]]'nin ardından yasaklanan gelişmiş yapay zekâ ve teknolojiden kaynaklanırlar.
 
-Official press material also refers to them as **Anomalies**, describing them as "mimics capable of disguising themselves as humans".
+Resmî basın materyalleri onlardan **Anomaliler** olarak da bahseder ve onları "kendilerini insan olarak gizleyebilen taklitçiler" diye tanımlar.
 
-## Overview
-It is **not always easy to distinguish a real human from a Corrupted individual**. Individuals suspected of being Corrupted are held at [[Facility 61]], where the Warden must determine who among the inmates is human. Some inmates are ordinary humans, while others may be anomalies.
+## Genel bakış
+**Gerçek bir insanı Bozulmuş bir bireyden ayırt etmek her zaman kolay değildir.** Bozulmuş olduğundan şüphelenilen kişiler [[Tesis 61]]'de tutulur; Müdür, mahkûmlardan hangilerinin insan olduğunu belirlemek zorundadır. Mahkûmların bazıları sıradan insanlardır, bazıları ise anomali olabilir.
 
-## Historical background
-The Corrupted originate from advanced artificial intelligence and technology. The circumstances of their first appearance have not been documented.
+## Tarihsel arka plan
+Bozulmuşlar gelişmiş yapay zekâ ve teknolojiden kaynaklanır. İlk ortaya çıkışlarının koşulları belgelenmemiştir.
 
-:::unknown Not established
-- When and how the Corrupted first appeared.
-- Their true nature and goals.
-- How a person comes to be considered Corrupted.
+:::unknown Belirlenmemiş bilgiler
+- Bozulmuşların ilk ne zaman ve nasıl ortaya çıktığı.
+- Gerçek doğaları ve amaçları.
+- Bir kişinin nasıl Bozulmuş sayıldığı.
 :::
 
-## Detailed explanation
-### Imitation
-The Corrupted are able to imitate humans. Because of this, identifying them requires careful observation. According to official press material, the Warden investigates inmate files, cross-references their stories and looks for visual distortions. See [[Tests & Detection Methods]].
+## Ayrıntılı açıklama
+### Taklit
+Bozulmuşlar insanları taklit edebilir. Bu yüzden onları tespit etmek dikkatli gözlem gerektirir. Resmî basın materyallerine göre Müdür, mahkûm dosyalarını inceler, anlattıklarını karşılaştırır ve görsel bozulmaları arar. Bkz. [[Testler ve Tespit Yöntemleri]].
 
-### Signs of Corruption
-The concept of showing "signs of Corruption" exists in the world of the game: [[Henry Edaven]]'s daughter had shown such signs before her death. What these signs are has not been documented. {{unknown}}
+### Bozulma belirtileri
+Oyun dünyasında "Bozulma belirtileri göstermek" diye bir kavram vardır: [[Henry Edaven]]'ın kızı ölmeden önce bu tür belirtiler göstermişti. Bu belirtilerin neler olduğu belgelenmemiştir. {{unknown}}
 
-### Consequences of misidentification
-If the Warden fails to identify a Corrupted individual and sends them out on an assignment, the State holds the Warden responsible for the consequences. See [[Assignments]].
+### Yanlış tespitin sonuçları
+Müdür, Bozulmuş bir bireyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Müdürü sorumlu tutar. Bkz. [[Görevlendirmeler]].
 
-## Related events
-- [[The Technology Purge]]
-- The incident at [[Facility 60]], which was overrun by anomalies.
+## İlgili olaylar
+- [[Teknoloji Tasfiyesi]]
+- Anomaliler tarafından istila edilen [[Tesis 60]]'taki olay.
 
-## Related characters and locations
-- [[Facility 61]] — holds individuals suspected of being Corrupted.
-- [[Facility 60]] — shut down after being overrun by anomalies.
-- [[Arthur Edaven]] — whether he was Corrupted or falsely accused remains unknown.
-- [[Henry Edaven]] — his daughter had shown signs of Corruption.
-- [[Category:Inmates|The inmates of Facility 61]]
+## İlgili karakterler ve mekânlar
+- [[Tesis 61]] — Bozulmuş olduğundan şüphelenilen kişileri tutar.
+- [[Tesis 60]] — anomaliler tarafından istila edildikten sonra kapatıldı.
+- [[Arthur Edaven]] — Bozulmuş mu olduğu yoksa haksız yere mi suçlandığı bilinmiyor.
+- [[Henry Edaven]] — kızı Bozulma belirtileri göstermişti.
+- [[Kategori:Mahkûmlar|Tesis 61'in mahkûmları]]
 
-## See also
-- [[CORE Program]]
-- [[Tests & Detection Methods]]
+## Ayrıca bakınız
+- [[CORE Programı]]
+- [[Testler ve Tespit Yöntemleri]]

@@ -1,11 +1,12 @@
 ---
-title: Category:Other Characters
+title: Kategori:Diğer Karakterler
 type: category
-parent: Characters
-summary: Characters who are neither staff nor inmates of Facility 61.
+parent: Karakterler
+aliases: Category:Other Characters
+summary: Tesis 61'in personeli veya mahkûmu olmayan karakterler.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This category lists characters who are neither staff nor inmates of [[Facility 61]].
+Bu kategori, [[Tesis 61]]'in ne personeli ne de mahkûmu olan karakterleri listeler.
 
-Henry Edaven's wife and daughter, who died in a fire, are mentioned in the [[Henry Edaven]] article. They do not have articles of their own because their names have not been documented.
+Henry Edaven'ın bir yangında hayatını kaybeden eşi ve kızından [[Henry Edaven]] maddesinde bahsedilir. Adları belgelenmediği için ayrı maddeleri yoktur.

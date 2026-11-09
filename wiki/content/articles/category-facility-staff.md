@@ -1,9 +1,10 @@
 ---
-title: Category:Facility Staff
+title: Kategori:Tesis Personeli
 type: category
-parent: Characters
-summary: The Warden and officers of Facility 61.
+parent: Karakterler
+aliases: Category:Facility Staff
+summary: Tesis 61'in Müdürü ve subayları.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This category lists the **staff of [[Facility 61]]** — the Warden and the officers who run the facility.
+Bu kategori **[[Tesis 61]]'in personelini**, yani Müdürü ve tesisi yöneten subayları listeler.

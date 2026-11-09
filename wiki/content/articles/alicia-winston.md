@@ -1,49 +1,49 @@
 ---
 title: Alicia Winston
 type: character
-role: Inmate
-categories: Inmates
+role: Mahkûm
+categories: Mahkûmlar
 aliases: Alicia, Winston
-summary: Alicia Winston is an inmate of Facility 61, held on suspicion of being Corrupted.
+summary: Alicia Winston, Bozulmuş olduğu şüphesiyle Tesis 61'de tutulan bir mahkûmdur.
 image: assets/img/characters/alicia-winston.jpg
-caption: Character artwork
+caption: Karakter çizimi
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Name: Alicia Winston
-  Age: Unknown
-  Status: Inmate
-  [Classification]
-  Held at: [[Facility 61]]
-  Suspected of: Corruption
-  Human or Corrupted: Unknown
-  [Appearances]
-  Game: [[The Facility]]
+  [Kişisel bilgiler]
+  Adı: Alicia Winston
+  Yaşı: Bilinmiyor
+  Durumu: Mahkûm
+  [Sınıflandırma]
+  Tutulduğu yer: [[Tesis 61]]
+  Şüphe: Bozulma
+  İnsan mı, Bozulmuş mu: Bilinmiyor
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Alicia Winston** is one of the [[Category:Inmates|inmates]] held at **[[Facility 61]]** in *[[The Facility]]*. Like every inmate of the facility, Alicia is suspected of being [[The Corrupted|Corrupted]].
+**Alicia Winston**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Tesisteki her mahkûm gibi Alicia'nın da [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilmektedir.
 
-:::unknown Classification
-Whether Alicia is an ordinary human or a Corrupted individual has **not** been established.
+:::unknown Sınıflandırma
+Alicia'nın sıradan bir insan mı yoksa Bozulmuş bir birey mi olduğu **belirlenmemiştir**.
 :::
 
-## Overview
-Alicia is held at Facility 61, where the Warden, [[Henry Edaven]], interrogates inmates and decides whether to select Alicia for an [[Assignments|assignment]].
+## Genel bakış
+Alicia, Tesis 61'de tutulmaktadır. Müdür [[Henry Edaven]] burada mahkûmları sorgular ve Alicia'nın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Biography
+## Biyografi
 {{missing}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
+## Geçmişi
 {{missing}}
 
-## Relationships
+## İlişkileri
 {{missing}}
 
-## Appearances
+## Göründüğü yapımlar
 - *[[The Facility]]*
 
-## Trivia
+## Bilgi notları
 {{missing}}

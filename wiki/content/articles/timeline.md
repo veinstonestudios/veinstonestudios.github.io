@@ -1,41 +1,41 @@
 ---
-title: Timeline
+title: Zaman Çizelgesi
 type: timeline
-categories: The World
-aliases: Chronology, History
-summary: A chronological record of known events in The Facility. Most events are undated, and their exact order is not confirmed.
+categories: Dünya
+aliases: Timeline, Kronoloji, Tarih, Chronology
+summary: The Facility'deki bilinen olayların kronolojik kaydı. Olayların çoğu tarihsizdir ve kesin sıraları doğrulanmamıştır.
 spoilers: true
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This **timeline** records the known events of *[[The Facility]]* in the order they can be placed with confidence. The game takes place in **2055**.
+Bu **zaman çizelgesi**, *[[The Facility]]* oyunundaki bilinen olayları güvenle sıralanabildikleri düzende kaydeder. Oyun **2055** yılında geçer.
 
-:::unknown About this timeline
-Very few events have confirmed dates. Undated events are listed in a separate section, and **their order relative to one another is not confirmed**. This page will be updated as dates are established.
+:::unknown Bu zaman çizelgesi hakkında
+Çok az olayın tarihi doğrulanmıştır. Tarihsiz olaylar ayrı bir bölümde listelenir ve **birbirlerine göre sıraları doğrulanmamıştır**. Tarihler kesinleştikçe bu sayfa güncellenecektir.
 :::
 
-## Before 2055
-| Period | Event | Articles |
+## 2055 öncesi
+| Dönem | Olay | Maddeler |
 |---|---|---|
-| Date {{unknown}} | Advanced technology and artificial intelligence are banned following **the Technology Purge**. | [[The Technology Purge]] |
-| After the Purge | Society returns to analog methods of communication and information processing — **the Analog Era**. | [[The Analog Era]] |
+| Tarih {{unknown}} | **Teknoloji Tasfiyesi**'nin ardından gelişmiş teknoloji ve yapay zekâ yasaklanır. | [[Teknoloji Tasfiyesi]] |
+| Tasfiyeden sonra | Toplum analog iletişim ve bilgi işleme yöntemlerine geri döner: **Analog Çağ**. | [[Analog Çağ]] |
 
-## Undated events
-The following events took place before the start of the game. Their order relative to one another has **not** been confirmed.
+## Tarihsiz olaylar
+Aşağıdaki olaylar oyunun başlangıcından önce yaşanmıştır. Birbirlerine göre sıraları **doğrulanmamıştır**.
 
-| Event | Details | Articles |
+| Olay | Ayrıntılar | Maddeler |
 |---|---|---|
-| Appearance of the Corrupted | Anomalies originating from advanced AI and technology, capable of imitating humans. | [[The Corrupted]] |
-| The Facility 60 incident | Facility 60 is overrun by anomalies and eventually shut down. Arthur Edaven disappears during the incident. | [[Facility 60]], [[Arthur Edaven]] |
-| The fire | Henry Edaven's wife and daughter die in a fire. His daughter had shown signs of Corruption. | [[Henry Edaven]] |
+| Bozulmuşların ortaya çıkışı | Gelişmiş yapay zekâ ve teknolojiden kaynaklanan, insanları taklit edebilen anomaliler. | [[Bozulmuşlar]] |
+| Tesis 60 olayı | Tesis 60 anomaliler tarafından istila edilir ve sonunda kapatılır. Arthur Edaven olay sırasında ortadan kaybolur. | [[Tesis 60]], [[Arthur Edaven]] |
+| Yangın | Henry Edaven'ın eşi ve kızı bir yangında hayatını kaybeder. Kızı Bozulma belirtileri göstermiştir. | [[Henry Edaven]] |
 
 ## 2055
-| Event | Details | Articles |
+| Olay | Ayrıntılar | Maddeler |
 |---|---|---|
-| Henry Edaven is assigned to Facility 61 | Henry is assigned as Warden under circumstances connected to his past. | [[Henry Edaven]], [[Facility 61]] |
-| Events of the game | The Warden interrogates inmates, evaluates their humanity, and selects individuals for daily assignments. | [[Gameplay]] |
+| Henry Edaven Tesis 61'e atanır | Henry, geçmişiyle bağlantılı koşullar altında Müdür olarak atanır. | [[Henry Edaven]], [[Tesis 61]] |
+| Oyunun olayları | Müdür mahkûmları sorgular, insanlıklarını değerlendirir ve günlük görevler için kişileri seçer. | [[Oynanış]] |
 
-## Related articles
-- [[The World]]
-- [[The Analog Era]]
-- [[The Technology Purge]]
+## İlgili maddeler
+- [[Dünya]]
+- [[Analog Çağ]]
+- [[Teknoloji Tasfiyesi]]

@@ -1,76 +1,76 @@
 ---
 title: Henry Edaven
 type: character
-role: Warden · Protagonist
-categories: Facility Staff
-aliases: Henry, The Warden, Warden, Edaven
-summary: Henry Edaven is the protagonist of The Facility and the Warden of Facility 61.
+role: Müdür · Ana karakter
+categories: Tesis Personeli
+aliases: Henry, Müdür, Warden, The Warden, Edaven
+summary: Henry Edaven, The Facility'nin ana karakteri ve Tesis 61'in Müdürüdür.
 spoilers: true
 image:
-caption: No official portrait has been released.
+caption: Resmî bir portre henüz yayımlanmadı.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Full name: Henry Edaven
-  Age: Unknown
-  Status: Alive (as of the start of the game)
-  [Family]
-  Brother: [[Arthur Edaven]]
-  Wife: Deceased (name not documented)
-  Daughter: Deceased (name not documented)
-  [Career]
-  Position: Warden
-  Facility: [[Facility 61]]
-  [Appearances]
-  Game: [[The Facility]]
-  Role: Protagonist (player character)
+  [Kişisel bilgiler]
+  Tam adı: Henry Edaven
+  Yaşı: Bilinmiyor
+  Durumu: Hayatta (oyunun başında)
+  [Aile]
+  Kardeşi: [[Arthur Edaven]]
+  Eşi: Hayatını kaybetti (adı belgelenmedi)
+  Kızı: Hayatını kaybetti (adı belgelenmedi)
+  [Görevi]
+  Unvanı: Müdür
+  Tesis: [[Tesis 61]]
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
+  Rolü: Ana karakter (oyuncu karakteri)
 ---
-**Henry Edaven** is the protagonist and player character of *[[The Facility]]*. He is the **Warden of [[Facility 61]]**, a prison and rehabilitation center for individuals suspected of being [[The Corrupted|Corrupted]].
+**Henry Edaven**, *[[The Facility]]* oyununun ana karakteri ve oyuncu karakteridir. [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen kişiler için bir hapishane ve rehabilitasyon merkezi olan **[[Tesis 61]]'in Müdürüdür**.
 
-## Overview
-As Warden, Henry is responsible for interrogating the inmates of Facility 61, evaluating their humanity, and selecting individuals for daily [[Assignments|assignments]]. He is briefed on the facility's operations by [[Viktor Hale|Captain Viktor Hale]] and assisted by [[Vera Collins|Lieutenant Vera Collins]].
+## Genel bakış
+Müdür olarak Henry; Tesis 61'in mahkûmlarını sorgulamaktan, insanlıklarını değerlendirmekten ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmekten sorumludur. Tesisin işleyişi hakkında [[Viktor Hale|Yüzbaşı Viktor Hale]] tarafından bilgilendirilir ve [[Vera Collins|Teğmen Vera Collins]] ona yardımcı olur.
 
-## Biography
-### Family
-Henry's wife and daughter died in a fire. His daughter had shown signs of Corruption.
+## Biyografi
+### Ailesi
+Henry'nin eşi ve kızı bir yangında hayatını kaybetti. Kızı Bozulma belirtileri göstermişti.
 
-Henry's brother, [[Arthur Edaven]], disappeared during the [[Facility 60]] incident.
+Henry'nin kardeşi [[Arthur Edaven]], [[Tesis 60]] olayı sırasında ortadan kayboldu.
 
-:::unknown Not established
-- The names of Henry's wife and daughter.
-- The cause and circumstances of the fire.
-- What the signs of Corruption shown by his daughter were.
+:::unknown Belirlenmemiş bilgiler
+- Henry'nin eşinin ve kızının adları.
+- Yangının nedeni ve koşulları.
+- Kızının gösterdiği Bozulma belirtilerinin neler olduğu.
 :::
 
-### Assignment to Facility 61
-Henry was subsequently assigned to Facility 61 as its Warden, under circumstances connected to his past. Official press material describes him as the facility's newly appointed warden at the start of the game.
+### Tesis 61'e atanması
+Henry daha sonra, geçmişiyle bağlantılı koşullar altında Tesis 61'in Müdürü olarak atandı. Resmî basın materyalleri onu oyunun başında tesisin yeni atanmış müdürü olarak tanımlar.
 
-The exact nature of the circumstances behind his assignment has not been documented. {{unknown}}
+Atanmasının ardındaki koşulların tam niteliği belgelenmemiştir. {{unknown}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
+## Geçmişi
 {{missing}}
 
-## Relationships
-| Character | Relationship |
+## İlişkileri
+| Karakter | İlişki |
 |---|---|
-| [[Arthur Edaven]] | Brother. Disappeared during the Facility 60 incident; his fate is unknown. |
-| Wife (unnamed) | Died in a fire. |
-| Daughter (unnamed) | Died in a fire. Had shown signs of Corruption. |
-| [[Viktor Hale]] | Senior officer who briefs Henry and explains the facility's operations. |
-| [[Vera Collins]] | Officer who oversees the cell blocks and assists the Warden. |
+| [[Arthur Edaven]] | Kardeşi. Tesis 60 olayı sırasında ortadan kayboldu; akıbeti bilinmiyor. |
+| Eşi (adı bilinmiyor) | Bir yangında hayatını kaybetti. |
+| Kızı (adı bilinmiyor) | Bir yangında hayatını kaybetti. Bozulma belirtileri göstermişti. |
+| [[Viktor Hale]] | Henry'yi bilgilendiren ve tesisin işleyişini açıklayan kıdemli subay. |
+| [[Vera Collins]] | Hücre bloklarını denetleyen ve Müdüre yardımcı olan subay. |
 
-## Appearances
-- *[[The Facility]]* — protagonist (player character)
+## Göründüğü yapımlar
+- *[[The Facility]]* — ana karakter (oyuncu karakteri)
 
-## Trivia
-- No official portrait or character render of Henry has been released yet.
-- *The Facility* is played from Henry's perspective.
+## Bilgi notları
+- Henry'nin resmî bir portresi veya karakter görseli henüz yayımlanmadı.
+- *The Facility*, Henry'nin bakış açısından oynanır.
 
-## See also
-- [[Facility 61]]
-- [[Facility 60]]
-- [[The Corrupted]]
+## Ayrıca bakınız
+- [[Tesis 61]]
+- [[Tesis 60]]
+- [[Bozulmuşlar]]

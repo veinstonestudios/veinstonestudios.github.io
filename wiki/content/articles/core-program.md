@@ -1,44 +1,45 @@
 ---
-title: CORE Program
+title: CORE Programı
 type: lore
-categories: Lore
-aliases: CORE, Cognitive Observation & Reformation Experiment, Cognitive Observation and Reformation Experiment, C.O.R.E.
-summary: CORE (Cognitive Observation & Reformation Experiment) is associated with the institution's observation and rehabilitation framework.
+categories: Evren Bilgisi
+aliases: CORE Program, CORE, C.O.R.E., Cognitive Observation & Reformation Experiment, Cognitive Observation and Reformation Experiment, Bilişsel Gözlem ve Islah Deneyi
+summary: CORE (Cognitive Observation & Reformation Experiment), kurumun gözlem ve rehabilitasyon çerçevesiyle ilişkilendirilen bir programdır.
 stub: true
 image:
-caption: No illustration on file.
+caption: Kayıtlı bir görsel yok.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Overview]
-  Full name: Cognitive Observation & Reformation Experiment
-  Abbreviation: CORE
-  Associated with: Observation and rehabilitation framework
-  [Details]
-  Founded: Unknown
-  Operated by: Unknown
+  [Genel bakış]
+  Açık adı: Cognitive Observation & Reformation Experiment
+  Türkçesi: Bilişsel Gözlem ve Islah Deneyi
+  Kısaltma: CORE
+  İlişkili olduğu: Gözlem ve rehabilitasyon çerçevesi
+  [Ayrıntılar]
+  Kuruluşu: Bilinmiyor
+  Yürüten: Bilinmiyor
 ---
-The **CORE Program** — **C**ognitive **O**bservation & **R**eformation **E**xperiment — is associated with the institution's observation and rehabilitation framework in *[[The Facility]]*.
+**CORE Programı** — **C**ognitive **O**bservation & **R**eformation **E**xperiment (Türkçesi: Bilişsel Gözlem ve Islah Deneyi) — *[[The Facility]]* oyununda kurumun gözlem ve rehabilitasyon çerçevesiyle ilişkilendirilir.
 
-## Overview
-CORE is associated with the institution's framework for observation and rehabilitation. Its exact relationship to [[Facility 61]] and its inmates has not been documented.
+## Genel bakış
+CORE, kurumun gözlem ve rehabilitasyon çerçevesiyle ilişkilidir. [[Tesis 61]] ve mahkûmlarıyla tam olarak nasıl bir ilişkisi olduğu belgelenmemiştir.
 
-:::unknown Not established
-Beyond its name and its association with the observation and rehabilitation framework, no details of the CORE Program have been confirmed.
+:::unknown Belirlenmemiş bilgiler
+Adı ve gözlem ve rehabilitasyon çerçevesiyle ilişkisi dışında CORE Programı'na dair hiçbir ayrıntı doğrulanmamıştır.
 :::
 
-## Historical background
+## Tarihsel arka plan
 {{missing}}
 
-## Detailed explanation
+## Ayrıntılı açıklama
 {{missing}}
 
-## Related events
+## İlgili olaylar
 {{missing}}
 
-## Related characters and locations
-- [[Facility 61]]
+## İlgili karakterler ve mekânlar
+- [[Tesis 61]]
 
-## See also
-- [[The Corrupted]]
-- [[Tests & Detection Methods]]
+## Ayrıca bakınız
+- [[Bozulmuşlar]]
+- [[Testler ve Tespit Yöntemleri]]

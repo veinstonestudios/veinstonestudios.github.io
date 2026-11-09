@@ -1,35 +1,37 @@
 ---
-title: Remnants
+title: Kalıntılar
 type: lore
-categories: Lore
-summary: Remnants is a lore subject in The Facility. No information about it has been confirmed yet.
+categories: Evren Bilgisi
+aliases: Remnants
+summary: Kalıntılar, The Facility evrenine ait bir konudur. Hakkında henüz hiçbir bilgi doğrulanmamıştır.
 stub: true
 image:
-caption: No illustration on file.
+caption: Kayıtlı bir görsel yok.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Overview]
-  Type: Unknown
-  First mentioned: Unknown
+  [Genel bakış]
+  İngilizce adı: Remnants
+  Türü: Bilinmiyor
+  İlk geçtiği yer: Bilinmiyor
 ---
-**Remnants** is a lore subject in *[[The Facility]]*.
+**Kalıntılar** (İngilizce: Remnants), *[[The Facility]]* evrenine ait bir konudur.
 
-:::unknown Awaiting information
-No information about Remnants has been confirmed yet. This article exists as a placeholder and will be filled in once official details are available.
+:::unknown Bilgi bekleniyor
+Kalıntılar hakkında henüz hiçbir bilgi doğrulanmamıştır. Bu madde yer tutucu olarak oluşturulmuştur ve resmî ayrıntılar açıklandığında doldurulacaktır.
 :::
 
-## Overview
+## Genel bakış
 {{missing}}
 
-## Historical background
+## Tarihsel arka plan
 {{missing}}
 
-## Detailed explanation
+## Ayrıntılı açıklama
 {{missing}}
 
-## Related events
+## İlgili olaylar
 {{missing}}
 
-## Related characters and locations
+## İlgili karakterler ve mekânlar
 {{missing}}

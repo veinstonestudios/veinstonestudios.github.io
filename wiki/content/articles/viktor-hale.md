@@ -1,48 +1,48 @@
 ---
 title: Viktor Hale
 type: character
-role: Captain
-categories: Facility Staff
-aliases: Captain Viktor Hale, Captain Hale, Hale, Viktor
-summary: Captain Viktor Hale is a senior officer who briefs Henry Edaven and explains the operations of Facility 61.
+role: Yüzbaşı
+categories: Tesis Personeli
+aliases: Yüzbaşı Viktor Hale, Yüzbaşı Hale, Captain Viktor Hale, Captain Hale, Hale, Viktor
+summary: Yüzbaşı Viktor Hale, Henry Edaven'ı bilgilendiren ve Tesis 61'in işleyişini açıklayan kıdemli bir subaydır.
 image:
-caption: No official portrait has been released.
+caption: Resmî bir portre henüz yayımlanmadı.
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
-  [Biographical information]
-  Full name: Viktor Hale
-  Age: Unknown
-  Status: Unknown
-  [Career]
-  Rank: Captain
-  Role: Senior officer
-  Facility: [[Facility 61]]
-  [Appearances]
-  Game: [[The Facility]]
+  [Kişisel bilgiler]
+  Tam adı: Viktor Hale
+  Yaşı: Bilinmiyor
+  Durumu: Bilinmiyor
+  [Görevi]
+  Rütbesi: Yüzbaşı
+  Rolü: Kıdemli subay
+  Tesis: [[Tesis 61]]
+  [Göründüğü yapımlar]
+  Oyun: [[The Facility]]
 ---
-**Captain Viktor Hale** is a senior officer in *[[The Facility]]*. He briefs **[[Henry Edaven]]**, the Warden of [[Facility 61]], and explains the facility's operations.
+**Yüzbaşı Viktor Hale**, *[[The Facility]]* oyununda kıdemli bir subaydır. [[Tesis 61]]'in Müdürü **[[Henry Edaven]]**'ı bilgilendirir ve tesisin işleyişini açıklar.
 
-## Overview
-Hale's established role is to brief the Warden and explain how Facility 61 operates. Further details about the character have not yet been documented.
+## Genel bakış
+Hale'in kesinleşmiş rolü, Müdürü bilgilendirmek ve Tesis 61'in nasıl işlediğini açıklamaktır. Karakter hakkında başka ayrıntı henüz belgelenmemiştir.
 
-## Biography
+## Biyografi
 {{missing}}
 
-## Personality
+## Kişiliği
 {{missing}}
 
-## History
+## Geçmişi
 {{missing}}
 
-## Relationships
-| Character | Relationship |
+## İlişkileri
+| Karakter | İlişki |
 |---|---|
-| [[Henry Edaven]] | Briefs Henry on the facility's operations. |
-| [[Vera Collins]] | Fellow officer. The nature of their working relationship has not been documented. |
+| [[Henry Edaven]] | Henry'yi tesisin işleyişi hakkında bilgilendirir. |
+| [[Vera Collins]] | Subay arkadaşı. Aralarındaki çalışma ilişkisinin niteliği belgelenmemiştir. |
 
-## Appearances
+## Göründüğü yapımlar
 - *[[The Facility]]*
 
-## Trivia
-- No official portrait of Captain Hale has been released yet.
+## Bilgi notları
+- Yüzbaşı Hale'in resmî bir portresi henüz yayımlanmadı.

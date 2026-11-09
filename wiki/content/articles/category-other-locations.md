@@ -1,13 +1,14 @@
 ---
-title: Category:Other Locations
+title: Kategori:Diğer Mekânlar
 type: category
-parent: Locations
-summary: Locations other than Facility 61 and Facility 60.
+parent: Mekânlar
+aliases: Category:Other Locations
+summary: Tesis 61 ve Tesis 60 dışındaki mekânlar.
 created: 2026-11-09
 updated: 2026-11-09
 ---
-This category is for locations other than [[Facility 61]] and [[Facility 60]].
+Bu kategori [[Tesis 61]] ve [[Tesis 60]] dışındaki mekânlar içindir.
 
 :::note
-No other locations have been confirmed yet. Articles will be added here as new locations are revealed.
+Henüz başka bir mekân doğrulanmadı. Yeni mekânlar açıklandıkça maddeler buraya eklenecek.
 :::
