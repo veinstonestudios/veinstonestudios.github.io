@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.8-fandom',
+  version: '2026-11-10.9-keyart',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
@@ -145,6 +145,8 @@ window.WIKI_CONFIG = {
      ANA SAYFA
      ------------------------------------------------------------------------ */
   mainPage: {
+    heroImage: 'assets/img/key-art.jpg',   // Ana Sayfanın en üstündeki büyük görsel
+    heroLink: 'The Facility',
     intro: [
       '**[[The Facility]]**, Veinstone Studios tarafından geliştirilen ve 2055 yılında geçen bir psikolojik korku oyunudur. ' +
       'Oyuncu, [[Corrupted]] olduğundan şüphelenilen kişilerin tutulduğu bir hapishane ve rehabilitasyon merkezi olan ' +

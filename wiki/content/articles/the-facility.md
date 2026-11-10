@@ -4,10 +4,10 @@ type: game
 categories: Oyun Bilgileri
 aliases: The Facility (oyun), Oyun, Game
 summary: The Facility, Veinstone Studios tarafından geliştirilen ve 2055 yılında geçen bir psikolojik korku oyunudur; oyuncu Facility 61'in Gardiyanı olarak görev yapar.
-image: assets/img/screens/hall.jpg
-caption: [[Facility 61]]'in içi (geliştirme sürümü ekran görüntüsü)
+image: assets/img/key-art.jpg
+caption: The Facility key art
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-10
 infobox-title: The Facility
 infobox:
   [Genel]
@@ -86,6 +86,7 @@ Resmî basın kitine göre *The Facility* şunları içerir:
 
 ## Galeri
 :::gallery
+assets/img/key-art.jpg | Resmî key art
 assets/img/screens/hall.jpg | Tesisin içindeki bir salon
 assets/img/screens/cell-inspection.jpg | Bir mahkûmun hücre kapağından incelenmesi
 assets/img/screens/journal.jpg | İfadeleri karşılaştırmak için kullanılan günlük

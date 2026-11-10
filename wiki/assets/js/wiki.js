@@ -744,6 +744,8 @@
 
     return '<div class="mainpage">' +
       '<section class="mp-welcome">' +
+        (M.heroImage ? '<figure class="mp-hero"><a href="' + esc(pageUrl(M.heroLink || 'The Facility')) + '" data-internal>' +
+          '<img src="' + esc(M.heroImage) + '" alt="The Facility key art" width="1232" height="706"></a></figure>' : '') +
         '<h1><em lang="en">The Facility</em> Wiki\'ye Hoş Geldiniz</h1>' +
         (M.intro || []).map(function (t) { return '<p>' + inline(t) + '</p>'; }).join('') +
         '<p class="mp-stats">Şu anda <strong>' + all.length + '</strong> madde ve <strong>' + Array.from(categories.keys()).length + '</strong> kategori bulunuyor.</p>' +
