@@ -183,7 +183,7 @@
     dev:       { label: 'Geliştirme aşamasında', icon: '◐' }
   };
   var CALLOUT_ALIASES = { bilinmiyor: 'unknown', dogrulandi: 'confirmed', not: 'note', surprizbozan: 'spoiler',
-    uyari: 'warning', kaynak: 'source', gelistirme: 'dev', galeri: 'gallery', alinti: 'quote' };
+    uyari: 'warning', kaynak: 'source', gelistirme: 'dev', galeri: 'gallery', alinti: 'quote', kronoloji: 'timeline' };
 
   function stripLinks(s) { return s.replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1'); }
 
@@ -201,6 +201,97 @@
         (cap ? '<figcaption>' + inline(cap) + '</figcaption>' : '') + '</figure>';
     });
     return '<div class="gallery">' + items.join('') + '</div>';
+  }
+
+  /* ---------- Dikey zaman çizelgesi ----------
+     :::kronoloji
+     YIL | Başlık | Açıklama | tur=yangin; henry=43; mary=11; iplik=arthur
+     :::
+     tur: olay | donem | arthur | mary | yangin | tesis
+     iplik: aynı iplikteki olaylar zaman çizelgesinde renkli bir hatla bağlanır. */
+  var TL_KINDS = {
+    olay:   'Olay',
+    donem:  'Dönem',
+    arthur: 'Arthur',
+    mary:   'Mary',
+    yangin: 'Yangın',
+    tesis:  'Tesis'
+  };
+  function tlAge(v) { return /^\d+(\s*[–-]\s*\d+)?$/.test(v) ? v + ' yaşında' : v; }
+
+  function renderTimeline(lines) {
+    var items = lines.filter(function (l) { return l.trim(); }).map(function (l) {
+      var p = l.trim().split(/\s\|\s/);
+      var meta = {};
+      (p[3] || '').split(';').forEach(function (kv) {
+        var m = kv.split('=');
+        if (m[0].trim()) meta[fold(m[0].trim())] = m.slice(1).join('=').trim();
+      });
+      var kind = fold(meta.tur || 'olay');
+      return {
+        year: p[0].trim(), start: parseInt(p[0], 10), title: p[1] || '', text: p[2] || '', meta: meta,
+        kind: TL_KINDS[kind] ? kind : 'olay', thread: meta.iplik ? fold(meta.iplik) : ''
+      };
+    });
+
+    var threads = [], range = {};
+    items.forEach(function (it) { if (it.thread && threads.indexOf(it.thread) < 0) threads.push(it.thread); });
+    threads.forEach(function (t) {
+      var idx = [];
+      items.forEach(function (it, i) { if (it.thread === t) idx.push(i); });
+      range[t] = { first: idx[0], last: idx[idx.length - 1], idx: idx };
+    });
+    function threadLabel(t) { return TL_KINDS[t] || (t.charAt(0).toUpperCase() + t.slice(1)); }
+
+    function lanes(i, isGap) {
+      return threads.slice(0, 2).map(function (t, k) {
+        var r = range[t], cls = '';
+        if (r.first === r.last) return '';
+        if (isGap) { if (r.first <= i - 1 && i <= r.last) cls = 'seg-full'; }
+        else if (i === r.first) cls = 'seg-bot';
+        else if (i === r.last) cls = 'seg-top';
+        else if (i > r.first && i < r.last) cls = 'seg-full';
+        if (!cls) return '';
+        return '<span class="vtl-lane lane-' + k + ' th-' + esc(t) + ' ' + cls + '"></span>' +
+          (!isGap && items[i].thread === t ? '<span class="vtl-node lane-' + k + ' th-' + esc(t) + '"></span>' : '');
+      }).join('');
+    }
+
+    var kindsUsed = [];
+    items.forEach(function (it) { if (kindsUsed.indexOf(it.kind) < 0) kindsUsed.push(it.kind); });
+    var legend = '<div class="vtl-legend" aria-hidden="true">' +
+      kindsUsed.map(function (k) { return '<span class="vtl-key k-' + k + '"><i></i>' + TL_KINDS[k] + '</span>'; }).join('') +
+      threads.slice(0, 2).map(function (t) { return '<span class="vtl-key vtl-key-thread th-' + esc(t) + '"><i></i>' + esc(threadLabel(t)) + ' bağlantısı</span>'; }).join('') +
+      '</div>';
+
+    var html = '<div class="vtl-wrap">' + legend + '<ol class="vtl">';
+    items.forEach(function (it, i) {
+      if (i > 0) {
+        var gap = it.start - items[i - 1].start;
+        html += '<li class="vtl-gap" aria-hidden="true"><span class="vtl-year"></span><span class="vtl-rail">' + lanes(i, true) +
+          '</span><span class="vtl-gap-label">' + (gap > 0 ? '↓ ' + gap + ' yıl' : '') + '</span></li>';
+      }
+      var chips = '';
+      if (it.meta.henry) chips += '<span class="vtl-chip">Henry: ' + esc(tlAge(it.meta.henry)) + '</span>';
+      if (it.meta.mary) chips += '<span class="vtl-chip vtl-chip-mary">Mary: ' + esc(tlAge(it.meta.mary)) + '</span>';
+      var links = '';
+      if (it.thread) {
+        var r = range[it.thread], pos = r.idx.indexOf(i);
+        var prev = pos > 0 ? items[r.idx[pos - 1]] : null, next = pos < r.idx.length - 1 ? items[r.idx[pos + 1]] : null;
+        if (prev) links += '<div class="vtl-link th-' + esc(it.thread) + '">↑ ' + esc(prev.year) + ': ' + inline(prev.title) + ' <span>(' + (it.start - prev.start) + ' yıl önce)</span></div>';
+        if (next) links += '<div class="vtl-link th-' + esc(it.thread) + '">↓ ' + esc(next.year) + ': ' + inline(next.title) + ' <span>(' + (next.start - it.start) + ' yıl sonra)</span></div>';
+      }
+      html += '<li class="vtl-item k-' + it.kind + (it.kind !== 'olay' ? ' vtl-key-event' : '') + '">' +
+        '<span class="vtl-year">' + esc(it.year) + '</span>' +
+        '<span class="vtl-rail">' + lanes(i, false) + '<span class="vtl-dot"></span></span>' +
+        '<div class="vtl-card">' +
+          '<div class="vtl-kind">' + TL_KINDS[it.kind] + '</div>' +
+          '<div class="vtl-title">' + inline(it.title) + '</div>' +
+          (it.text ? '<div class="vtl-text">' + inline(it.text) + '</div>' : '') +
+          (chips ? '<div class="vtl-meta">' + chips + '</div>' : '') + links +
+        '</div></li>';
+    });
+    return html + '</ol></div>';
   }
 
   function renderTable(rows) {
@@ -233,6 +324,7 @@
         while (i < lines.length && lines[i].trim() !== ':::') { inner.push(lines[i]); i++; }
         i++;
         if (type === 'gallery') { out.push(renderGallery(inner)); continue; }
+        if (type === 'timeline') { out.push(renderTimeline(inner)); continue; }
         if (type === 'quote') {
           var attr = '';
           inner = inner.filter(function (l) {
@@ -317,6 +409,7 @@
   function plainText(md) {
     return md
       .replace(/\|\|.+?\|\|/g, ' ') // sürprizbozanlar arama sonuçlarında görünmesin
+      .replace(/\s(tur|henry|mary|iplik)=[^;\n]*;?/g, ' ') // zaman çizelgesi alanları
       .replace(/^:::.*$/gm, ' ')
       .replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1')
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')

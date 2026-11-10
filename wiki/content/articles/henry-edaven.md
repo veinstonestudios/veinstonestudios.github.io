@@ -91,6 +91,22 @@ Yıllar sonra Henry; geçmiş deneyimi, güvenlik bilgisi ve Bozulma vakalarına
 
 Henry Tesis 61'de kendi evinde yaşamaz; **ofisine açılan özel bir odada** kalır. Kurum yalnızca ailesini bir yangında kaybettiğini bilir. ||Henry'nin yangın sırasında ailesini içeride bırakarak kaçtığını bilmez.||
 
+## Kronoloji
+Henry Edaven'ın hayatındaki ve *The Facility* dünyasındaki kesinleşmiş olaylar, yıllarıyla birlikte aşağıda gösterilmiştir. Yaşlar, olayların yıllarından hesaplanmıştır. Renkli dikey hatlar Arthur'un ve Mary'nin hikâyelerindeki olayları birbirine bağlar.
+
+:::kronoloji
+2009 | Henry Edaven'ın doğumu | Henry Adam Edaven dünyaya gelir. | tur=olay; henry=0
+2041 | Henry baba olur | Henry'nin kızı [[Henry'nin Kızı|Mary Edaven]] dünyaya gelir. | tur=mary; henry=32; mary=doğum; iplik=mary
+2043 | İlk Bozulma vakaları | Dünyada anomaliler ilk kez rapor edilmeye başlanır. | tur=olay; henry=34; mary=2
+2044 | İlk Facility merkezlerinin açılması | Bozulma vakalarını gözlemlemek, karantinaya almak ve anomalilerin doğasını anlamak amacıyla ilk deneysel Facility merkezleri faaliyete geçirilir. | tur=tesis; henry=35; mary=3
+2045–2049 | The Collapse | Bu dönem *The Collapse* olarak adlandırılır. Dönemin olaylarının ayrıntıları henüz belirlenmemiştir. | tur=donem; henry=36–40; mary=4–8
+2050 | Arthur Edaven'ın tutuklanması | Henry, ağabeyi [[Arthur Edaven]] hakkında ||bilinçli olarak sahte bir Bozulma suçlamasında bulunur.|| Arthur, Bozulma şüphesiyle [[Tesis 60]]'a gönderilir. | tur=arthur; henry=41; mary=9; iplik=arthur
+2051 | Mary'nin Bozulma belirtileri | Henry ve Eve'in kızı Mary, Bozulma belirtileri göstermeye başlar. Davranışları giderek tuhaflaşır; aile içinde endişe ve güvensizlik oluşur. | tur=mary; henry=42; mary=10; iplik=mary
+2052 | Yangın | Henry, [[Henry'nin Eşi|Eve]] ile yaşadığı tartışmanın ardından evden ayrılır. Geri döndüğünde evin yandığını görür. İçeri girer, ||ancak yaşadığı dissosiyatif kopuş nedeniyle ailesini kurtaramadan dışarı çıkar.|| Eve ve 11 yaşındaki Mary yangında hayatını kaybeder; Henry hayatta kalır. | tur=yangin; henry=43; mary=11 yaşında, hayatını kaybetti; iplik=mary
+2053 | Tesis 60'ın kapanması ve Arthur'un kaybolması | Tesis 60 anomaliler tarafından ele geçirilir ve kapatılır. Arthur bu olaylar sırasında ortadan kaybolur. Gerçekten Bozulmuş olup olmadığı bilinmemektedir. | tur=arthur; henry=44; iplik=arthur
+2055 | Henry'nin Tesis 61'e atanması | Henry, geçmişteki mesleki deneyimi ve Bozulma vakalarına aşinalığı nedeniyle [[Tesis 61]]'in Gardiyanı olur. Görevi gönüllü olarak kabul eder. | tur=tesis; henry=46
+:::
+
 ## Motivasyonları ve amaçları
 Henry'nin amaçları şunlardır:
 - Bozulma vakalarını kontrol altına almak.
@@ -138,7 +154,9 @@ Henry, *The Facility*'nin oyuncu karakteridir; oyun onun bakış açısından oy
 :::confirmed Kesinleşmiş
 - Tam adı Henry Adam Edaven'dır; 2009'da doğmuştur ve 2055'te 46 yaşındadır.
 - Eski mesleği Sivil Koruma Dairesi güvenlik ve saha denetim memurluğudur.
-- Eşi Eve ve kızı Mary bir yangında hayatını kaybetmiştir; Mary o sırada 11 yaşındadır.
+- Eşi Eve ve kızı Mary 2052'deki bir yangında hayatını kaybetmiştir; Mary o sırada 11 yaşındadır.
+- Arthur 2050'de Tesis 60'a gönderilmiş, 2053'te tesisin düşüşü sırasında kaybolmuştur.
+- Henry 2055'te Tesis 61'e atanmıştır.
 - Tesis 61'in Gardiyanlığını gönüllü olarak kabul etmiştir ve tesiste, ofisine açılan özel bir odada yaşar.
 - Kurum, yangında yaşananların yalnızca resmî kayıtlardaki hâlini bilir.
 :::
@@ -146,9 +164,8 @@ Henry, *The Facility*'nin oyuncu karakteridir; oyun onun bakış açısından oy
 :::unknown Henüz belirlenmedi
 - Arthur'un gerçekten Bozulmuş olup olmadığı (bilinçli olarak hiçbir zaman kesinleşmez).
 - Yangının gerçek sebebi.
-- Collapse'ın ne olduğu, ne zaman yaşandığı ve ayrıntıları.
+- 2045–2049 yılları arasındaki Collapse döneminin ayrıntıları.
 - Henry'nin şüphelendiği gibi Eve'in Arthur'a karşı hâlâ duygular besleyip beslemediği.
-- Yangından Tesis 61'e atanmasına kadar geçen süre.
 - Henry'nin oyun sonunda Bozulmuş hâle gelip gelmeyeceği (oyuncunun kararlarına bağlıdır).
 :::
 
