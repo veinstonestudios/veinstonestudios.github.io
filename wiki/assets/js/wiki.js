@@ -201,6 +201,13 @@
           (cap ? '<figcaption>' + inline(cap) + '</figcaption>' : '') + '</figure>';
       }
       var plain = stripLinks(cap);
+      // Video: "dosya.mp4 | Açıklama" — kapak görseli varsa dosya-poster.jpg kullanılır
+      if (/\.(mp4|webm)$/i.test(src)) {
+        var poster = src.replace(/\.(mp4|webm)$/i, '-poster.jpg');
+        return '<figure class="gallery-item video"><div class="video-wrap">' +
+          '<video src="' + esc(src) + '" poster="' + esc(poster) + '" controls preload="none" playsinline aria-label="' + esc(plain) + '"></video></div>' +
+          (cap ? '<figcaption><span class="video-badge">VİDEO</span> ' + inline(cap) + '</figcaption>' : '') + '</figure>';
+      }
       var portrait = /\/characters\//.test(src) ? ' portrait' : '';
       return '<figure class="gallery-item' + portrait + '"><a href="' + esc(src) + '" class="lightbox-link" data-caption="' + esc(plain) + '">' +
         '<img src="' + esc(src) + '" alt="' + esc(plain) + '" loading="lazy"></a>' +

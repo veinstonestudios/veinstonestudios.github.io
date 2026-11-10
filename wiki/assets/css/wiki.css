@@ -696,3 +696,8 @@ body { font-size: 16px; line-height: 1.7; }
 }
 @media (prefers-reduced-motion: reduce) { .crt::after, .rec::before { animation: none !important; } }
 @media print { .crt { display: none !important; } }
+
+/* Video items in galleries */
+.gallery-item.video .video-wrap { position: relative; border-radius: 6px; overflow: hidden; background: #000; border: 1px solid var(--border-soft); }
+.gallery-item.video video { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: #000; }
+.video-badge { display: inline-block; font: 400 14px/1.4 var(--font-term); letter-spacing: .1em; color: var(--accent-ink); background: var(--accent); padding: 0 5px; border-radius: 2px; vertical-align: 1px; }
