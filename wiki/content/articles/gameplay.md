@@ -3,7 +3,7 @@ title: Oynanış
 type: game
 categories: Oyun Bilgileri
 aliases: Gameplay, Nasıl oynanır, Oyun mekanikleri, Gün döngüsü
-summary: The Facility'de oyuncu Tesis 61'in Gardiyanı olarak mahkûmları sorgular, insanlıklarını değerlendirir ve günlük görevler için kişileri seçer.
+summary: The Facility'de oyuncu Facility 61'in Gardiyanı olarak mahkûmları sorgular, insanlıklarını değerlendirir ve günlük görevler için kişileri seçer.
 image: assets/img/screens/cell-inspection.jpg
 caption: Bir mahkûmun hücre kapağından incelenmesi (geliştirme sürümü ekran görüntüsü)
 created: 2026-11-09
@@ -16,14 +16,14 @@ infobox:
   [Temel döngü]
   Aşamalar: Emirler; Sorgu; Seçim; Gece
 ---
-*[[The Facility]]* oyununda **oynanış**, oyuncuyu [[Tesis 61]]'in Gardiyanı **[[Henry Edaven]]**'ın yerine koyar. Gardiyanın görevi **mahkûmları sorgulamak, insanlıklarını değerlendirmek ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmektir**.
+*[[The Facility]]* oyununda **oynanış**, oyuncuyu [[Facility 61]]'in Gardiyanı **[[Henry Edaven]]**'ın yerine koyar. Gardiyanın görevi **mahkûmları sorgulamak, insanlıklarını değerlendirmek ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmektir**.
 
 :::dev
 *The Facility* hâlâ geliştirme aşamasındadır. Burada anlatılan mekanikler resmî materyallere dayanır ve çıkıştan önce değişebilir.
 :::
 
 ## Genel bakış
-Tesis 61'in mahkûmları arasında insanları taklit edebilen anomaliler, yani [[Bozulmuşlar]] saklanmaktadır. Oyuncu kimin insan olup kimin olmadığını çözmek ve tesisten kimin gönderileceğine karar vermek zorundadır.
+Facility 61'in mahkûmları arasında insanları taklit edebilen anomaliler, yani [[Corrupted]] saklanmaktadır. Oyuncu kimin insan olup kimin olmadığını çözmek ve tesisten kimin gönderileceğine karar vermek zorundadır.
 
 ## Günlük döngü
 Resmî basın kitine göre oyundaki her gün dört aşamadan oluşur:
@@ -40,7 +40,7 @@ Oyuncu her mahkûm için birbirinden bağımsız iki kriteri değerlendirmek zor
 1. **Bu kişi gerçekten insan mı?**
 2. **Bu kişi verilen görev için uygun mu?**
 
-Bir mahkûmun insan olması, göreve mutlaka uygun olduğu anlamına gelmez. Ayrıca mahkûmların Bozulmuş olabileceklerinden şüphelenilse de şüpheli olmak suçlu olmak anlamına gelmez.
+Bir mahkûmun insan olması, göreve mutlaka uygun olduğu anlamına gelmez. Ayrıca mahkûmların Corrupted olabileceklerinden şüphelenilse de şüpheli olmak suçlu olmak anlamına gelmez.
 
 ## Çalışma saatleri ve kaynaklar
 Gardiyan, tesisin kaynaklarını ve çalışma saatlerini yönetir. Mahkûmlarla yapılan görüşmeler çalışma saatlerinden harcar; [[Vera Collins]]'in eğitim diyaloğuna göre **her görüşme 2 saat** sürer.
@@ -52,7 +52,7 @@ Resmî ekran görüntüleri ve basın materyalleri Gardiyanın kullanabildiği �
 - **Kasetçalar** — ses kayıtlarını dinlemek ve ikinci günden itibaren ses testlerini yapmak için kullanılır.
 - **Mahkûm seçimi** — gönderilecek mahkûmları seçmek.
 
-Bu araçların Bozulmuşları tespit etmek için nasıl kullanıldığını öğrenmek için [[Testler ve Tespit Yöntemleri]] maddesine bakın.
+Bu araçların Corrupted'ları tespit etmek için nasıl kullanıldığını öğrenmek için [[Testler ve Tespit Yöntemleri]] maddesine bakın.
 
 ## Sonuçlar
 Gardiyan bir anomaliyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Gardiyanı sorumlu tutar.

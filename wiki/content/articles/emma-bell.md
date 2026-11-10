@@ -1,10 +1,10 @@
 ---
 title: Emma Bell
 type: character
-role: A Blok Subayı
-categories: A Blok Personeli
+role: A Block Subayı
+categories: A Block Personeli
 aliases: Emma, A Block Officer Emma Bell
-summary: Emma Bell, Tesis 61'in A Blok'unda kadınlar koğuşunun güvenliğinden sorumlu subaydır. Gina Bell'in ikiz kardeşidir.
+summary: Emma Bell, Facility 61'in A Block'unda kadınlar koğuşunun güvenliğinden sorumlu subaydır. Gina Bell'in ikiz kardeşidir.
 stub: true
 image: assets/img/characters/emma-bell.jpg
 caption: Karakter çizimi
@@ -17,19 +17,19 @@ infobox:
   [Aile]
   İkiz kardeşi: [[Gina Bell]]
   [Görevi]
-  Görevi: A Blok Subayı (A Block Officer)
+  Görevi: A Block Subayı (A Block Officer)
   Çalışma alanı: Kadınlar koğuşunun güvenliği
   Birimi: Yemekhane / Hizmet Kanadı (Mess Hall / Service Wing)
-  Tesis: [[Tesis 61]]
+  Tesis: [[Facility 61]]
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Emma Bell**, *[[The Facility]]* oyununda [[Tesis 61]]'in **A Blok** personelinden bir subaydır (A Block Officer). [[Gina Bell]] ile **ikiz kardeştir**.
+**Emma Bell**, *[[The Facility]]* oyununda [[Facility 61]]'in **A Block** personelinden bir subaydır (A Block Officer). [[Gina Bell]] ile **ikiz kardeştir**.
 
 ## Genel bilgiler
-Emma, kadın mahkûmların bulunduğu A Blok'ta görev yapar. Çalışma alanı **kadınlar koğuşunun güvenliğidir**; bağlı olduğu birim **Yemekhane / Hizmet Kanadı**'dır (Mess Hall / Service Wing). Sorumluluğu, A Blok içinde güvenliği ve düzeni sağlamaktır.
+Emma, kadın mahkûmların bulunduğu A Block'ta görev yapar. Çalışma alanı **kadınlar koğuşunun güvenliğidir**; bağlı olduğu birim **Yemekhane / Hizmet Kanadı**'dır (Mess Hall / Service Wing). Sorumluluğu, A Block içinde güvenliği ve düzeni sağlamaktır.
 
-İkiz kardeşi [[Gina Bell]] de A Blok personelindendir; ancak o klinikte, Tıbbi Bakım ve Değerlendirme Kanadı'nda görev yapar.
+İkiz kardeşi [[Gina Bell]] de A Block personelindendir; ancak o klinikte, Tıbbi Bakım ve Değerlendirme Kanadı'nda görev yapar.
 
 ## Geçmiş ve biyografi
 {{missing}}
@@ -40,7 +40,7 @@ Emma, kadın mahkûmların bulunduğu A Blok'ta görev yapar. Çalışma alanı 
 ## İlişkiler
 | Karakter | İlişki |
 |---|---|
-| [[Gina Bell]] | İkiz kardeşi. O da A Blok personelindendir. |
+| [[Gina Bell]] | İkiz kardeşi. O da A Block personelindendir. |
 
 ## Hikâyedeki rolü
 {{missing}}
@@ -48,7 +48,7 @@ Emma, kadın mahkûmların bulunduğu A Blok'ta görev yapar. Çalışma alanı 
 ## Bilinen bilgiler ve gizemler
 :::confirmed Kesinleşmiş
 - Gina Bell ile ikiz kardeştir.
-- Tesis 61'in A Blok subayıdır; kadınlar koğuşunun güvenliğinden sorumludur.
+- Facility 61'in A Block subayıdır; kadınlar koğuşunun güvenliğinden sorumludur.
 - Bağlı olduğu birim Yemekhane / Hizmet Kanadı'dır.
 :::
 
@@ -59,9 +59,9 @@ Emma, kadın mahkûmların bulunduğu A Blok'ta görev yapar. Çalışma alanı 
 :::
 
 ## Görünüş
-Emma'nın kahverengi saçları vardır. A Blok personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde saçında bir toka bulunur ve gülümser hâlde gösterilir.
+Emma'nın kahverengi saçları vardır. A Block personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde saçında bir toka bulunur ve gülümser hâlde gösterilir.
 
 ## Ayrıca bakınız
 - [[Gina Bell]]
-- [[Kategori:A Blok Personeli]]
-- [[Tesis 61#Hücre blokları]]
+- [[Kategori:A Block Personeli]]
+- [[Facility 61#Hücre blokları]]

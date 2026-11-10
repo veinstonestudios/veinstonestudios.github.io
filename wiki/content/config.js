@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.5-tr',
+  version: '2026-11-10.6-tr',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
@@ -114,16 +114,16 @@ window.WIKI_CONFIG = {
       ['Diğer Karakterler',  'Kategori:Diğer Karakterler']
     ]},
     { heading: 'Mekânlar', links: [
-      ['Tesis 61',        'Tesis 61'],
-      ['Tesis 60',        'Tesis 60'],
+      ['Facility 61',        'Facility 61'],
+      ['Facility 60',        'Facility 60'],
       ['Diğer Mekânlar',  'Kategori:Diğer Mekânlar']
     ]},
     { heading: 'Evren Bilgisi', links: [
-      ['Analog Çağ',            'Analog Çağ'],
-      ['Teknoloji Tasfiyesi',   'Teknoloji Tasfiyesi'],
-      ['Bozulmuşlar',           'Bozulmuşlar'],
+      ['Analog Era',            'Analog Era'],
+      ['Technology Purge',   'Technology Purge'],
+      ['Corrupted',           'Corrupted'],
       ['CORE Programı',         'CORE Programı'],
-      ['Kalıntılar',            'Kalıntılar']
+      ['Remnants',            'Remnants']
     ]},
     { heading: 'Oyun Bilgileri', links: [
       ['Oynanış',                        'Oynanış'],
@@ -147,15 +147,15 @@ window.WIKI_CONFIG = {
   mainPage: {
     intro: [
       '**[[The Facility]]**, Veinstone Studios tarafından geliştirilen ve 2055 yılında geçen bir psikolojik korku oyunudur. ' +
-      'Oyuncu, [[Bozulmuşlar|Bozulmuş]] olduğundan şüphelenilen kişilerin tutulduğu bir hapishane ve rehabilitasyon merkezi olan ' +
-      '[[Tesis 61]]\'in Gardiyanı [[Henry Edaven]]\'ı canlandırır.',
+      'Oyuncu, [[Corrupted]] olduğundan şüphelenilen kişilerin tutulduğu bir hapishane ve rehabilitasyon merkezi olan ' +
+      '[[Facility 61]]\'in Gardiyanı [[Henry Edaven]]\'ı canlandırır.',
       'Bu wiki; oyunun karakterlerini, mekânlarını ve evrenini belgeleyen bir topluluk ansiklopedisidir. ' +
       'Doğrulanmamış bilgiler açıkça bilinmiyor olarak işaretlenir.'
     ],
-    featuredArticle: 'Tesis 61',
+    featuredArticle: 'Facility 61',
     featuredCharacters: ['Henry Edaven', 'Arthur Edaven', 'Vera Collins', 'Alicia Winston', 'Ted Karinsky', 'Bob', "Henry'nin Kızı", 'Katarina Jovanovic'],
-    importantLocations: ['Tesis 61', 'Tesis 60'],
-    lore: ['Analog Çağ', 'Teknoloji Tasfiyesi', 'Bozulmuşlar', 'CORE Programı', 'Dünya', 'Zaman Çizelgesi'],
+    importantLocations: ['Facility 61', 'Facility 60'],
+    lore: ['Analog Era', 'Technology Purge', 'Corrupted', 'CORE Programı', 'Dünya', 'Zaman Çizelgesi'],
     gameInfo: ['Oynanış', 'Görevlendirmeler', 'Testler ve Tespit Yöntemleri', 'Gece Olayları', 'Sonlar'],
     shortcuts: [
       ['Karakterler',      'Kategori:Karakterler'],

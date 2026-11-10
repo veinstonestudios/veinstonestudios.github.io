@@ -1,10 +1,10 @@
 ---
-title: B Blok Subayı
+title: B Block Subayı
 type: character
-role: B Blok subayı
+role: B Block subayı
 categories: Tesis Personeli
-aliases: B Block Officer, B Blok Gardiyanı, B Blok görevlisi
-summary: B Blok Subayı, Tesis 61'in B Blok'unda görev yapan bir subaydır.
+aliases: B Block Officer, B Block Gardiyanı, B Block görevlisi, B Blok Subayı
+summary: B Block Subayı, Facility 61'in B Block'unda görev yapan bir subaydır.
 stub: true
 image: assets/img/characters/b-block-officer.jpg
 caption: Karakter çizimi
@@ -16,15 +16,15 @@ infobox:
   Yaşı: Bilinmiyor
   [Görevi]
   Görevi: Subay (B Block Officer)
-  Görev yeri: B Blok
-  Tesis: [[Tesis 61]]
+  Görev yeri: B Block
+  Tesis: [[Facility 61]]
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**B Blok Subayı** (İngilizce: B Block Officer), *[[The Facility]]* oyununda [[Tesis 61]]'in **B Blok**'unda görev yapan bir subaydır.
+**B Block Subayı** (İngilizce: B Block Officer), *[[The Facility]]* oyununda [[Facility 61]]'in **B Block**'unda görev yapan bir subaydır.
 
 ## Genel bilgiler
-B Blok, Tesis 61'in erkek mahkûmlara ayrılmış hücre bloğudur; bloğa giden yol mavi çizgilerle gösterilir. Bkz. [[Tesis 61#Hücre blokları]].
+B Block, Facility 61'in erkek mahkûmlara ayrılmış hücre bloğudur; bloğa giden yol mavi çizgilerle gösterilir. Bkz. [[Facility 61#Hücre blokları]].
 
 ## Geçmiş ve biyografi
 {{missing}}
@@ -46,4 +46,4 @@ B Blok, Tesis 61'in erkek mahkûmlara ayrılmış hücre bloğudur; bloğa giden
 :::
 
 ## Görünüş
-Karakter çiziminde B Blok Subayı, kızıl saçlı ve sakallı, koyu yeşil üniformalı olarak, elinde bir kalemle oturur hâlde gösterilir.
+Karakter çiziminde B Block Subayı, kızıl saçlı ve sakallı, koyu yeşil üniformalı olarak, elinde bir kalemle oturur hâlde gösterilir.

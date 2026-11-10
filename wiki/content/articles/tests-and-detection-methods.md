@@ -3,21 +3,21 @@ title: Testler ve Tespit Yöntemleri
 type: game
 categories: Oyun Bilgileri
 aliases: Tests & Detection Methods, Tests and Detection Methods, Testler, Tespit, Tespit yöntemleri, Sorgu, Sorgular, Günlük, Teyp, Hücre incelemesi
-summary: Gardiyanın bir mahkûmun insan mı yoksa Bozulmuş mu olduğunu belirlemek için kullandığı yöntemler — sorgu, belge kontrolü, ifadelerin karşılaştırılması ve görsel bozulmaların aranması.
+summary: Gardiyanın bir mahkûmun insan mı yoksa Corrupted mı olduğunu belirlemek için kullandığı yöntemler — sorgu, belge kontrolü, ifadelerin karşılaştırılması ve görsel bozulmaların aranması.
 image: assets/img/screens/tape-recorder.jpg
 caption: Kaydedilmiş bir sorgunun dinlenmesi (geliştirme sürümü ekran görüntüsü)
 created: 2026-11-09
 updated: 2026-11-09
 infobox:
   [Genel bakış]
-  Amacı: İnsanları [[Bozulmuşlar|Bozulmuşlardan]] ayırt etmek
+  Amacı: İnsanları [[Corrupted|Corrupted'lardan]] ayırt etmek
   Uygulayan: Gardiyan ([[Henry Edaven]])
   Aşama: Sorgu
   [Bilinen yöntemler]
   Yöntemler: Sorgu; Belge incelemesi; İfadelerin karşılaştırılması; Ses testleri; Görsel gözlem
   Görüşme süresi: 2 saat
 ---
-**Testler ve tespit yöntemleri**, [[Tesis 61]]'in Gardiyanının bir mahkûmun sıradan bir insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğunu belirlemeye çalıştığı yollardır. Gerçek bir insanı Bozulmuş bir bireyden ayırt etmek her zaman kolay değildir.
+**Testler ve tespit yöntemleri**, [[Facility 61]]'in Gardiyanının bir mahkûmun sıradan bir insan mı yoksa [[Corrupted]] mı olduğunu belirlemeye çalıştığı yollardır. Gerçek bir insanı Corrupted bir bireyden ayırt etmek her zaman kolay değildir.
 
 :::dev
 *The Facility* hâlâ geliştirme aşamasındadır. Aşağıdaki yöntemler resmî materyallerde anlatılanlardır. Başka testler ileride belgelenebilir.
@@ -60,6 +60,6 @@ assets/img/screens/tape-recorder.jpg | Kaydedilmiş bir sorgunun dinlenmesi
 :::
 
 ## Ayrıca bakınız
-- [[Bozulmuşlar]]
+- [[Corrupted]]
 - [[CORE Programı]]
 - [[Oynanış]]

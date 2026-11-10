@@ -4,7 +4,7 @@ type: character
 role: Mahkûm
 categories: Mahkûmlar
 aliases: Alicia, Winston
-summary: Alicia Winston, Tesis 61'de tutulan, 20'li yaşlarının başındaki eski bir edebiyat öğrencisidir.
+summary: Alicia Winston, Facility 61'de tutulan, 20'li yaşlarının başındaki eski bir edebiyat öğrencisidir.
 image: assets/img/characters/alicia-winston.jpg
 caption: Karakter çizimi
 created: 2026-11-09
@@ -16,19 +16,19 @@ infobox:
   Durumu: Mahkûm
   Eğitimi: Üniversite (edebiyat)
   [Sınıflandırma]
-  Tutulduğu yer: [[Tesis 61]]
+  Tutulduğu yer: [[Facility 61]]
   Gerçek kimliği: Bilinmiyor
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Alicia Winston**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. 20'li yaşlarının başında genç bir kadındır.
+**Alicia Winston**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. 20'li yaşlarının başında genç bir kadındır.
 
 :::unknown Sınıflandırma
-Alicia'nın insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğu **henüz belirlenmemiştir**.
+Alicia'nın insan mı yoksa [[Corrupted]] mı olduğu **henüz belirlenmemiştir**.
 :::
 
 ## Genel bilgiler
-Tesis 61'e gelmeden önce Alicia bir üniversite öğrencisiydi ve edebiyat eğitimi alıyordu.
+Facility 61'e gelmeden önce Alicia bir üniversite öğrencisiydi ve edebiyat eğitimi alıyordu.
 
 ## Geçmiş ve biyografi
 Alicia, kendisinden bahsederken eskiden oldukça başarılı bir öğrenci olduğunu, ancak Nate Lawson ile tanıştıktan sonra hayatının değiştiğini ima eder.
@@ -52,14 +52,14 @@ Alicia **sessiz ve fazla konuşmayan** bir karakterdir. Konuşmaları doğal, sa
 | Nate Lawson | Alicia'nın geçmişinde önemli bir yere sahiptir. Onunla tanışması Alicia'nın hayatında önemli değişikliklere yol açmıştır. İlişkilerinin ayrıntıları belirlenmemiştir. |
 
 ## Hikâyedeki rolü
-Alicia'nın sorgusunda kullanılan başlıklardan biri **Current Situation** (Mevcut Durum) olarak belirlenmiştir. Bu başlığın amacı Alicia'nın mevcut durumunu ve Tesis 61'e gelmeden önce yaşadıklarını anlamaktır. Bkz. [[Testler ve Tespit Yöntemleri]].
+Alicia'nın sorgusunda kullanılan başlıklardan biri **Current Situation** (Mevcut Durum) olarak belirlenmiştir. Bu başlığın amacı Alicia'nın mevcut durumunu ve Facility 61'e gelmeden önce yaşadıklarını anlamaktır. Bkz. [[Testler ve Tespit Yöntemleri]].
 
 ## Bilinen bilgiler ve gizemler
 :::unknown Henüz belirlenmedi
 - Kesin yaşı.
 - Suç geçmişi.
 - Nate ile ilişkisinin ayrıntıları.
-- İnsan mı yoksa Bozulmuş mu olduğu.
+- İnsan mı yoksa Corrupted mı olduğu.
 :::
 
 ## Görünüş

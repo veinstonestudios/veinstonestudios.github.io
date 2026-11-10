@@ -4,7 +4,7 @@ type: character
 role: Mahkûm
 categories: Mahkûmlar
 aliases: Paul Simmons, Paul, Simmons, Paul Harris
-summary: Paul H. Simmons, Tesis 61'de tutulan mahkûmlardan biridir.
+summary: Paul H. Simmons, Facility 61'de tutulan mahkûmlardan biridir.
 stub: true
 image: assets/img/characters/paul-h-simmons.jpg
 caption: Karakter çizimi
@@ -16,15 +16,15 @@ infobox:
   Yaşı: Bilinmiyor
   Durumu: Mahkûm
   [Sınıflandırma]
-  Tutulduğu yer: [[Tesis 61]]
+  Tutulduğu yer: [[Facility 61]]
   Gerçek kimliği: Bilinmiyor
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Paul H. Simmons**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Adı, oyunun mahkûm listesinde yer almaktadır.
+**Paul H. Simmons**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Adı, oyunun mahkûm listesinde yer almaktadır.
 
 :::unknown Sınıflandırma
-Paul'un insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğu **henüz belirlenmemiştir**.
+Paul'un insan mı yoksa [[Corrupted]] mı olduğu **henüz belirlenmemiştir**.
 :::
 
 ## Genel bilgiler
@@ -46,7 +46,7 @@ Paul, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendir
 :::unknown Henüz belirlenmedi
 - Yaşı ve geçmişi.
 - Kişiliği.
-- İnsan mı yoksa Bozulmuş mu olduğu.
+- İnsan mı yoksa Corrupted mı olduğu.
 - Addaki "H." harfinin açılımı.
 :::
 

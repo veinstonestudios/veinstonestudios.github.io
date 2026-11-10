@@ -3,7 +3,7 @@ title: Bob
 type: character
 role: Mahkûm
 categories: Mahkûmlar
-summary: Bob, Tesis 61'de oyunun ilk gününde karşılaşılan mahkûmlardan biridir.
+summary: Bob, Facility 61'de oyunun ilk gününde karşılaşılan mahkûmlardan biridir.
 spoilers: true
 spoiler-note: Bob'un gerçek kimliği gizli metin olarak verilmiştir; görmek için üzerine tıklayın.
 image: assets/img/characters/bob.jpg
@@ -17,13 +17,13 @@ infobox:
   Yaşı: Bilinmiyor
   Durumu: Mahkûm
   [Sınıflandırma]
-  Tutulduğu yer: [[Tesis 61]]
+  Tutulduğu yer: [[Facility 61]]
   İlk karşılaşma: 1. gün
   Gerçek kimliği: ||İnsan (Human)||
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Bob**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
+**Bob**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
 :::spoiler Gerçek kimliği
 Bob'un gerçek kimliği ||insan (Human)|| olarak belirlenmiştir.
@@ -35,7 +35,7 @@ Partinin neşesi geldi!
 :::
 
 ## Genel bilgiler
-Bob, Tesis 61'de bir hücrede tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Bob'un bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
+Bob, Facility 61'de bir hücrede tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Bob'un bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
 ## Geçmiş ve biyografi
 {{missing}}

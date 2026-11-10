@@ -13,18 +13,18 @@ infobox:
   Sıklık: Günlük
   Veren: Devlet
   Seçen: Gardiyan ([[Henry Edaven]])
-  Adaylar: [[Tesis 61]] mahkûmları
+  Adaylar: [[Facility 61]] mahkûmları
   [İlgili aşamalar]
   Aşamalar: Emirler; Seçim
 ---
-**Görevlendirmeler**, *[[The Facility]]* oyununun temel parçalarından biridir. [[Tesis 61]]'in Gardiyanı her gün tesisten görevlere gönderilecek mahkûmları seçer.
+**Görevlendirmeler**, *[[The Facility]]* oyununun temel parçalarından biridir. [[Facility 61]]'in Gardiyanı her gün tesisten görevlere gönderilecek mahkûmları seçer.
 
 :::dev
 *The Facility* hâlâ geliştirme aşamasındadır. Bu sayfadaki ayrıntılar resmî materyallere dayanır ve çıkıştan önce değişebilir.
 :::
 
 ## Genel bakış
-Resmî basın kitine göre Devlet, tehlikeli yeniden yapılanma görevleri için Tesis 61'den kişiler talep eder. Gardiyan kimi göndereceğini seçmeli ve aralarında hiçbir [[Bozulmuşlar|Bozulmuş]] bireyin bulunmadığından emin olmalıdır.
+Resmî basın kitine göre Devlet, tehlikeli yeniden yapılanma görevleri için Facility 61'den kişiler talep eder. Gardiyan kimi göndereceğini seçmeli ve aralarında hiçbir [[Corrupted]] bireyin bulunmadığından emin olmalıdır.
 
 ## Emirler
 Her sabah Gardiyana bir faks gelir. Faks, görevin ayrıntılarını ve seçilmesi gereken mahkûm sayısını içerir ve Henry'nin günlüğü (Journal) içinden okunabilir. Bu sistem Henry'ye ilk gün [[Viktor Hale|Kaptan Viktor Hale]] tarafından anlatılır.

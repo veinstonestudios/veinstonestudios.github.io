@@ -4,7 +4,7 @@ type: character
 role: Mahkûm
 categories: Mahkûmlar
 aliases: Cole Morgan, Morgan, Cole
-summary: M. Cole Morgan, Tesis 61'de oyunun ilk gününde karşılaşılan mahkûmlardan biridir.
+summary: M. Cole Morgan, Facility 61'de oyunun ilk gününde karşılaşılan mahkûmlardan biridir.
 spoilers: true
 spoiler-note: Morgan'ın gerçek kimliği gizli metin olarak verilmiştir; görmek için üzerine tıklayın.
 image: assets/img/characters/m-cole-morgan.jpg
@@ -17,20 +17,20 @@ infobox:
   Yaşı: Bilinmiyor
   Durumu: Mahkûm
   [Sınıflandırma]
-  Tutulduğu yer: [[Tesis 61]]
+  Tutulduğu yer: [[Facility 61]]
   İlk karşılaşma: 1. gün
   Gerçek kimliği: ||İnsan (Human)||
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**M. Cole Morgan**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
+**M. Cole Morgan**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
 :::spoiler Gerçek kimliği
 Morgan'ın gerçek kimliği ||insan (Human)|| olarak belirlenmiştir.
 :::
 
 ## Genel bilgiler
-Morgan, Tesis 61'de tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Morgan'ın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
+Morgan, Facility 61'de tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Morgan'ın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
 ## Geçmiş ve biyografi
 {{missing}}

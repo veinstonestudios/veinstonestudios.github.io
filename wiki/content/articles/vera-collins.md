@@ -4,7 +4,7 @@ type: character
 role: Teğmen
 categories: Tesis Personeli
 aliases: Teğmen Vera Collins, Teğmen Collins, Lieutenant Vera Collins, Lieutenant Collins, Collins, Vera
-summary: Teğmen Vera Collins, Tesis 61'in hücre bloklarından sorumlu soğuk, otoriter ve disiplinli bir subaydır.
+summary: Teğmen Vera Collins, Facility 61'in hücre bloklarından sorumlu soğuk, otoriter ve disiplinli bir subaydır.
 image: assets/img/characters/vera-collins.jpg
 caption: Karakter çizimi
 created: 2026-11-09
@@ -16,13 +16,13 @@ infobox:
   [Görevi]
   Rütbesi: Teğmen (Lieutenant)
   Sorumluluğu: Hücre blokları
-  Tesis: [[Tesis 61]]
+  Tesis: [[Facility 61]]
   [Kişilik]
   Özellikleri: Soğuk; Otoriter; Profesyonel; Ciddi; Disiplinli
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Teğmen Vera Collins**, *[[The Facility]]* oyununda [[Tesis 61]]'in **hücre bloklarından sorumlu** subaydır. [[Henry Edaven]]'a tesisin günlük işleyişini ve hücre bloklarını tanıtır.
+**Teğmen Vera Collins**, *[[The Facility]]* oyununda [[Facility 61]]'in **hücre bloklarından sorumlu** subaydır. [[Henry Edaven]]'a tesisin günlük işleyişini ve hücre bloklarını tanıtır.
 
 ## Genel bilgiler
 Vera, Henry'nin tesisteki ilk günlerinde onu tesisin işleyişi konusunda eğitir.
@@ -47,8 +47,8 @@ Vera şu özelliklere sahiptir:
 ## Hikâyedeki rolü
 ### Eğitim diyaloğu
 Vera, eğitim diyaloğunda şu bilgileri verir:
-- **A Blok** kadın mahkûmlara, **B Blok** erkek mahkûmlara ayrılmıştır.
-- Kırmızı çizgiler A Blok'a, mavi çizgiler B Blok'a giden yolu gösterir.
+- **A Block** kadın mahkûmlara, **B Block** erkek mahkûmlara ayrılmıştır.
+- Kırmızı çizgiler A Block'a, mavi çizgiler B Block'a giden yolu gösterir.
 - İlk günün ses testleri önceden yapılmıştır. Ses kayıtları günlükteki (Journal) mahkûm dosyalarında bulunur.
 - İkinci günden itibaren Henry ses testlerini kasetçalar kullanarak kendisi yapacaktır.
 - Mahkûmlarla yapılan görüşmeler çalışma saatlerinden harcar; her görüşme **2 saat** sürer.

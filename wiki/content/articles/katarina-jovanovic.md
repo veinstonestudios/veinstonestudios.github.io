@@ -4,7 +4,7 @@ type: character
 role: Mahkûm
 categories: Mahkûmlar
 aliases: Katarina, Jovanovic
-summary: Katarina Jovanovic, Tesis 61'de tutulan mahkûmlardan biridir.
+summary: Katarina Jovanovic, Facility 61'de tutulan mahkûmlardan biridir.
 stub: true
 image: assets/img/characters/katarina-jovanovic.jpg
 caption: Karakter çizimi
@@ -16,15 +16,15 @@ infobox:
   Yaşı: Bilinmiyor
   Durumu: Mahkûm
   [Sınıflandırma]
-  Tutulduğu yer: [[Tesis 61]]
+  Tutulduğu yer: [[Facility 61]]
   Gerçek kimliği: Bilinmiyor
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Katarina Jovanovic**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Adı, oyunun mahkûm listesinde yer almaktadır.
+**Katarina Jovanovic**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Adı, oyunun mahkûm listesinde yer almaktadır.
 
 :::unknown Sınıflandırma
-Katarina'nın insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğu **henüz belirlenmemiştir**.
+Katarina'nın insan mı yoksa [[Corrupted]] mı olduğu **henüz belirlenmemiştir**.
 :::
 
 ## Genel bilgiler
@@ -46,7 +46,7 @@ Katarina, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevle
 :::unknown Henüz belirlenmedi
 - Yaşı ve geçmişi.
 - Kişiliği.
-- İnsan mı yoksa Bozulmuş mu olduğu.
+- İnsan mı yoksa Corrupted mı olduğu.
 :::
 
 ## Görünüş

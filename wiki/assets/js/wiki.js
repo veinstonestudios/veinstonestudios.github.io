@@ -22,7 +22,7 @@
   };
   var CAT_PREFIX = 'Kategori:';
   var AUTO_STUB = 'Taslaklar';
-  var AUTO_SPOILER = 'Sürprizbozan içeren maddeler';
+  var AUTO_SPOILER = 'Spoiler içeren maddeler';
 
   var pages = [];             // yüklenen tüm sayfalar
   var byKey = new Map();      // normalize edilmiş başlık / takma ad -> sayfa
@@ -160,7 +160,7 @@
       return TAGS[n] ? hold(TAGS[n]) : all;
     });
     s = s.replace(/\[(REDACTED|SANSÜRLÜ)\]/g, function () { return hold('<span class="redacted" title="Sansürlü">SANSÜRLÜ</span>'); });
-    // ||sürprizbozan||
+    // ||spoiler||
     s = s.replace(/\|\|(.+?)\|\|/g, function (_, t) {
       return hold('<span class="spoiler-inline" tabindex="0" role="button" title="Göstermek için tıklayın">' + t + '</span>');
     });
@@ -177,7 +177,7 @@
     unknown:   { label: 'Bilinmiyor',     icon: '?' },
     confirmed: { label: 'Doğrulandı',     icon: '✓' },
     note:      { label: 'Not',            icon: 'i' },
-    spoiler:   { label: 'Sürprizbozan',   icon: '!' },
+    spoiler:   { label: 'Spoiler',   icon: '!' },
     warning:   { label: 'Uyarı',          icon: '!' },
     source:    { label: 'Kaynak',         icon: '§' },
     dev:       { label: 'Geliştirme aşamasında', icon: '◐' }
@@ -364,7 +364,7 @@
         i++; continue;
       }
 
-      // tablo satırı "|" ile başlar; "||" ile başlayan satır sürprizbozanlı bir paragraftır
+      // tablo satırı "|" ile başlar; "||" ile başlayan satır spoiler içeren bir paragraftır
       if (t.charAt(0) === '|' && t.charAt(1) !== '|') {
         flush();
         var rows = [];
@@ -408,7 +408,7 @@
 
   function plainText(md) {
     return md
-      .replace(/\|\|.+?\|\|/g, ' ') // sürprizbozanlar arama sonuçlarında görünmesin
+      .replace(/\|\|.+?\|\|/g, ' ') // spoiler'lar arama sonuçlarında görünmesin
       .replace(/\s(tur|henry|mary|iplik)=[^;\n]*;?/g, ' ') // zaman çizelgesi alanları
       .replace(/^:::.*$/gm, ' ')
       .replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1')
@@ -623,7 +623,7 @@
     var notices = '';
     if (p.spoilers) {
       notices += '<div class="notice notice-spoiler" role="note"><div class="notice-stamp">Gizli</div><div>' +
-        '<strong>Sürprizbozan uyarısı.</strong> Bu madde <em>The Facility</em> oyununun hikâyesine dair ayrıntılar içerir. ' +
+        '<strong>Spoiler uyarısı.</strong> Bu madde <em>The Facility</em> oyununun hikâyesine dair ayrıntılar içerir. ' +
         (p.meta['spoiler-note'] ? inline(p.meta['spoiler-note']) : 'Okuma kararı size ait.') + '</div></div>';
     }
     if (p.stub) {
@@ -738,7 +738,7 @@
         }).join('') + '</nav>' +
       '</section>' +
       '<div class="notice notice-spoiler mp-spoiler" role="note"><div class="notice-stamp">Duyuru</div><div>' +
-        '<strong>Sürprizbozan uyarısı.</strong> Bu wikideki bazı maddeler <em>The Facility</em> oyununun hikâyesine dair sürprizbozanlar içerir. ' +
+        '<strong>Spoiler uyarısı.</strong> Bu wikideki bazı maddeler <em>The Facility</em> oyununun hikâyesine dair spoiler içerir. ' +
         'Bu maddeler sayfanın en üstünde işaretlenir ve ' + catLink(AUTO_SPOILER, 'bu kategoride') + ' listelenir.</div></div>' +
       '<div class="mp-columns">' +
         '<div class="mp-main">' +
@@ -921,7 +921,9 @@
     }
     else if (isCategoryTitle(title)) {
       var name = catName(title);
-      var known = categories.has(name) || !!categoryPage(name);
+      var cpAlias = categoryPage(name);
+      if (cpAlias && !categories.has(name)) name = catName(cpAlias.title); // eski kategori adı (takma ad)
+      var known = categories.has(name) || !!cpAlias;
       if (!known) {
         Array.from(categories.keys()).forEach(function (k) { if (key(k) === key(name)) { name = k; known = true; } });
       }

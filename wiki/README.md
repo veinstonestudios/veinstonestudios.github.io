@@ -42,7 +42,7 @@ aliases: Ted, Karinsky              # bu sayfaya yönlendiren ve aramaya yardım
 summary: Tek cümlelik açıklama.     # Ana Sayfada, aramada ve kartlarda kullanılır
 image: assets/img/characters/ted-karinsky.jpg   # yer tutucu için boş bırakın
 caption: Karakter çizimi
-spoilers: true                      # sürprizbozan uyarısını gösterir
+spoilers: true                      # spoiler uyarısını gösterir
 spoiler-note: Uyarı için isteğe bağlı ek metin.
 stub: true                          # "taslak" uyarısını gösterir
 created: 2026-11-09                 # "Son eklenenler" için
@@ -61,15 +61,15 @@ infobox:
 | Yazdığınız | Görünen |
 |---|---|
 | `## Başlık` / `### Alt başlık` | Bölümler (3 veya daha fazla olunca içindekiler tablosunda listelenir) |
-| `[[Tesis 61]]` | Bir maddeye bağlantı |
-| `[[Tesis 61\|tesis]]` | Farklı metinli bağlantı |
+| `[[Facility 61]]` | Bir maddeye bağlantı |
+| `[[Facility 61\|tesis]]` | Farklı metinli bağlantı |
 | `[[Henry Edaven#Ailesi]]` | Bir bölüme bağlantı |
 | `[[Kategori:Mahkûmlar]]` | Bir kategoriye bağlantı |
 | `[metin](https://…)` | Dış bağlantı |
 | `**kalın**`, `*italik*` | Kalın, italik |
 | `{{bilinmiyor}}` `{{dogrulanmadi}}` `{{dogrulandi}}` `{{belgelenmedi}}` | Durum etiketleri (İngilizceleri de çalışır: `{{unknown}}` `{{confirmed}}` `{{tba}}`) |
 | Tek başına bir satırda `{{eksik}}` | "Henüz belgelenmedi" kutusu |
-| `\|\|gizli metin\|\|` | Tıklayınca açılan satır içi sürprizbozan |
+| `\|\|gizli metin\|\|` | Tıklayınca açılan satır içi spoiler |
 | `[SANSÜRLÜ]` | Siyah sansür çubuğu |
 | `- madde` / `1. madde` | Listeler |
 | `\| a \| b \|` satırları | Tablolar (ilk satır başlıktır) |
@@ -97,7 +97,7 @@ yer tutucu | Görsel yakında
 kategoriye giriş metni veya üst kategori vermek için `title: Kategori:Ad`,
 `type: category` ve isteğe bağlı olarak `parent: Karakterler` içeren bir
 `articles/category-ad.md` dosyası oluşturup `config.js`'e ekleyin. `Taslaklar` ve
-`Sürprizbozan içeren maddeler` kategorileri `stub` ve `spoilers` alanlarından
+`Spoiler içeren maddeler` kategorileri `stub` ve `spoilers` alanlarından
 otomatik olarak doldurulur.
 
 ## Görseller
@@ -115,10 +115,11 @@ ffmpeg -i girdi.png -vf "scale='min(1280,iw)':-2" -q:v 5 wiki/assets/img/screens
 - Yalnızca doğrulanmış bilgiler gerçek olarak yazılır. Geri kalan her şey bilinmiyor olarak işaretlenir.
 - Teoriler asla gerçeğe dönüştürülmez; hikâyenin bilinçli gizemleri çözülmez.
 - Karakter, mekân, yaş, ilişki veya geçmiş uydurulmaz.
-- *The Facility* oyunun adıdır; **Tesis 61** oyunun içindeki bir mekândır.
-- Oyun içi terimlerin Türkçe karşılıkları: Facility 61 → Tesis 61, The Corrupted → Bozulmuşlar,
-  The Analog Era → Analog Çağ, The Technology Purge → Teknoloji Tasfiyesi, Remnants → Kalıntılar,
-  Warden → Müdür, Inmates → Mahkûmlar. İngilizce adları `aliases:` alanında tutun.
+- *The Facility* oyunun adıdır; **Facility 61** oyunun içindeki bir mekândır.
+- Oyuna özgü, Türkçeye birebir çevrilemeyen terimler İngilizce kalır: Facility 61, Facility 60,
+  Corrupted, Corruption, Analog Era, Technology Purge, Remnants, The Collapse, A Block, B Block,
+  spoiler. Genel kelimeler Türkçe yazılır: tesis, mahkûm, Gardiyan (Warden), Kaptan, Teğmen.
+  Terimlerin Türkçe karşılıklarını (Tesis 61, Bozulmuşlar vb.) `aliases:` alanında tutun.
 
 ## Yerelde test etme
 

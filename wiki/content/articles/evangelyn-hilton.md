@@ -4,7 +4,7 @@ type: character
 role: Mahkûm
 categories: Mahkûmlar
 aliases: Evie Hilton, Evie, Evangelyn, Hilton, Evangelyn "Evie" Hilton
-summary: Evangelyn "Evie" Hilton, Tesis 61'de tutulan mahkûmlardan biridir.
+summary: Evangelyn "Evie" Hilton, Facility 61'de tutulan mahkûmlardan biridir.
 stub: true
 image: assets/img/characters/evie-hilton.jpg
 caption: Karakter çizimi
@@ -17,15 +17,15 @@ infobox:
   Yaşı: Bilinmiyor
   Durumu: Mahkûm
   [Sınıflandırma]
-  Tutulduğu yer: [[Tesis 61]]
+  Tutulduğu yer: [[Facility 61]]
   Gerçek kimliği: Bilinmiyor
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Evangelyn "Evie" Hilton**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Adı, oyunun mahkûm listesinde yer almaktadır.
+**Evangelyn "Evie" Hilton**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Adı, oyunun mahkûm listesinde yer almaktadır.
 
 :::unknown Sınıflandırma
-Evie'nin insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğu **henüz belirlenmemiştir**.
+Evie'nin insan mı yoksa [[Corrupted]] mı olduğu **henüz belirlenmemiştir**.
 :::
 
 ## Genel bilgiler
@@ -47,7 +47,7 @@ Evie, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendir
 :::unknown Henüz belirlenmedi
 - Yaşı ve geçmişi.
 - Kişiliği.
-- İnsan mı yoksa Bozulmuş mu olduğu.
+- İnsan mı yoksa Corrupted mı olduğu.
 :::
 
 ## Görünüş

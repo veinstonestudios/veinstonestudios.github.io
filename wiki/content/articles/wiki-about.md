@@ -15,7 +15,7 @@ Bu wiki hâlâ geliştirilmekte olan bir oyunu belgeler. Doğruluğu korumak iç
 - **Bilinmeyenler bilinmiyor olarak işaretlenir.** Belirlenmemiş bir şey olduğunda maddeler bunu açıkça belirtir; {{unknown}} ve {{tba}} etiketleri ya da "Bilinmiyor" kutusu kullanılır.
 - **Teoriler gerçek değildir.** Hayran teorileri ve tahminler kanon olarak sunulmaz.
 - **Gizemler korunur.** Hikâyedeki bazı sorular bilerek yanıtsız bırakılmıştır. Wiki bunları çözmeye çalışmaz.
-- **Sürprizbozanlar işaretlenir.** Hikâye ayrıntısı içeren maddelerin en üstünde bir sürprizbozan uyarısı bulunur ve bu maddeler [[Kategori:Sürprizbozan içeren maddeler]] sayfasında listelenir.
+- **Spoiler'lar işaretlenir.** Hikâye ayrıntısı içeren maddelerin en üstünde bir spoiler uyarısı bulunur ve bu maddeler [[Kategori:Spoiler içeren maddeler]] sayfasında listelenir.
 
 ## Bu wikide kullanılan etiketler
 | Etiket | Anlamı |
@@ -28,9 +28,9 @@ Bu wiki hâlâ geliştirilmekte olan bir oyunu belgeler. Doğruluğu korumak iç
 Bu wikideki ekran görüntüleri geliştirme sürümlerinden alınmıştır ve oyunun son hâlini yansıtmayabilir. Resmî bir görsel bulunmadığında yer tutucu gösterilir.
 
 ## Adlandırma
-*The Facility* oyunun adıdır. **[[Tesis 61]]** ise oyundaki bir mekânın adıdır.
+*The Facility* oyunun adıdır. **[[Facility 61]]** ise oyundaki bir mekânın adıdır.
 
-Oyun içi terimlerin Türkçe karşılıkları (Tesis 61, Bozulmuşlar, Analog Çağ, Teknoloji Tasfiyesi vb.) bu wiki için seçilmiştir. İngilizce adlar ilgili maddelerde belirtilir ve aramada da çalışır.
+Oyuna özgü ve Türkçeye birebir çevrilemeyen terimler İngilizce bırakılır: Facility 61, Facility 60, Corrupted, Corruption, Analog Era, Technology Purge, Remnants, The Collapse, A Block, B Block ve spoiler gibi. Bu terimlerin eski Türkçe karşılıkları (Tesis 61, Bozulmuşlar, Analog Çağ vb.) aramada da çalışır ve doğru maddeye yönlendirir.
 
 ## Katkıda bulunma
 Maddeler, wikinin kaynak deposunda düz metin dosyaları olarak saklanır. Madde ekleme ve düzenleme talimatları deponun `wiki/README.md` dosyasındadır.

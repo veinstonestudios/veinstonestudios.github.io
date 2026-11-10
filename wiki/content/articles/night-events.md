@@ -32,7 +32,7 @@ Gece olaylarında [[Henry Edaven]]'ın geçmişine, ailesine, suçluluk duygusun
 {{missing}}
 
 :::spoiler
-Belirli gece olayları hikâyeye dair ayrıntıları açığa çıkarabilir. Belgelendiklerinde sürprizbozan olarak işaretlenecekler.
+Belirli gece olayları hikâyeye dair ayrıntıları açığa çıkarabilir. Belgelendiklerinde spoiler olarak işaretlenecekler.
 :::
 
 ## Ayrıca bakınız
