@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.14-f60',
+  version: '2026-11-10.16-status',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
@@ -33,6 +33,7 @@ window.WIKI_CONFIG = {
   articles: [
     // Ana
     'the-facility',
+    'ana-hikaye',
     'the-world',
     'timeline',
 
@@ -65,6 +66,7 @@ window.WIKI_CONFIG = {
     // Mekânlar
     'facility-61',
     'facility-60',
+    'facility-merkezleri',
 
     // Evren bilgisi
     'the-analog-era',
@@ -72,6 +74,7 @@ window.WIKI_CONFIG = {
     'the-corrupted',
     'core-program',
     'remnants',
+    'the-collapse',
 
     // Oyun bilgileri
     'gameplay',
@@ -93,7 +96,8 @@ window.WIKI_CONFIG = {
     'category-the-world',
 
     // Wiki proje sayfaları
-    'wiki-about'
+    'wiki-about',
+    'wiki-dev-guide'
   ],
 
   /* --------------------------------------------------------------------------
@@ -104,6 +108,7 @@ window.WIKI_CONFIG = {
     { heading: 'Ana', links: [
       ['Ana Sayfa',         'Ana Sayfa'],
       ['The Facility',      'The Facility'],
+      ['Ana Hikâye',        'Ana Hikâye'],
       ['Dünya',             'Dünya'],
       ['Zaman Çizelgesi',   'Zaman Çizelgesi']
     ]},
@@ -116,6 +121,7 @@ window.WIKI_CONFIG = {
     { heading: 'Mekânlar', links: [
       ['Facility 61',        'Facility 61'],
       ['Facility 60',        'Facility 60'],
+      ['Facility Merkezleri', 'Facility Merkezleri'],
       ['Diğer Mekânlar',  'Kategori:Diğer Mekânlar']
     ]},
     { heading: 'Evren Bilgisi', links: [
@@ -123,7 +129,8 @@ window.WIKI_CONFIG = {
       ['Technology Purge',   'Technology Purge'],
       ['Corrupted',           'Corrupted'],
       ['CORE Programı',         'CORE Programı'],
-      ['Remnants',            'Remnants']
+      ['Remnants',            'Remnants'],
+      ['The Collapse',        'The Collapse']
     ]},
     { heading: 'Oyun Bilgileri', links: [
       ['Oynanış',                        'Oynanış'],
@@ -137,6 +144,7 @@ window.WIKI_CONFIG = {
       ['Tüm sayfalar',       'Özel:TümSayfalar'],
       ['Son değişiklikler',  'Özel:SonDeğişiklikler'],
       ['Tüm kategoriler',    'Özel:Kategoriler'],
+      ['Geliştirme rehberi', 'The Facility Wiki:Geliştirme Rehberi'],
       ['Bu wiki hakkında',   'The Facility Wiki:Hakkında']
     ]}
   ],

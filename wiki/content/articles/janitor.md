@@ -24,27 +24,44 @@ infobox:
 ---
 **Janitor** (temizlik görevlisi), *[[The Facility]]* oyununda [[Facility 61]] içinde çalışan bir tesis görevlisidir.
 
-## Genel bilgiler
+## Genel bakış {{kararyok}}
 Janitor, tesisin temizlik görevlisidir. Adı henüz belirlenmemiştir.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
+
+Karakter çiziminde Janitor, kısa koyu saçlı ve gözlüklü, koyu yeşil bir kazakla, başını öne eğmiş hâlde gösterilir.
+
+## Kişilik ve davranışlar {{kesin}}
 Janitor **arkadaş canlısı ve konuşkan** bir karakterdir. Tesisin diğer otoriter personelinin aksine daha rahat ve gündelik bir konuşma tarzı vardır.
 
-## İlişkiler
-{{missing}}
+## Biyografi {{kararyok}}
+{{kararyok}}
 
-## Hikâyedeki rolü
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
+{{kararyok}}
+
+## Hikâyedeki rolü {{kesin}}
 Janitor'ın, tesisin **yaklaşık iki yıldır** faaliyette olduğunu belirttiği bir diyaloğu bulunmaktadır. Bkz. [[Facility 61]].
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Adı ve yaşı.
 - Geçmişi.
 - Diğer karakterlerle ilişkileri.
 :::
 
-## Görünüş
-Karakter çiziminde Janitor, kısa koyu saçlı ve gözlüklü, koyu yeşil bir kazakla, başını öne eğmiş hâlde gösterilir.
+## Ekip önerileri ve tartışma
+{{oneriler}}

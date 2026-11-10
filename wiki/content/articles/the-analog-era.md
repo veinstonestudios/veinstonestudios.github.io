@@ -19,18 +19,13 @@ infobox:
 ---
 **Analog Era**, *[[The Facility]]* oyununun geçtiği tarihsel dönemdir. [[Technology Purge]]'ün ardından gelişmiş teknoloji ve yapay zekâ yasaklanmış, toplum daha ilkel ve analog iletişim ve bilgi işleme yöntemlerine geri dönmüştür.
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Oyunun geçtiği 2055 yılında dünya Analog Era'yı yaşamaktadır. Bu durum oyunun retro-fütüristik atmosferine yansır: gelişmiş dijital teknoloji yerine kurumsal ortamlar, bürokratik belgeler ve analog ekipmanlar.
 
-## Tarihsel arka plan
+## Tarihsel arka plan {{kesin}}
 Analog Era, gelişmiş teknolojinin ve yapay zekânın yasaklandığı [[Technology Purge]]'ün sonucu olarak başladı.
 
-:::unknown Belirlenmemiş bilgiler
-- Analog Era'nın ne zaman başladığı.
-- Hangi teknolojilerin serbest, hangilerinin yasak olduğu.
-:::
-
-## Ayrıntılı açıklama
+## Ayrıntılı açıklama {{kesin}}
 Analog Era'da iletişim ve bilgi işleme analog araçlarla yürütülür. Oyunda Gardiyanın [[Facility 61]]'deki işi kâğıt bir günlük ve bir teyp gibi araçlarla yürütülür; resmî basın materyalleri ise günlük emirlerin faksla geldiğini anlatır.
 
 {{missing}}
@@ -43,6 +38,15 @@ Analog Era'da iletişim ve bilgi işleme analog araçlarla yürütülür. Oyunda
 - [[Facility 61]]
 - [[Henry Edaven]]
 
+## Henüz karar verilmeyen konular
+:::kararyok
+- Analog Era'nın ne zaman başladığı.
+- Hangi teknolojilerin serbest, hangilerinin yasak olduğu.
+:::
+
 ## Ayrıca bakınız
 - [[Dünya]]
 - [[Zaman Çizelgesi]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

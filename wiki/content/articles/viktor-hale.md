@@ -22,22 +22,36 @@ infobox:
 ---
 **Kaptan Viktor Hale**, *[[The Facility]]* oyununda [[Facility 61]]'in personelinden biridir. **[[Henry Edaven]]**'ın tesise geldiğinde karşılaştığı ilk önemli karakterlerden biridir.
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Viktor, Henry'ye gardiyanlık görevini ve tesisin çalışma düzenini anlatan ilk bilgilendirmeyi yapar.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik ve konuşma tarzı
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
+
+Karakter çiziminde Viktor, kısa koyu saçlı ve koyu renk üniformalı, belinde kılıf ve ayağında postallarla, elindeki not defterine bir şeyler yazarken gösterilir.
+
+## Kişilik ve davranışlar {{kesin}}
 Viktor'un konuşmaları **doğrudan, profesyonel ve bilgilendiricidir**. Tesis içindeki herkesin insan olmayabileceğini ve bazı mahkûmların [[Corrupted]] olabileceğini açıklar.
 
-## İlişkiler
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
 | Karakter | İlişki |
 |---|---|
 | [[Henry Edaven]] | Henry'yi gardiyanlık görevi hakkında bilgilendirir. |
 | [[Vera Collins]] | Tesis personelinden. Aralarındaki ilişki henüz kesinleşmemiştir. |
 
-## Hikâyedeki rolü
+## Hikâyedeki rolü {{kesin}}
 Viktor, bilgilendirmesinde şu konuları açıklar:
 - Günlük [[Görevlendirmeler|görev sistemi]].
 - Her sabah gelen faks. Faks, görevin ayrıntılarını ve seçilmesi gereken mahkûm sayısını içerir ve Henry'nin günlüğü (Journal) içinden okunabilir.
@@ -45,14 +59,14 @@ Viktor, bilgilendirmesinde şu konuları açıklar:
 - [[Corrupted|Corrupted'ların]] varlığı.
 - İnsanlarla anomalileri ayırt etmenin önemi.
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı.
 - Ailesi, geçmişi ve kişisel motivasyonları.
 :::
-
-## Görünüş
-Karakter çiziminde Viktor, kısa koyu saçlı ve koyu renk üniformalı, belinde kılıf ve ayağında postallarla, elindeki not defterine bir şeyler yazarken gösterilir.
 
 ## Galeri
 :::gallery
@@ -62,3 +76,6 @@ assets/img/characters/viktor-hale-sitting-front.jpg | Önden, otururken
 assets/img/screens/viktor-hale-ingame-3.jpg | Oyun içi görüntü (geliştirme sürümü)
 assets/img/screens/viktor-hale-ingame-4.jpg | Oyun içi görüntü (geliştirme sürümü)
 :::
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

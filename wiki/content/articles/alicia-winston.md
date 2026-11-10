@@ -27,10 +27,21 @@ infobox:
 Alicia'nın insan mı yoksa [[Corrupted]] mı olduğu **henüz belirlenmemiştir**.
 :::
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Facility 61'e gelmeden önce Alicia bir üniversite öğrencisiydi ve edebiyat eğitimi alıyordu.
 
-## Geçmiş ve biyografi
+## Temel bilgiler
+{{temelbilgiler}}
+
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
+
+Karakter çiziminde Alicia, omuz hizasını geçen dalgalı koyu saçlı ve açık yeşil mahkûm kıyafetli (altında beyaz uzun kollu) olarak gösterilir.
+
+## Kişilik ve davranışlar {{kesin}}
+Alicia **sessiz ve fazla konuşmayan** bir karakterdir. Konuşmaları doğal, samimi ve genç bir yetişkinin gündelik konuşma tarzındadır.
+
+## Biyografi {{kesin}}
 Alicia, kendisinden bahsederken eskiden oldukça başarılı bir öğrenci olduğunu, ancak Nate Lawson ile tanıştıktan sonra hayatının değiştiğini ima eder.
 
 :::quote
@@ -43,24 +54,30 @@ I used to be a really good student. Before I met Nate.
 — Alicia (Türkçesi: "Eskiden çok iyi bir öğrenciydim. Nate'le tanışmadan önce.")
 :::
 
-## Kişilik
-Alicia **sessiz ve fazla konuşmayan** bir karakterdir. Konuşmaları doğal, samimi ve genç bir yetişkinin gündelik konuşma tarzındadır.
+## Geçmişi {{kararyok}}
+{{kararyok}}
 
-## İlişkiler
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kesin}}
 | Karakter | İlişki |
 |---|---|
 | Nate Lawson | Alicia'nın geçmişinde önemli bir yere sahiptir. Onunla tanışması Alicia'nın hayatında önemli değişikliklere yol açmıştır. İlişkilerinin ayrıntıları belirlenmemiştir. |
 
-## Hikâyedeki rolü
+## Hikâyedeki rolü {{kesin}}
 Alicia'nın sorgusunda kullanılan başlıklardan biri **Current Situation** (Mevcut Durum) olarak belirlenmiştir. Bu başlığın amacı Alicia'nın mevcut durumunu ve Facility 61'e gelmeden önce yaşadıklarını anlamaktır. Bkz. [[Testler ve Tespit Yöntemleri]].
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Kesin yaşı.
 - Suç geçmişi.
 - Nate ile ilişkisinin ayrıntıları.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
 
-## Görünüş
-Karakter çiziminde Alicia, omuz hizasını geçen dalgalı koyu saçlı ve açık yeşil mahkûm kıyafetli (altında beyaz uzun kollu) olarak gösterilir.
+## Ekip önerileri ve tartışma
+{{oneriler}}

@@ -26,42 +26,55 @@ infobox:
 ---
 **Gina Bell**, *[[The Facility]]* oyununda [[Facility 61]]'in **A Block** personelinden bir subaydır (A Block Officer). [[Emma Bell]] ile **ikiz kardeştir**.
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Gina, kadın mahkûmların bulunduğu A Block'un personelindendir. Çalışma alanı **klinik**; bağlı olduğu birim **Tıbbi Bakım ve Değerlendirme Kanadı**'dır (Medical & Evaluation Wing). Sorumluluğu, klinik ve değerlendirme bölümündeki görevlerdir.
 
 İkiz kardeşi [[Emma Bell]] de A Block personelindendir; o kadınlar koğuşunun güvenliğinden sorumludur.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
-{{missing}}
+## Fiziksel görünüm {{kesin}}
+Gina'nın koyu renkli, kısa saçları vardır. A Block personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde elinde koyu renk bir şapka tutar.
 
-## İlişkiler
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
+
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kesin}}
 | Karakter | İlişki |
 |---|---|
 | [[Emma Bell]] | İkiz kardeşi. O da A Block personelindendir. |
 
-## Hikâyedeki rolü
-{{missing}}
+## Hikâyedeki rolü {{kararyok}}
+{{kararyok}}
 
-## Bilinen bilgiler ve gizemler
+## Bilinenler ve gizemler
 :::confirmed Kesinleşmiş
 - Emma Bell ile ikiz kardeştir.
 - Facility 61'in A Block subayıdır; klinikte görev yapar.
 - Bağlı olduğu birim Tıbbi Bakım ve Değerlendirme Kanadı'dır.
 :::
 
-:::unknown Henüz belirlenmedi
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı.
 - Kişiliği ve geçmişi.
 - Diğer karakterlerle ilişkileri.
 :::
 
-## Görünüş
-Gina'nın koyu renkli, kısa saçları vardır. A Block personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde elinde koyu renk bir şapka tutar.
-
 ## Ayrıca bakınız
 - [[Emma Bell]]
 - [[Kategori:A Block Personeli]]
 - [[Facility 61#Hücre blokları]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

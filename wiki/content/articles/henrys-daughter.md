@@ -24,30 +24,47 @@ infobox:
 ---
 **Henry'nin Kızı**, *[[The Facility]]* oyununun oyuncu karakteri **[[Henry Edaven]]**'ın kızıdır. [[Henry'nin Eşi|Annesiyle]] birlikte bir yangında hayatını kaybetmiştir. Ölümünden önce **[[Corrupted|Corruption]] belirtileri** göstermiştir.
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Henry'nin kızı, Henry'nin geçmişi ve [[Gece Olayları|gece olayları]] açısından önemli bir karakterdir.
 
-## Geçmiş ve biyografi
+## Temel bilgiler
+{{temelbilgiler}}
+
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
+
+Karakter çiziminde Henry'nin kızı, koyu saçlı, saçında yeşil bir toka bulunan ve kırmızı elbiseli küçük bir kız olarak gösterilir.
+
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
+
+## Biyografi {{kesin}}
 Annesiyle birlikte bir yangında hayatını kaybetmiştir. Ölümünden önce Corruption belirtileri göstermeye başlamıştır.
 
-## Kişilik
-{{missing}}
+## Geçmişi {{kararyok}}
+{{kararyok}}
 
-## İlişkiler
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kesin}}
 | Karakter | İlişki |
 |---|---|
 | [[Henry Edaven]] | Babası |
 | [[Henry'nin Eşi]] | Annesi. Aynı yangında hayatını kaybetti. |
 | [[Arthur Edaven]] | Babasının ağabeyi |
 
-## Hikâyedeki rolü
+## Hikâyedeki rolü {{kesin}}
 Henry'nin geçmişinin ve psikolojik durumunun önemli bir parçasıdır. Gece olaylarında Henry'nin geçmişine ve ailesine ilişkin sembolik sahneler görülür.
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Adı ve yaşı.
 - Gösterdiği Corruption belirtilerinin ayrıntıları.
 :::
 
-## Görünüş
-Karakter çiziminde Henry'nin kızı, koyu saçlı, saçında yeşil bir toka bulunan ve kırmızı elbiseli küçük bir kız olarak gösterilir.
+## Ekip önerileri ve tartışma
+{{oneriler}}

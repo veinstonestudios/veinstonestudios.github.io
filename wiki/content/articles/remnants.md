@@ -20,17 +20,23 @@ infobox:
 Remnants hakkında henüz hiçbir bilgi doğrulanmamıştır. Bu madde yer tutucu olarak oluşturulmuştur ve resmî ayrıntılar açıklandığında doldurulacaktır.
 :::
 
-## Genel bakış
-{{missing}}
+## Genel bakış {{kararyok}}
+{{kararyok}}
 
-## Tarihsel arka plan
-{{missing}}
+## Tarihsel arka plan {{kararyok}}
+{{kararyok}}
 
-## Ayrıntılı açıklama
-{{missing}}
+## Ayrıntılı açıklama {{kararyok}}
+{{kararyok}}
 
-## İlgili olaylar
-{{missing}}
+## İlgili olaylar {{kararyok}}
+{{kararyok}}
 
-## İlgili karakterler ve mekânlar
-{{missing}}
+## İlgili karakterler ve mekânlar {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen konular
+{{kararyok}}
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

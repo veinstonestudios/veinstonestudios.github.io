@@ -122,13 +122,23 @@
   /* ----------------------------------------------------------------------
      Satır içi Markdown + wiki sözdizimi
      -------------------------------------------------------------------- */
-  var TAGS = {
-    unknown:     '<span class="tag tag-unknown">Bilinmiyor</span>',
-    unconfirmed: '<span class="tag tag-unknown">Doğrulanmadı</span>',
-    confirmed:   '<span class="tag tag-confirmed">Doğrulandı</span>',
-    tba:         '<span class="tag tag-tba">Henüz belgelenmedi</span>'
+  /* Bilgi durumu sistemi — dört durum:
+     kesin (KESİNLEŞTİRİLDİ) · gelistiriliyor (GELİŞTİRİLİYOR) · kararyok (HENÜZ KARAR VERİLMEDİ) · gizli (GİZLİ / AÇIKLANMADI) */
+  var STATUS = {
+    kesin:          { label: 'Kesinleştirildi',        cls: 'st-kesin',   title: 'Proje sorumlusu tarafından onaylanmış kanon bilgi' },
+    gelistiriliyor: { label: 'Geliştiriliyor',         cls: 'st-gelisme', title: 'Temel karar verildi, ayrıntılar tamamlanmadı' },
+    kararyok:       { label: 'Henüz karar verilmedi',  cls: 'st-kararyok', title: 'Bu konu hakkında henüz kesin bir karar alınmamıştır' },
+    gizli:          { label: 'Gizli / Açıklanmadı',    cls: 'st-gizli',   title: 'Hikâyede bilinçli olarak gizlenen veya oyuncuya açıklanmayan bilgi' }
   };
-  var TAG_ALIASES = { bilinmiyor: 'unknown', dogrulanmadi: 'unconfirmed', dogrulandi: 'confirmed', belgelenmedi: 'tba' };
+  var STATUS_ALIASES = { kesinlestirildi: 'kesin', kesinlesti: 'kesin', confirmed: 'kesin', dogrulandi: 'kesin',
+    gelisiyor: 'gelistiriliyor', gelistirme: 'gelistiriliyor', dev: 'gelistiriliyor',
+    kararverilmedi: 'kararyok', unknown: 'kararyok', bilinmiyor: 'kararyok', tba: 'kararyok', belgelenmedi: 'kararyok',
+    unconfirmed: 'kararyok', dogrulanmadi: 'kararyok', aciklanmadi: 'gizli', secret: 'gizli' };
+  var KARARYOK_TEXT = 'Bu konu hakkında henüz kesin bir karar alınmamıştır. Ekip üyelerinin önerilerine açıktır.';
+  function statusKey(name) { var n = fold(name).replace(/[^a-z]/g, ''); n = STATUS_ALIASES[n] || n; return STATUS[n] ? n : null; }
+  function statusTag(k) { var s = STATUS[k]; return '<span class="status ' + s.cls + '" title="' + esc(s.title) + '">' + s.label + '</span>'; }
+  var TAGS = { unknown: statusTag('kararyok'), tba: statusTag('kararyok'), confirmed: statusTag('kesin') };
+  var TAG_ALIASES = {};
 
   function inline(src) {
     var tokens = [];
@@ -154,10 +164,9 @@
       return hold('<a href="' + url + '"' + (ext ? ' class="external" target="_blank" rel="noopener"' : '') + '>' + label + '</a>');
     });
     // Makrolar
-    s = s.replace(/\{\{([a-zçğıöşü]+)\}\}/gi, function (all, name) {
-      var n = fold(name);
-      n = TAG_ALIASES[n] || n;
-      return TAGS[n] ? hold(TAGS[n]) : all;
+    s = s.replace(/\{\{([a-zçğıöşü-]+)\}\}/gi, function (all, name) {
+      var k = statusKey(name);
+      return k ? hold(statusTag(k)) : all;
     });
     s = s.replace(/\[(REDACTED|SANSÜRLÜ)\]/g, function () { return hold('<span class="redacted" title="Sansürlü">SANSÜRLÜ</span>'); });
     // ||spoiler||
@@ -179,16 +188,20 @@
      Blok Markdown
      -------------------------------------------------------------------- */
   var CALLOUTS = {
-    unknown:   { label: 'Bilinmiyor',     icon: '?' },
-    confirmed: { label: 'Doğrulandı',     icon: '✓' },
+    kesin:          { label: 'Kesinleştirildi',        icon: '✓' },
+    gelistiriliyor: { label: 'Geliştiriliyor',         icon: '◐' },
+    kararyok:       { label: 'Henüz karar verilmedi',  icon: '?' },
+    gizli:          { label: 'Gizli / Açıklanmadı',    icon: '■' },
     note:      { label: 'Not',            icon: 'i' },
-    spoiler:   { label: 'Spoiler',   icon: '!' },
+    spoiler:   { label: 'Spoiler',        icon: '!' },
     warning:   { label: 'Uyarı',          icon: '!' },
-    source:    { label: 'Kaynak',         icon: '§' },
-    dev:       { label: 'Geliştirme aşamasında', icon: '◐' }
+    source:    { label: 'Kaynak',         icon: '§' }
   };
-  var CALLOUT_ALIASES = { bilinmiyor: 'unknown', dogrulandi: 'confirmed', not: 'note', surprizbozan: 'spoiler',
-    uyari: 'warning', kaynak: 'source', gelistirme: 'dev', galeri: 'gallery', alinti: 'quote', kronoloji: 'timeline' };
+  var CALLOUT_ALIASES = { unknown: 'kararyok', bilinmiyor: 'kararyok', kararverilmedi: 'kararyok',
+    confirmed: 'kesin', dogrulandi: 'kesin', kesinlestirildi: 'kesin',
+    dev: 'gelistiriliyor', gelistirme: 'gelistiriliyor', gelisiyor: 'gelistiriliyor',
+    aciklanmadi: 'gizli', not: 'note', surprizbozan: 'spoiler',
+    uyari: 'warning', kaynak: 'source', galeri: 'gallery', alinti: 'quote', kronoloji: 'timeline' };
 
   function stripLinks(s) { return s.replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1'); }
 
@@ -298,7 +311,7 @@
         '<span class="vtl-year">' + esc(it.year) + '</span>' +
         '<span class="vtl-rail">' + lanes(i, false) + '<span class="vtl-dot"></span></span>' +
         '<div class="vtl-card">' +
-          '<div class="vtl-kind">' + TL_KINDS[it.kind] + '</div>' +
+          '<div class="vtl-kind">' + TL_KINDS[it.kind] + (it.meta.durum && statusKey(it.meta.durum) ? ' ' + statusTag(statusKey(it.meta.durum)) : '') + '</div>' +
           '<div class="vtl-title">' + inline(it.title) + '</div>' +
           (it.text ? '<div class="vtl-text">' + inline(it.text) + '</div>' : '') +
           (chips ? '<div class="vtl-meta">' + chips + '</div>' : '') + links +
@@ -349,8 +362,13 @@
           continue;
         }
         var info = CALLOUTS[type] || CALLOUTS.note;
+        var isStatus = !!STATUS[type];
+        var titleHtml = isStatus ? statusTag(type) + (title ? ' <span class="callout-sub">' + inline(title) + '</span>' : '')
+                                 : inline(title || info.label);
+        var bodyMd = inner.join('\n');
+        if (type === 'kararyok' && bodyMd.indexOf('önerilerine açıktır') < 0) bodyMd += '\n\n*' + KARARYOK_TEXT + '*';
         out.push('<div class="callout callout-' + esc(CALLOUTS[type] ? type : 'note') + '"><div class="callout-icon" aria-hidden="true">' + info.icon + '</div><div class="callout-body">' +
-          '<div class="callout-title">' + inline(title || info.label) + '</div>' + renderBlocks(inner.join('\n'), null) + '</div></div>');
+          '<div class="callout-title">' + titleHtml + '</div>' + renderBlocks(bodyMd, null) + '</div></div>');
         continue;
       }
 
@@ -358,6 +376,9 @@
       if (h) {
         flush();
         var level = h[1].length, text = h[2].replace(/\s+#+$/, '');
+        // "## Başlık {{kesin}}" → başlığın yanında bilgi durumu etiketi (bağlantı ve içindekilere dahil edilmez)
+        var hStatus = '';
+        text = text.replace(/\s*\{\{([a-zçğıöşü-]+)\}\}\s*$/i, function (all, nm) { var k = statusKey(nm); if (k) { hStatus = k; return ''; } return all; });
         var id = slugify(text) || 'bolum';
         if (headings) {
           var n = 2, base = id;
@@ -365,15 +386,31 @@
           headings.push({ level: level, text: text, id: id });
         }
         out.push('<h' + level + ' id="' + id + '"><span class="h-text">' + inline(text) + '</span>' +
+          (hStatus ? statusTag(hStatus) : '') +
           (level === 2 ? '<a class="h-anchor" href="#' + id + '" aria-label="Bu bölümün bağlantısı">¶</a>' : '') + '</h' + level + '>');
         i++; continue;
       }
 
       if (/^-{3,}$/.test(t)) { flush(); out.push('<hr>'); i++; continue; }
 
-      if (/^\{\{(missing|eksik)\}\}$/i.test(t)) {
+      if (/^\{\{(missing|eksik|kararyok)\}\}$/i.test(t)) {
         flush();
-        out.push('<div class="missing"><span class="missing-stamp">KAYIT YOK</span> Bu bölüm henüz belgelenmedi. Bilgiler doğrulandıkça genişletilecek.</div>');
+        out.push('<div class="missing">' + statusTag('kararyok') + ' ' + KARARYOK_TEXT + '</div>');
+        i++; continue;
+      }
+
+      // Temel bilgiler: bilgi kutusundaki maddeler, her biri bilgi durumu etiketiyle
+      if (/^\{\{temelbilgiler\}\}$/i.test(t)) {
+        flush();
+        out.push(basicInfo(CURRENT_PAGE));
+        i++; continue;
+      }
+
+      // Ekip önerileri bölümü: {{oneriler}} (bu sayfa) veya {{oneriler:tum}} (tüm öneriler)
+      var om = t.match(/^\{\{oneriler(?::(tum|tüm))?\}\}$/i);
+      if (om) {
+        flush();
+        out.push(proposalsBlock(om[1] ? '' : CURRENT_TITLE));
         i++; continue;
       }
 
@@ -422,7 +459,7 @@
   function plainText(md) {
     return md
       .replace(/\|\|.+?\|\|/g, ' ') // spoiler'lar arama sonuçlarında görünmesin
-      .replace(/\s(tur|henry|mary|iplik)=[^;\n]*;?/g, ' ') // zaman çizelgesi alanları
+      .replace(/\s(tur|henry|mary|iplik|durum)=[^;\n]*;?/g, ' ') // zaman çizelgesi alanları
       .replace(/^:::.*$/gm, ' ')
       .replace(/\[\[(?:[^\]|]+\|)?([^\]]+)\]\]/g, '$1')
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
@@ -589,8 +626,8 @@
       } else if (r.label) {
         if (!open) { h += '<dl>'; open = true; }
         var val = r.value;
-        var vh = /^(unknown|bilinmiyor|\?)$/i.test(val) ? TAGS.unknown
-          : /^(tba|belgelenmedi|henüz belgelenmedi|-)$/i.test(val) ? TAGS.tba
+        var vh = /^(unknown|bilinmiyor|\?|tba|belgelenmedi|henüz belgelenmedi|karar verilmedi|henüz karar verilmedi|-)$/i.test(val) ? statusTag('kararyok')
+          : /^(gizli|açıklanmadı|gizli \/ açıklanmadı)$/i.test(val) ? statusTag('gizli')
           : val.split(/\s*;\s*/).map(inline).join('<br>');
         h += '<div class="infobox-row"><dt>' + esc(r.label) + '</dt><dd>' + vh + '</dd></div>';
       }
@@ -622,6 +659,7 @@
      -------------------------------------------------------------------- */
   function renderArticle(p) {
     var headings = [];
+    CURRENT_TITLE = p.title; CURRENT_PAGE = p;
     var bodyHtml = renderBlocks(p.body, headings);
     var tocHtml = toc(headings);
     if (tocHtml) {
@@ -778,12 +816,13 @@
             return '<li>' + link(p.title) + '<span class="muted">' + fmtDate(p.created) + '</span></li>';
           }).join('') + '</ul>' + more(SPECIAL.recent[0], 'Son değişiklikler →')) +
           box('Oyun bilgileri', '<ul class="plain">' + (M.gameInfo || []).map(function (t) { return '<li>' + link(t) + '</li>'; }).join('') + '</ul>') +
-          '<section class="mp-box mp-legend"><h2 class="mp-h">Bu wiki nasıl okunur?</h2>' +
-            '<p>Yalnızca geliştiriciler tarafından doğrulanan bilgiler gerçek olarak sunulur. Diğer her şey işaretlenir:</p>' +
-            '<ul class="plain legend"><li>' + TAGS.unknown + ' kanonda belirlenmemiş</li>' +
-            '<li>' + TAGS.tba + ' bilgi bekleniyor</li>' +
-            '<li>' + TAGS.confirmed + ' geliştiriciler tarafından belirtilmiş</li></ul>' +
-            more('The Facility Wiki:Hakkında', 'Bu wiki hakkında →') + '</section>' +
+          '<section class="mp-box mp-legend"><h2 class="mp-h">Bilgi durumları</h2>' +
+            '<p>Bu wiki aynı zamanda ekibin geliştirme referansıdır. Her bilgi durumuyla işaretlenir:</p>' +
+            '<ul class="plain legend"><li>' + statusTag('kesin') + ' onaylanmış kanon</li>' +
+            '<li>' + statusTag('gelistiriliyor') + ' temel karar var, ayrıntı eksik</li>' +
+            '<li>' + statusTag('kararyok') + ' önerilere açık</li>' +
+            '<li>' + statusTag('gizli') + ' hikâyede bilinçli olarak gizli</li></ul>' +
+            more('The Facility Wiki:Geliştirme Rehberi', 'Geliştirme rehberi ve öneriler →') + '</section>' +
           box('Resmî bağlantılar', '<ul class="plain">' +
             (L.steam ? '<li><a class="external" href="' + esc(L.steam) + '" target="_blank" rel="noopener">Steam\'de The Facility</a></li>' : '') +
             (L.presskit ? '<li><a href="' + esc(L.presskit) + '">Basın kiti</a></li>' : '') +
@@ -963,6 +1002,7 @@
     app.removeAttribute('aria-busy');
     document.body.classList.toggle('is-mainpage', isMain(title));
     renderRail();
+    hydrateProposals();
     markActiveNav();
     closeTopnav();
     if (searchInput) searchInput.value = kind === 'search' ? q : '';
@@ -1009,6 +1049,143 @@
     document.querySelectorAll('.tn-tab.open').forEach(function (t) {
       t.classList.remove('open');
       t.querySelector('.tn-label').setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  /* ---------- Ekip önerileri (GitHub Issues üzerinden) ----------
+     Wiki statiktir ve kendi başına veri kaydedemez. Öneriler GitHub'da
+     "[Öneri]" ile başlayan issue olarak açılır (.github/ISSUE_TEMPLATE/oneri.yml)
+     ve buradan herkese açık GitHub API'siyle okunup listelenir.
+     Durum, proje sorumlusunun eklediği etiketten gelir:
+       "durum: kabul edildi" · "durum: reddedildi" · "durum: beklemede" · (etiket yok) Değerlendirilecek */
+  var REPO = CFG.repo || { owner: 'veinstonestudios', name: 'veinstonestudios.github.io' };
+  var CURRENT_TITLE = '', CURRENT_PAGE = null;
+  function basicInfo(p) {
+    var rows = (p && p.infobox) || [];
+    if (!rows.length) return '<div class="missing">' + statusTag('kararyok') + ' ' + KARARYOK_TEXT + '</div>';
+    var h = '<div class="basic-info">', open = false;
+    rows.forEach(function (r) {
+      if (r.section) { if (open) h += '</dl>'; h += '<div class="bi-section">' + esc(r.section) + '</div><dl>'; open = true; return; }
+      if (!r.label) return;
+      if (!open) { h += '<dl>'; open = true; }
+      var v = r.value, st;
+      var blank = /^(unknown|bilinmiyor|\?|tba|belgelenmedi|henüz belgelenmedi|karar verilmedi|henüz karar verilmedi|-)$/i.test(v);
+      if (blank) st = 'kararyok';
+      else if (/\|\||kesinleşmez|^gizli/i.test(v)) st = 'gizli';
+      else if (/^bilinmiyor/i.test(v)) st = 'kararyok';
+      else st = 'kesin';
+      var vh = blank ? '<span class="muted">—</span>' : v.split(/\s*;\s*/).map(inline).join(', ');
+      h += '<div class="bi-row"><dt>' + esc(r.label) + '</dt><dd>' + vh + ' ' + statusTag(st) + '</dd></div>';
+    });
+    if (open) h += '</dl>';
+    return h + '</div>';
+  }
+  var proposalsPromise = null;
+  var PROP_STATUS = {
+    degerlendirilecek: { label: 'Değerlendirilecek', cls: 'ps-review' },
+    kabul:             { label: 'Kabul edildi',      cls: 'ps-accepted' },
+    red:               { label: 'Reddedildi',        cls: 'ps-rejected' },
+    beklemede:         { label: 'Beklemede',         cls: 'ps-hold' }
+  };
+  function repoUrl(p) { return 'https://github.com/' + REPO.owner + '/' + REPO.name + p; }
+  function newProposalUrl(topic) {
+    return repoUrl('/issues/new?template=oneri.yml&title=' + encodeURIComponent('[Öneri] ' + (topic ? '[' + topic + '] ' : '')) +
+      (topic ? '&konu=' + encodeURIComponent(topic) : ''));
+  }
+  function proposalsListUrl(topic) {
+    return repoUrl('/issues?q=' + encodeURIComponent('is:issue "[Öneri]"' + (topic ? ' "' + topic + '"' : '')));
+  }
+  function proposalTemplate(topic) {
+    return 'Öneri başlığı: \n' +
+      'İlgili karakter / konu: ' + (topic || '') + '\n' +
+      'Öneri türü: (A) Mevcut bir özelliği geliştirme / (B) Henüz karar verilmemiş bir konuya öneri\n' +
+      'Önerinin açıklaması: \n' +
+      'Öneriyi sunan kişi: \n' +
+      'Durum: Değerlendirilecek';
+  }
+  function proposalsBlock(topic) {
+    return '<div class="proposals" data-topic="' + esc(topic) + '">' +
+      '<div class="prop-note">' + statusTag('kararyok') + ' <strong>Öneriler kanon değildir.</strong> Buradaki fikirler yalnızca değerlendirilmek üzere sunulmuştur; ' +
+        'proje sorumlusu onaylamadıkça mevcut bilgileri değiştirmez ve <em>Kesinleştirildi</em> bilgiye dönüşmez. ' +
+        'Wiki önerileri kendisi kaydetmez: öneriler GitHub üzerinden gönderilir ve burada otomatik listelenir.</div>' +
+      '<div class="prop-list" aria-live="polite"><p class="muted">Öneriler yükleniyor…</p></div>' +
+      '<div class="prop-actions"><a class="rail-btn prop-btn" href="' + esc(newProposalUrl(topic)) + '" target="_blank" rel="noopener">+ Öneri gönder (GitHub)</a>' +
+        '<a class="prop-link" href="' + esc(proposalsListUrl(topic)) + '" target="_blank" rel="noopener">Tüm tartışmaları GitHub\'da görüntüle</a>' +
+        '<a class="prop-link" href="' + esc(pageUrl('The Facility Wiki:Geliştirme Rehberi', 'ekip-onerileri-nasil-calisir')) + '" data-internal>Nasıl çalışır?</a></div>' +
+      '<details class="prop-template"><summary>Kopyalanabilir öneri şablonu</summary>' +
+        '<textarea readonly rows="6" aria-label="Öneri şablonu">' + esc(proposalTemplate(topic)) + '</textarea>' +
+        '<button type="button" class="prop-copy" data-copy>Şablonu kopyala</button>' +
+        '<p class="muted">GitHub hesabı olmayan ekip üyeleri şablonu doldurup proje sorumlusuna iletebilir; öneri sorumlu tarafından GitHub\'a eklenir.</p></details>' +
+      '</div>';
+  }
+  function issueField(body, label) {
+    var re = new RegExp('###\\s*' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\n+([\\s\\S]*?)(?=\\n###\\s|$)', 'i');
+    var m = (body || '').match(re);
+    var v = m ? m[1].trim() : '';
+    return /^_?no response_?$/i.test(v) ? '' : v;
+  }
+  function parseProposal(is) {
+    var title = is.title.replace(/^\s*\[öneri\]\s*/i, '');
+    var tm = title.match(/^\[([^\]]+)\]\s*/);
+    var topic = issueField(is.body, 'İlgili karakter / konu') || (tm ? tm[1] : '');
+    if (tm) title = title.slice(tm[0].length);
+    var labels = (is.labels || []).map(function (l) { return fold(l.name || ''); }).join(' ');
+    var st = /kabul/.test(labels) ? 'kabul' : /redd/.test(labels) ? 'red' : /beklemede/.test(labels) ? 'beklemede' : 'degerlendirilecek';
+    return {
+      title: title.trim() || '(başlıksız öneri)', topic: topic.trim(), url: is.html_url, num: is.number,
+      type: issueField(is.body, 'Öneri türü'), text: issueField(is.body, 'Önerinin açıklaması') || (is.body || '').trim(),
+      author: issueField(is.body, 'Öneriyi sunan kişi') || (is.user && is.user.login) || '', date: (is.created_at || '').slice(0, 10), status: st
+    };
+  }
+  function fetchProposals() {
+    if (proposalsPromise) return proposalsPromise;
+    var cacheKey = 'tfw-proposals-v1';
+    try {
+      var c = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+      if (c && Date.now() - c.t < 10 * 60 * 1000) { proposalsPromise = Promise.resolve(c.d); return proposalsPromise; }
+    } catch (e) {}
+    proposalsPromise = fetch('https://api.github.com/repos/' + REPO.owner + '/' + REPO.name + '/issues?state=all&per_page=100&sort=created&direction=desc', { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (list) {
+        var d = list.filter(function (is) { return !is.pull_request && /^\s*\[öneri\]/i.test(is.title || ''); }).map(parseProposal);
+        try { sessionStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
+        return d;
+      })
+      .catch(function (e) { proposalsPromise = null; throw e; });
+    return proposalsPromise;
+  }
+  function proposalCard(pr, showTopic) {
+    var st = PROP_STATUS[pr.status];
+    var tp = pr.topic ? findPage(pr.topic) : null;
+    var text = pr.text.length > 500 ? pr.text.slice(0, 500).replace(/\s+\S*$/, '') + '…' : pr.text;
+    return '<article class="prop-card ' + st.cls + '"><header><span class="prop-status">' + st.label + '</span>' +
+      '<h4>' + esc(pr.title) + '</h4></header>' +
+      '<div class="prop-meta">' + (showTopic && pr.topic ? 'İlgili: ' + (tp ? link(tp.title) : esc(pr.topic)) + ' · ' : '') +
+        (pr.type ? esc(pr.type.replace(/\s*—.*$/, '')) + ' · ' : '') + 'Öneren: ' + esc(pr.author || 'bilinmiyor') + ' · ' + fmtDate(pr.date) + ' · #' + pr.num + '</div>' +
+      '<p class="prop-text">' + esc(text).replace(/\n+/g, '<br>') + '</p>' +
+      '<a class="prop-discuss" href="' + esc(pr.url) + '" target="_blank" rel="noopener">Tartışmaya katıl →</a></article>';
+  }
+  function hydrateProposals() {
+    var boxes = document.querySelectorAll('.proposals');
+    if (!boxes.length) return;
+    fetchProposals().then(function (all) {
+      boxes.forEach(function (box) {
+        var topic = box.getAttribute('data-topic');
+        var tp = topic ? findPage(topic) : null;
+        var items = all.filter(function (pr) {
+          if (!topic) return true;
+          var p = pr.topic ? findPage(pr.topic) : null;
+          return (p && tp && p === tp) || key(pr.topic) === key(topic);
+        });
+        box.querySelector('.prop-list').innerHTML = items.length
+          ? items.map(function (pr) { return proposalCard(pr, !topic); }).join('')
+          : '<p class="muted">' + (topic ? 'Bu sayfa için henüz öneri yok. İlk öneriyi sen gönderebilirsin.' : 'Henüz öneri gönderilmedi.') + '</p>';
+      });
+    }).catch(function () {
+      boxes.forEach(function (box) {
+        box.querySelector('.prop-list').innerHTML = '<p class="muted">Öneriler şu an yüklenemedi (GitHub bağlantısı ya da istek sınırı). ' +
+          'Önerileri doğrudan <a href="' + esc(proposalsListUrl(box.getAttribute('data-topic'))) + '" target="_blank" rel="noopener">GitHub\'da</a> görebilirsin.</p>';
+      });
     });
   }
 
@@ -1130,6 +1307,15 @@
     document.addEventListener('click', function (e) {
       var sp = e.target.closest('.spoiler-inline');
       if (sp) { sp.classList.add('revealed'); return; }
+
+      var cp = e.target.closest('[data-copy]');
+      if (cp) {
+        var ta = cp.parentNode.querySelector('textarea');
+        var done = function () { cp.textContent = 'Kopyalandı ✓'; setTimeout(function () { cp.textContent = 'Şablonu kopyala'; }, 2000); };
+        if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); document.execCommand('copy'); done(); });
+        else { ta.select(); document.execCommand('copy'); done(); }
+        return;
+      }
 
       var tl = e.target.closest('.tn-label');
       if (tl) {

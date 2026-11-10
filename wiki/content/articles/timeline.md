@@ -2,40 +2,54 @@
 title: Zaman Çizelgesi
 type: timeline
 categories: Dünya
-aliases: Timeline, Kronoloji, Tarih, Chronology
-summary: The Facility'deki bilinen olayların kronolojik kaydı. Olayların çoğu tarihsizdir ve kesin sıraları doğrulanmamıştır.
+aliases: Timeline, Kronoloji, Tarih, Chronology, Tarihsel kronoloji
+summary: The Facility dünyasının kronolojisi. Tarihi kesinleşmiş olaylar ile tarihi henüz belirlenmemiş olaylar ayrı gösterilir.
 spoilers: true
+spoiler-note: Bazı olaylar hikâyenin sırlarını içerir; bu kısımlar gizli metin olarak verilmiştir.
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-10
 ---
-Bu **zaman çizelgesi**, *[[The Facility]]* oyunundaki bilinen olayları güvenle sıralanabildikleri düzende kaydeder. Oyun **2055** yılında geçer.
+Bu **zaman çizelgesi**, *[[The Facility]]* dünyasında bilinen olayları kaydeder. Oyun **2055** yılında geçer. Her olayın yanında bilgi durumu gösterilir.
 
-:::unknown Bu zaman çizelgesi hakkında
-Çok az olayın tarihi doğrulanmıştır. Tarihsiz olaylar ayrı bir bölümde listelenir ve **birbirlerine göre sıraları doğrulanmamıştır**. Tarihler kesinleştikçe bu sayfa güncellenecektir.
+:::note Bu sayfa nasıl okunur?
+**Tarihli kronoloji** bölümündeki tarihler proje tarafından kesinleştirilmiştir. Tarihi henüz belirlenmemiş olaylar ayrı bölümde tutulur ve onlara tarih atanmaz.
 :::
 
-## 2055 öncesi
-| Dönem | Olay | Maddeler |
-|---|---|---|
-| Tarih {{unknown}} | **Technology Purge**'nin ardından gelişmiş teknoloji ve yapay zekâ yasaklanır. | [[Technology Purge]] |
-| Purge'den sonra | Toplum analog iletişim ve bilgi işleme yöntemlerine geri döner: **Analog Era**. | [[Analog Era]] |
+## Tarihli kronoloji {{kesin}}
+:::kronoloji
+2009 | Henry Edaven'ın doğumu | Henry Adam Edaven dünyaya gelir. | tur=olay; henry=0; durum=kesin
+2041 | Mary Edaven'ın doğumu | Henry'nin kızı [[Henry'nin Kızı|Mary]] dünyaya gelir. | tur=mary; henry=32; mary=doğum; iplik=mary; durum=kesin
+2043 | İlk Corruption vakaları | Dünyada anomaliler ilk kez rapor edilmeye başlanır. | tur=olay; henry=34; durum=kesin
+2044 | İlk Facility merkezleri | Corruption vakalarını gözlemlemek, karantinaya almak ve anomalilerin doğasını anlamak amacıyla ilk deneysel [[Facility Merkezleri|Facility merkezleri]] faaliyete geçirilir. | tur=tesis; henry=35; durum=kesin
+2045–2049 | The Collapse | [[The Collapse]] olarak adlandırılan dönem. Dönemin olaylarının ayrıntıları henüz belirlenmemiştir. | tur=donem; henry=36–40; durum=gelistiriliyor
+2050 | Arthur Edaven Facility 60'a gönderilir | Henry, ağabeyi [[Arthur Edaven]] hakkında ||bilinçli olarak sahte bir Corruption suçlamasında bulunur.|| Arthur, Corruption şüphesiyle [[Facility 60]]'a gönderilir. | tur=arthur; henry=41; iplik=arthur; durum=kesin
+2051 | Mary'nin Corruption belirtileri | Mary, Corruption belirtileri göstermeye başlar. | tur=mary; henry=42; mary=10; iplik=mary; durum=kesin
+2052 | Yangın | Eve ve 11 yaşındaki Mary bir yangında hayatını kaybeder; Henry hayatta kalır. | tur=yangin; henry=43; mary=11 yaşında, hayatını kaybetti; iplik=mary; durum=kesin
+2053 | Facility 60'ın kapanması | Facility 60 anomaliler tarafından ele geçirilir ve kapatılır; Arthur ortadan kaybolur. | tur=arthur; henry=44; iplik=arthur; durum=kesin
+2055 | Henry Facility 61'e atanır | Henry, [[Facility 61]]'in Gardiyanı olur. Oyunun olayları başlar. | tur=tesis; henry=46; durum=kesin
+:::
 
-## Tarihsiz olaylar
-Aşağıdaki olaylar oyunun başlangıcından önce yaşanmıştır. Birbirlerine göre sıraları **doğrulanmamıştır**.
+## Tarihi belirlenmemiş olaylar {{kararyok}}
+Aşağıdaki olaylar kanonda vardır, ancak tarihleri henüz belirlenmemiştir. Bu yüzden zaman çizelgesine yerleştirilmezler.
 
-| Olay | Ayrıntılar | Maddeler |
-|---|---|---|
-| Corrupted'ların ortaya çıkışı | Gelişmiş yapay zekâ ve teknolojiden kaynaklanan, insanları taklit edebilen anomaliler. | [[Corrupted]] |
-| Facility 60 olayı | Anomaliler Facility 60'ı kontrol edilemeyecek boyutta ele geçirir ve tesis kapatılır. Arthur Edaven olay sırasında ortadan kaybolur. | [[Facility 60]], [[Arthur Edaven]] |
-| Yangın | Henry Edaven'ın eşi ve kızı bir yangında hayatını kaybeder. Kızı Corruption belirtileri göstermiştir. | [[Henry Edaven]], [[Henry'nin Eşi]], [[Henry'nin Kızı]] |
+| Olay | Bilgi durumu | Not | Maddeler |
+|---|---|---|---|
+| Technology Purge | {{kesin}} olay · {{kararyok}} tarih | Gelişmiş teknoloji ve yapay zekâ yasaklanır. | [[Technology Purge]] |
+| Analog Era'nın başlangıcı | {{kesin}} olay · {{kararyok}} tarih | Purge'ün ardından toplum analog yöntemlere döner. | [[Analog Era]] |
+| Facility 61'in açılışı | {{kesin}} olay · {{kararyok}} tarih | Bir diyaloğa göre tesis oyunun geçtiği dönemde yaklaşık iki yıldır faaliyettedir. | [[Facility 61]] |
 
-## 2055
-| Olay | Ayrıntılar | Maddeler |
-|---|---|---|
-| Henry Edaven Facility 61'e atanır | Henry, geçmişiyle bağlantılı koşullar altında Gardiyan olarak atanır. | [[Henry Edaven]], [[Facility 61]] |
-| Oyunun olayları | Gardiyan mahkûmları sorgular, insanlıklarını değerlendirir ve günlük görevler için kişileri seçer. | [[Oynanış]] |
+## Henüz karar verilmeyen konular
+:::kararyok
+- Technology Purge'ün tarihi ve 2043'teki ilk Corruption vakalarıyla olan zaman ilişkisi.
+- The Collapse döneminde yaşanan olaylar.
+- 2055 sonrası olaylar ve oyunun kendi içindeki gün gün kronolojisi.
+:::
 
 ## İlgili maddeler
+- [[Henry Edaven#Kronoloji]]
 - [[Dünya]]
-- [[Analog Era]]
-- [[Technology Purge]]
+- [[The Collapse]]
+- [[Facility Merkezleri]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

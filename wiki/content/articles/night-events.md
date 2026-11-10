@@ -22,19 +22,25 @@ infobox:
 Resmî basın kitine göre Gardiyanın kararları gece geri döner. Senaryolu gece olayları oyuncunun seçimlerini takip eder ve oyuncu **sabaha kadar hayatta kalmalıdır**.
 :::
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Gece aşaması mahkûmların [[Görevlendirmeler|seçiminden]] sonra gelir. Resmî içerik uyarıları, oyuncunun düşman varlıklar tarafından tehlike altında olduğu tehditkâr bir ortamı tarif eder.
 
-## Henry'nin geçmişi
+## Henry'nin geçmişi {{kesin}}
 Gece olaylarında [[Henry Edaven]]'ın geçmişine, ailesine, suçluluk duygusuna ve gerçeklik algısının bozulmasına ilişkin **sembolik sahneler** görülür. Henry'nin [[Henry'nin Eşi|eşini]] ve [[Henry'nin Kızı|kızını]] kaybettiği yangın, gece olayları açısından büyük önem taşır.
 
-## Bilinen gece olayları
+## Bilinen gece olayları {{kesin}}
 {{missing}}
 
 :::spoiler
 Belirli gece olayları hikâyeye dair ayrıntıları açığa çıkarabilir. Belgelendiklerinde spoiler olarak işaretlenecekler.
 :::
 
+## Henüz karar verilmeyen konular
+{{kararyok}}
+
 ## Ayrıca bakınız
 - [[Oynanış]]
 - [[Sonlar]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

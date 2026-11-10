@@ -32,7 +32,7 @@ Oyuncu, **[[Facility 61]]**'in Gardiyanı **[[Henry Edaven]]**'ı canlandırır.
 *The Facility* oyunun adıdır. **[[Facility 61]]** ise oyundaki ana mekânın adıdır.
 :::
 
-## Genel bakış
+## Genel bakış {{kesin}}
 *The Facility*, psikolojik korkuyu analog korku estetiğiyle birleştirir. Dünyası retro-fütüristiktir: oyun 2055'te geçmesine rağmen toplum, [[Analog Era]] boyunca analog iletişim ve bilgi işleme yöntemlerine geri dönmüştür.
 
 Resmî basın materyalleri oyunu, retro PSX esintili bir estetiğe sahip psikolojik korku strateji oyunu olarak tanımlar. Oyuncu, Devlet'in tehlikeli yeniden yapılanma görevleri için ihtiyaç duyduğu kişilerin tutulduğu bir rehabilitasyon merkezini yönetir.
@@ -42,12 +42,12 @@ Kimseye güvenme. Anomaliler mahkûmlarının arasında saklanıyor.
 — Resmî slogan (İngilizce aslı: "Trust no one. Anomalies are hiding among your inmates.")
 :::
 
-## Konu
+## Konu {{kesin}}
 Facility 61'in mahkûmları arasında [[Corrupted]] saklanmaktadır: insanları taklit edebilen anomaliler. Gerçek bir insanı Corrupted bir bireyden ayırt etmek her zaman kolay değildir. Oyuncu bu tehditleri, görevlerle dış dünyaya gönderilmeden önce tespit etmek zorundadır.
 
 Ana karakterin kişisel geçmişi Corruption ile yakından bağlantılıdır. Ayrıntılar, spoiler içeren [[Henry Edaven]] ve [[Facility 60]] maddelerinde yer alır.
 
-## Oynanış
+## Oynanış {{kesin}}
 :::source Resmî açıklama
 Oyundaki her gün dört aşamadan oluşur: **Emirler**, **Sorgu**, **Seçim** ve **Gece**. Ayrıntılar için [[Oynanış]] maddesine bakın.
 :::
@@ -57,13 +57,13 @@ Oyundaki her gün dört aşamadan oluşur: **Emirler**, **Sorgu**, **Seçim** ve
 - **[[Gece Olayları]]** — oyuncunun kararlarının sonuçları gece geri döner.
 - **[[Sonlar]]** — {{tba}}
 
-## Mekân ve zaman
+## Mekân ve zaman {{kesin}}
 - **Yıl:** 2055
 - **Dünya:** bkz. [[Dünya]], [[Analog Era]] ve [[Technology Purge]]
 - **Ana mekân:** [[Facility 61]]
 - **İlgili mekân:** [[Facility 60]]
 
-## Karakterler
+## Karakterler {{kesin}}
 Şu anda kesinleşmiş karakterler aşağıdadır. Tam liste için [[Kategori:Karakterler]] sayfasına bakın.
 
 | Karakter | Rolü |
@@ -84,6 +84,9 @@ Resmî basın kitine göre *The Facility* şunları içerir:
 - Genel olarak yetişkinlere yönelik içerik — oyuncuyu korkutmak amacıyla tasarlanmış rahatsız edici sesler, yanıp sönen ışıklar ve yaratık tasarımları.
 - Oyuncunun düşman varlıklar tarafından tehlike altında olduğu tehditkâr bir ortam.
 
+## Henüz karar verilmeyen konular
+{{kararyok}}
+
 ## Galeri
 :::gallery
 assets/img/key-art.jpg | Resmî key art
@@ -102,3 +105,6 @@ assets/img/screens/morning-shift.jpg | Vardiya başında uyanış
 ## Dış bağlantılar
 - [Steam'de The Facility](https://store.steampowered.com/app/3796790/The_Facility/)
 - [Resmî basın kiti](../presskit.html)
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

@@ -27,30 +27,47 @@ infobox:
 Milena'nın insan mı yoksa [[Corrupted]] mı olduğu **henüz belirlenmemiştir**.
 :::
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Milena, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendirmeler|görevler]] için seçebileceği mahkûmlardandır.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
-{{missing}}
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
 
-## İlişkiler
-{{missing}}
+Karakter çiziminde Milena, omuz hizasında koyu saçlı ve açık yeşil mahkûm kıyafetli olarak, bir eli belinde gösterilir.
 
-## Hikâyedeki rolü
-{{missing}}
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
+{{kararyok}}
+
+## Hikâyedeki rolü {{kararyok}}
+{{kararyok}}
+
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı ve geçmişi.
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
 
-## Görünüş
-Karakter çiziminde Milena, omuz hizasında koyu saçlı ve açık yeşil mahkûm kıyafetli olarak, bir eli belinde gösterilir.
-
 ## Bilgi notları
 - Karakter görselinin dosya adında soyadı "Slavkic" olarak geçer.
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

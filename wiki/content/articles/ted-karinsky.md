@@ -25,7 +25,7 @@ infobox:
 ---
 **Ted Karinsky**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
-:::spoiler Gerçek kimliği
+:::gizli Gerçek kimliği
 Ted'in gerçek kimliği ||[[Corrupted]]|| olarak belirlenmiştir.
 :::
 
@@ -34,33 +34,50 @@ Onları gördüm.
 — Ted, bir geliştirme sürümü ekran görüntüsünde (İngilizce aslı: "I've seen *them*.")
 :::
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Ted, Facility 61'de bir hücrede tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Ted'in bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
-{{missing}}
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
 
-## İlişkiler
-{{missing}}
+Karakter çiziminde Ted, gözlüklü, kısa koyu saçlı ve açık yeşil mahkûm kıyafetli olarak gösterilir.
 
-## Hikâyedeki rolü
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
+
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
+{{kararyok}}
+
+## Hikâyedeki rolü {{kesin}}
 Ted, oyunun ilk gününde değerlendirilen mahkûmlardan biridir. Bkz. [[Oynanış]].
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı ve suç geçmişi.
 - Kişiliği.
 - Taklit yeteneklerinin ayrıntıları.
 :::
-
-## Görünüş
-Karakter çiziminde Ted, gözlüklü, kısa koyu saçlı ve açık yeşil mahkûm kıyafetli olarak gösterilir.
 
 ## Galeri
 :::gallery
 assets/img/characters/ted-karinsky.jpg | Karakter çizimi
 assets/img/screens/ted-cell.jpg | Ted bir hücrede (geliştirme sürümü ekran görüntüsü)
 :::
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

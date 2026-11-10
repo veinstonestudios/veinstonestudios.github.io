@@ -19,27 +19,31 @@ infobox:
 ---
 **Technology Purge**, *[[The Facility]]* dünyasında yaşanmış tarihsel bir olaydır. Purge'ün ardından **gelişmiş teknoloji ve yapay zekâ yasaklanmış**, toplum daha ilkel, analog iletişim ve bilgi işleme yöntemlerine geri dönmüştür. Bu, [[Analog Era]]'nın başlangıcıdır.
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Purge, oyun dünyasının belirleyici olayıdır. [[Corrupted]], Purge'ün ardından yasaklanan gelişmiş yapay zekâ ve teknolojiden kaynaklanır.
 
-## Tarihsel arka plan
-{{missing}}
+## Tarihsel arka plan {{kararyok}}
+{{kararyok}}
 
-:::unknown Belirlenmemiş bilgiler
+## Ayrıntılı açıklama {{kararyok}}
+{{kararyok}}
+
+## İlgili olaylar
+- [[Analog Era]]'nın başlangıcı
+
+## İlgili karakterler ve mekânlar {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen konular
+:::kararyok
 - Technology Purge'ün ne zaman yaşandığı.
 - Neden yaşandığı ve kim tarafından gerçekleştirildiği.
 - Corrupted'ların ortaya çıkışıyla bağlantılı olup olmadığı ve nasıl bağlantılı olduğu.
 :::
 
-## Ayrıntılı açıklama
-{{missing}}
-
-## İlgili olaylar
-- [[Analog Era]]'nın başlangıcı
-
-## İlgili karakterler ve mekânlar
-{{missing}}
-
 ## Ayrıca bakınız
 - [[Dünya]]
 - [[Zaman Çizelgesi]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

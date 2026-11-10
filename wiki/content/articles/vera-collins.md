@@ -24,13 +24,18 @@ infobox:
 ---
 **Teğmen Vera Collins**, *[[The Facility]]* oyununda [[Facility 61]]'in **hücre bloklarından sorumlu** subaydır. [[Henry Edaven]]'a tesisin günlük işleyişini ve hücre bloklarını tanıtır.
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Vera, Henry'nin tesisteki ilk günlerinde onu tesisin işleyişi konusunda eğitir.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
+
+Karakter çiziminde Vera, örgülü sarı saçlı ve koyu yeşil üniformalı (ceket, etek, kırmızı kravat) olarak gösterilir.
+
+## Kişilik ve davranışlar {{kesin}}
 Vera şu özelliklere sahiptir:
 - Soğuk
 - Otoriter
@@ -38,13 +43,22 @@ Vera şu özelliklere sahiptir:
 - Ciddi
 - Görevlerine karşı disiplinli
 
-## İlişkiler
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
 | Karakter | İlişki |
 |---|---|
 | [[Henry Edaven]] | Henry'ye tesisin günlük işleyişini ve hücre bloklarını tanıtır. |
 | [[Viktor Hale]] | Tesis personelinden. Aralarındaki ilişki henüz kesinleşmemiştir. |
 
-## Hikâyedeki rolü
+## Hikâyedeki rolü {{kesin}}
 ### Eğitim diyaloğu
 Vera, eğitim diyaloğunda şu bilgileri verir:
 - **A Block** kadın mahkûmlara, **B Block** erkek mahkûmlara ayrılmıştır.
@@ -55,14 +69,14 @@ Vera, eğitim diyaloğunda şu bilgileri verir:
 
 Bkz. [[Testler ve Tespit Yöntemleri]].
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı ve kişisel geçmişi.
 - Diğer karakterlerle ilişkileri.
 :::
-
-## Görünüş
-Karakter çiziminde Vera, örgülü sarı saçlı ve koyu yeşil üniformalı (ceket, etek, kırmızı kravat) olarak gösterilir.
 
 ## Galeri
 :::gallery
@@ -71,3 +85,6 @@ assets/img/characters/vera-collins-2.jpg | Ayakta, eliyle yön gösterirken
 assets/img/characters/vera-collins-3.jpg | Bacak bacak üstüne atmış otururken
 assets/img/characters/vera-collins-4.jpg | Masada, elleri önünde birleşik
 :::
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

@@ -33,24 +33,32 @@ infobox:
 ---
 **Henry Adam Edaven**, *[[The Facility]]* oyununun ana karakteri ve oyuncunun kontrol ettiği karakterdir. 2055 yılında, [[Corrupted]] olduğundan şüphelenilen hükümlülerin tutulduğu **[[Facility 61]]'in Gardiyanı** (Warden) olarak görev yapar.
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Henry, 2009 doğumlu, 46 yaşında eski bir **Sivil Koruma Dairesi güvenlik ve saha denetim memurudur**. Eşi [[Henry'nin Eşi|Eve]] ve kızı [[Henry'nin Kızı|Mary]], evlerinde çıkan bir yangında hayatını kaybetmiştir; Mary ölümünden önce Corruption belirtileri göstermeye başlamıştır. Ağabeyi [[Arthur Edaven]], [[Facility 60]]'ın düşüşü sırasında ortadan kaybolmuştur.
 
 Yıllar sonra Henry, Facility 61'in Gardiyanlığını gönüllü olarak kabul eder. Görevi; mahkûmları sorgulamak, insanlıklarını değerlendirmek ve günlük [[Görevlendirmeler|görevler]] için seçim yapmaktır. Ancak Henry yalnızca mahkûmları değerlendiren biri değildir: kendi travmaları onu da Corruption tehlikesiyle karşı karşıya bırakır.
 
-## Fiziksel görünüm
+## Temel bilgiler
+{{temelbilgiler}}
+
+## Fiziksel görünüm {{kesin}}
 Henry 40'lı yaşlarının ortasında olmasına rağmen oldukça **yorgun ve yaşlı** görünür; ağabeyi Arthur'dan bile daha yaşlı durur. Saçları seyrelmiştir, gözleri **yeşil-gridir**. Genellikle resmî Gardiyan üniforması giyer.
 
 Karakter portresinde Henry, kırlaşmış seyrek saçlı ve yorgun yüz ifadeli, koyu renk ceket ve kravatla gösterilir.
 
-## Kişilik ve davranışlar
+## Kişilik ve davranışlar {{kesin}}
 Henry **disiplinli, otoriter, mesafeli ve prosedürcü** bir karakterdir. Ancak bastırdığı korkular ve travmalar nedeniyle zaman zaman bu tavrının dışına çıkan davranışlar sergiler.
 
 :::warning Travma tetikleyicisi
 **Ateş**, geçmişindeki yangın nedeniyle Henry için önemli bir travma tetikleyicisidir.
 :::
 
-## Biyografi
+## Psikolojik durumu {{kesin}}
+Henry'nin geçmiş travmaları oyunun psikolojik korku unsurlarının merkezindedir. Yangından sonra katı ve çalışmaya saplantılı birine dönüşmüş olsa da bastırdığı korku ve suçluluk duygusu zaman zaman yüzeye çıkar.
+
+[[Gece Olayları|Gece olaylarında]]; Henry'nin geçmişine, ailesine, suçluluk duygusuna ve gerçeklik algısının bozulmasına ilişkin **sembolik sahneler** görülür.
+
+## Biyografi {{kesin}}
 :::spoiler Bu bölüm hikâyenin en önemli sırlarını içerir
 Aşağıdaki biyografide oyunun ana sırları gizli metin olarak verilmiştir. Görmek için siyah alanların üzerine tıklayın.
 :::
@@ -62,7 +70,7 @@ Henry ve ağabeyi [[Arthur Edaven]] çocukluklarını birbirlerine çok yakın, 
 
 Facility 60 anomaliler tarafından ele geçirildiğinde Arthur ortadan kaybolur.
 
-:::unknown Arthur'un kimliği
+:::gizli Arthur'un kimliği
 Arthur'un gerçekten Corrupted olup olmadığı **hiçbir zaman kesinleşmez**. Bu belirsizlik hikâyenin bilinçli bir parçasıdır.
 :::
 
@@ -91,42 +99,58 @@ Yıllar sonra Henry; geçmiş deneyimi, güvenlik bilgisi ve Corruption vakalar�
 
 Henry Facility 61'de kendi evinde yaşamaz; **ofisine açılan özel bir odada** kalır. Kurum yalnızca ailesini bir yangında kaybettiğini bilir. ||Henry'nin yangın sırasında ailesini içeride bırakarak kaçtığını bilmez.||
 
-## Kronoloji
+## Kronoloji {{kesin}}
 Henry Edaven'ın hayatındaki ve *The Facility* dünyasındaki kesinleşmiş olaylar, yıllarıyla birlikte aşağıda gösterilmiştir. Yaşlar, olayların yıllarından hesaplanmıştır. Renkli dikey hatlar Arthur'un ve Mary'nin hikâyelerindeki olayları birbirine bağlar.
 
 :::kronoloji
-2009 | Henry Edaven'ın doğumu | Henry Adam Edaven dünyaya gelir. | tur=olay; henry=0
-2041 | Henry baba olur | Henry'nin kızı [[Henry'nin Kızı|Mary Edaven]] dünyaya gelir. | tur=mary; henry=32; mary=doğum; iplik=mary
-2043 | İlk Corruption vakaları | Dünyada anomaliler ilk kez rapor edilmeye başlanır. | tur=olay; henry=34; mary=2
-2044 | İlk Facility merkezlerinin açılması | Corruption vakalarını gözlemlemek, karantinaya almak ve anomalilerin doğasını anlamak amacıyla ilk deneysel Facility merkezleri faaliyete geçirilir. | tur=tesis; henry=35; mary=3
-2045–2049 | The Collapse | Bu dönem *The Collapse* olarak adlandırılır. Dönemin olaylarının ayrıntıları henüz belirlenmemiştir. | tur=donem; henry=36–40; mary=4–8
-2050 | Arthur Edaven'ın tutuklanması | Henry, ağabeyi [[Arthur Edaven]] hakkında ||bilinçli olarak sahte bir Corruption suçlamasında bulunur.|| Arthur, Corruption şüphesiyle [[Facility 60]]'a gönderilir. | tur=arthur; henry=41; mary=9; iplik=arthur
-2051 | Mary'nin Corruption belirtileri | Henry ve Eve'in kızı Mary, Corruption belirtileri göstermeye başlar. Davranışları giderek tuhaflaşır; aile içinde endişe ve güvensizlik oluşur. | tur=mary; henry=42; mary=10; iplik=mary
-2052 | Yangın | Henry, [[Henry'nin Eşi|Eve]] ile yaşadığı tartışmanın ardından evden ayrılır. Geri döndüğünde evin yandığını görür. İçeri girer, ||ancak yaşadığı dissosiyatif kopuş nedeniyle ailesini kurtaramadan dışarı çıkar.|| Eve ve 11 yaşındaki Mary yangında hayatını kaybeder; Henry hayatta kalır. | tur=yangin; henry=43; mary=11 yaşında, hayatını kaybetti; iplik=mary
-2053 | Facility 60'ın kapanması ve Arthur'un kaybolması | Facility 60 anomaliler tarafından ele geçirilir ve kapatılır. Arthur bu olaylar sırasında ortadan kaybolur. Gerçekten Corrupted olup olmadığı bilinmemektedir. | tur=arthur; henry=44; iplik=arthur
-2055 | Henry'nin Facility 61'e atanması | Henry, geçmişteki mesleki deneyimi ve Corruption vakalarına aşinalığı nedeniyle [[Facility 61]]'in Gardiyanı olur. Görevi gönüllü olarak kabul eder. | tur=tesis; henry=46
+2009 | Henry Edaven'ın doğumu | Henry Adam Edaven dünyaya gelir. | tur=olay; henry=0; durum=kesin
+2041 | Henry baba olur | Henry'nin kızı [[Henry'nin Kızı|Mary Edaven]] dünyaya gelir. | tur=mary; henry=32; mary=doğum; iplik=mary; durum=kesin
+2043 | İlk Corruption vakaları | Dünyada anomaliler ilk kez rapor edilmeye başlanır. | tur=olay; henry=34; mary=2; durum=kesin
+2044 | İlk Facility merkezlerinin açılması | Corruption vakalarını gözlemlemek, karantinaya almak ve anomalilerin doğasını anlamak amacıyla ilk deneysel Facility merkezleri faaliyete geçirilir. | tur=tesis; henry=35; mary=3; durum=kesin
+2045–2049 | The Collapse | Bu dönem *The Collapse* olarak adlandırılır. Dönemin olaylarının ayrıntıları henüz belirlenmemiştir. | tur=donem; henry=36–40; mary=4–8; durum=gelistiriliyor
+2050 | Arthur Edaven'ın tutuklanması | Henry, ağabeyi [[Arthur Edaven]] hakkında ||bilinçli olarak sahte bir Corruption suçlamasında bulunur.|| Arthur, Corruption şüphesiyle [[Facility 60]]'a gönderilir. | tur=arthur; henry=41; mary=9; iplik=arthur; durum=kesin
+2051 | Mary'nin Corruption belirtileri | Henry ve Eve'in kızı Mary, Corruption belirtileri göstermeye başlar. Davranışları giderek tuhaflaşır; aile içinde endişe ve güvensizlik oluşur. | tur=mary; henry=42; mary=10; iplik=mary; durum=kesin
+2052 | Yangın | Henry, [[Henry'nin Eşi|Eve]] ile yaşadığı tartışmanın ardından evden ayrılır. Geri döndüğünde evin yandığını görür. İçeri girer, ||ancak yaşadığı dissosiyatif kopuş nedeniyle ailesini kurtaramadan dışarı çıkar.|| Eve ve 11 yaşındaki Mary yangında hayatını kaybeder; Henry hayatta kalır. | tur=yangin; henry=43; mary=11 yaşında, hayatını kaybetti; iplik=mary; durum=kesin
+2053 | Facility 60'ın kapanması ve Arthur'un kaybolması | Facility 60 anomaliler tarafından ele geçirilir ve kapatılır. Arthur bu olaylar sırasında ortadan kaybolur. Gerçekten Corrupted olup olmadığı bilinmemektedir. | tur=arthur; henry=44; iplik=arthur; durum=kesin
+2055 | Henry'nin Facility 61'e atanması | Henry, geçmişteki mesleki deneyimi ve Corruption vakalarına aşinalığı nedeniyle [[Facility 61]]'in Gardiyanı olur. Görevi gönüllü olarak kabul eder. | tur=tesis; henry=46; durum=kesin
 :::
 
-## Motivasyonları ve amaçları
+## Geçmişi {{kesin}}
+Henry'nin Facility 61 öncesi hayatı [[#Biyografi]] ve [[#Kronoloji]] bölümlerinde anlatılmıştır. Gardiyan olmadan önce **Sivil Koruma Dairesi'nde güvenlik ve saha denetim memuru** olarak çalışıyordu. Yangından sonra bir süre izin aldı ya da masa başı göreve geçirildi; işe döndüğünde daha katı ve prosedürcü biri olmuştu.
+
+:::kararyok Geçmişte eksik kalanlar
+- Sivil Koruma Dairesi'ndeki görev süresinin ve işinin ayrıntıları.
+- Yangından Facility 61'e atanmasına kadar geçen üç yılda yaşadıkları.
+:::
+
+## Motivasyonları {{kesin}}
 Henry'nin amaçları şunlardır:
 - Corruption vakalarını kontrol altına almak.
 - Anomalileri toplumdan uzaklaştırmak.
 - Başka insanların kendi ailesinin yaşadığı trajediyi yaşamasını önlemek.
 - Ailesini kurtaramadığı yerde, bu kez doğru kararlar verebileceğini kendine kanıtlamak.
 
-## Psikolojik durumu
-Henry'nin geçmiş travmaları oyunun psikolojik korku unsurlarının merkezindedir. Yangından sonra katı ve çalışmaya saplantılı birine dönüşmüş olsa da bastırdığı korku ve suçluluk duygusu zaman zaman yüzeye çıkar.
-
-[[Gece Olayları|Gece olaylarında]]; Henry'nin geçmişine, ailesine, suçluluk duygusuna ve gerçeklik algısının bozulmasına ilişkin **sembolik sahneler** görülür.
-
-## Corruption ile ilişkisi
+## Corruption ile ilişkisi {{kesin}}
 Dönemin araştırmalarına göre Corruption vakalarının, **zihinsel olarak savunmasız kişilerde** daha sık görüldüğü düşünülmektedir. Henry, kendi travmalarının onu Corruption'a karşı savunmasız hâle getirdiğinin farkında değildir.
 
 :::warning Oyuncunun kararlarına bağlı
 Henry'nin Corrupted hâle gelip gelmeyeceği, **oyuncunun kararlarına** ve tesisteki insan/anomali dengesine bağlıdır. Bu yüzden Henry yalnızca mahkûmları değerlendiren bir Gardiyan değil, kendisi de Corruption tehlikesi altında olan bir karakterdir.
 :::
 
-## Facility 61'deki görevi
+## Diğer karakterlerle ilişkileri {{kesin}}
+| Karakter | İlişki |
+|---|---|
+| [[Arthur Edaven]] | Ağabeyi. Çocuklukta çok yakındılar; gençlikten itibaren ilişkileri bozuldu. Facility 60'ın düşüşü sırasında kayboldu. |
+| [[Henry'nin Eşi|Eve Edaven]] | Eşi. Henry'nin işi yüzünden ilişkileri bozuldu; Mary'nin durumu konusunda ciddi tartışmalar yaşadılar. Yangında hayatını kaybetti. |
+| [[Henry'nin Kızı|Mary Edaven]] | Kızı. Corruption belirtileri gösterdi. 11 yaşındayken yangında hayatını kaybetti. |
+| [[Viktor Hale]] | Henry'yi gardiyanlık görevi ve tesisin çalışma düzeni hakkında bilgilendirir. |
+| [[Vera Collins]] | Henry'ye tesisin günlük işleyişini ve hücre bloklarını tanıtır. |
+| [[Kategori:Mahkûmlar|Mahkûmlar]] | Henry'nin değerlendirdiği, sorguladığı ve görevlere seçtiği kişiler. |
+
+## Hikâyedeki rolü {{kesin}}
+Henry, *The Facility*'nin oyuncu karakteridir; oyun onun bakış açısından oynanır. Oyuncunun mahkûmlarla ilgili kararları tesisteki insan ve anomali dengesini, Henry'nin kendi Corruption durumunu ve [[Sonlar|oyunun sonunu]] etkiler. Bkz. [[Oynanış]].
+
+## Facility 61'deki görevi {{kesin}}
 Gardiyan olarak Henry'nin görevleri şunlardır:
 - [[Kategori:Mahkûmlar|Mahkûmlarla]] görüşmek ve onları sorgulamak.
 - Mahkûm dosyalarını incelemek.
@@ -137,20 +161,7 @@ Gardiyan olarak Henry'nin görevleri şunlardır:
 
 Tesise geldiğinde [[Viktor Hale|Kaptan Viktor Hale]] ona gardiyanlık görevini ve tesisin çalışma düzenini anlatır; [[Vera Collins|Teğmen Vera Collins]] ise günlük işleyişi ve hücre bloklarını tanıtır.
 
-## Diğer karakterlerle ilişkileri
-| Karakter | İlişki |
-|---|---|
-| [[Arthur Edaven]] | Ağabeyi. Çocuklukta çok yakındılar; gençlikten itibaren ilişkileri bozuldu. Facility 60'ın düşüşü sırasında kayboldu. |
-| [[Henry'nin Eşi|Eve Edaven]] | Eşi. Henry'nin işi yüzünden ilişkileri bozuldu; Mary'nin durumu konusunda ciddi tartışmalar yaşadılar. Yangında hayatını kaybetti. |
-| [[Henry'nin Kızı|Mary Edaven]] | Kızı. Corruption belirtileri gösterdi. 11 yaşındayken yangında hayatını kaybetti. |
-| [[Viktor Hale]] | Henry'yi gardiyanlık görevi ve tesisin çalışma düzeni hakkında bilgilendirir. |
-| [[Vera Collins]] | Henry'ye tesisin günlük işleyişini ve hücre bloklarını tanıtır. |
-| [[Kategori:Mahkûmlar|Mahkûmlar]] | Henry'nin değerlendirdiği, sorguladığı ve görevlere seçtiği kişiler. |
-
-## Oyundaki rolü
-Henry, *The Facility*'nin oyuncu karakteridir; oyun onun bakış açısından oynanır. Oyuncunun mahkûmlarla ilgili kararları tesisteki insan ve anomali dengesini, Henry'nin kendi Corruption durumunu ve [[Sonlar|oyunun sonunu]] etkiler. Bkz. [[Oynanış]].
-
-## Olası sonlar
+## Olası sonlar {{gelistiriliyor}}
 :::dev Geliştirme aşamasında
 Aşağıdaki iki son, şu an hikâye için planlanan ana sonlardır. Kesinleşmiş final senaryoları değildir; ileride değiştirilebilir veya genişletilebilir.
 :::
@@ -167,7 +178,7 @@ Sonların açıklamaları gizli metin olarak verilmiştir. Görmek için siyah a
 
 Sonlara nasıl ulaşılacağı ve final sahneleri henüz belgelenmemiştir. {{tba}}
 
-## Önemli bilgiler ve gizemler
+## Bilinenler ve gizemler
 :::confirmed Kesinleşmiş
 - Tam adı Henry Adam Edaven'dır; 2009'da doğmuştur ve 2055'te 46 yaşındadır.
 - Eski mesleği Sivil Koruma Dairesi güvenlik ve saha denetim memurluğudur.
@@ -178,12 +189,20 @@ Sonlara nasıl ulaşılacağı ve final sahneleri henüz belgelenmemiştir. {{tb
 - Kurum, yangında yaşananların yalnızca resmî kayıtlardaki hâlini bilir.
 :::
 
-:::unknown Henüz belirlenmedi
-- Arthur'un gerçekten Corrupted olup olmadığı (bilinçli olarak hiçbir zaman kesinleşmez).
+:::gizli Bilinçli olarak gizlenenler
+- Arthur'un gerçekten Corrupted olup olmadığı — hikâyede hiçbir zaman kesinleşmez.
+- ||Henry'nin yangın sırasında ailesini içeride bırakarak kaçtığı|| — kurum ve resmî kayıtlar bunu bilmez.
+:::
+
+:::gelistiriliyor Planlanıyor
+- Henry'nin oyun sonunda Corrupted hâle gelip gelmeyeceği: oyuncunun kararlarına bağlıdır; planlanan iki son için bkz. [[#Olası sonlar]].
+:::
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yangının gerçek sebebi.
 - 2045–2049 yılları arasındaki Collapse döneminin ayrıntıları.
 - Henry'nin şüphelendiği gibi Eve'in Arthur'a karşı hâlâ duygular besleyip beslemediği.
-- Henry'nin oyun sonunda Corrupted hâle gelip gelmeyeceği (oyuncunun kararlarına bağlıdır; planlanan iki son için bkz. [[#Olası sonlar]]).
 - Sonların kesin hâli, sonlara nasıl ulaşılacağı ve final sahneleri.
 :::
 
@@ -200,3 +219,6 @@ assets/img/screens/journal.jpg | Gardiyanın günlüğü (geliştirme sürümü 
 - [[Facility 60]]
 - [[Corrupted]]
 - [[Gece Olayları]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

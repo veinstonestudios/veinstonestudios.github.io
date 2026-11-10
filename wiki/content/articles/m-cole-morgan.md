@@ -25,31 +25,48 @@ infobox:
 ---
 **M. Cole Morgan**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
-:::spoiler Gerçek kimliği
+:::gizli Gerçek kimliği
 Morgan'ın gerçek kimliği ||insan (Human)|| olarak belirlenmiştir.
 :::
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Morgan, Facility 61'de tutulmaktadır. Gardiyan [[Henry Edaven]] mahkûmları sorgular ve Morgan'ın bir [[Görevlendirmeler|göreve]] seçilip seçilmeyeceğine karar verir.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
-{{missing}}
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
 
-## İlişkiler
-{{missing}}
+Karakter çiziminde Morgan, örgülü saçlı ve turuncu mahkûm tulumlu, elleri kelepçeli ve oturur hâlde gösterilir.
 
-## Hikâyedeki rolü
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
+
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
+{{kararyok}}
+
+## Hikâyedeki rolü {{kesin}}
 Morgan, oyunun ilk gününde değerlendirilen mahkûmlardan biridir. Bkz. [[Oynanış]].
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı ve suç geçmişi.
 - Kişiliği ve geçmişi.
 - Addaki "M." harfinin açılımı.
 :::
 
-## Görünüş
-Karakter çiziminde Morgan, örgülü saçlı ve turuncu mahkûm tulumlu, elleri kelepçeli ve oturur hâlde gösterilir.
+## Ekip önerileri ve tartışma
+{{oneriler}}

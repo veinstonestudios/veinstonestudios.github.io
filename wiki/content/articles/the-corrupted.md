@@ -23,19 +23,13 @@ infobox:
 
 Resmî basın materyalleri onlardan **Anomaliler** olarak da bahseder ve onları "kendilerini insan olarak gizleyebilen taklitçiler" diye tanımlar.
 
-## Genel bakış
+## Genel bakış {{kesin}}
 **Gerçek bir insanı Corrupted bir bireyden ayırt etmek her zaman kolay değildir.** Corrupted olduğundan şüphelenilen kişiler [[Facility 61]]'de tutulur; Gardiyan, mahkûmlardan hangilerinin insan olduğunu belirlemek zorundadır. Mahkûmların bazıları sıradan insanlardır, bazıları ise anomali olabilir.
 
-## Tarihsel arka plan
+## Tarihsel arka plan {{kararyok}}
 Corrupted gelişmiş yapay zekâ ve teknolojiden kaynaklanır. İlk ortaya çıkışlarının koşulları belgelenmemiştir.
 
-:::unknown Belirlenmemiş bilgiler
-- Corrupted'ların ilk ne zaman ve nasıl ortaya çıktığı.
-- Gerçek doğaları ve amaçları.
-- Bir kişinin nasıl Corrupted sayıldığı.
-:::
-
-## Ayrıntılı açıklama
+## Ayrıntılı açıklama {{kesin}}
 ### Taklit
 Corrupted insanları taklit edebilir. Bu yüzden onları tespit etmek dikkatli gözlem gerektirir. Resmî basın materyallerine göre Gardiyan, mahkûm dosyalarını inceler, anlattıklarını karşılaştırır ve görsel bozulmaları arar. Bkz. [[Testler ve Tespit Yöntemleri]].
 
@@ -56,6 +50,16 @@ Gardiyan, Corrupted bir bireyi tespit edemez ve onu bir göreve gönderirse, Dev
 - [[Henry Edaven]] — kızı Corruption belirtileri göstermişti.
 - [[Kategori:Mahkûmlar|Facility 61'in mahkûmları]]
 
+## Henüz karar verilmeyen konular
+:::kararyok
+- Corrupted'ların ilk ne zaman ve nasıl ortaya çıktığı.
+- Gerçek doğaları ve amaçları.
+- Bir kişinin nasıl Corrupted sayıldığı.
+:::
+
 ## Ayrıca bakınız
 - [[CORE Programı]]
 - [[Testler ve Tespit Yöntemleri]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

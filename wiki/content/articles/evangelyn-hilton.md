@@ -28,27 +28,44 @@ infobox:
 Evie'nin insan mı yoksa [[Corrupted]] mı olduğu **henüz belirlenmemiştir**.
 :::
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Evie, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendirmeler|görevler]] için seçebileceği mahkûmlardandır.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
-{{missing}}
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
 
-## İlişkiler
-{{missing}}
+Karakter çiziminde Evie, kısa sarı saçlı ve açık yeşil mahkûm kıyafetli olarak gösterilir.
 
-## Hikâyedeki rolü
-{{missing}}
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
+{{kararyok}}
+
+## Hikâyedeki rolü {{kararyok}}
+{{kararyok}}
+
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı ve geçmişi.
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
 
-## Görünüş
-Karakter çiziminde Evie, kısa sarı saçlı ve açık yeşil mahkûm kıyafetli olarak gösterilir.
+## Ekip önerileri ve tartışma
+{{oneriler}}

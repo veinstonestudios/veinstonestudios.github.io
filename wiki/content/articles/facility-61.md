@@ -31,15 +31,15 @@ infobox:
 *The Facility* oyunun adıdır. **Facility 61** ise oyundaki bu mekânın adıdır.
 :::
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Facility 61, Corrupted olduğundan şüphelenilen mahkûmları barındırır. Bunların bazıları sıradan insanlardır; bazıları ise insanları taklit edebilen anomaliler olabilir. Gardiyanın görevi mahkûmları sorgulamak, insanlıklarını değerlendirmek ve günlük [[Görevlendirmeler|görevler]] için kişileri seçmektir.
 
-## Tarihçe
+## Tarihçe {{kesin}}
 Tesisin temizlik görevlisi [[Janitor]]'ın bir diyaloğuna göre Facility 61 **yaklaşık iki yıldır** faaliyettedir. Henry Edaven'ın gelişinden önceki tarihine dair başka ayrıntı belgelenmemiştir. {{tba}}
 
 Henry, geçmişiyle bağlantılı koşullar altında tesise atanmıştır. Bkz. [[Henry Edaven]].
 
-## Amacı
+## Amacı {{kesin}}
 :::confirmed Kesinleşmiş amaçlar
 - Corrupted olduğundan şüphelenilen hükümlüleri tutmak.
 - Mahkûmların rehabilitasyonu.
@@ -50,7 +50,7 @@ Resmî basın kitine göre Devlet, tehlikeli yeniden yapılanma görevleri için
 
 Tesisin gözlem ve rehabilitasyon çerçevesi **[[CORE Programı]]** (Cognitive Observation & Reformation Experiment) ile ilişkilendirilir.
 
-## Yerleşim
+## Yerleşim {{kesin}}
 ### Hücre blokları
 [[Vera Collins|Teğmen Vera Collins]]'in eğitim diyaloğuna göre:
 - **A Block** kadın mahkûmlara ayrılmıştır. Kırmızı çizgiler A Block'a giden yolu gösterir. Personeli: [[Kategori:A Block Personeli|A Block personeli]].
@@ -59,7 +59,7 @@ Tesisin gözlem ve rehabilitasyon çerçevesi **[[CORE Programı]]** (Cognitive 
 ### Diğer alanlar
 Resmî ekran görüntülerinde görülen alanlar arasında ortak bir salon, koridorlar, inceleme kapaklı mahkûm hücreleri ve mahkûmların seçildiği Gardiyan odası bulunur.
 
-## Önemli olaylar
+## Önemli olaylar {{kesin}}
 - **Henry Edaven'ın Gardiyan olarak atanması** — oyunun başlangıcı.
 - Günlük sorgular ve seçimler. Bkz. [[Oynanış]].
 - [[Gece Olayları]]
@@ -95,6 +95,9 @@ Facility 61'de toplam **14 mahkûm** bulunmaktadır. Mahkûmlar, rehabilitasyon 
 
 Belgelenmiş tüm mahkûmlar için [[Kategori:Mahkûmlar]] sayfasına bakın.
 
+## Henüz karar verilmeyen konular
+{{kararyok}}
+
 ## Galeri
 :::gallery
 assets/img/screens/hall.jpg | Tesisin içindeki bir salon
@@ -112,3 +115,6 @@ assets/img/screens/journal-2.jpg | Gardiyanın günlüğü
 - [[Facility 60]]
 - [[Corrupted]]
 - [[CORE Programı]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

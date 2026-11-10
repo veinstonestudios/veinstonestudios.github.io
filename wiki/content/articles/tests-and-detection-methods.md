@@ -23,10 +23,10 @@ infobox:
 *The Facility* hâlâ geliştirme aşamasındadır. Aşağıdaki yöntemler resmî materyallerde anlatılanlardır. Başka testler ileride belgelenebilir.
 :::
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Gardiyanın görevi mahkûmları sorgulamak ve insanlıklarını değerlendirmektir. Resmî basın kitine göre bu; mahkûm dosyalarını incelemeyi, anlattıklarını karşılaştırmayı ve görsel bozulmaları aramayı kapsar.
 
-## Bilinen yöntemler
+## Bilinen yöntemler {{kesin}}
 ### Sorgu
 Gardiyan mahkûmları yüz yüze sorgular ve tuhaf görünen her şeye dikkat eder.
 
@@ -48,8 +48,11 @@ Mahkûmlarla yapılan her görüşme **2 saat** sürer ve Gardiyanın çalışma
 ### Görsel gözlem
 Gardiyan, bir anomaliye işaret edebilecek görsel bozulmaları arar. **Hücre incelemesi** sırasında mahkûmlar hücrelerinin kapağından gözlemlenebilir.
 
-## Diğer testler
-{{missing}}
+## Diğer testler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen konular
+{{kararyok}}
 
 ## Galeri
 :::gallery
@@ -63,3 +66,6 @@ assets/img/screens/tape-recorder.jpg | Kaydedilmiş bir sorgunun dinlenmesi
 - [[Corrupted]]
 - [[CORE Programı]]
 - [[Oynanış]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

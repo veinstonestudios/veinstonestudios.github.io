@@ -21,25 +21,29 @@ infobox:
 ---
 **CORE Programı** — **C**ognitive **O**bservation & **R**eformation **E**xperiment (Türkçesi: Bilişsel Gözlem ve Islah Deneyi) — *[[The Facility]]* oyununda kurumun gözlem ve rehabilitasyon çerçevesiyle ilişkilendirilir.
 
-## Genel bakış
+## Genel bakış {{kararyok}}
 CORE, kurumun gözlem ve rehabilitasyon çerçevesiyle ilişkilidir. [[Facility 61]] ve mahkûmlarıyla tam olarak nasıl bir ilişkisi olduğu belgelenmemiştir.
 
-:::unknown Belirlenmemiş bilgiler
-Adı ve gözlem ve rehabilitasyon çerçevesiyle ilişkisi dışında CORE Programı'na dair hiçbir ayrıntı doğrulanmamıştır.
-:::
+## Tarihsel arka plan {{kararyok}}
+{{kararyok}}
 
-## Tarihsel arka plan
-{{missing}}
+## Ayrıntılı açıklama {{kararyok}}
+{{kararyok}}
 
-## Ayrıntılı açıklama
-{{missing}}
-
-## İlgili olaylar
-{{missing}}
+## İlgili olaylar {{kararyok}}
+{{kararyok}}
 
 ## İlgili karakterler ve mekânlar
 - [[Facility 61]]
 
+## Henüz karar verilmeyen konular
+:::kararyok
+Adı ve gözlem ve rehabilitasyon çerçevesiyle ilişkisi dışında CORE Programı'na dair hiçbir ayrıntı doğrulanmamıştır.
+:::
+
 ## Ayrıca bakınız
 - [[Corrupted]]
 - [[Testler ve Tespit Yöntemleri]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

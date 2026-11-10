@@ -25,34 +25,35 @@ infobox:
 ---
 **Facility 60**, *[[The Facility]]* dünyasında önceki bir tesisti. **Anomaliler tarafından istila edildikten sonra sonunda kapatıldı.** Oyuncu karakteri [[Henry Edaven]]'ın ağabeyi **[[Arthur Edaven]]**, olaylar sırasında ortadan kayboldu.
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Facility 60, oyunun geçtiği [[Facility 61]]'den önceki bir tesistir. Olaydan önceki işleyişi hakkında çok az şey bilinmektedir.
 
-## Tarihçe
+## Tarihçe {{kesin}}
 ### Facility 60 olayı
 Arthur Edaven 2050'de Corruption şüphesiyle Facility 60'a gönderildi. Facility 60, **2053**'te anomalilerin tesisi **kontrol edilemeyecek boyutta ele geçirmesi** sonucunda kapatıldı. Arthur bu olaylar sırasında ortadan kayboldu. Bkz. [[Henry Edaven#Kronoloji]].
 
-:::unknown Yanıtlanmamış bir soru
+:::gizli Yanıtlanmamış bir soru
 Facility 60'ın düşüşü sırasında Arthur'un Corrupted olduğu iddia edilmiş olabilir; ancak bu iddianın doğru olup olmadığı **hiçbir zaman kesinleşmez**. Bu belirsizlik hikâyenin bilinçli bir parçasıdır; wiki iki olasılıktan hiçbirini gerçek olarak sunmaz.
 :::
 
-:::unknown Belirlenmemiş bilgiler
-- Facility 60'ın ne zaman açıldığı.
-- Facility 60'ın amacının ne olduğu ve Facility 61'inkiyle aynı olup olmadığı.
-- Anomalilerin tesisi nasıl ele geçirdiği.
-- Personelinin ve mahkûmlarının başına ne geldiği.
-:::
+## Amacı {{kararyok}}
+{{kararyok}}
 
-## Amacı
-{{missing}}
-
-## Önemli olaylar
+## Önemli olaylar {{kesin}}
 - **Facility 60 olayı** — tesis anomaliler tarafından istila edilir ve sonunda kapatılır.
 - Olay sırasında **Arthur Edaven'ın ortadan kaybolması**.
 
 ## İlgili karakterler
 - [[Arthur Edaven]] — olay sırasında ortadan kayboldu.
 - [[Henry Edaven]] — Arthur'un kardeşi.
+
+## Henüz karar verilmeyen konular
+:::kararyok
+- Facility 60'ın ne zaman açıldığı.
+- Facility 60'ın amacının ne olduğu ve Facility 61'inkiyle aynı olup olmadığı.
+- Anomalilerin tesisi nasıl ele geçirdiği.
+- Personelinin ve mahkûmlarının başına ne geldiği.
+:::
 
 ## Galeri
 :::gallery
@@ -65,3 +66,6 @@ assets/video/facility-60-logo-vhs.mp4 | Facility 60 amblemi, VHS görünümüyle
 - [[Facility 61]]
 - [[Corrupted]]
 - [[Zaman Çizelgesi]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

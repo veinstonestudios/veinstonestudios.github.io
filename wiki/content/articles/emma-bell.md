@@ -26,42 +26,55 @@ infobox:
 ---
 **Emma Bell**, *[[The Facility]]* oyununda [[Facility 61]]'in **A Block** personelinden bir subaydır (A Block Officer). [[Gina Bell]] ile **ikiz kardeştir**.
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Emma, kadın mahkûmların bulunduğu A Block'ta görev yapar. Çalışma alanı **kadınlar koğuşunun güvenliğidir**; bağlı olduğu birim **Yemekhane / Hizmet Kanadı**'dır (Mess Hall / Service Wing). Sorumluluğu, A Block içinde güvenliği ve düzeni sağlamaktır.
 
 İkiz kardeşi [[Gina Bell]] de A Block personelindendir; ancak o klinikte, Tıbbi Bakım ve Değerlendirme Kanadı'nda görev yapar.
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
-{{missing}}
+## Fiziksel görünüm {{kesin}}
+Emma'nın kahverengi saçları vardır. A Block personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde saçında bir toka bulunur ve gülümser hâlde gösterilir.
 
-## İlişkiler
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
+
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kesin}}
 | Karakter | İlişki |
 |---|---|
 | [[Gina Bell]] | İkiz kardeşi. O da A Block personelindendir. |
 
-## Hikâyedeki rolü
-{{missing}}
+## Hikâyedeki rolü {{kararyok}}
+{{kararyok}}
 
-## Bilinen bilgiler ve gizemler
+## Bilinenler ve gizemler
 :::confirmed Kesinleşmiş
 - Gina Bell ile ikiz kardeştir.
 - Facility 61'in A Block subayıdır; kadınlar koğuşunun güvenliğinden sorumludur.
 - Bağlı olduğu birim Yemekhane / Hizmet Kanadı'dır.
 :::
 
-:::unknown Henüz belirlenmedi
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Yaşı.
 - Kişiliği ve geçmişi.
 - Diğer karakterlerle ilişkileri.
 :::
 
-## Görünüş
-Emma'nın kahverengi saçları vardır. A Block personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde saçında bir toka bulunur ve gülümser hâlde gösterilir.
-
 ## Ayrıca bakınız
 - [[Gina Bell]]
 - [[Kategori:A Block Personeli]]
 - [[Facility 61#Hücre blokları]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

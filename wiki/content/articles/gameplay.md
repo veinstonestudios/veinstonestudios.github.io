@@ -22,10 +22,10 @@ infobox:
 *The Facility* hâlâ geliştirme aşamasındadır. Burada anlatılan mekanikler resmî materyallere dayanır ve çıkıştan önce değişebilir.
 :::
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Facility 61'in mahkûmları arasında insanları taklit edebilen anomaliler, yani [[Corrupted]] saklanmaktadır. Oyuncu kimin insan olup kimin olmadığını çözmek ve tesisten kimin gönderileceğine karar vermek zorundadır.
 
-## Günlük döngü
+## Günlük döngü {{kesin}}
 Resmî basın kitine göre oyundaki her gün dört aşamadan oluşur:
 
 | Aşama | Açıklama |
@@ -35,17 +35,17 @@ Resmî basın kitine göre oyundaki her gün dört aşamadan oluşur:
 | **Seçim** | Gardiyan kimin gönderileceğine karar verir. Bir insanı ölüm tuzağına göndermek bir kaynağı boşa harcamaktır; bir anomaliyi göndermek ise daha kötüdür. |
 | **Gece** | Gardiyanın kararları geri döner. Senaryolu gece olayları oyuncunun seçimlerini takip eder ve oyuncu sabaha kadar hayatta kalmalıdır. Bkz. [[Gece Olayları]]. |
 
-## İki ayrı değerlendirme
+## İki ayrı değerlendirme {{kesin}}
 Oyuncu her mahkûm için birbirinden bağımsız iki kriteri değerlendirmek zorundadır:
 1. **Bu kişi gerçekten insan mı?**
 2. **Bu kişi verilen görev için uygun mu?**
 
 Bir mahkûmun insan olması, göreve mutlaka uygun olduğu anlamına gelmez. Ayrıca mahkûmların Corrupted olabileceklerinden şüphelenilse de şüpheli olmak suçlu olmak anlamına gelmez.
 
-## Çalışma saatleri ve kaynaklar
+## Çalışma saatleri ve kaynaklar {{kesin}}
 Gardiyan, tesisin kaynaklarını ve çalışma saatlerini yönetir. Mahkûmlarla yapılan görüşmeler çalışma saatlerinden harcar; [[Vera Collins]]'in eğitim diyaloğuna göre **her görüşme 2 saat** sürer.
 
-## Gardiyanın araçları
+## Gardiyanın araçları {{kesin}}
 Resmî ekran görüntüleri ve basın materyalleri Gardiyanın kullanabildiği çeşitli araçları gösterir:
 - **Hücre incelemesi** — bir mahkûmu hücresinin kapağından gözlemlemek.
 - **Günlük (Journal)** — ifadeleri karşılaştırmak için kullanılır. Sabah gelen faks ve ses kayıtlarını içeren mahkûm dosyaları da günlükte bulunur.
@@ -54,10 +54,13 @@ Resmî ekran görüntüleri ve basın materyalleri Gardiyanın kullanabildiği �
 
 Bu araçların Corrupted'ları tespit etmek için nasıl kullanıldığını öğrenmek için [[Testler ve Tespit Yöntemleri]] maddesine bakın.
 
-## Sonuçlar
+## Sonuçlar {{kesin}}
 Gardiyan bir anomaliyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Gardiyanı sorumlu tutar.
 
 Oyuncunun seçimleri **tesisteki insan ve anomali dengesini** ve **oyunun sonunu** etkiler. Bu etkinin ayrıntıları ve [[Sonlar|sonlar]] henüz belgelenmemiştir. {{tba}}
+
+## Henüz karar verilmeyen konular
+{{kararyok}}
 
 ## Galeri
 :::gallery
@@ -75,3 +78,6 @@ assets/img/screens/selecting-inmates.jpg | Mahkûmların seçildiği Gardiyan ma
 - [[Testler ve Tespit Yöntemleri]]
 - [[Gece Olayları]]
 - [[Sonlar]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

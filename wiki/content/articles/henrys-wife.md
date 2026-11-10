@@ -23,26 +23,44 @@ infobox:
 ---
 **Henry'nin Eşi**, *[[The Facility]]* oyununun oyuncu karakteri **[[Henry Edaven]]**'ın eşidir. [[Henry'nin Kızı|Kızıyla]] birlikte bir yangında hayatını kaybetmiştir.
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 Henry'nin eşinin ölümü, Henry'nin geçmiş travmasının önemli bir parçasıdır.
 
-## Geçmiş ve biyografi
+## Temel bilgiler
+{{temelbilgiler}}
+
+## Fiziksel görünüm {{kararyok}}
+{{kararyok}}
+
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
+
+## Biyografi {{kararyok}}
 Kızıyla birlikte bir yangında hayatını kaybetmiştir. Yangının nedeni ve koşulları belgelenmemiştir. {{unknown}}
 
-## Kişilik
-{{missing}}
+## Geçmişi {{kararyok}}
+{{kararyok}}
 
-## İlişkiler
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kesin}}
 | Karakter | İlişki |
 |---|---|
 | [[Henry Edaven]] | Eşi |
 | [[Henry'nin Kızı]] | Kızı. Aynı yangında hayatını kaybetti. |
 
-## Hikâyedeki rolü
+## Hikâyedeki rolü {{kesin}}
 Henry'nin geçmiş travmasının bir parçası olarak, Henry'nin ailesine ilişkin sembolik sahneler [[Gece Olayları|gece olaylarında]] görülür.
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Adı ve yaşı.
 - Görünüşü ve kişiliği.
 :::
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

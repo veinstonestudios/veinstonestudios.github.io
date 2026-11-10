@@ -23,13 +23,13 @@ infobox:
 *The Facility* hâlâ geliştirme aşamasındadır. Bu sayfadaki ayrıntılar resmî materyallere dayanır ve çıkıştan önce değişebilir.
 :::
 
-## Genel bakış
+## Genel bakış {{kesin}}
 Resmî basın kitine göre Devlet, tehlikeli yeniden yapılanma görevleri için Facility 61'den kişiler talep eder. Gardiyan kimi göndereceğini seçmeli ve aralarında hiçbir [[Corrupted]] bireyin bulunmadığından emin olmalıdır.
 
-## Emirler
+## Emirler {{kesin}}
 Her sabah Gardiyana bir faks gelir. Faks, görevin ayrıntılarını ve seçilmesi gereken mahkûm sayısını içerir ve Henry'nin günlüğü (Journal) içinden okunabilir. Bu sistem Henry'ye ilk gün [[Viktor Hale|Kaptan Viktor Hale]] tarafından anlatılır.
 
-## Seçim
+## Seçim {{kesin}}
 [[Testler ve Tespit Yöntemleri|Sorgulardan]] sonra Gardiyan kimin gönderileceğine karar verir. Her mahkûm için iki ayrı soru vardır: **Bu kişi gerçekten insan mı?** ve **Bu kişi verilen görev için uygun mu?** Bir mahkûmun insan olması, göreve mutlaka uygun olduğu anlamına gelmez.
 
 :::warning Sonuçlar
@@ -37,8 +37,11 @@ Her sabah Gardiyana bir faks gelir. Faks, görevin ayrıntılarını ve seçilme
 - Bir anomaliyi göndermek daha kötüdür: Gardiyan bir anomaliyi tespit edemez ve onu bir göreve gönderirse, Devlet sonuçlardan Gardiyanı sorumlu tutar.
 :::
 
-## Görev türleri
-{{missing}}
+## Görev türleri {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen konular
+{{kararyok}}
 
 ## Galeri
 :::gallery
@@ -49,3 +52,6 @@ assets/img/screens/selecting-inmates.jpg | Gardiyanın masası
 ## Ayrıca bakınız
 - [[Oynanış]]
 - [[Gece Olayları]]
+
+## Ekip önerileri ve tartışma
+{{oneriler}}

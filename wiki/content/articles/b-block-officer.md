@@ -23,27 +23,44 @@ infobox:
 ---
 **B Block Subayı** (İngilizce: B Block Officer), *[[The Facility]]* oyununda [[Facility 61]]'in **B Block**'unda görev yapan bir subaydır.
 
-## Genel bilgiler
+## Genel bakış {{kesin}}
 B Block, Facility 61'in erkek mahkûmlara ayrılmış hücre bloğudur; bloğa giden yol mavi çizgilerle gösterilir. Bkz. [[Facility 61#Hücre blokları]].
 
-## Geçmiş ve biyografi
-{{missing}}
+## Temel bilgiler
+{{temelbilgiler}}
 
-## Kişilik
-{{missing}}
+## Fiziksel görünüm {{gelistiriliyor}}
+*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
 
-## İlişkiler
-{{missing}}
+Karakter çiziminde B Block Subayı, kızıl saçlı ve sakallı, koyu yeşil üniformalı olarak, elinde bir kalemle oturur hâlde gösterilir.
 
-## Hikâyedeki rolü
-{{missing}}
+## Kişilik ve davranışlar {{kararyok}}
+{{kararyok}}
 
-## Bilinen bilgiler ve gizemler
-:::unknown Henüz belirlenmedi
+## Biyografi {{kararyok}}
+{{kararyok}}
+
+## Geçmişi {{kararyok}}
+{{kararyok}}
+
+## Motivasyonları {{kararyok}}
+{{kararyok}}
+
+## Diğer karakterlerle ilişkileri {{kararyok}}
+{{kararyok}}
+
+## Hikâyedeki rolü {{kararyok}}
+{{kararyok}}
+
+## Bilinenler ve gizemler {{kararyok}}
+{{kararyok}}
+
+## Henüz karar verilmeyen özellikler
+:::kararyok
 - Adı ve yaşı.
 - Görevlerinin ayrıntıları.
 - Geçmişi, kişiliği ve diğer karakterlerle ilişkileri.
 :::
 
-## Görünüş
-Karakter çiziminde B Block Subayı, kızıl saçlı ve sakallı, koyu yeşil üniformalı olarak, elinde bir kalemle oturur hâlde gösterilir.
+## Ekip önerileri ve tartışma
+{{oneriler}}
