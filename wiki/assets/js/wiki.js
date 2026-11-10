@@ -661,6 +661,7 @@
     var headings = [];
     CURRENT_TITLE = p.title; CURRENT_PAGE = p;
     var bodyHtml = renderBlocks(p.body, headings);
+    if (p.type !== 'project' && !/class="cmts"/.test(bodyHtml)) bodyHtml += '<h2 id="ekip-yorumlari"><span class="h-text">Ekip yorumları ve önerileri</span></h2>' + proposalsBlock(p.title);
     var tocHtml = toc(headings);
     if (tocHtml) {
       var at = bodyHtml.search(/<h2[ >]/);
@@ -1052,13 +1053,6 @@
     });
   }
 
-  /* ---------- Ekip önerileri (GitHub Issues üzerinden) ----------
-     Wiki statiktir ve kendi başına veri kaydedemez. Öneriler GitHub'da
-     "[Öneri]" ile başlayan issue olarak açılır (.github/ISSUE_TEMPLATE/oneri.yml)
-     ve buradan herkese açık GitHub API'siyle okunup listelenir.
-     Durum, proje sorumlusunun eklediği etiketten gelir:
-       "durum: kabul edildi" · "durum: reddedildi" · "durum: beklemede" · (etiket yok) Değerlendirilecek */
-  var REPO = CFG.repo || { owner: 'veinstonestudios', name: 'veinstonestudios.github.io' };
   var CURRENT_TITLE = '', CURRENT_PAGE = null;
   function basicInfo(p) {
     var rows = (p && p.infobox) || [];
@@ -1080,113 +1074,309 @@
     if (open) h += '</dl>';
     return h + '</div>';
   }
-  var proposalsPromise = null;
+  /* ---------- Ekip yorumları (Supabase) ----------
+     Wiki statiktir; yorumlar Supabase veritabanında saklanır (kurulum:
+     supabase/yorumlar.sql ve Geliştirme Rehberi). Tarayıcı yalnızca iki
+     veritabanı fonksiyonunu çağırır: wiki_list_comments ve wiki_add_comment.
+     İkisi de ekip kodunu ister; kod ve ad bu tarayıcıda hatırlanır.
+     Yorumlar kanon bilgileri hiçbir zaman değiştirmez. */
+  var CMT = CFG.comments || {};
+  var CMT_ON = !!(CMT.supabaseUrl && CMT.supabaseAnonKey);
+  var CMT_KINDS = {
+    yorum:    { label: 'Yorum',    cls: 'ck-yorum' },
+    oneri:    { label: 'Öneri',    cls: 'ck-oneri' },
+    soru:     { label: 'Soru',     cls: 'ck-soru' },
+    tartisma: { label: 'Tartışma', cls: 'ck-tartisma' }
+  };
   var PROP_STATUS = {
     degerlendirilecek: { label: 'Değerlendirilecek', cls: 'ps-review' },
     kabul:             { label: 'Kabul edildi',      cls: 'ps-accepted' },
     red:               { label: 'Reddedildi',        cls: 'ps-rejected' },
     beklemede:         { label: 'Beklemede',         cls: 'ps-hold' }
   };
-  function repoUrl(p) { return 'https://github.com/' + REPO.owner + '/' + REPO.name + p; }
-  function newProposalUrl(topic) {
-    return repoUrl('/issues/new?template=oneri.yml&title=' + encodeURIComponent('[Öneri] ' + (topic ? '[' + topic + '] ' : '')) +
-      (topic ? '&konu=' + encodeURIComponent(topic) : ''));
-  }
-  function proposalsListUrl(topic) {
-    return repoUrl('/issues?q=' + encodeURIComponent('is:issue "[Öneri]"' + (topic ? ' "' + topic + '"' : '')));
-  }
-  function proposalTemplate(topic) {
-    return 'Öneri başlığı: \n' +
-      'İlgili karakter / konu: ' + (topic || '') + '\n' +
-      'Öneri türü: (A) Mevcut bir özelliği geliştirme / (B) Henüz karar verilmemiş bir konuya öneri\n' +
-      'Önerinin açıklaması: \n' +
-      'Öneriyi sunan kişi: \n' +
-      'Durum: Değerlendirilecek';
-  }
-  function proposalsBlock(topic) {
-    return '<div class="proposals" data-topic="' + esc(topic) + '">' +
-      '<div class="prop-note">' + statusTag('kararyok') + ' <strong>Öneriler kanon değildir.</strong> Buradaki fikirler yalnızca değerlendirilmek üzere sunulmuştur; ' +
-        'proje sorumlusu onaylamadıkça mevcut bilgileri değiştirmez ve <em>Kesinleştirildi</em> bilgiye dönüşmez. ' +
-        'Wiki önerileri kendisi kaydetmez: öneriler GitHub üzerinden gönderilir ve burada otomatik listelenir.</div>' +
-      '<div class="prop-list" aria-live="polite"><p class="muted">Öneriler yükleniyor…</p></div>' +
-      '<div class="prop-actions"><a class="rail-btn prop-btn" href="' + esc(newProposalUrl(topic)) + '" target="_blank" rel="noopener">+ Öneri gönder (GitHub)</a>' +
-        '<a class="prop-link" href="' + esc(proposalsListUrl(topic)) + '" target="_blank" rel="noopener">Tüm tartışmaları GitHub\'da görüntüle</a>' +
-        '<a class="prop-link" href="' + esc(pageUrl('The Facility Wiki:Geliştirme Rehberi', 'ekip-onerileri-nasil-calisir')) + '" data-internal>Nasıl çalışır?</a></div>' +
-      '<details class="prop-template"><summary>Kopyalanabilir öneri şablonu</summary>' +
-        '<textarea readonly rows="6" aria-label="Öneri şablonu">' + esc(proposalTemplate(topic)) + '</textarea>' +
-        '<button type="button" class="prop-copy" data-copy>Şablonu kopyala</button>' +
-        '<p class="muted">GitHub hesabı olmayan ekip üyeleri şablonu doldurup proje sorumlusuna iletebilir; öneri sorumlu tarafından GitHub\'a eklenir.</p></details>' +
-      '</div>';
-  }
-  function issueField(body, label) {
-    var re = new RegExp('###\\s*' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\n+([\\s\\S]*?)(?=\\n###\\s|$)', 'i');
-    var m = (body || '').match(re);
-    var v = m ? m[1].trim() : '';
-    return /^_?no response_?$/i.test(v) ? '' : v;
-  }
-  function parseProposal(is) {
-    var title = is.title.replace(/^\s*\[öneri\]\s*/i, '');
-    var tm = title.match(/^\[([^\]]+)\]\s*/);
-    var topic = issueField(is.body, 'İlgili karakter / konu') || (tm ? tm[1] : '');
-    if (tm) title = title.slice(tm[0].length);
-    var labels = (is.labels || []).map(function (l) { return fold(l.name || ''); }).join(' ');
-    var st = /kabul/.test(labels) ? 'kabul' : /redd/.test(labels) ? 'red' : /beklemede/.test(labels) ? 'beklemede' : 'degerlendirilecek';
-    return {
-      title: title.trim() || '(başlıksız öneri)', topic: topic.trim(), url: is.html_url, num: is.number,
-      type: issueField(is.body, 'Öneri türü'), text: issueField(is.body, 'Önerinin açıklaması') || (is.body || '').trim(),
-      author: issueField(is.body, 'Öneriyi sunan kişi') || (is.user && is.user.login) || '', date: (is.created_at || '').slice(0, 10), status: st
-    };
-  }
-  function fetchProposals() {
-    if (proposalsPromise) return proposalsPromise;
-    var cacheKey = 'tfw-proposals-v1';
-    try {
-      var c = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
-      if (c && Date.now() - c.t < 10 * 60 * 1000) { proposalsPromise = Promise.resolve(c.d); return proposalsPromise; }
-    } catch (e) {}
-    proposalsPromise = fetch('https://api.github.com/repos/' + REPO.owner + '/' + REPO.name + '/issues?state=all&per_page=100&sort=created&direction=desc', { headers: { Accept: 'application/vnd.github+json' } })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (list) {
-        var d = list.filter(function (is) { return !is.pull_request && /^\s*\[öneri\]/i.test(is.title || ''); }).map(parseProposal);
-        try { sessionStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
+  var cmtCache = {};          // sayfa başlığı → Promise<yorum[]>
+  var cmtFilter = 'hepsi';
+
+  function lsGet(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function lsSet(k, v) { try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); } catch (e) {} }
+  function teamCode() { return lsGet('tfw-team-code'); }
+  function authorName() { return lsGet('tfw-author'); }
+
+  function rpc(fn, args) {
+    return fetch(CMT.supabaseUrl.replace(/\/+$/, '') + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: CMT.supabaseAnonKey, Authorization: 'Bearer ' + CMT.supabaseAnonKey },
+      body: JSON.stringify(args)
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var d = null; try { d = t ? JSON.parse(t) : null; } catch (e) {}
+        if (!r.ok) {
+          var msg = (d && (d.message || d.hint)) || ('HTTP ' + r.status);
+          var err = new Error(msg); err.code = /invalid_code/.test(msg) ? 'code' : /rate_limited/.test(msg) ? 'rate' : 'other';
+          throw err;
+        }
         return d;
-      })
-      .catch(function (e) { proposalsPromise = null; throw e; });
-    return proposalsPromise;
-  }
-  function proposalCard(pr, showTopic) {
-    var st = PROP_STATUS[pr.status];
-    var tp = pr.topic ? findPage(pr.topic) : null;
-    var text = pr.text.length > 500 ? pr.text.slice(0, 500).replace(/\s+\S*$/, '') + '…' : pr.text;
-    return '<article class="prop-card ' + st.cls + '"><header><span class="prop-status">' + st.label + '</span>' +
-      '<h4>' + esc(pr.title) + '</h4></header>' +
-      '<div class="prop-meta">' + (showTopic && pr.topic ? 'İlgili: ' + (tp ? link(tp.title) : esc(pr.topic)) + ' · ' : '') +
-        (pr.type ? esc(pr.type.replace(/\s*—.*$/, '')) + ' · ' : '') + 'Öneren: ' + esc(pr.author || 'bilinmiyor') + ' · ' + fmtDate(pr.date) + ' · #' + pr.num + '</div>' +
-      '<p class="prop-text">' + esc(text).replace(/\n+/g, '<br>') + '</p>' +
-      '<a class="prop-discuss" href="' + esc(pr.url) + '" target="_blank" rel="noopener">Tartışmaya katıl →</a></article>';
-  }
-  function hydrateProposals() {
-    var boxes = document.querySelectorAll('.proposals');
-    if (!boxes.length) return;
-    fetchProposals().then(function (all) {
-      boxes.forEach(function (box) {
-        var topic = box.getAttribute('data-topic');
-        var tp = topic ? findPage(topic) : null;
-        var items = all.filter(function (pr) {
-          if (!topic) return true;
-          var p = pr.topic ? findPage(pr.topic) : null;
-          return (p && tp && p === tp) || key(pr.topic) === key(topic);
-        });
-        box.querySelector('.prop-list').innerHTML = items.length
-          ? items.map(function (pr) { return proposalCard(pr, !topic); }).join('')
-          : '<p class="muted">' + (topic ? 'Bu sayfa için henüz öneri yok. İlk öneriyi sen gönderebilirsin.' : 'Henüz öneri gönderilmedi.') + '</p>';
-      });
-    }).catch(function () {
-      boxes.forEach(function (box) {
-        box.querySelector('.prop-list').innerHTML = '<p class="muted">Öneriler şu an yüklenemedi (GitHub bağlantısı ya da istek sınırı). ' +
-          'Önerileri doğrudan <a href="' + esc(proposalsListUrl(box.getAttribute('data-topic'))) + '" target="_blank" rel="noopener">GitHub\'da</a> görebilirsin.</p>';
       });
     });
+  }
+  function loadComments(page, force) {
+    var k = page || '*';
+    if (!force && cmtCache[k]) return cmtCache[k];
+    cmtCache[k] = rpc('wiki_list_comments', { p_code: teamCode(), p_page: page || null, p_limit: page ? 1000 : 60 })
+      .catch(function (e) { delete cmtCache[k]; throw e; });
+    return cmtCache[k];
+  }
+  function cmtErrorText(e) {
+    if (e.code === 'code') return 'Ekip kodu hatalı. Lütfen kodu kontrol edip yeniden gir.';
+    if (e.code === 'rate') return 'Kısa sürede çok fazla yorum gönderildi. Bir dakika sonra tekrar dene.';
+    return 'Yorum sunucusuna ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.';
+  }
+  function fmtStamp(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    try { return d.toLocaleString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+    catch (e) { return iso.slice(0, 16).replace('T', ' '); }
+  }
+  function cmtText(s) { return esc(s).replace(/\r?\n/g, '<br>'); }
+
+  // Sayfadaki yer tutucu: {{oneriler}} (bu sayfa) veya {{oneriler:tum}} (tüm sayfalardaki son yorumlar)
+  function proposalsBlock(topic) {
+    return '<div class="cmts" data-page="' + esc(topic) + '" data-mode="' + (topic ? 'page' : 'all') + '"></div>';
+  }
+
+  function cmtNote() {
+    return '<div class="cmt-note"><strong>Yorumlar kanon değildir.</strong> Buradaki yorum, soru ve öneriler mevcut bilgileri ' +
+      'kendiliğinden değiştirmez. Bir öneri ancak proje sorumlusu ilgili sayfayı güncelleyip bilgiyi <em>Kesinleştirildi</em> olarak işaretlediğinde kanonlaşır. ' +
+      '<a href="' + esc(pageUrl('The Facility Wiki:Geliştirme Rehberi', 'ekip-yorumlari-nasil-calisir')) + '" data-internal>Nasıl çalışır?</a></div>';
+  }
+  function codeForm(msg) {
+    return '<form class="cmt-codeform" data-cmt-code>' +
+      '<p>' + (msg ? '<span class="cmt-err">' + esc(msg) + '</span> ' : '') +
+        'Yorumlar yalnızca ekip üyelerine açıktır. Yorumları görmek ve yazmak için <strong>ekip kodunu</strong> gir (bir kez girmen yeterli; bu tarayıcıda hatırlanır).</p>' +
+      '<div class="cmt-row"><input type="password" name="code" required autocomplete="off" placeholder="Ekip kodu" aria-label="Ekip kodu">' +
+      '<button type="submit" class="cmt-btn">Devam</button></div></form>';
+  }
+  function kindOptions(sel) {
+    return Object.keys(CMT_KINDS).map(function (k) {
+      return '<option value="' + k + '"' + (k === sel ? ' selected' : '') + '>' + CMT_KINDS[k].label + '</option>';
+    }).join('');
+  }
+  function commentForm(section, parent, compact) {
+    return '<form class="cmt-form' + (compact ? ' compact' : '') + '" data-cmt-form data-section="' + esc(section || '') + '"' + (parent ? ' data-parent="' + esc(parent) + '"' : '') + '>' +
+      '<div class="cmt-row">' +
+        '<input name="author" required maxlength="60" placeholder="Adın" aria-label="Adın" value="' + esc(authorName()) + '">' +
+        (parent ? '' : '<select name="kind" aria-label="Yorum türü">' + kindOptions('yorum') + '</select>') +
+      '</div>' +
+      '<textarea name="body" required maxlength="4000" rows="' + (compact ? 2 : 3) + '" placeholder="' + (parent ? 'Cevabını yaz…' : 'Yorumunu, sorunu veya önerini yaz…') + '" aria-label="Yorum metni"></textarea>' +
+      '<div class="cmt-row cmt-actions"><button type="submit" class="cmt-btn">' + (parent ? 'Cevapla' : 'Gönder') + '</button>' +
+        (parent ? '<button type="button" class="cmt-link" data-cmt-cancel>Vazgeç</button>' : '') +
+        '<span class="cmt-msg" aria-live="polite"></span></div>' +
+    '</form>';
+  }
+  function commentCard(c, replies, opts) {
+    var k = CMT_KINDS[c.kind] || CMT_KINDS.yorum;
+    var st = c.kind === 'oneri' ? (PROP_STATUS[c.status] || PROP_STATUS.degerlendirilecek) : null;
+    var where = '';
+    if (opts && opts.showPage) {
+      var p = findPage(c.page);
+      where = '<span class="cmt-where">' + (p ? '<a href="' + esc(pageUrl(p.title, c.section || '')) + '" data-internal>' + esc(p.title) + (c.section ? ' › ' + esc(c.section) : '') + '</a>' : esc(c.page)) + '</span>';
+    }
+    return '<article class="cmt ' + k.cls + '" id="yorum-' + esc(c.id) + '">' +
+      '<header class="cmt-head">' +
+        (c.parent_id ? '' : '<span class="cmt-kind">' + k.label + '</span>') +
+        (st ? '<span class="prop-status ' + st.cls + '">' + st.label + '</span>' : '') +
+        '<strong class="cmt-author">' + esc(c.author) + '</strong>' +
+        '<time class="cmt-time" datetime="' + esc(c.created_at) + '">' + esc(fmtStamp(c.created_at)) + '</time>' + where +
+      '</header>' +
+      '<div class="cmt-body">' + cmtText(c.body) + '</div>' +
+      (opts && opts.noReply ? '' :
+        '<div class="cmt-foot">' + (c.parent_id ? '' : '<button type="button" class="cmt-link" data-cmt-reply="' + esc(c.id) + '">Cevapla</button>') + '</div>') +
+      (replies && replies.length ? '<div class="cmt-replies">' + replies.map(function (r) { return commentCard(r, null, { noReply: true }); }).join('') + '</div>' : '') +
+      (c.parent_id ? '' : '<div class="cmt-reply-slot"></div>') +
+    '</article>';
+  }
+  function threadHtml(list, section, withFilter) {
+    var tops = list.filter(function (c) { return !c.parent_id && (c.section || '') === section; })
+      .sort(function (a, b) { return a.created_at.localeCompare(b.created_at); });
+    var replies = {};
+    list.forEach(function (c) { if (c.parent_id) (replies[c.parent_id] = replies[c.parent_id] || []).push(c); });
+    Object.keys(replies).forEach(function (k) { replies[k].sort(function (a, b) { return a.created_at.localeCompare(b.created_at); }); });
+    var shown = withFilter && cmtFilter !== 'hepsi' ? tops.filter(function (c) { return c.kind === cmtFilter; }) : tops;
+    var filter = '';
+    if (withFilter && tops.length) {
+      filter = '<div class="cmt-filter" role="group" aria-label="Türe göre süz">' + ['hepsi'].concat(Object.keys(CMT_KINDS)).map(function (k) {
+        var n = k === 'hepsi' ? tops.length : tops.filter(function (c) { return c.kind === k; }).length;
+        return '<button type="button" data-cmt-filter="' + k + '" class="' + (k === cmtFilter ? 'on' : '') + '">' + (k === 'hepsi' ? 'Tümü' : CMT_KINDS[k].label) + ' <span>' + n + '</span></button>';
+      }).join('') + '</div>';
+    }
+    return filter + '<div class="cmt-list">' + (shown.length
+      ? shown.map(function (c) { return commentCard(c, replies[c.id]); }).join('')
+      : '<p class="muted cmt-empty">' + (tops.length ? 'Bu türde yorum yok.' : 'Henüz yorum yok. İlk yorumu sen yazabilirsin.') + '</p>') + '</div>';
+  }
+
+  // Kesinleştirilmiş bölümlerin ve kutuların altına yorum bağlantısı ekler
+  function attachSectionThreads(root) {
+    var prose = root.querySelector('.prose');
+    if (!prose) return [];
+    prose.querySelectorAll(".cmt-sec").forEach(function (b) { b.remove(); });
+    var keys = [];
+    prose.querySelectorAll('h2, h3').forEach(function (h) {
+      if (!h.querySelector('.st-kesin') || h.closest('.cmts')) return;
+      var lvl = +h.tagName[1], end = h.nextElementSibling;
+      while (end && !(/^H[1-6]$/.test(end.tagName) && +end.tagName[1] <= lvl) && !end.classList.contains('cmts')) {
+        if (end.tagName === 'H3' && lvl === 2 && end.querySelector('.st-kesin')) break; // alt bölümün kendi yorumu olur
+        end = end.nextElementSibling;
+      }
+      var key = h.id, label = (h.querySelector('.h-text') || h).textContent.trim();
+      var box = document.createElement('div');
+      box.className = 'cmt-sec'; box.setAttribute('data-section', key); box.setAttribute('data-label', label);
+      prose.insertBefore(box, end);
+      keys.push(box);
+    });
+    var used = {};
+    prose.querySelectorAll('.callout-kesin').forEach(function (co) {
+      if (co.closest('.cmts')) return;
+      var sub = co.querySelector('.callout-sub'), prev = co.previousElementSibling;
+      while (prev && !/^H[23]$/.test(prev.tagName)) prev = prev.previousElementSibling;
+      var base = 'kutu-' + (slugify(sub ? sub.textContent : '') || (prev ? prev.id : 'kesin'));
+      var key = base, n = 2;
+      while (used[key]) key = base + '-' + (n++);
+      used[key] = 1;
+      var box = document.createElement('div');
+      box.className = 'cmt-sec cmt-sec-box'; box.setAttribute('data-section', key);
+      box.setAttribute('data-label', sub ? sub.textContent.trim() : 'Kesinleştirilmiş bilgi');
+      co.parentNode.insertBefore(box, co.nextSibling);
+      keys.push(box);
+    });
+    return keys;
+  }
+  function renderSection(box, list, open) {
+    var key = box.getAttribute('data-section');
+    var n = list.filter(function (c) { return (c.section || '') === key; }).length;
+    box.innerHTML = '<button type="button" class="cmt-sec-toggle" data-cmt-toggle aria-expanded="' + (open ? 'true' : 'false') + '">' +
+        '<span class="cmt-sec-ico" aria-hidden="true">▸</span> Bu bilgiye yorum yap' + (n ? ' · <strong>' + n + ' yorum</strong>' : '') + '</button>' +
+      (open ? '<div class="cmt-sec-body">' + threadHtml(list, key, false) + commentForm(key, null, true) + '</div>' : '');
+    box.classList.toggle('open', !!open);
+  }
+  function renderPageBlock(box, list) {
+    var secN = list.filter(function (c) { return c.section; }).length;
+    box.innerHTML = cmtNote() +
+      threadHtml(list, '', true) +
+      (secN ? '<p class="muted cmt-secnote">Bu sayfadaki kesinleştirilmiş bölümlere ayrıca <strong>' + secN + '</strong> yorum yazıldı; ilgili bölümün altındaki “Bu bilgiye yorum yap” bağlantısından okuyabilirsin.</p>' : '') +
+      '<h3 class="cmt-h">Yorum yaz</h3>' + commentForm('', null, false);
+  }
+
+  function hydrateProposals() {
+    var app = document.getElementById('content');
+    if (!app) return;
+    var article = app.querySelector('.article');
+    var blocks = app.querySelectorAll('.cmts');
+    if (!blocks.length && !article) return;
+    var pageBox = app.querySelector('.cmts[data-mode="page"]');
+    var allBox = app.querySelector('.cmts[data-mode="all"]');
+    var page = pageBox ? pageBox.getAttribute('data-page') : '';
+
+    if (!CMT_ON) {
+      blocks.forEach(function (b) {
+        b.innerHTML = cmtNote() + '<div class="missing">' + statusTag('kararyok') + ' <strong>Yorum sistemi henüz bağlanmadı.</strong> ' +
+          'Proje sorumlusunun Supabase kurulumunu tamamlaması gerekiyor (bkz. <a href="' + esc(pageUrl('The Facility Wiki:Geliştirme Rehberi', 'kurulum-proje-sorumlusu-icin')) + '" data-internal>Geliştirme Rehberi</a>).</div>';
+      });
+      return;
+    }
+    if (!teamCode()) { blocks.forEach(function (b) { b.innerHTML = cmtNote() + codeForm(); }); return; }
+
+    if (allBox) {
+      allBox.innerHTML = '<p class="muted">Yorumlar yükleniyor…</p>';
+      loadComments('', true).then(function (list) {
+        allBox.innerHTML = cmtNote() + (list.length
+          ? '<div class="cmt-list">' + list.map(function (c) { return commentCard(c, null, { showPage: true, noReply: true }); }).join('') + '</div>'
+          : '<p class="muted">Henüz hiç yorum yazılmadı.</p>');
+      }).catch(function (e) { if (e.code === 'code') { lsSet('tfw-team-code', ''); allBox.innerHTML = cmtNote() + codeForm(cmtErrorText(e)); } else allBox.innerHTML = '<p class="cmt-err">' + esc(cmtErrorText(e)) + '</p>'; });
+    }
+    if (!pageBox) return;
+    var secs = attachSectionThreads(app);
+    pageBox.innerHTML = '<p class="muted">Yorumlar yükleniyor…</p>';
+    loadComments(page).then(function (list) {
+      renderPageBlock(pageBox, list);
+      secs.forEach(function (b) { renderSection(b, list, false); });
+      if (/^#yorum-/.test(location.hash)) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+    }).catch(function (e) {
+      if (e.code === 'code') { lsSet('tfw-team-code', ''); pageBox.innerHTML = cmtNote() + codeForm(cmtErrorText(e)); }
+      else pageBox.innerHTML = cmtNote() + '<p class="cmt-err">' + esc(cmtErrorText(e)) + ' <button type="button" class="cmt-link" data-cmt-retry>Tekrar dene</button></p>';
+    });
+  }
+  function currentPageList() {
+    var pb = document.querySelector('.cmts[data-mode="page"]');
+    return pb ? loadComments(pb.getAttribute('data-page')) : Promise.resolve([]);
+  }
+  function rerenderAll(list, openKey) {
+    var pb = document.querySelector('.cmts[data-mode="page"]');
+    if (pb) renderPageBlock(pb, list);
+    document.querySelectorAll('.cmt-sec').forEach(function (b) {
+      var k = b.getAttribute('data-section');
+      renderSection(b, list, k === openKey || b.classList.contains('open'));
+    });
+  }
+
+  function onCommentSubmit(form) {
+    var msg = form.querySelector('.cmt-msg'), btn = form.querySelector('button[type=submit]');
+    var author = form.author.value.trim(), body = form.body.value.trim();
+    if (!author || !body) { msg.textContent = 'Ad ve yorum metni gerekli.'; return; }
+    var pb = document.querySelector('.cmts[data-mode="page"]');
+    if (!pb) return;
+    var page = pb.getAttribute('data-page');
+    lsSet('tfw-author', author);
+    btn.disabled = true; msg.textContent = 'Gönderiliyor…';
+    rpc('wiki_add_comment', {
+      p_code: teamCode(), p_page: page, p_section: form.getAttribute('data-section') || '',
+      p_parent: form.getAttribute('data-parent') || null, p_author: author,
+      p_kind: form.kind ? form.kind.value : 'yorum', p_body: body
+    }).then(function (row) {
+      return loadComments(page).then(function (list) {
+        var created = Array.isArray(row) ? row[0] : row;
+        list = list.concat(created ? [created] : []);
+        cmtCache[page] = Promise.resolve(list);
+        delete cmtCache['*'];
+        rerenderAll(list, created && created.section);
+        var el = created && document.getElementById('yorum-' + created.id);
+        if (el) { el.classList.add('cmt-new'); el.scrollIntoView({ block: 'nearest' }); }
+      });
+    }).catch(function (e) {
+      btn.disabled = false; msg.textContent = cmtErrorText(e);
+      if (e.code === 'code') { lsSet('tfw-team-code', ''); hydrateProposals(); }
+    });
+  }
+  function onCommentClick(e) {
+    var t;
+    if ((t = e.target.closest('[data-cmt-toggle]'))) {
+      var box = t.closest('.cmt-sec'), open = !box.classList.contains('open');
+      currentPageList().then(function (list) { renderSection(box, list, open); });
+      return true;
+    }
+    if ((t = e.target.closest('[data-cmt-reply]'))) {
+      var art = t.closest('.cmt'), slot = art.querySelector('.cmt-reply-slot');
+      if (!slot.innerHTML) { slot.innerHTML = commentForm('', t.getAttribute('data-cmt-reply'), true); slot.querySelector('textarea').focus(); }
+      return true;
+    }
+    if ((t = e.target.closest('[data-cmt-cancel]'))) { t.closest('.cmt-reply-slot').innerHTML = ''; return true; }
+    if ((t = e.target.closest('[data-cmt-filter]'))) {
+      cmtFilter = t.getAttribute('data-cmt-filter');
+      currentPageList().then(function (list) { var pb = document.querySelector('.cmts[data-mode="page"]'); if (pb) renderPageBlock(pb, list); });
+      return true;
+    }
+    if ((t = e.target.closest('[data-cmt-retry]'))) { hydrateProposals(); return true; }
+    return false;
+  }
+  function onCommentFormSubmit(e) {
+    var f = e.target;
+    if (f.matches && f.matches('[data-cmt-code]')) {
+      e.preventDefault();
+      var v = f.code.value.trim();
+      if (v) { lsSet('tfw-team-code', v); cmtCache = {}; hydrateProposals(); }
+      return true;
+    }
+    if (f.matches && f.matches('[data-cmt-form]')) { e.preventDefault(); onCommentSubmit(f); return true; }
+    return false;
   }
 
   /* ---------- Sağ yan sütun ---------- */
@@ -1308,14 +1498,8 @@
       var sp = e.target.closest('.spoiler-inline');
       if (sp) { sp.classList.add('revealed'); return; }
 
-      var cp = e.target.closest('[data-copy]');
-      if (cp) {
-        var ta = cp.parentNode.querySelector('textarea');
-        var done = function () { cp.textContent = 'Kopyalandı ✓'; setTimeout(function () { cp.textContent = 'Şablonu kopyala'; }, 2000); };
-        if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(done, function () { ta.select(); document.execCommand('copy'); done(); });
-        else { ta.select(); document.execCommand('copy'); done(); }
-        return;
-      }
+      if (onCommentClick(e)) return;
+
 
       var tl = e.target.closest('.tn-label');
       if (tl) {
@@ -1364,6 +1548,7 @@
     });
 
     document.addEventListener('submit', function (e) {
+      if (onCommentFormSubmit(e)) return;
       if (e.target.matches('[data-search-page]')) { e.preventDefault(); submitSearch(e.target.q.value); }
     });
 

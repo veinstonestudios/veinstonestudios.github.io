@@ -2,7 +2,7 @@
 title: The Facility Wiki:Geliştirme Rehberi
 type: project
 aliases: Geliştirme Rehberi, Gelistirme Rehberi, Bilgi durumları, Öneri sistemi, Development guide
-summary: Wiki'nin ekip içi kullanımı — dört bilgi durumu, sayfa yapısı ve ekip önerilerinin nasıl gönderilip değerlendirildiği.
+summary: Wiki'nin ekip içi kullanımı — dört bilgi durumu, sayfa yapısı ve wiki üzerinden yazılan ekip yorumları.
 created: 2026-11-10
 updated: 2026-11-10
 ---
@@ -33,27 +33,45 @@ Karakter çiziminden yapılan görünüş tarifleri {{gelistiriliyor}} olarak i�
 ### Plot, evren ve mekanik sayfaları
 [[Ana Hikâye]], [[Dünya]], [[Facility Merkezleri]], [[Corrupted]], [[Technology Purge]], [[The Collapse]], [[CORE Programı]], [[Sonlar]], [[Oynanış]], [[Gece Olayları]] ve [[Zaman Çizelgesi]] gibi sayfalarda da bölüm başlıklarında durum etiketleri, sayfa sonunda **Henüz karar verilmeyen konular** ve **Ekip önerileri ve tartışma** bölümleri bulunur.
 
-## Ekip önerileri nasıl çalışır?
-Wiki GitHub Pages üzerinde çalışan statik bir sitedir; **kendi başına veri kaydedemez**. Bu yüzden öneriler, deponun GitHub sayfasındaki **Issues** bölümüne kaydedilir ve wiki onları otomatik olarak okuyup ilgili sayfada listeler.
+## Ekip yorumları nasıl çalışır?
+Her karakter, hikâye, evren ve oyun bilgisi sayfasının en altında bir **yorum alanı** bulunur. GitHub hesabı gerekmez; yorumlar doğrudan wiki üzerinden yazılır.
 
-1. Bir sayfanın sonundaki **"+ Öneri gönder (GitHub)"** düğmesine bas. Konusu önceden doldurulmuş bir öneri formu açılır.
-2. Formu doldur: öneri başlığı, ilgili karakter/konu, öneri türü (A: mevcut bir özelliği geliştirme · B: henüz karar verilmemiş bir konuya öneri), açıklama ve adın.
-3. Gönderdiğin öneri birkaç dakika içinde ilgili wiki sayfasının **Ekip önerileri** bölümünde kart olarak görünür. Tartışma GitHub'daki yorumlarda devam eder.
-4. Proje sorumlusu öneriye bir durum etiketi ekler: `durum: kabul edildi`, `durum: reddedildi` veya `durum: beklemede`. Etiket yoksa öneri **Değerlendirilecek** olarak görünür.
-5. **Kabul edilen bir öneri, wikide kendiliğinden kanon olmaz.** Proje sorumlusu ilgili sayfayı güncelleyip bilgiyi {{kesin}} olarak işaretlediğinde kanonlaşır.
+1. İlk kez yorum yazarken proje sorumlusunun verdiği **ekip kodunu** gir. Kod bu tarayıcıda hatırlanır.
+2. **Adını** yaz, yorumun **türünü** seç: Yorum, Öneri, Soru veya Tartışma.
+3. Metni yazıp **Gönder**'e bas. Yorum kalıcı olarak kaydedilir ve diğer ekip üyeleri sayfayı açtığında görünür.
+4. Her yorumun altındaki **Cevapla** ile yanıt verebilirsin.
+5. Yorum alanının üstündeki düğmelerle yorumları türe göre süzebilirsin.
 
-:::note GitHub hesabı olmayanlar için
-Her öneri bölümünde **kopyalanabilir bir öneri şablonu** vardır. Şablonu doldurup proje sorumlusuna iletebilirsin; sorumlu öneriyi GitHub'a ekler.
+### Kesinleştirilmiş bilgilere yorum
+{{kesin}} olarak işaretlenmiş her bölümün ve kutunun altında **"Bu bilgiye yorum yap"** bağlantısı vardır. Bu yorumlar yalnızca o bilgiyle ilişkilendirilir.
+
+:::warning Yorumlar kanon değildir
+Yorumlar ve öneriler wikideki bilgileri **hiçbir zaman otomatik değiştirmez**. Bir öneri, ancak proje sorumlusu ilgili sayfayı güncelleyip bilgiyi {{kesin}} olarak işaretlediğinde kanonlaşır.
 :::
 
-:::warning Gizlilik
-Depo herkese açık olduğu için GitHub'a gönderilen öneriler ve yorumlar **herkes tarafından görülebilir**. Yayınlanmasını istemediğin hikâye fikirlerini GitHub yerine doğrudan ekiple paylaş.
+### Öneri durumları
+Öneri türündeki yorumlar bir durum etiketi taşır: **Değerlendirilecek** (varsayılan), **Kabul edildi**, **Reddedildi** veya **Beklemede**. Durumu yalnızca proje sorumlusu değiştirir.
+
+:::note Gizlilik
+Yorumlar herkese açık değildir: okumak ve yazmak için ekip kodu gerekir. Kodu yalnızca ekip üyeleriyle paylaş.
 :::
 
-### Proje sorumlusu için
-- Durum etiketlerini depoda bir kez oluşturman yeterli: GitHub → Issues → Labels → `durum: kabul edildi`, `durum: reddedildi`, `durum: beklemede`.
-- Öneri formu deponun `.github/ISSUE_TEMPLATE/oneri.yml` dosyasındadır.
-- Wiki önerileri yaklaşık 10 dakikalık önbellekle gösterir; GitHub'ın anonim istek sınırı aşılırsa wiki önerilerin GitHub'da görüntülenmesi için bağlantı verir.
+## Kurulum (proje sorumlusu için)
+Yorumlar ücretsiz bir **Supabase** veritabanında saklanır. Kurulum bir kez yapılır:
 
-## Tüm öneriler
+1. [supabase.com](https://supabase.com) adresinde ücretsiz bir hesap ve yeni bir proje oluştur.
+2. Projede **SQL Editor → New query** aç. Depodaki `wiki/supabase/yorumlar.sql` dosyasının tamamını yapıştır, en alttaki `BURAYA-EKIP-KODUNU-YAZ` metnini kendi ekip kodunla değiştir ve **Run** de.
+3. **Project Settings → API** sayfasından **Project URL** ve **anon public** anahtarını kopyala.
+4. Bu iki değeri `wiki/content/config.js` dosyasındaki `comments` bölümüne yapıştır ve siteyi yayınla.
+5. Ekip kodunu ekip üyeleriyle paylaş.
+
+### Yönetim
+- **Yorum silme veya düzenleme:** Supabase → Table Editor → `wiki_comments` tablosu.
+- **Öneri durumu:** aynı tabloda `status` sütununu `degerlendirilecek`, `kabul`, `red` veya `beklemede` yap.
+- **Ekip kodunu değiştirme:** SQL dosyasının son satırını yeni kodla tekrar çalıştır. Eski kodu kullananlardan yeni kodu girmeleri istenir.
+- Kötüye kullanıma karşı wiki genelinde dakikada en fazla 30 yorum kabul edilir.
+
+## Son yorumlar
+Tüm sayfalarda yazılan en yeni yorumlar:
+
 {{oneriler:tum}}

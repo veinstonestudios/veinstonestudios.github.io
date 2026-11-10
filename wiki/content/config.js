@@ -16,7 +16,15 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.16-status',
+  version: '2026-11-10.17-yorum',
+
+  /* Ekip yorumları (Supabase). Kurulum: supabase/yorumlar.sql ve "Geliştirme Rehberi" sayfası.
+     Supabase → Project Settings → API sayfasındaki "Project URL" ve "anon public" anahtarını yapıştırın.
+     Anon anahtarı herkese açık olacak şekilde tasarlanmıştır; yorumları ekip kodu korur. */
+  comments: {
+    supabaseUrl:     '',
+    supabaseAnonKey: ''
+  },
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
