@@ -53,3 +53,12 @@ Viktor, bilgilendirmesinde şu konuları açıklar:
 
 ## Görünüş
 Karakter çiziminde Viktor, kısa koyu saçlı ve koyu renk üniformalı, belinde kılıf ve ayağında postallarla, elindeki not defterine bir şeyler yazarken gösterilir.
+
+## Galeri
+:::gallery
+assets/img/characters/viktor-hale.jpg | Ayakta, not defterine yazarken
+assets/img/characters/viktor-hale-sitting.jpg | Yandan, otururken
+assets/img/characters/viktor-hale-sitting-front.jpg | Önden, otururken
+assets/img/screens/viktor-hale-ingame-3.jpg | Oyun içi görüntü (geliştirme sürümü)
+assets/img/screens/viktor-hale-ingame-4.jpg | Oyun içi görüntü (geliştirme sürümü)
+:::
