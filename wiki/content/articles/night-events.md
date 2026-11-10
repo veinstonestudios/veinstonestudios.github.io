@@ -35,6 +35,9 @@ Gece olaylarında [[Henry Edaven]]'ın geçmişine, ailesine, suçluluk duygusun
 Belirli gece olayları hikâyeye dair ayrıntıları açığa çıkarabilir. Belgelendiklerinde spoiler olarak işaretlenecekler.
 :::
 
+## Night Event sayfaları
+Her Night Event için ayrı bir sayfa bulunur: [[Night Event 1]] · [[Night Event 2]] · [[Night Event 3]] · [[Night Event 4]] · [[Night Event 5]]. Tüm liste için bkz. [[Kategori:Night Events]].
+
 ## Henüz karar verilmeyen konular
 {{kararyok}}
 

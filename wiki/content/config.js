@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.18-bob',
+  version: '2026-11-11.19-night',
 
   /* Ekip yorumları (Supabase). Kurulum: supabase/yorumlar.sql ve "Geliştirme Rehberi" sayfası.
      Supabase → Project Settings → API sayfasındaki "Project URL" ve "anon public" anahtarını yapıştırın.
@@ -91,6 +91,13 @@ window.WIKI_CONFIG = {
     'night-events',
     'endings',
 
+    // Night Events (yeni bir Night Event eklemek için: dosyayı oluştur, buraya ve aşağıdaki 'Night Events' menüsüne bir satır ekle)
+    'night-event-1',
+    'night-event-2',
+    'night-event-3',
+    'night-event-4',
+    'night-event-5',
+
     // Kategori sayfaları (her kategorinin başında gösterilen giriş metni)
     'category-characters',
     'category-facility-staff',
@@ -101,6 +108,7 @@ window.WIKI_CONFIG = {
     'category-other-locations',
     'category-lore',
     'category-game-information',
+    'category-night-events',
     'category-the-world',
 
     // Wiki proje sayfaları
@@ -146,6 +154,14 @@ window.WIKI_CONFIG = {
       ['Testler ve Tespit Yöntemleri',   'Testler ve Tespit Yöntemleri'],
       ['Gece Olayları',                  'Gece Olayları'],
       ['Sonlar',                         'Sonlar']
+    ]},
+    { heading: 'Night Events', lang: 'en', links: [
+      ["Tüm Night Event'ler", 'Kategori:Night Events'],
+      ['Night Event 1',      'Night Event 1'],
+      ['Night Event 2',      'Night Event 2'],
+      ['Night Event 3',      'Night Event 3'],
+      ['Night Event 4',      'Night Event 4'],
+      ['Night Event 5',      'Night Event 5']
     ]},
     { heading: 'Wiki Araçları', links: [
       ['Rastgele sayfa',     'Özel:Rastgele'],

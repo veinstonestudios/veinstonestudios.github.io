@@ -1027,7 +1027,7 @@
   function buildSidebar() {
     var groups = CFG.sidebar || [];
     sidebarEl.innerHTML = groups.map(function (g) {
-      return '<details class="nav-group" open><summary>' + esc(g.heading) + '</summary><ul>' +
+      return '<details class="nav-group" open><summary' + (g.lang ? ' lang="' + esc(g.lang) + '"' : '') + '>' + esc(g.heading) + '</summary><ul>' +
         g.links.map(function (l) {
           return '<li><a href="' + esc(pageUrl(l[1])) + '" data-internal data-target="' + esc(key(l[1])) + '">' + esc(l[0]) + '</a></li>';
         }).join('') + '</ul></details>';
@@ -1038,7 +1038,7 @@
     if (topnav) {
       topnav.innerHTML = groups.map(function (g, i) {
         return '<div class="tn-tab">' +
-          '<button type="button" class="tn-label" aria-expanded="false" aria-controls="tn-menu-' + i + '">' + esc(g.heading) +
+          '<button type="button" class="tn-label"' + (g.lang ? ' lang="' + esc(g.lang) + '"' : '') + ' aria-expanded="false" aria-controls="tn-menu-' + i + '">' + esc(g.heading) +
           '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>' +
           '<div class="tn-menu" id="tn-menu-' + i + '"><ul>' + g.links.map(function (l) {
             return '<li><a href="' + esc(pageUrl(l[1])) + '" data-internal data-target="' + esc(key(l[1])) + '">' + esc(l[0]) + '</a></li>';
