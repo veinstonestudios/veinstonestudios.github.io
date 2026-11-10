@@ -272,10 +272,11 @@
         i++; continue;
       }
 
-      if (t.charAt(0) === '|') {
+      // tablo satırı "|" ile başlar; "||" ile başlayan satır sürprizbozanlı bir paragraftır
+      if (t.charAt(0) === '|' && t.charAt(1) !== '|') {
         flush();
         var rows = [];
-        while (i < lines.length && lines[i].trim().charAt(0) === '|') { rows.push(lines[i]); i++; }
+        while (i < lines.length && lines[i].trim().charAt(0) === '|' && lines[i].trim().charAt(1) !== '|') { rows.push(lines[i]); i++; }
         out.push(renderTable(rows));
         continue;
       }
