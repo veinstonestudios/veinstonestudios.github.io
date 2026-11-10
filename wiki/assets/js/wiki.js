@@ -201,7 +201,8 @@
           (cap ? '<figcaption>' + inline(cap) + '</figcaption>' : '') + '</figure>';
       }
       var plain = stripLinks(cap);
-      return '<figure class="gallery-item"><a href="' + esc(src) + '" class="lightbox-link" data-caption="' + esc(plain) + '">' +
+      var portrait = /\/characters\//.test(src) ? ' portrait' : '';
+      return '<figure class="gallery-item' + portrait + '"><a href="' + esc(src) + '" class="lightbox-link" data-caption="' + esc(plain) + '">' +
         '<img src="' + esc(src) + '" alt="' + esc(plain) + '" loading="lazy"></a>' +
         (cap ? '<figcaption>' + inline(cap) + '</figcaption>' : '') + '</figure>';
     });
@@ -642,7 +643,8 @@
     return breadcrumb(trail) +
       '<article class="article page-' + esc(p.type) + '">' +
       '<header class="article-head">' +
-        '<div class="file-strip"><span>' + esc(TYPE_LABEL[p.type] || TYPE_LABEL.article) + '</span><span>Madde No. ' + entryNo(p) + '</span></div>' +
+        (p.categories.length ? '<div class="page-cats"><span>Kategoriler:</span> ' +
+          p.categories.map(function (c) { return catLink(c); }).join(', ') + '</div>' : '') +
         '<h1 class="page-title">' + esc(p.title) + '</h1>' +
         (p.meta.subtitle ? '<div class="page-subtitle">' + inline(p.meta.subtitle) + '</div>' : '') +
       '</header>' +
@@ -728,23 +730,30 @@
     function box(title, body) { return '<section class="mp-box"><h2 class="mp-h">' + title + '</h2>' + body + '</section>'; }
     function more(target, label) { return '<p class="more">' + link(target, label) + '</p>'; }
 
-    var stats = all.length + ' madde · ' + Array.from(categories.keys()).length + ' kategori';
     var L = CFG.links || {};
+
+    // "İçerik" kutucukları: kenar çubuğundaki bağlantılar (araçlar ve Ana Sayfa hariç)
+    var seen = {}, tiles = [];
+    (CFG.sidebar || []).forEach(function (g) {
+      if (/araç/i.test(g.heading)) return;
+      g.links.forEach(function (l) {
+        if (isMain(l[1]) || seen[key(l[1])]) return;
+        seen[key(l[1])] = true; tiles.push(l);
+      });
+    });
 
     return '<div class="mainpage">' +
       '<section class="mp-welcome">' +
-        '<div class="mp-welcome-text">' +
-          '<div class="file-strip"><span>Açık arşiv</span><span>' + esc(stats) + '</span></div>' +
-          '<h1>Hoş geldiniz<span lang="en">' + esc(siteName()) + '</span></h1>' +
-          (M.intro || []).map(function (t) { return '<p>' + inline(t) + '</p>'; }).join('') +
-        '</div>' +
-        '<nav class="mp-shortcuts" aria-label="Göz at">' + (M.shortcuts || []).map(function (s) {
-          return '<a href="' + esc(pageUrl(s[1])) + '" data-internal>' + esc(s[0]) + '</a>';
-        }).join('') + '</nav>' +
+        '<h1><em lang="en">The Facility</em> Wiki\'ye Hoş Geldiniz</h1>' +
+        (M.intro || []).map(function (t) { return '<p>' + inline(t) + '</p>'; }).join('') +
+        '<p class="mp-stats">Şu anda <strong>' + all.length + '</strong> madde ve <strong>' + Array.from(categories.keys()).length + '</strong> kategori bulunuyor.</p>' +
       '</section>' +
-      '<div class="notice notice-spoiler mp-spoiler" role="note"><div class="notice-stamp">Duyuru</div><div>' +
+      '<div class="notice notice-spoiler mp-spoiler" role="note"><div class="notice-stamp">Uyarı</div><div>' +
         '<strong>Spoiler uyarısı.</strong> Bu wikideki bazı maddeler <em>The Facility</em> oyununun hikâyesine dair spoiler içerir. ' +
         'Bu maddeler sayfanın en üstünde işaretlenir ve ' + catLink(AUTO_SPOILER, 'bu kategoride') + ' listelenir.</div></div>' +
+      '<section class="mp-content"><h2 class="mp-content-title">İçerik</h2><div class="mp-tiles">' +
+        tiles.map(function (l) { return '<a class="mp-tile" href="' + esc(pageUrl(l[1])) + '" data-internal>' + esc(l[0]) + '</a>'; }).join('') +
+      '</div></section>' +
       '<div class="mp-columns">' +
         '<div class="mp-main">' +
           (feat ? box('Öne çıkan madde',
@@ -943,7 +952,10 @@
 
     app.innerHTML = html;
     app.removeAttribute('aria-busy');
+    document.body.classList.toggle('is-mainpage', isMain(title));
+    renderRail();
     markActiveNav();
+    closeTopnav();
     if (searchInput) searchInput.value = kind === 'search' ? q : '';
     closeNav();
 
@@ -963,12 +975,59 @@
      Kenar çubuğu
      -------------------------------------------------------------------- */
   function buildSidebar() {
-    sidebarEl.innerHTML = (CFG.sidebar || []).map(function (g) {
+    var groups = CFG.sidebar || [];
+    sidebarEl.innerHTML = groups.map(function (g) {
       return '<details class="nav-group" open><summary>' + esc(g.heading) + '</summary><ul>' +
         g.links.map(function (l) {
           return '<li><a href="' + esc(pageUrl(l[1])) + '" data-internal data-target="' + esc(key(l[1])) + '">' + esc(l[0]) + '</a></li>';
         }).join('') + '</ul></details>';
     }).join('');
+
+    // Topluluk başlığındaki açılır menüler (Fandom tarzı)
+    var topnav = document.getElementById('topnav');
+    if (topnav) {
+      topnav.innerHTML = groups.map(function (g, i) {
+        return '<div class="tn-tab">' +
+          '<button type="button" class="tn-label" aria-expanded="false" aria-controls="tn-menu-' + i + '">' + esc(g.heading) +
+          '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>' +
+          '<div class="tn-menu" id="tn-menu-' + i + '"><ul>' + g.links.map(function (l) {
+            return '<li><a href="' + esc(pageUrl(l[1])) + '" data-internal data-target="' + esc(key(l[1])) + '">' + esc(l[0]) + '</a></li>';
+          }).join('') + '</ul></div></div>';
+      }).join('');
+    }
+  }
+  function closeTopnav() {
+    document.querySelectorAll('.tn-tab.open').forEach(function (t) {
+      t.classList.remove('open');
+      t.querySelector('.tn-label').setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  /* ---------- Sağ yan sütun ---------- */
+  var railEl;
+  function renderRail() {
+    if (!railEl || !pages.length) return;
+    if (document.body.classList.contains('is-mainpage')) { railEl.innerHTML = ''; return; }
+    if (railEl.getAttribute('data-ready')) return; // içerik sayfadan bağımsız, bir kez oluşturulur
+    var all = contentPages();
+    var recent = all.slice().sort(function (a, b) {
+      return (b.created || '').localeCompare(a.created || '') || b.order - a.order;
+    }).slice(0, 6);
+    var chars = ((CFG.mainPage || {}).featuredCharacters || []).map(findPage).filter(Boolean).slice(0, 6);
+    railEl.innerHTML =
+      '<section class="rail-module rail-about"><h2 class="rail-h" lang="en">The Facility Wiki</h2>' +
+        '<p>Veinstone Studios\'un 2055 yılında geçen psikolojik korku oyunu <em>The Facility</em> için topluluk ansiklopedisi.</p>' +
+        '<div class="rail-stats"><div><strong>' + all.length + '</strong><span>madde</span></div>' +
+        '<div><strong>' + Array.from(categories.keys()).length + '</strong><span>kategori</span></div></div>' +
+        '<a class="rail-btn" href="' + esc(pageUrl(SPECIAL.random[0])) + '" data-internal>Rastgele sayfa</a></section>' +
+      '<section class="rail-module"><h2 class="rail-h">Karakterler</h2><div class="rail-chars">' +
+        chars.map(function (p) {
+          return '<a href="' + esc(pageUrl(p.title)) + '" data-internal title="' + esc(p.title) + '"><span class="rc-img">' + thumb(p) + '</span><span class="rc-name">' + esc(p.title) + '</span></a>';
+        }).join('') + '</div><p class="more">' + catLink('Karakterler', 'Tüm karakterler →') + '</p></section>' +
+      '<section class="rail-module"><h2 class="rail-h">Son eklenenler</h2><ul class="rail-list">' +
+        recent.map(function (p) { return '<li>' + link(p.title) + '<span>' + fmtDate(p.created) + '</span></li>'; }).join('') +
+      '</ul><p class="more">' + link(SPECIAL.recent[0], 'Son değişiklikler →') + '</p></section>';
+    railEl.setAttribute('data-ready', '1');
   }
 
   function markActiveNav() {
@@ -977,7 +1036,7 @@
     var cur = isMain(raw) ? key(MAIN) : key(raw);
     var p = findPage(cur);
     if (p) cur = key(p.title);
-    sidebarEl.querySelectorAll('a[data-target]').forEach(function (a) {
+    document.querySelectorAll('#sidebar-nav a[data-target], #topnav a[data-target]').forEach(function (a) {
       var t = a.getAttribute('data-target');
       var tp = findPage(t);
       var match = t === cur || (tp && key(tp.title) === cur);
@@ -1063,6 +1122,15 @@
       var sp = e.target.closest('.spoiler-inline');
       if (sp) { sp.classList.add('revealed'); return; }
 
+      var tl = e.target.closest('.tn-label');
+      if (tl) {
+        var tab = tl.parentNode, wasOpen = tab.classList.contains('open');
+        closeTopnav();
+        if (!wasOpen) { tab.classList.add('open'); tl.setAttribute('aria-expanded', 'true'); }
+        return;
+      }
+      if (!e.target.closest('.tn-menu')) closeTopnav();
+
       var tt = e.target.closest('.toc-toggle');
       if (tt) {
         var hidden = tt.closest('.toc').classList.toggle('collapsed');
@@ -1096,7 +1164,7 @@
         if (e.key === 'ArrowLeft') stepLb(-1);
         return;
       }
-      if (e.key === 'Escape') closeNav();
+      if (e.key === 'Escape') { closeNav(); closeTopnav(); }
       if (e.key === '/' && document.activeElement === document.body) { e.preventDefault(); searchInput.focus(); }
     });
 
@@ -1142,6 +1210,7 @@
     lb = document.getElementById('lightbox');
     lbImg = lb.querySelector('img');
     lbCap = lb.querySelector('.lb-caption');
+    railEl = document.getElementById('rail');
 
     buildSidebar();
     bind();

@@ -8,7 +8,7 @@ summary: Teğmen Vera Collins, Facility 61'in hücre bloklarından sorumlu soğu
 image: assets/img/characters/vera-collins.jpg
 caption: Karakter çizimi
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-10
 infobox:
   [Kişisel bilgiler]
   Tam adı: Vera Collins
@@ -63,3 +63,11 @@ Bkz. [[Testler ve Tespit Yöntemleri]].
 
 ## Görünüş
 Karakter çiziminde Vera, örgülü sarı saçlı ve koyu yeşil üniformalı (ceket, etek, kırmızı kravat) olarak gösterilir.
+
+## Galeri
+:::gallery
+assets/img/characters/vera-collins.jpg | Karakter çizimi
+assets/img/characters/vera-collins-2.jpg | Ayakta, eliyle yön gösterirken
+assets/img/characters/vera-collins-3.jpg | Bacak bacak üstüne atmış otururken
+assets/img/characters/vera-collins-4.jpg | Masada, elleri önünde birleşik
+:::

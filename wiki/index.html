@@ -10,54 +10,65 @@
   <meta property="og:title" content="The Facility Wiki">
   <meta property="og:description" content="2055 yılında geçen psikolojik korku oyunu The Facility'nin karakterleri, mekânları ve evreni.">
   <meta property="og:image" content="https://veinstonestudios.github.io/wiki/assets/img/screens/hall.jpg">
-  <meta name="theme-color" content="#0b0a09">
+  <meta name="theme-color" content="#0d150e">
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/wiki.css?v=2026-11-10-dark2">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/wiki.css?v=2026-11-10-fandom1">
 </head>
 <body>
   <a class="skip-link" href="#content">İçeriğe geç</a>
 
+  <!-- Global üst çubuk -->
   <header class="topbar">
     <div class="topbar-inner">
       <button class="nav-toggle" type="button" aria-label="Gezinme menüsünü aç" aria-controls="sidebar">
         <span></span><span></span><span></span>
       </button>
-      <a class="wordmark" href="./" data-internal aria-label="The Facility Wiki — Ana Sayfa" lang="en">
-        <span class="wm-game">The Facility</span>
-        <span class="wm-wiki">Wiki</span>
-      </a>
+      <a class="topbar-brand" href="./" data-internal lang="en">The Facility <span>Wiki</span></a>
       <form class="searchbox" id="searchform" role="search" autocomplete="off">
         <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input id="search-input" type="search" placeholder="Arşivde ara" aria-label="The Facility Wiki'de ara"
+        <input id="search-input" type="search" placeholder="Ara" aria-label="The Facility Wiki'de ara"
                role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggest">
         <ul id="search-suggest" class="suggest" role="listbox" hidden></ul>
       </form>
       <nav class="toplinks" aria-label="Bağlantılar">
-        <a href="?page=Özel:Rastgele" data-internal>Rastgele sayfa</a>
-        <a href="../">Stüdyo</a>
+        <a href="?page=Özel:Rastgele" data-internal class="btn-outline">Rastgele sayfa</a>
+        <a href="../" class="btn-solid">Stüdyo</a>
       </nav>
     </div>
   </header>
 
-  <div class="layout">
-    <aside id="sidebar" class="sidebar" aria-label="Wiki gezinmesi">
-      <div class="sidebar-head">
-        <span class="sidebar-label">Gezinme</span>
-        <span class="sidebar-count"><span id="article-count">—</span> madde</span>
+  <div class="main-container">
+    <!-- Topluluk başlığı -->
+    <section class="community-header" aria-label="The Facility Wiki">
+      <div class="ch-top">
+        <a class="ch-wordmark" href="./" data-internal lang="en" aria-label="Ana Sayfa">
+          <span class="ch-logo">The<br>Facility</span>
+        </a>
+        <a class="ch-name" href="./" data-internal lang="en">The Facility Wiki</a>
+        <div class="ch-count"><strong id="article-count">—</strong><span>madde</span></div>
       </div>
-      <nav id="sidebar-nav"></nav>
-      <div class="sidebar-foot">
-        <div class="sidebar-stamp">Analog kayıt<br>Dijital kopyası yasaktır</div>
-      </div>
-    </aside>
+      <nav class="ch-nav" id="topnav" aria-label="Wiki gezinmesi"></nav>
+    </section>
 
-    <main id="content" class="content" tabindex="-1" aria-busy="true" aria-live="polite">
-      <div class="loading"><span class="loading-dot"></span> Kayıtlar getiriliyor…</div>
-      <noscript><p>Bu wikinin maddeleri görüntüleyebilmesi için JavaScript gereklidir.</p></noscript>
-    </main>
+    <div class="layout">
+      <!-- Mobil gezinme çekmecesi -->
+      <aside id="sidebar" class="sidebar" aria-label="Wiki gezinmesi">
+        <div class="sidebar-head">
+          <span class="sidebar-label">Gezinme</span>
+        </div>
+        <nav id="sidebar-nav"></nav>
+      </aside>
+
+      <main id="content" class="content page-main" tabindex="-1" aria-busy="true" aria-live="polite">
+        <div class="loading"><span class="loading-dot"></span> Kayıtlar getiriliyor…</div>
+        <noscript><p>Bu wikinin maddeleri görüntüleyebilmesi için JavaScript gereklidir.</p></noscript>
+      </main>
+
+      <aside id="rail" class="rail" aria-label="Yan sütun"></aside>
+    </div>
   </div>
 
   <footer class="site-footer">
@@ -82,9 +93,7 @@
     <button class="lb-next" type="button" aria-label="Sonraki görsel">›</button>
   </div>
 
-  <div class="crt-overlay" aria-hidden="true"></div>
-
-  <script src="content/config.js?v=2026-11-10-dark2"></script>
-  <script src="assets/js/wiki.js?v=2026-11-10-dark2"></script>
+  <script src="content/config.js?v=2026-11-10-fandom1"></script>
+  <script src="assets/js/wiki.js?v=2026-11-10-fandom1"></script>
 </body>
 </html>
