@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.4-tr',
+  version: '2026-11-10.5-tr',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
@@ -52,7 +52,8 @@ window.WIKI_CONFIG = {
     'shane-smith',
     'janitor',
     'b-block-officer',
-    'nate-lawson',
+    'emma-bell',
+    'gina-bell',
     'henrys-wife',
     'henrys-daughter',
     'milena-marvic',
@@ -82,6 +83,7 @@ window.WIKI_CONFIG = {
     // Kategori sayfaları (her kategorinin başında gösterilen giriş metni)
     'category-characters',
     'category-facility-staff',
+    'category-a-block-staff',
     'category-inmates',
     'category-other-characters',
     'category-locations',

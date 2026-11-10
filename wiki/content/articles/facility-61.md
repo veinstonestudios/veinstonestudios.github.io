@@ -16,7 +16,7 @@ infobox:
   Coğrafi konumu: Bilinmiyor
   [Yönetim]
   Gardiyan: [[Henry Edaven]]
-  Personel: [[Viktor Hale|Kpt. Viktor Hale]]; [[Vera Collins|Tğm. Vera Collins]]; [[B Blok Subayı]]; [[Janitor]]
+  Personel: [[Viktor Hale|Kpt. Viktor Hale]]; [[Vera Collins|Tğm. Vera Collins]]; [[Emma Bell]]; [[Gina Bell]]; [[B Blok Subayı]]; [[Janitor]]
   Mahkûm sayısı: 14
   Faaliyet süresi: Yaklaşık iki yıl
   Hücre blokları: A Blok (kadın); B Blok (erkek)
@@ -54,7 +54,7 @@ Tesisin gözlem ve rehabilitasyon çerçevesi **[[CORE Programı]]** (Cognitive 
 ## Yerleşim
 ### Hücre blokları
 [[Vera Collins|Teğmen Vera Collins]]'in eğitim diyaloğuna göre:
-- **A Blok** kadın mahkûmlara ayrılmıştır. Kırmızı çizgiler A Blok'a giden yolu gösterir.
+- **A Blok** kadın mahkûmlara ayrılmıştır. Kırmızı çizgiler A Blok'a giden yolu gösterir. Personeli: [[Kategori:A Blok Personeli|A Blok personeli]].
 - **B Blok** erkek mahkûmlara ayrılmıştır. Mavi çizgiler B Blok'a giden yolu gösterir.
 
 ### Diğer alanlar
@@ -72,6 +72,8 @@ Resmî ekran görüntülerinde görülen alanlar arasında ortak bir salon, kori
 | [[Viktor Hale]] | Kaptan; Gardiyanı bilgilendiren kıdemli subay |
 | [[Vera Collins]] | Teğmen; hücre bloklarından sorumlu |
 | [[Janitor]] | Temizlik görevlisi |
+| [[Emma Bell]] | A Blok subayı; kadınlar koğuşunun güvenliği (Yemekhane / Hizmet Kanadı) |
+| [[Gina Bell]] | A Blok subayı; klinik (Tıbbi Bakım ve Değerlendirme Kanadı) |
 | [[B Blok Subayı]] | B Blok'ta görevli subay |
 
 ## İlgili karakterler

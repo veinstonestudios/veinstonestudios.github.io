@@ -18,8 +18,6 @@ infobox:
   [Sınıflandırma]
   Tutulduğu yer: [[Tesis 61]]
   Gerçek kimliği: Bilinmiyor
-  [Bağlantılar]
-  İlişkili kişi: [[Nate Lawson]]
   [Oyunda]
   Oyun: [[The Facility]]
 ---
@@ -33,7 +31,7 @@ Alicia'nın insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğu **henüz belir
 Tesis 61'e gelmeden önce Alicia bir üniversite öğrencisiydi ve edebiyat eğitimi alıyordu.
 
 ## Geçmiş ve biyografi
-Alicia, kendisinden bahsederken eskiden oldukça başarılı bir öğrenci olduğunu, ancak [[Nate Lawson|Nate]] ile tanıştıktan sonra hayatının değiştiğini ima eder.
+Alicia, kendisinden bahsederken eskiden oldukça başarılı bir öğrenci olduğunu, ancak Nate Lawson ile tanıştıktan sonra hayatının değiştiğini ima eder.
 
 :::quote
 I was a university student. I studied literature.
@@ -51,7 +49,7 @@ Alicia **sessiz ve fazla konuşmayan** bir karakterdir. Konuşmaları doğal, sa
 ## İlişkiler
 | Karakter | İlişki |
 |---|---|
-| [[Nate Lawson]] | Alicia'nın geçmişinde önemli bir yere sahiptir. Onunla tanışması Alicia'nın hayatında önemli değişikliklere yol açmıştır. İlişkilerinin ayrıntıları belirlenmemiştir. |
+| Nate Lawson | Alicia'nın geçmişinde önemli bir yere sahiptir. Onunla tanışması Alicia'nın hayatında önemli değişikliklere yol açmıştır. İlişkilerinin ayrıntıları belirlenmemiştir. |
 
 ## Hikâyedeki rolü
 Alicia'nın sorgusunda kullanılan başlıklardan biri **Current Situation** (Mevcut Durum) olarak belirlenmiştir. Bu başlığın amacı Alicia'nın mevcut durumunu ve Tesis 61'e gelmeden önce yaşadıklarını anlamaktır. Bkz. [[Testler ve Tespit Yöntemleri]].

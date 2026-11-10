@@ -6,10 +6,10 @@ categories: Tesis Personeli
 aliases: Temizlik Görevlisi, Hademe, Hizmetli
 summary: Janitor, Tesis 61'de çalışan arkadaş canlısı ve konuşkan temizlik görevlisidir.
 stub: true
-image:
-caption: Bir karakter görseli henüz yayımlanmadı.
+image: assets/img/characters/janitor.jpg
+caption: Karakter çizimi
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-10
 infobox:
   [Kişisel bilgiler]
   Adı: Bilinmiyor
@@ -42,6 +42,9 @@ Janitor'ın, tesisin **yaklaşık iki yıldır** faaliyette olduğunu belirttiğ
 ## Bilinen bilgiler ve gizemler
 :::unknown Henüz belirlenmedi
 - Adı ve yaşı.
-- Görünüşü ve geçmişi.
+- Geçmişi.
 - Diğer karakterlerle ilişkileri.
 :::
+
+## Görünüş
+Karakter çiziminde Janitor, kısa koyu saçlı ve gözlüklü, koyu yeşil bir kazakla, başını öne eğmiş hâlde gösterilir.
