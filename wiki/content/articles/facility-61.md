@@ -16,7 +16,7 @@ infobox:
   Coğrafi konumu: Bilinmiyor
   [Yönetim]
   Gardiyan: [[Henry Edaven]]
-  Personel: [[Viktor Hale|Kpt. Viktor Hale]]; [[Vera Collins|Tğm. Vera Collins]]; [[Janitor]]
+  Personel: [[Viktor Hale|Kpt. Viktor Hale]]; [[Vera Collins|Tğm. Vera Collins]]; [[B Blok Subayı]]; [[Janitor]]
   Mahkûm sayısı: 14
   Faaliyet süresi: Yaklaşık iki yıl
   Hücre blokları: A Blok (kadın); B Blok (erkek)
@@ -72,6 +72,7 @@ Resmî ekran görüntülerinde görülen alanlar arasında ortak bir salon, kori
 | [[Viktor Hale]] | Kaptan; Gardiyanı bilgilendiren kıdemli subay |
 | [[Vera Collins]] | Teğmen; hücre bloklarından sorumlu |
 | [[Janitor]] | Temizlik görevlisi |
+| [[B Blok Subayı]] | B Blok'ta görevli subay |
 
 ## İlgili karakterler
 ### Mahkûmlar

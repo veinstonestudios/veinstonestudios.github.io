@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.1-tr',
+  version: '2026-11-10.2-tr',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
@@ -51,6 +51,7 @@ window.WIKI_CONFIG = {
     'katarina-jovanovic',
     'shane-smith',
     'janitor',
+    'b-block-officer',
     'nate-lawson',
     'henrys-wife',
     'henrys-daughter',

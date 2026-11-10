@@ -5,10 +5,10 @@ role: Kaptan
 categories: Tesis Personeli
 aliases: Kaptan Viktor Hale, Kaptan Hale, Yüzbaşı Viktor Hale, Yüzbaşı Hale, Captain Viktor Hale, Captain Hale, Hale, Viktor
 summary: Kaptan Viktor Hale, Henry Edaven'a gardiyanlık görevini ve Tesis 61'in çalışma düzenini anlatan tesis personelidir.
-image:
-caption: Bir karakter görseli henüz yayımlanmadı.
+image: assets/img/characters/viktor-hale.jpg
+caption: Karakter çizimi
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-10
 infobox:
   [Kişisel bilgiler]
   Tam adı: Viktor Hale
@@ -47,6 +47,9 @@ Viktor, bilgilendirmesinde şu konuları açıklar:
 
 ## Bilinen bilgiler ve gizemler
 :::unknown Henüz belirlenmedi
-- Yaşı ve fiziksel özellikleri.
+- Yaşı.
 - Ailesi, geçmişi ve kişisel motivasyonları.
 :::
+
+## Görünüş
+Karakter çiziminde Viktor, kısa koyu saçlı ve koyu renk üniformalı, belinde kılıf ve ayağında postallarla, elindeki not defterine bir şeyler yazarken gösterilir.
