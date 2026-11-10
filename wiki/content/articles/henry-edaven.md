@@ -150,6 +150,23 @@ Tesise geldiğinde [[Viktor Hale|Kaptan Viktor Hale]] ona gardiyanlık görevini
 ## Oyundaki rolü
 Henry, *The Facility*'nin oyuncu karakteridir; oyun onun bakış açısından oynanır. Oyuncunun mahkûmlarla ilgili kararları tesisteki insan ve anomali dengesini, Henry'nin kendi Corruption durumunu ve [[Sonlar|oyunun sonunu]] etkiler. Bkz. [[Oynanış]].
 
+## Olası sonlar
+:::dev Geliştirme aşamasında
+Aşağıdaki iki son, şu an hikâye için planlanan ana sonlardır. Kesinleşmiş final senaryoları değildir; ileride değiştirilebilir veya genişletilebilir.
+:::
+
+:::spoiler Sonlar hakkında spoiler
+Sonların açıklamaları gizli metin olarak verilmiştir. Görmek için siyah alanların üzerine tıklayın.
+:::
+
+### Corruption'ın zaferi (kötü son)
+||Tesisteki anomalilerin çoğunluğa ulaşması ve insanlar üzerindeki kontrolü ele geçirmesiyle sonuçlanan senaryo. Bu sonla birlikte Gardiyan Henry Edaven de anomalilerin çoğunluğu karşısında Corrupted'a dönüşür.||
+
+### Görevin tamamlanması (iyi son)
+||Henry'nin görevini başarıyla tamamladığı ve tesisteki insan çoğunluğunu korumayı başardığı senaryo. Facility merkezlerinde uygulanan deneme-yanılma yöntemlerinin, özellikle beyin testleri ve ses testleri gibi Corruption tespit yöntemlerinin başarılı sonuç vermeye devam etmesi bu sonun önemli bir parçasıdır. Henry ayrıca Eve ve Mary'nin ölümüyle ilgili taşıdığı vicdan azabının bir kısmını bastırmayı ve geçmişiyle kısmen barışmayı başarır.||
+
+Sonlara nasıl ulaşılacağı ve final sahneleri henüz belgelenmemiştir. {{tba}}
+
 ## Önemli bilgiler ve gizemler
 :::confirmed Kesinleşmiş
 - Tam adı Henry Adam Edaven'dır; 2009'da doğmuştur ve 2055'te 46 yaşındadır.
@@ -166,7 +183,8 @@ Henry, *The Facility*'nin oyuncu karakteridir; oyun onun bakış açısından oy
 - Yangının gerçek sebebi.
 - 2045–2049 yılları arasındaki Collapse döneminin ayrıntıları.
 - Henry'nin şüphelendiği gibi Eve'in Arthur'a karşı hâlâ duygular besleyip beslemediği.
-- Henry'nin oyun sonunda Corrupted hâle gelip gelmeyeceği (oyuncunun kararlarına bağlıdır).
+- Henry'nin oyun sonunda Corrupted hâle gelip gelmeyeceği (oyuncunun kararlarına bağlıdır; planlanan iki son için bkz. [[#Olası sonlar]]).
+- Sonların kesin hâli, sonlara nasıl ulaşılacağı ve final sahneleri.
 :::
 
 ## Görseller
