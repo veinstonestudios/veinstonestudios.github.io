@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-10.9-keyart',
+  version: '2026-11-10.10-palette',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
