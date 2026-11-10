@@ -600,3 +600,99 @@ body.lb-open { overflow: hidden; }
 .infobox { border-color: var(--c-rust); }
 .ch-name { text-shadow: 0 2px 6px rgba(0,0,0,.8); }
 .prose h2 { border-bottom-color: var(--c-rust); }
+
+/* ==========================================================================
+   CRT / ANALOG LAYER
+   Screen effects stay on decoration (overlay, headings, labels, images);
+   body text stays plain, high-contrast and easy to read.
+   ========================================================================== */
+:root {
+  --font-term:   'VT323', 'IBM Plex Mono', ui-monospace, monospace;
+  --glow-gold:   0 0 6px rgba(232,164,31,.45), 0 0 18px rgba(232,164,31,.15);
+  --glow-soft:   0 0 4px rgba(239,227,200,.18);
+}
+
+/* Full-screen CRT glass: scanlines + vignette + faint phosphor tint */
+.crt {
+  pointer-events: none; position: fixed; inset: 0; z-index: 80;
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 58%, rgba(0,0,0,.55) 100%),
+    repeating-linear-gradient(to bottom, rgba(0,0,0,.16) 0 1px, rgba(0,0,0,0) 1px 3px),
+    linear-gradient(rgba(232,164,31,.025), rgba(232,164,31,.025));
+}
+.crt::after { /* slow rolling refresh band */
+  content: ''; position: absolute; left: 0; right: 0; height: 22vh; top: -22vh;
+  background: linear-gradient(to bottom, rgba(255,240,210,0), rgba(255,240,210,.035), rgba(255,240,210,0));
+  animation: crt-roll 9s linear infinite;
+}
+@keyframes crt-roll { to { transform: translateY(130vh); } }
+
+/* Readability: calm body text */
+body { font-size: 16px; line-height: 1.7; }
+.prose { font-size: 16px; color: var(--text); }
+.prose p, .prose li { max-width: 78ch; }
+.prose strong { color: #fff3d6; }
+.wikitable, .rail-list, .recent, .plain { font-size: 15px; }
+
+/* Terminal-style labels */
+.tn-label, .rail-h, .mp-h, .infobox-section, .toc-head, .callout-title, .notice-stamp,
+.vtl-kind, .ch-count span, .page-cats > span, .catlinks-label, .missing-stamp, .tag, .sidebar-head, .nav-group summary {
+  font-family: var(--font-term); letter-spacing: .06em; font-weight: 400;
+}
+.tn-label { font-size: 19px; }
+.rail-h, .mp-h { font-size: 21px; }
+.infobox-section { font-size: 19px; padding: 6px 9px; }
+.toc-head { font-size: 20px; }
+.callout-title { font-size: 18px; letter-spacing: .08em; }
+.notice-stamp { font-size: 17px; }
+.vtl-kind { font-size: 16px; }
+.tag { font-size: 15px; line-height: 1.35; padding: 0 7px; }
+.missing-stamp { font-size: 15px; }
+.ch-count span, .catlinks-label, .page-cats > span { font-size: 17px; }
+.nav-group summary { font-size: 18px; }
+.sidebar-head { font-size: 19px; }
+
+/* Phosphor glow on headings (not on body text) */
+.page-title {
+  font: 400 44px/1.1 var(--font-term); letter-spacing: .03em; color: #fff0cc;
+  text-shadow: var(--glow-gold), 1px 0 rgba(255,70,40,.35), -1px 0 rgba(80,200,255,.25);
+}
+.prose h2 { font: 400 32px/1.15 var(--font-term); letter-spacing: .04em; color: var(--accent); text-shadow: var(--glow-gold); }
+.prose h3 { color: #fff0cc; text-shadow: var(--glow-soft); }
+.mp-welcome h1, .mp-content-title { text-shadow: var(--glow-soft); }
+.infobox-title { font: 400 26px/1.15 var(--font-term); letter-spacing: .04em; }
+.ch-name, .topbar-brand span, .rail-stats strong, .ch-count strong, .mp-stats strong { text-shadow: var(--glow-gold); }
+.ch-logo-img { filter: drop-shadow(0 0 10px rgba(232,164,31,.35)) drop-shadow(0 2px 8px rgba(0,0,0,.6)); }
+
+/* REC indicator (camcorder / surveillance feel) */
+.rec {
+  display: inline-flex !important; align-items: center; gap: 6px; margin-bottom: 6px;
+  font: 400 18px var(--font-term) !important; color: #ff5a4a !important; letter-spacing: .12em;
+}
+.rec::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #ff3b2f; box-shadow: 0 0 8px #ff3b2f; animation: rec-blink 1.2s steps(2) infinite; }
+@keyframes rec-blink { 50% { opacity: .15; } }
+
+/* Monitor bezel feel on panels */
+.page-main, .rail-module { box-shadow: inset 0 0 60px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.4); }
+
+/* Analog image treatment: scanlines + slight grade on artwork and screenshots */
+.infobox-image a, .gallery-item a, .featured-img, .mp-hero, .rc-img, .card-img { position: relative; }
+.infobox-image a::after, .gallery-item a::after, .featured-img::after, .mp-hero::after, .rc-img::after, .card-img::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,.14) 0 1px, rgba(0,0,0,0) 1px 3px);
+  box-shadow: inset 0 0 30px rgba(0,0,0,.45);
+}
+.gallery-item img, .featured-img img, .card-img img { filter: contrast(1.05) saturate(.92); }
+
+/* Selection + focus in phosphor colours */
+::selection { background: rgba(232,164,31,.35); color: #fff; }
+
+@media (max-width: 760px) {
+  .page-title { font-size: 36px; }
+  .prose h2 { font-size: 27px; }
+  .crt { background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 62%, rgba(0,0,0,.45) 100%),
+    repeating-linear-gradient(to bottom, rgba(0,0,0,.12) 0 1px, rgba(0,0,0,0) 1px 3px); }
+}
+@media (prefers-reduced-motion: reduce) { .crt::after, .rec::before { animation: none !important; } }
+@media print { .crt { display: none !important; } }
