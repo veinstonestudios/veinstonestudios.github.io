@@ -764,3 +764,102 @@ h2 .status, h3 .status, h4 .status { margin-left: 10px; font-size: 13px; text-sh
 .bi-row dd { margin: 0; }
 .bi-row .status { font-size: 12px; margin-left: 4px; }
 @media (max-width: 760px) { .bi-row { grid-template-columns: minmax(0, 1fr); } }
+
+/* ==========================================================================
+   OCR-B TYPOGRAPHY + LIGHT VHS / ANALOG ARCHIVE LAYER
+   Headings, navigation, labels and infoboxes: OCR-B Bold.
+   Body text: OCR-B Regular. Fallback: monospace.
+   Screen effects are deliberately faint so text stays sharp.
+   ========================================================================== */
+@font-face {
+  font-family: 'OCR-B';
+  src: url('../fonts/OCR-B.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'OCR-B';
+  src: url('../fonts/OCR-B-Bold.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+:root {
+  --font:      'OCR-B', 'IBM Plex Mono', ui-monospace, Consolas, 'Courier New', monospace;
+  --font-term: 'OCR-B', 'IBM Plex Mono', ui-monospace, Consolas, 'Courier New', monospace;
+  --glow-gold: 0 0 6px rgba(232,164,31,.18);
+  --glow-soft: none;
+}
+
+/* Body text: OCR-B Regular, calm spacing */
+body { font-family: var(--font); font-weight: 400; font-size: 15px; line-height: 1.72; letter-spacing: 0; }
+.prose { font-size: 15px; }
+.prose p, .prose li { max-width: 80ch; }
+.prose strong, .prose b { font-weight: 700; }
+.wikitable, .rail-list, .recent, .plain { font-size: 14px; }
+em, i, .wiki-quote { font-synthesis: style; }
+
+/* Headings + titles: OCR-B Bold */
+.page-title, .prose h2, .prose h3, .prose h4, .mp-welcome h1, .mp-content-title, .mp-h, .featured-text h3,
+.infobox-title, .infobox-section, .ch-name, .topbar-brand, .card-title, .lore-title, .vtl-title, .vtl-year,
+.prop-card h4, .bi-section, .rail-h, .stamp-big { font-family: var(--font-term); font-weight: 700; }
+.page-title   { font-size: 32px; line-height: 1.2; letter-spacing: 0; color: #fff0cc; text-shadow: var(--glow-gold); }
+.prose h2     { font-size: 22px; line-height: 1.3; letter-spacing: .01em; text-shadow: none; }
+.prose h3     { font-size: 17px; text-shadow: none; }
+.prose h4     { font-size: 14px; }
+.mp-welcome h1, .mp-content-title { font-size: 24px; text-shadow: none; }
+.featured-text h3 { font-size: 19px; }
+.infobox-title { font-size: 19px; line-height: 1.3; letter-spacing: .01em; }
+.vtl-year { font-size: 18px; }
+.vtl-title { font-size: 15.5px; }
+.card-title, .lore-title { font-size: 14px; }
+
+/* Navigation, menus, labels, infobox keys: OCR-B Bold */
+.tn-label, .rail-h, .mp-h, .infobox-section, .toc-head, .callout-title, .notice-stamp, .vtl-kind,
+.ch-count span, .page-cats > span, .catlinks-label, .missing-stamp, .tag, .sidebar-head, .nav-group summary,
+.toplinks a, .infobox dt, .rail-btn, .status, .prop-status, .prop-template summary, .prop-copy, .video-badge,
+.vtl-legend, .search-page-form button, .toc a, .nav-group a, #topnav a {
+  font-family: var(--font-term); font-weight: 700; letter-spacing: .02em;
+}
+.tn-label { font-size: 13px; }
+.rail-h, .mp-h { font-size: 14.5px; }
+.infobox-section { font-size: 13.5px; padding: 7px 9px; }
+.infobox dt { font-size: 12.5px; }
+.toc-head { font-size: 14px; }
+.callout-title { font-size: 13px; letter-spacing: .04em; }
+.notice-stamp, .vtl-kind { font-size: 12px; }
+.tag, .missing-stamp { font-size: 11px; line-height: 1.7; }
+.status { font-size: 11px; line-height: 1.6; letter-spacing: .04em; }
+h2 .status, h3 .status, h4 .status { font-size: 10.5px; }
+.ch-count span, .catlinks-label, .page-cats > span { font-size: 12px; }
+.nav-group summary, .sidebar-head { font-size: 13px; }
+.bi-section, .prop-template summary { font-size: 13.5px; }
+.prop-status, .video-badge { font-size: 11px; }
+.prop-copy { font-size: 12.5px; }
+.callout-sub { font-family: var(--font); font-weight: 700; font-size: 13.5px; }
+.ch-name { font-size: 18px; text-shadow: 0 2px 6px rgba(0,0,0,.8); }
+.rec { font: 700 12.5px var(--font-term) !important; letter-spacing: .1em; }
+
+/* Effects: faint VHS / archive feel only */
+.crt {
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 65%, rgba(0,0,0,.28) 100%),
+    repeating-linear-gradient(to bottom, rgba(0,0,0,.035) 0 1px, rgba(0,0,0,0) 1px 4px);
+}
+.crt::after { display: none; animation: none; }               /* no rolling band */
+.rec::before { animation: rec-pulse 2.4s ease-in-out infinite; box-shadow: 0 0 4px #ff3b2f; }
+@keyframes rec-pulse { 50% { opacity: .55; } }                /* gentle pulse, no hard blink */
+.ch-name, .topbar-brand span, .rail-stats strong, .ch-count strong, .mp-stats strong { text-shadow: none; }
+.ch-logo { text-shadow: 0 2px 8px rgba(0,0,0,.7); }
+.ch-logo-img { filter: drop-shadow(0 2px 8px rgba(0,0,0,.6)); }
+.page-main, .rail-module { box-shadow: inset 0 0 30px rgba(0,0,0,.3), 0 0 0 1px rgba(0,0,0,.4); }
+.infobox-image a::after, .gallery-item a::after, .featured-img::after, .mp-hero::after, .rc-img::after, .card-img::after {
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,.05) 0 1px, rgba(0,0,0,0) 1px 4px);
+  box-shadow: inset 0 0 22px rgba(0,0,0,.28);
+}
+.gallery-item img, .featured-img img, .card-img img { filter: none; }
+
+@media (max-width: 760px) {
+  .page-title { font-size: 25px; }
+  .prose h2 { font-size: 19px; }
+  .infobox-title { font-size: 17px; }
+  body, .prose { font-size: 14.5px; }
+  .crt { background: radial-gradient(ellipse at center, rgba(0,0,0,0) 68%, rgba(0,0,0,.22) 100%); }
+}
