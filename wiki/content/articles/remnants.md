@@ -20,8 +20,19 @@ infobox:
 Remnants hakkında henüz hiçbir bilgi doğrulanmamıştır. Bu madde yer tutucu olarak oluşturulmuştur ve resmî ayrıntılar açıklandığında doldurulacaktır.
 :::
 
-## Genel bakış {{kararyok}}
-{{kararyok}}
+## Genel bakış {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+**Remnants**, bazı insanların [[Corrupted]]'lara verdiği addır. Bu adı kullananlar, Corrupted'ların [[Analog Era]]'ya geçişten sonra yasaklanan teknolojilerin bir ürünü olduğuna inanır. Ancak bunu kimse kesin olarak bilmez.
+
+Bu bilgi Henry'ye ilk gün [[Viktor Hale|Kaptan Viktor Hale]] tarafından verilir:
+
+:::quote
+Some people call them "Remnants." They believe they're a product of the technologies that were banned after the transition to the Analog Era. No one really knows for certain.
+— Kaptan Viktor Hale, ilk gün diyaloğu (taslak)
+:::
 
 ## Tarihsel arka plan {{kararyok}}
 {{kararyok}}

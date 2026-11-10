@@ -47,6 +47,16 @@ Corrupted olduğundan şüphelenilen kişiler numaralandırılmış kurumlarda t
 
 Başka numaralı tesislerin var olup olmadığı doğrulanmamıştır. {{unknown}}
 
+## Toplum ve gündelik hayat {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+- **Kırsala göç:** Eskiden yalnızca 500–1000 kişinin yaşadığı tarım kasabalarının nüfusu bir yıl içinde 80–100 bine fırladı. Küresel nüfusun yaklaşık %70'i birkaç verimli ve izole kırsal şeride sıkıştı. Eski usul mekanik altyapı ve gıda lojistiği çökme noktasına geldi; insan gücüne dayanan bu yeni taşra düzeni tarihin en genç ama en güvencesiz toplum yapısını doğurdu.
+- **Bilgiye erişim:** Arama motorları ve çevrim içi ansiklopediler yok. Bir şeyi merak eden ya kütüphaneye gidip ansiklopedileri karıştırır ya da konuyu bilen bir "üstat" bulur. Bilgi çok kıymetli ve yavaş ulaşılan bir şeydir.
+- **Yavaşlayan zaman:** "Her şeye anında ulaşma" dönemi bitti. Bir mektubun gitmesi günlerce sürer; bir fotoğrafın sonucunu görmek için karanlık odada vakit geçirmek gerekir.
+- **Ekonomik çöküş:** Finans sistemi, lojistik ağları, hastane kayıtları ve enerji hatları tamamen dijitale bağlı olduğu için analog sisteme geçiş ilk aylarda büyük bir ekonomik çöküşe ve lojistik kaosa yol açtı. Dünya yerel üretime ve yerel topluluklara bağımlı hâle geldi; küreselleşme büyük darbe aldı.
+
 ## Henüz karar verilmeyen konular
 :::kararyok
 - Technology Purge'ün kesin tarihi.

@@ -95,6 +95,46 @@ Facility 61'de toplam **14 mahkûm** bulunmaktadır. Mahkûmlar, rehabilitasyon 
 
 Belgelenmiş tüm mahkûmlar için [[Kategori:Mahkûmlar]] sayfasına bakın.
 
+## Ekip sunumundaki tanım {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+Sunuma göre Facility 61, Corrupted'ların tutulduğu bir hapishane değil; **Corruption riski taşıyan operasyonlarda kullanılan mahkûmların sürekli denetlendiği özel bir ceza tesisidir.** Tesisin iki temel amacı vardır:
+1. Corrupted'ların topluma çıkmasını engellemek.
+2. Güvenli olduğu düşünülen mahkûmları [[Görevlendirmeler#geri-kazanim-programi|Geri Kazanım]] görevlerinde kullanmak.
+
+Önceki tesislerin başarısızlıklarından sonra Facility 61, **uzun süreli gözlem ve insan Gardiyan kararı** üzerine kurulan yeni modeldir. Bkz. [[Facility Merkezleri#onceki-tesisler-neden-coktu]].
+
+:::warning Mevcut bilgiyle fark
+Wikideki kesinleşmiş tanım Facility 61'i "Corrupted olduğundan şüphelenilen hükümlüleri tutan" bir tesis olarak anlatır. Sunumdaki "Corrupted'ların tutulduğu bir hapishane değil" ifadesiyle hangisinin geçerli olduğuna proje sorumlusu karar vermelidir.
+:::
+
+## Personel yapısı {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+Sunuma göre tesisin ana kadrosu **1 Gardiyan + 1 Kaptan + 1 Teğmen + 1–2 subay**tan oluşur.
+
+| Karakter | Unvan | Bölüm | Görev |
+|---|---|---|---|
+| [[Henry Edaven]] | Gardiyan (Warden) | Yönetim | Tesisin yönetimi |
+| Erkek | Kaptan (Captain) | Güvenlik / Gardiyan Ofisi | — |
+| Kadın | Teğmen (Lieutenant) | Kadınlar bloğu | — |
+| Erkek | Teğmen (Lieutenant) | B Block | Erkekler koğuşu |
+| İkiz 1 | Subay (Correctional Officer) | Kadınlar bloğu | Günlük mahkûm güvenliği |
+| İkiz 2 | Yemekhane sorumlusu (Cafeteria Supervisor) | Yemekhane | Yemekhane |
+| Diğerleri | Subaylar (Correctional Officers) | Çeşitli | Normal gardiyanlar |
+
+Sunumdaki şemaya göre hiyerarşi: **Gardiyan** → **Güvenlik Şefi** (ve diğer idari işler) → **A Block Teğmeni** ve **B Block Teğmeni** → her bloğun **subayları**.
+
+:::kararyok Tabloyla ilgili açık sorular
+- Tablodaki Kaptan büyük olasılıkla [[Viktor Hale]], kadın Teğmen [[Vera Collins]], B Block Teğmeni [[B Block Officer|B Block Subayı]], ikizler ise [[Emma Bell]] ve [[Gina Bell]]'dir; sunumda isimler eşleştirilmemiştir.
+- Sunumun başka bir sayfasına göre Vera Collins hem A hem B Block'u takip eder; tablo ise B Block için ayrı bir Teğmen gösterir.
+- Gina Bell wikide klinikte görev yapan bir subay olarak geçer; tablodaki İkiz 2 ise yemekhane sorumlusudur.
+:::
+
 ## Henüz karar verilmeyen konular
 {{kararyok}}
 

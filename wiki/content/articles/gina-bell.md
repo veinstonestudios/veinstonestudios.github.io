@@ -64,6 +64,9 @@ Gina'nın koyu renkli, kısa saçları vardır. A Block personeli olarak açık 
 - Bağlı olduğu birim Tıbbi Bakım ve Değerlendirme Kanadı'dır.
 :::
 
+## Ekip sunumundaki personel tablosu {{kararyok}}
+Ekip sunumundaki personel tablosunda ikizlerden biri **kadınlar bloğunda günlük mahkûm güvenliğinden sorumlu subay**, diğeri **yemekhane sorumlusu** olarak geçer. İkizlerden hangisinin hangi görevde olduğu ve bunun mevcut bilgilerle ilişkisi henüz kesinleşmemiştir. Bkz. [[Facility 61#personel-yapisi]].
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Yaşı.

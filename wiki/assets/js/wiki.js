@@ -321,7 +321,12 @@
   }
 
   function renderTable(rows) {
-    function cells(r) { return r.trim().replace(/^\||\|$/g, '').split('|').map(function (c) { return c.trim(); }); }
+    // [[Sayfa|metin]] bağlantılarının içindeki "|" hücre ayırıcısı sayılmaz
+    function cells(r) {
+      return r.trim().replace(/^\||\|$/g, '')
+        .replace(/\[\[[^\]]*\]\]/g, function (m) { return m.replace(/\|/g, '\u0001'); })
+        .split('|').map(function (c) { return c.replace(/\u0001/g, '|').trim(); });
+    }
     var head = cells(rows[0]);
     var body = rows.slice(1).filter(function (r) { return !/^\|?\s*:?-{2,}/.test(r.trim()); });
     var h = '<div class="table-wrap"><table class="wikitable"><thead><tr>' +

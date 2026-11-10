@@ -71,6 +71,13 @@ Arthur'un hikâyesi şu konularla bağlantılıdır:
 - Facility 60 ile bağlantılıdır ve tesisin düşüşü sırasında ortadan kaybolmuştur.
 :::
 
+## Doğumu {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+Arthur **2006**'da doğdu. Henry'nin ağabeyidir; aralarında **3 yaş** fark vardır. Bkz. [[Zaman Çizelgesi]].
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Yaşı ve kişiliği.

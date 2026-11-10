@@ -59,6 +59,38 @@ Gardiyan bir anomaliyi tespit edemez ve onu bir göreve gönderirse, Devlet sonu
 
 Oyuncunun seçimleri **tesisteki insan ve anomali dengesini** ve **oyunun sonunu** etkiler. Bu etkinin ayrıntıları ve [[Sonlar|sonlar]] henüz belgelenmemiştir. {{tba}}
 
+## İlk gün {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+İlk gün Henry henüz test protokollerine, mahkûmların kişisel eşyalarına veya eski kayıtlarına erişemez. Öncelikli görevi tesisi ve insanları tanımaktır.
+
+**8 saatlik mesai — dört görüşme — görüşme başına 2 saat.**
+
+1. **Giriş:** erkek gardiyanla konuşma ([[Viktor Hale|Kaptan Viktor Hale]]).
+2. **Alt kat:** kadın gardiyanın A ve B Block yönlendirmesi ([[Vera Collins|Teğmen Vera Collins]]).
+3. **Temizlikçi:** gündelik olaylardan bahsetme ([[Janitor]]).
+4. **Seçim.**
+5. **Night event** (bkz. [[Gece Olayları]]).
+
+### Kaptan Viktor Hale ile ilk konuşma
+Viktor, Henry'ye günlük faksları, mahkûm seçme sorumluluğunu, Corrupted tehlikesini ve günlüğün (Journal) temel kullanımını anlatır. Ardından Henry şu soruları sorabilir:
+
+| Soru | Viktor'un cevabının özeti |
+|---|---|
+| "Why am I the one choosing the inmates?" | Son onay Gardiyandan gelmelidir. Subaylar mahkûmları gözlemler ve olağandışı her şeyi bildirir; gözlem ve karar tesis protokolü gereği ayrı tutulur. |
+| "What kind of assignments are we sending them on?" | Çoğunlukla geri kazanım işi; bkz. [[Görevlendirmeler#geri-kazanim-programi]]. |
+| "Corrupted?" | Bazıları onlara "Remnants" der; bkz. [[Remnants]]. |
+| "How am I supposed to keep track of all this?" | Günlüğün önemini göstermek için sorulur: görevler, mahkûm kayıtları, toplanan belgeler ve önemli notlar günlükte bulunur. |
+
+Konuşma, Viktor'un Henry'yi hücre bloklarını anlatacak olan Vera Collins'e yönlendirmesiyle biter.
+
+:::note Ekip notları
+- İlk gün görevlerindeki "meet Bob" ve "meet Alicia" yazıları kaldırılmalı; çünkü oyuncu o gün bu kişilerle rastgele tanışabilir.
+- Oyun için **7 günlük zorunlu bir döngü olmamalı**: sırf döngü yedi gün olsun diye her güne ayrı bir Night Event üretmek hem ekip için gereksiz yük olur hem de korku sekansları rutinleşip etkisini kaybeder.
+:::
+
 ## Henüz karar verilmeyen konular
 {{kararyok}}
 

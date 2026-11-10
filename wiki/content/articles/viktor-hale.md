@@ -62,6 +62,25 @@ Viktor, bilgilendirmesinde şu konuları açıklar:
 ## Bilinenler ve gizemler {{kararyok}}
 {{kararyok}}
 
+## Görevi ve kişiliği {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+Kaptan Viktor Hale, Facility 61'in **güvenlik ve operasyon düzeninden sorumlu kıdemli personelidir** ve doğrudan Gardiyan Henry Edaven'ın altında çalışır. Subayların yönetimini, mahkûm hareketlerini, güvenlik prosedürlerini ve günlük görevlerin uygulanmasını denetler.
+
+Oyundaki temel işlevi oyuncuyu tesisin günlük çalışma sistemine tanıtmaktır. İlk gün Henry'ye günlük fakslarla gelen görevleri, mahkûm seçme sorumluluğunu, Corrupted tehlikesini ve günlüğün temel kullanımını açıklar. Henry kararları verir; Viktor ve emrindeki subaylar bu kararların uygulanmasını sağlar.
+
+Karakter olarak **sakin, profesyonel ve kontrollüdür.** Teğmen [[Vera Collins]]'in üstüdür; Vera'nın kendini onun pozisyonuna layık görmesi nedeniyle aralarında **gizli bir profesyonel rekabet** vardır.
+
+### İlk gün diyaloğu (taslak)
+:::quote
+I'm Captain Viktor Hale. Since this is your first day at Facility 61, I thought I'd brief you on how things work around here.
+— Kaptan Viktor Hale
+:::
+
+Viktor'un ilk gün anlattıkları ve Henry'nin sorabileceği sorular için bkz. [[Oynanış#ilk-gun]].
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Yaşı.

@@ -25,8 +25,18 @@ Purge, oyun dünyasının belirleyici olayıdır. [[Corrupted]], Purge'ün ardı
 ## Tarihsel arka plan {{kararyok}}
 {{kararyok}}
 
-## Ayrıntılı açıklama {{kararyok}}
-{{kararyok}}
+## Ayrıntılı açıklama {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+Sunuma göre Purge üç aşamada gerçekleşti. Aşamaların süreleri Purge'ün başlangıcına göre verilmiştir; takvim yılları henüz belirlenmemiştir.
+
+| Aşama | Süre | Ne oldu? |
+|---|---|---|
+| **1. Sosyal medyanın ve bulutun kamulaştırılıp kapatılması** | İlk 5 yıl | Yapay zekâ algoritmalarının insanları manipüle ettiği büyük platformlar yasaklandı. İnternet yalnızca devletlerin ve bilim insanlarının kullandığı, salt metin tabanlı ve yerel ağlardan oluşan güvenli bir alana indirgendi. |
+| **2. "Karanlık Oda" yasaları** | 5.–10. yıllar | Dijital fotoğrafçılık ve video yasaklanmasa da yasal olarak değersizleştirildi. Mahkemelerde dijital deliller geçersiz sayıldı; yalnızca negatif film ve polaroid gibi analog kayıtlar kanıt kabul edildi. Gerekçe: yapay zekânın manipüle edemediği tek şey, ışığın filme çarpıp bıraktığı kimyasal izdir. |
+| **3. Donanımsal gerileme** | 10.–20. yıllar | Mikroçip üretimi sınırlandırıldı ya da tamamen durduruldu. Fabrikalar, yapay zekânın sızamayacağı ve internete bağlanma yeteneği fiziksel olarak bulunmayan mekanik sistemlere ve analog devrelere döndü. |
 
 ## İlgili olaylar
 - [[Analog Era]]'nın başlangıcı

@@ -198,6 +198,18 @@ Sonlara nasıl ulaşılacağı ve final sahneleri henüz belgelenmemiştir. {{tb
 - Henry'nin oyun sonunda Corrupted hâle gelip gelmeyeceği: oyuncunun kararlarına bağlıdır; planlanan iki son için bkz. [[#Olası sonlar]].
 :::
 
+## Ekip sunumundaki ek notlar {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+- **Resmî kayıtlar:** Kurum Henry'nin yangındaki gerçek davranışını bilmez. Resmî kayıtlarda Henry bir **vaka mağduru ve deneyimli bir Sivil Koruma görevlisidir.** Hatta yaşadıkları, onu görev için daha uygun görmelerine neden olabilir.
+- **Corruption açısından:** Henry, Corruption için **"neredeyse ideal bir taşıyıcı (host)"** olarak tanımlanır. Bkz. [[Corrupted#savunmasiz-zihinler]].
+
+:::kararyok Sunumdaki farklı anlatım
+Sunumun bir sayfasında Henry'nin Corrupted belirtileri gösteren kızını yetkililere bildirmediği yazar; başka bir sayfasında ise belirtileri saklayan kişinin Eve olduğu ve Henry'nin uzmanlara başvurmak istediği anlatılır. Wikideki kesinleşmiş biyografi ikinci anlatımla uyumludur.
+:::
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Yangının gerçek sebebi.

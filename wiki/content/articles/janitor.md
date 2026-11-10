@@ -56,6 +56,9 @@ Janitor'ın, tesisin **yaklaşık iki yıldır** faaliyette olduğunu belirttiğ
 ## Bilinenler ve gizemler {{kararyok}}
 {{kararyok}}
 
+## İlk gündeki rolü {{gelistiriliyor}}
+Ekip sunumundaki ilk gün akışına göre Janitor, Henry'yle konuşarak **gündelik olaylardan bahseder**. Bkz. [[Oynanış#ilk-gun]].
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Adı ve yaşı.

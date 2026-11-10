@@ -60,6 +60,16 @@ Henry'nin geçmişinin ve psikolojik durumunun önemli bir parçasıdır. Gece o
 ## Bilinenler ve gizemler {{kararyok}}
 {{kararyok}}
 
+## Mary hakkındaki üç ihtimal {{kararyok}}
+Ekip sunumunda Mary'nin Corruption belirtileri için üç ihtimal öne sürülür. Hangisinin geçerli olduğuna henüz karar verilmemiştir:
+1. **Gerçekten Corrupted'dı.** Henry bunu fark etmişti, ancak kızını korumak istediği için kimseye söylemedi.
+2. **Corrupted değildi.** Çocukta görülen tuhaf davranışlar başka bir sebepten kaynaklanıyordu. Henry'nin paranoyası ve dönemin toplumsal korkusu, kızını bir anomali olarak görmesine neden oldu.
+3. **Açıklanamayan belirtiler vardı**, ama bunların Corruption olup olmadığı hiçbir zaman kanıtlanamadı.
+
+:::gallery
+assets/img/concept/eve-mary-scene.jpg | Eve ve Mary (ekip sunumundaki çizim)
+:::
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Adı ve yaşı.

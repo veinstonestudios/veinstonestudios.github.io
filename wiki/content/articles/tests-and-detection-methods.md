@@ -51,6 +51,41 @@ Gardiyan, bir anomaliye işaret edebilecek görsel bozulmaları arar. **Hücre i
 ## Diğer testler {{kararyok}}
 {{kararyok}}
 
+## Ses ve beyin testi {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+- Ses ve beyin testi **mahkûmla konuşurken** yapılır. Bu yüzden ilk kez yapıldığında günlüğü açmak gerekmez.
+- Beyin testinde ekranda görsel bir pencere (beyin tarama raporu) açılır.
+- Test sonuçları, mahkûmun karşısında oyuncuya kontrol verilmeden o an çıkar. Bunun nedeni karakterin sonuca **itiraz edebilme** hakkının olmasıdır.
+- Testler günlüğe kaydedildiği için sonradan da incelenebilir.
+
+### Günlükteki mahkûm profilleri
+- 14 mahkûm profili günlükte 3 sayfaya sığar. Bu düzen hem ileride yeni karakter eklemeyi kolaylaştırır hem de oyuncunun yalnızca isme bakarak istediği mahkûma ulaşmasını sağlar.
+- Bir mahkûmun profili tek yerine iki sayfa olursa yapılan testlere de buradan ulaşılabilir.
+- İkiden fazla test eklenirse testler için ayrı bir ayraç eklenebilir; şimdilik iki test (ses ve beyin) planlanmaktadır.
+
+:::gallery
+assets/img/concept/test-menu.jpg | Mahkûmla konuşurken test seçenekleri (geliştirme sürümü)
+assets/img/concept/brain-scan-report.jpg | Beyin tarama raporu penceresi (geliştirme sürümü)
+assets/img/concept/test-result-dialogue.jpg | Test sırasında mahkûmun tepkisi (geliştirme sürümü)
+assets/img/concept/journal-profiles.jpg | Günlükteki mahkûm profilleri listesi (geliştirme sürümü)
+assets/img/concept/journal-profile-page.jpg | Bir mahkûmun profil sayfası, ses kaydı ve beyin taraması (geliştirme sürümü)
+:::
+
+:::kararyok Arayüz görsellerindeki yer tutucu bilgiler
+Arayüz görsellerindeki kimlik numaraları, doğum ve test tarihleri ile suç kayıtları (ör. 2058–2059 yılları) yer tutucu gibi görünmektedir ve kanon olarak alınmamıştır. Profil listesinde ayrıca wikide olmayan **"Cole M. Graves"** adı geçmektedir.
+:::
+
+## İnfaz {{kararyok}}
+Sunumda açık bir soru olarak yer alır: **infaz nasıl yapılmalı — üst katta mı, yüz yüze mi?** Henüz karar verilmemiştir.
+
+:::gallery
+assets/img/concept/execution-room.jpg | İnfaz odası konsepti (ekip sunumu)
+assets/img/concept/execution-room-ui.jpg | İnfaz onayı arayüz konsepti (ekip sunumu)
+:::
+
 ## Henüz karar verilmeyen konular
 {{kararyok}}
 

@@ -56,6 +56,11 @@ Henry'nin geçmiş travmasının bir parçası olarak, Henry'nin ailesine ilişk
 ## Bilinenler ve gizemler {{kararyok}}
 {{kararyok}}
 
+## Görseller {{gelistiriliyor}}
+:::gallery
+assets/img/concept/eve-mary-scene.jpg | Eve ve Mary (ekip sunumundaki çizim)
+:::
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Adı ve yaşı.

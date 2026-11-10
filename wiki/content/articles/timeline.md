@@ -17,6 +17,7 @@ Bu **zaman çizelgesi**, *[[The Facility]]* dünyasında bilinen olayları kayde
 
 ## Tarihli kronoloji {{kesin}}
 :::kronoloji
+2006 | Arthur Edaven'ın doğumu | Henry'nin ağabeyi [[Arthur Edaven]] dünyaya gelir; Henry ile arasında 3 yaş fark vardır. | tur=olay; henry=—; durum=gelistiriliyor
 2009 | Henry Edaven'ın doğumu | Henry Adam Edaven dünyaya gelir. | tur=olay; henry=0; durum=kesin
 2041 | Mary Edaven'ın doğumu | Henry'nin kızı [[Henry'nin Kızı|Mary]] dünyaya gelir. | tur=mary; henry=32; mary=doğum; iplik=mary; durum=kesin
 2043 | İlk Corruption vakaları | Dünyada anomaliler ilk kez rapor edilmeye başlanır. | tur=olay; henry=34; durum=kesin

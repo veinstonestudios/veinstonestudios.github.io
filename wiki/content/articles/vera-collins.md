@@ -72,6 +72,17 @@ Bkz. [[Testler ve Tespit Yöntemleri]].
 ## Bilinenler ve gizemler {{kararyok}}
 {{kararyok}}
 
+## Görevi ve kişiliği {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+Teğmen Vera Collins, Facility 61'de **koğuşların günlük düzeninden, mahkûmların gözetiminden ve subayların sahadaki yönetiminden** sorumludur. Kaptan [[Viktor Hale]]'in doğrudan altında çalışır ve özellikle A ve B Block'un işleyişini yakından takip eder.
+
+Oyundaki temel işlevi oyuncuyu mahkûm değerlendirme sistemine tanıtmaktır. İlk gün Henry'ye koğuşların yerini, mahkûmlarla kendi hücrelerinde konuşacağını, dosyalarını incelemesi gerektiğini ve Corrupted olduğundan şüphelendiği kişileri nasıl değerlendireceğini anlatır. Ayrıca ses testi sistemini tanıtır, kasetçaları Henry'ye verir ve ses testlerine mahkûm dosyalarından ulaşılabileceğini açıklar.
+
+Karakter olarak soğukkanlı, disiplinli, otoriter ve **biraz burnu havadadır**. Rütbesine ve işindeki tecrübesine güvenir. Viktor Hale'in altında çalışmasına rağmen kendisini onun pozisyonuna çıkabilecek, hatta bu işi ondan daha iyi yapabilecek biri olarak görür. Bu nedenle aralarında açık bir düşmanlıktan çok, **Vera'nın içten içe sürdürdüğü profesyonel bir rekabet** vardır.
+
 ## Henüz karar verilmeyen özellikler
 :::kararyok
 - Yaşı ve kişisel geçmişi.

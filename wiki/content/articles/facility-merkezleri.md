@@ -32,6 +32,15 @@ Facility merkezlerinde Corruption tespiti için **deneme-yanılma yöntemleri** 
 
 Gözlem ve rehabilitasyon çerçevesi [[CORE Programı]] ile ilişkilendirilir.
 
+## Önceki tesisler neden çöktü? {{gelistiriliyor}}
+:::source Ekip sunumu
+Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleştirene kadar **Geliştiriliyor** olarak işaretlidir.
+:::
+
+Önceki tesisler, Corrupted'ları kesin biçimde ayırt edebileceklerini düşündükleri **testlere fazla güvendi**. Varlıklar protokolleri öğrenip taklitlerini geliştirdikçe yanlış kişiler görevlendirildi, gerçek insanlar infaz edildi ve personel arasındaki güven çöktü.
+
+Bazı tesisler isyan, sabotaj veya Corruption yayılımı nedeniyle kapatıldı. Bazılarıysa resmî kayıtlarda hâlâ faal görünmesine rağmen **iletişimi tamamen kesti**. [[Facility 61]], bu başarısızlıklardan sonra uzun süreli gözlem ve insan Gardiyan kararı üzerine kurulan yeni modeldir.
+
 ## Henüz karar verilmeyen konular
 :::kararyok
 - Toplam kaç Facility merkezi olduğu ve numaralandırmanın anlamı.
