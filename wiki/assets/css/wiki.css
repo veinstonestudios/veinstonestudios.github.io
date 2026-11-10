@@ -863,3 +863,47 @@ h2 .status, h3 .status, h4 .status { font-size: 10.5px; }
   body, .prose { font-size: 14.5px; }
   .crt { background: radial-gradient(ellipse at center, rgba(0,0,0,0) 68%, rgba(0,0,0,.22) 100%); }
 }
+
+/* ==========================================================================
+   SIZE SCALE — matched to the Fandom reference wiki
+   (body 14px/1.75, title 36, h2 24, h3 18, infobox 12–18, tabs 12, rail 16).
+   OCR-B is wider than Rubik, so bold headings sit slightly below those values.
+   ========================================================================== */
+body, .prose { font-size: 14px; line-height: 1.75; }
+.prose p, .prose li { max-width: none; }
+.wikitable, .rail-list, .recent, .plain, .wikitable td, .wikitable th { font-size: 13px; }
+.page-title   { font-size: 30px; line-height: 1.25; }
+.prose h2     { font-size: 20px; line-height: 1.3; }
+.prose h3     { font-size: 15.5px; }
+.prose h4     { font-size: 13.5px; }
+.mp-welcome h1, .mp-content-title { font-size: 22px; }
+.featured-text h3 { font-size: 17px; }
+.topbar-brand { font-size: 15px; }
+.ch-name      { font-size: 17px; }
+.infobox-title { font-size: 16px; }
+.infobox-section { font-size: 12.5px; }
+.infobox dt, .infobox dd { font-size: 12px; }
+.tn-label, .nav-group summary, .sidebar-head, .toplinks a { font-size: 12px; }
+.rail-h, .mp-h { font-size: 14px; }
+.rail-btn, .search-page-form button { font-size: 12px; }
+.toc-head { font-size: 13px; }
+.callout-title { font-size: 12px; }
+.callout-sub { font-size: 13px; }
+.vtl-year { font-size: 16px; }
+.vtl-title { font-size: 14px; }
+.vtl-kind, .notice-stamp { font-size: 11px; }
+.card-title, .lore-title { font-size: 13px; }
+.bi-section, .prop-template summary { font-size: 12.5px; }
+.prop-card h4 { font-size: 14px; }
+.ch-count strong, .rail-stats strong { font-size: 20px; }
+.ch-count span, .catlinks-label, .page-cats > span { font-size: 11px; }
+.rec { font-size: 11px !important; }
+@media (max-width: 760px) {
+  body, .prose { font-size: 13.5px; }
+  .page-title { font-size: 24px; }
+  .prose h2 { font-size: 18px; }
+  .infobox-title { font-size: 15px; }
+}
+.callout, .notice, .basic-info, .bi-row, .vtl-text, .missing { font-size: 13.5px; }
+.searchbox input, .search-page-form input { font-size: 14px; }
+.prop-text { font-size: 13.5px; }
