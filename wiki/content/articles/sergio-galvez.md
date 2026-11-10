@@ -1,0 +1,53 @@
+---
+title: Sergio Galvez II
+type: character
+role: Mahkûm
+categories: Mahkûmlar
+aliases: Sergio Galvez II., Sergio Galvez, Sergio, Galvez
+summary: Sergio Galvez II, Tesis 61'de tutulan mahkûmlardan biridir.
+stub: true
+image: assets/img/characters/sergio-galvez.jpg
+caption: Karakter çizimi
+created: 2026-11-10
+updated: 2026-11-10
+infobox:
+  [Kişisel bilgiler]
+  Adı: Sergio Galvez II
+  Yaşı: Bilinmiyor
+  Durumu: Mahkûm
+  [Sınıflandırma]
+  Tutulduğu yer: [[Tesis 61]]
+  Gerçek kimliği: Bilinmiyor
+  [Oyunda]
+  Oyun: [[The Facility]]
+---
+**Sergio Galvez II**, *[[The Facility]]* oyununda **[[Tesis 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Adı, oyunun mahkûm listesinde yer almaktadır.
+
+:::unknown Sınıflandırma
+Sergio'nun insan mı yoksa [[Bozulmuşlar|Bozulmuş]] mu olduğu **henüz belirlenmemiştir**.
+:::
+
+## Genel bilgiler
+Sergio, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendirmeler|görevler]] için seçebileceği mahkûmlardandır.
+
+## Geçmiş ve biyografi
+{{missing}}
+
+## Kişilik
+{{missing}}
+
+## İlişkiler
+{{missing}}
+
+## Hikâyedeki rolü
+{{missing}}
+
+## Bilinen bilgiler ve gizemler
+:::unknown Henüz belirlenmedi
+- Yaşı ve geçmişi.
+- Kişiliği.
+- İnsan mı yoksa Bozulmuş mu olduğu.
+:::
+
+## Görünüş
+Karakter çiziminde Sergio, kısa koyu saçlı ve ince yapılı, açık yeşil tulum benzeri mahkûm kıyafetli olarak, elleri ceplerinde gösterilir.

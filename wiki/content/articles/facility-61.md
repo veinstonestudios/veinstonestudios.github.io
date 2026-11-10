@@ -75,7 +75,7 @@ Resmî ekran görüntülerinde görülen alanlar arasında ortak bir salon, kori
 
 ## İlgili karakterler
 ### Mahkûmlar
-Tesis 61'de toplam **14 mahkûm** bulunmaktadır. Mahkûmlar, rehabilitasyon ve gözlem amacıyla tesise getirilen hükümlülerdir; Bozulmuş olabileceklerinden şüphelenilir, ancak şüpheli olmak suçlu olmak anlamına gelmez. Şu ana kadar belgelenenler:
+Tesis 61'de toplam **14 mahkûm** bulunmaktadır. Mahkûmlar, rehabilitasyon ve gözlem amacıyla tesise getirilen hükümlülerdir; Bozulmuş olabileceklerinden şüphelenilir, ancak şüpheli olmak suçlu olmak anlamına gelmez. Belgelenen mahkûmlar:
 - [[Ted Karinsky]]
 - [[M. Cole Morgan]]
 - [[Alicia Winston]]
@@ -85,6 +85,11 @@ Tesis 61'de toplam **14 mahkûm** bulunmaktadır. Mahkûmlar, rehabilitasyon ve 
 - [[Hasan Kahveci]]
 - [[Katarina Jovanovic]]
 - [[Shane Smith]]
+- [[Milena Marvic]]
+- [[Paul H. Simmons]]
+- [[Sergio Galvez II]]
+- [[Father Gregory]]
+- [[Nina Grace]]
 
 Belgelenmiş tüm mahkûmlar için [[Kategori:Mahkûmlar]] sayfasına bakın.
 

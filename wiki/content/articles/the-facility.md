@@ -73,7 +73,7 @@ Oyundaki her gün dört aşamadan oluşur: **Emirler**, **Sorgu**, **Seçim** ve
 | [[Viktor Hale|Kaptan Viktor Hale]] | Henry'ye gardiyanlık görevini anlatan tesis personeli |
 | [[Vera Collins|Teğmen Vera Collins]] | Hücre bloklarından sorumlu subay |
 | [[Janitor]] | Tesisin temizlik görevlisi |
-| [[Ted Karinsky]], [[M. Cole Morgan]], [[Alicia Winston]], [[Bob]], [[Evangelyn Hilton]], [[Dakota Ahmadii]], [[Hasan Kahveci]], [[Katarina Jovanovic]], [[Shane Smith]] | Tesis 61'in [[Kategori:Mahkûmlar|mahkûmları]] (toplam 14 mahkûmdan belgelenenler) |
+| [[Ted Karinsky]], [[M. Cole Morgan]], [[Alicia Winston]], [[Bob]], [[Evangelyn Hilton]], [[Dakota Ahmadii]], [[Hasan Kahveci]], [[Katarina Jovanovic]], [[Shane Smith]], [[Milena Marvic]], [[Paul H. Simmons]], [[Sergio Galvez II]], [[Father Gregory]], [[Nina Grace]] | Tesis 61'in 14 [[Kategori:Mahkûmlar|mahkûmu]] |
 | [[Nate Lawson]] | Alicia Winston'ın geçmişindeki önemli kişi |
 | [[Henry'nin Eşi]], [[Henry'nin Kızı]] | Henry'nin bir yangında hayatını kaybeden ailesi |
 

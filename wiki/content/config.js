@@ -16,7 +16,7 @@ window.WIKI_CONFIG = {
   gameTitle: 'The Facility',
 
   /* Maddeleri düzenledikten sonra bu sayıyı değiştirin ki tarayıcılar yeni dosyaları indirsin. */
-  version: '2026-11-09.3-tr',
+  version: '2026-11-10.1-tr',
 
   /* Üst bilgi ve alt bilgide gösterilen dış bağlantılar. */
   links: {
@@ -54,6 +54,11 @@ window.WIKI_CONFIG = {
     'nate-lawson',
     'henrys-wife',
     'henrys-daughter',
+    'milena-marvic',
+    'paul-h-simmons',
+    'sergio-galvez',
+    'father-gregory',
+    'nina-grace',
 
     // Mekânlar
     'facility-61',
