@@ -1066,7 +1066,7 @@
       var blank = /^(unknown|bilinmiyor|\?|tba|belgelenmedi|henüz belgelenmedi|karar verilmedi|henüz karar verilmedi|-)$/i.test(v);
       if (blank) st = 'kararyok';
       else if (/\|\||kesinleşmez|^gizli/i.test(v)) st = 'gizli';
-      else if (/^bilinmiyor/i.test(v)) st = 'kararyok';
+      else if (/bilinmiyor|belirlenmedi|karar verilmedi/i.test(v)) st = 'kararyok';
       else st = 'kesin';
       var vh = blank ? '<span class="muted">—</span>' : v.split(/\s*;\s*/).map(inline).join(', ');
       h += '<div class="bi-row"><dt>' + esc(r.label) + '</dt><dd>' + vh + ' ' + statusTag(st) + '</dd></div>';
