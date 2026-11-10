@@ -766,77 +766,10 @@ h2 .status, h3 .status, h4 .status { margin-left: 10px; font-size: 13px; text-sh
 @media (max-width: 760px) { .bi-row { grid-template-columns: minmax(0, 1fr); } }
 
 /* ==========================================================================
-   OCR-B TYPOGRAPHY + LIGHT VHS / ANALOG ARCHIVE LAYER
-   Headings, navigation, labels and infoboxes: OCR-B Bold.
-   Body text: OCR-B Regular. Fallback: monospace.
+   LIGHT VHS / ANALOG ARCHIVE LAYER
    Screen effects are deliberately faint so text stays sharp.
    ========================================================================== */
-@font-face {
-  font-family: 'OCR-B';
-  src: url('../fonts/OCR-B.ttf') format('truetype');
-  font-weight: 400; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'OCR-B';
-  src: url('../fonts/OCR-B-Bold.ttf') format('truetype');
-  font-weight: 700; font-style: normal; font-display: swap;
-}
-:root {
-  --font:      'OCR-B', 'IBM Plex Mono', ui-monospace, Consolas, 'Courier New', monospace;
-  --font-term: 'OCR-B', 'IBM Plex Mono', ui-monospace, Consolas, 'Courier New', monospace;
-  --glow-gold: 0 0 6px rgba(232,164,31,.18);
-  --glow-soft: none;
-}
-
-/* Body text: OCR-B Regular, calm spacing */
-body { font-family: var(--font); font-weight: 400; font-size: 15px; line-height: 1.72; letter-spacing: 0; }
-.prose { font-size: 15px; }
-.prose p, .prose li { max-width: 80ch; }
-.prose strong, .prose b { font-weight: 700; }
-.wikitable, .rail-list, .recent, .plain { font-size: 14px; }
-em, i, .wiki-quote { font-synthesis: style; }
-
-/* Headings + titles: OCR-B Bold */
-.page-title, .prose h2, .prose h3, .prose h4, .mp-welcome h1, .mp-content-title, .mp-h, .featured-text h3,
-.infobox-title, .infobox-section, .ch-name, .topbar-brand, .card-title, .lore-title, .vtl-title, .vtl-year,
-.prop-card h4, .bi-section, .rail-h, .stamp-big { font-family: var(--font-term); font-weight: 700; }
-.page-title   { font-size: 32px; line-height: 1.2; letter-spacing: 0; color: #fff0cc; text-shadow: var(--glow-gold); }
-.prose h2     { font-size: 22px; line-height: 1.3; letter-spacing: .01em; text-shadow: none; }
-.prose h3     { font-size: 17px; text-shadow: none; }
-.prose h4     { font-size: 14px; }
-.mp-welcome h1, .mp-content-title { font-size: 24px; text-shadow: none; }
-.featured-text h3 { font-size: 19px; }
-.infobox-title { font-size: 19px; line-height: 1.3; letter-spacing: .01em; }
-.vtl-year { font-size: 18px; }
-.vtl-title { font-size: 15.5px; }
-.card-title, .lore-title { font-size: 14px; }
-
-/* Navigation, menus, labels, infobox keys: OCR-B Bold */
-.tn-label, .rail-h, .mp-h, .infobox-section, .toc-head, .callout-title, .notice-stamp, .vtl-kind,
-.ch-count span, .page-cats > span, .catlinks-label, .missing-stamp, .tag, .sidebar-head, .nav-group summary,
-.toplinks a, .infobox dt, .rail-btn, .status, .prop-status, .prop-template summary, .prop-copy, .video-badge,
-.vtl-legend, .search-page-form button, .toc a, .nav-group a, #topnav a {
-  font-family: var(--font-term); font-weight: 700; letter-spacing: .02em;
-}
-.tn-label { font-size: 13px; }
-.rail-h, .mp-h { font-size: 14.5px; }
-.infobox-section { font-size: 13.5px; padding: 7px 9px; }
-.infobox dt { font-size: 12.5px; }
-.toc-head { font-size: 14px; }
-.callout-title { font-size: 13px; letter-spacing: .04em; }
-.notice-stamp, .vtl-kind { font-size: 12px; }
-.tag, .missing-stamp { font-size: 11px; line-height: 1.7; }
-.status { font-size: 11px; line-height: 1.6; letter-spacing: .04em; }
-h2 .status, h3 .status, h4 .status { font-size: 10.5px; }
-.ch-count span, .catlinks-label, .page-cats > span { font-size: 12px; }
-.nav-group summary, .sidebar-head { font-size: 13px; }
-.bi-section, .prop-template summary { font-size: 13.5px; }
-.prop-status, .video-badge { font-size: 11px; }
-.prop-copy { font-size: 12.5px; }
-.callout-sub { font-family: var(--font); font-weight: 700; font-size: 13.5px; }
-.ch-name { font-size: 18px; text-shadow: 0 2px 6px rgba(0,0,0,.8); }
-.rec { font: 700 12.5px var(--font-term) !important; letter-spacing: .1em; }
-
+:root { --glow-gold: 0 0 6px rgba(232,164,31,.18); --glow-soft: none; }
 /* Effects: faint VHS / archive feel only */
 .crt {
   background:
@@ -857,53 +790,80 @@ h2 .status, h3 .status, h4 .status { font-size: 10.5px; }
 .gallery-item img, .featured-img img, .card-img img { filter: none; }
 
 @media (max-width: 760px) {
-  .page-title { font-size: 25px; }
-  .prose h2 { font-size: 19px; }
-  .infobox-title { font-size: 17px; }
-  body, .prose { font-size: 14.5px; }
   .crt { background: radial-gradient(ellipse at center, rgba(0,0,0,0) 68%, rgba(0,0,0,.22) 100%); }
 }
 
 /* ==========================================================================
-   SIZE SCALE — matched to the Fandom reference wiki
-   (body 14px/1.75, title 36, h2 24, h3 18, infobox 12–18, tabs 12, rail 16).
-   OCR-B is wider than Rubik, so bold headings sit slightly below those values.
+   TYPOGRAPHY — matched to the Fandom reference wiki
+   Reference uses Rubik only (300 / 400 / 500 / 700, italic 400 / 700):
+   body 14/24.5 400 · page title 36/45 300 · h2 24/30 500 · h3 18/22.5 500 · h4 16/20 500
+   community name 18 500 · nav tabs 12/21 500 uppercase · dropdown 14 400
+   infobox title 18 700 · section 14 700 · label 12 700 · value 12 400
+   rail header 16 700 · buttons 12 600 uppercase · TOC title 14 500
    ========================================================================== */
-body, .prose { font-size: 14px; line-height: 1.75; }
-.prose p, .prose li { max-width: none; }
-.wikitable, .rail-list, .recent, .plain, .wikitable td, .wikitable th { font-size: 13px; }
-.page-title   { font-size: 30px; line-height: 1.25; }
-.prose h2     { font-size: 20px; line-height: 1.3; }
-.prose h3     { font-size: 15.5px; }
-.prose h4     { font-size: 13.5px; }
-.mp-welcome h1, .mp-content-title { font-size: 22px; }
-.featured-text h3 { font-size: 17px; }
-.topbar-brand { font-size: 15px; }
-.ch-name      { font-size: 17px; }
-.infobox-title { font-size: 16px; }
-.infobox-section { font-size: 12.5px; }
-.infobox dt, .infobox dd { font-size: 12px; }
-.tn-label, .nav-group summary, .sidebar-head, .toplinks a { font-size: 12px; }
-.rail-h, .mp-h { font-size: 14px; }
-.rail-btn, .search-page-form button { font-size: 12px; }
-.toc-head { font-size: 13px; }
-.callout-title { font-size: 12px; }
-.callout-sub { font-size: 13px; }
-.vtl-year { font-size: 16px; }
-.vtl-title { font-size: 14px; }
-.vtl-kind, .notice-stamp { font-size: 11px; }
-.card-title, .lore-title { font-size: 13px; }
-.bi-section, .prop-template summary { font-size: 12.5px; }
-.prop-card h4 { font-size: 14px; }
-.ch-count strong, .rail-stats strong { font-size: 20px; }
-.ch-count span, .catlinks-label, .page-cats > span { font-size: 11px; }
-.rec { font-size: 11px !important; }
-@media (max-width: 760px) {
-  body, .prose { font-size: 13.5px; }
-  .page-title { font-size: 24px; }
-  .prose h2 { font-size: 18px; }
-  .infobox-title { font-size: 15px; }
+:root {
+  --font:      'Rubik', helvetica, arial, sans-serif;
+  --font-term: 'Rubik', helvetica, arial, sans-serif;
 }
-.callout, .notice, .basic-info, .bi-row, .vtl-text, .missing { font-size: 13.5px; }
-.searchbox input, .search-page-form input { font-size: 14px; }
-.prop-text { font-size: 13.5px; }
+body, .prose { font: 400 14px/1.75 var(--font); letter-spacing: normal; }
+.prose p, .prose li { max-width: none; }
+.prose strong, .prose b { font-weight: 700; }
+.wikitable, .wikitable td, .rail-list, .recent, .plain { font-size: 14px; }
+.wikitable th { font-weight: 700; }
+
+/* Titles and headings */
+.page-title { font: 300 36px/1.25 var(--font); letter-spacing: .25px; color: #fff0cc; text-shadow: var(--glow-gold); }
+.prose h2   { font: 500 24px/1.25 var(--font); letter-spacing: normal; text-shadow: none; }
+.prose h3   { font: 500 18px/1.25 var(--font); letter-spacing: normal; text-shadow: none; }
+.prose h4   { font: 500 16px/1.25 var(--font); }
+.mp-welcome h1, .mp-content-title { font: 300 30px/1.3 var(--font); text-shadow: none; }
+.featured-text h3 { font: 500 22px/1.3 var(--font); }
+.ch-name { font: 500 18px/1.25 var(--font); }
+.topbar-brand { font: 700 17px var(--font); letter-spacing: normal; }
+.topbar-brand span { font-weight: 500; }
+
+/* Navigation */
+.tn-label, #topnav > * > a, #topnav > a { font: 500 12px/21px var(--font); text-transform: uppercase; letter-spacing: normal; }
+#topnav .tn-menu a, .tn-menu a { font: 400 14px/1.5 var(--font); text-transform: none; }
+.nav-group summary, .sidebar-head { font: 500 12px var(--font); text-transform: uppercase; letter-spacing: normal; }
+.nav-group a { font: 400 14px/1.5 var(--font); }
+.toplinks a, .rail-btn, .search-page-form button, .prop-copy { font: 600 12px var(--font); text-transform: uppercase; letter-spacing: .15px; }
+.searchbox input, .search-page-form input { font: 400 14px var(--font); }
+
+/* Infobox */
+.infobox-title   { font: 700 18px/1.25 var(--font); letter-spacing: normal; }
+.infobox-section { font: 700 14px/1.25 var(--font); letter-spacing: normal; padding: 8px 9px; }
+.infobox dt      { font: 700 12px/1.5 var(--font); letter-spacing: normal; }
+.infobox dd      { font: 400 12px/1.5 var(--font); }
+.bi-section      { font: 700 14px var(--font); letter-spacing: normal; }
+.bi-row          { font-size: 14px; }
+
+/* Rail, TOC, page chrome */
+.rail-h, .mp-h { font: 700 16px/1.25 var(--font); letter-spacing: normal; text-transform: none; }
+.toc-head { font: 500 14px var(--font); letter-spacing: normal; text-transform: none; }
+.toc a { font: 400 14px/1.75 var(--font); }
+.page-cats > span, .catlinks-label { font: 500 14px var(--font); letter-spacing: normal; text-transform: none; }
+.ch-count strong, .rail-stats strong { font: 500 22px/1.1 var(--font); }
+.ch-count span { font: 700 12px var(--font); text-transform: uppercase; letter-spacing: normal; }
+.card-title, .lore-title { font: 500 14px/1.3 var(--font); }
+
+/* Small labels: tags, statuses, callout titles */
+.tag, .status, .missing-stamp, .notice-stamp, .vtl-kind, .callout-title, .prop-status, .video-badge, .vtl-legend {
+  font-family: var(--font); font-weight: 700; letter-spacing: .02em;
+}
+.callout-title { font-size: 12px; text-transform: uppercase; }
+.callout-sub { font: 500 14px var(--font); text-transform: none; letter-spacing: normal; }
+.tag, .missing-stamp, .notice-stamp, .vtl-kind, .prop-status, .video-badge { font-size: 11px; }
+.status { font-size: 11px; line-height: 1.6; }
+h2 .status, h3 .status, h4 .status { font-size: 10.5px; }
+.callout, .notice, .basic-info, .vtl-text, .missing, .prop-text { font-size: 14px; }
+.prop-card h4 { font: 500 16px var(--font); }
+.prop-template summary { font: 500 14px var(--font); letter-spacing: normal; }
+.vtl-year { font: 500 20px/1 var(--font); }
+.vtl-title { font: 500 16px/1.3 var(--font); }
+.rec { font: 700 12px var(--font) !important; letter-spacing: .08em; }
+
+@media (max-width: 760px) {
+  .page-title { font-size: 28px; }
+  .prose h2 { font-size: 21px; }
+}
