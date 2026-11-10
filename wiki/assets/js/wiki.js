@@ -167,7 +167,12 @@
     s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     s = s.replace(/(^|[^\w*])\*(?!\s)(.+?)\*(?!\w)/g, '$1<em>$2</em>');
     s = s.replace(/ -- /g, ' — ');
-    return s.replace(/\u0000(\d+)\u0000/g, function (_, i) { return tokens[+i]; });
+    // iç içe parçalar (ör. spoiler içindeki bağlantı) için tekrar tekrar çöz
+    var guard = 0;
+    while (/\u0000\d+\u0000/.test(s) && guard++ < 10) {
+      s = s.replace(/\u0000(\d+)\u0000/g, function (_, i) { return tokens[+i]; });
+    }
+    return s;
   }
 
   /* ----------------------------------------------------------------------
