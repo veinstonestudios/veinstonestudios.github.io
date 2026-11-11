@@ -33,11 +33,6 @@ Katarina, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevle
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Katarina, arkaya toplanmış koyu mor tonlu saçlı ve açık yeşil mahkûm kıyafetli olarak gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

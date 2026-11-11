@@ -30,11 +30,6 @@ Vera, Henry'nin tesisteki ilk günlerinde onu tesisin işleyişi konusunda eğit
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Vera, örgülü sarı saçlı ve koyu yeşil üniformalı (ceket, etek, kırmızı kravat) olarak gösterilir.
-
 ## Kişilik ve davranışlar {{kesin}}
 Vera şu özelliklere sahiptir:
 - Soğuk

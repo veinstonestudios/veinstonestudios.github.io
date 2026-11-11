@@ -30,11 +30,6 @@ Henry'nin kızı, Henry'nin geçmişi ve [[Gece Olayları|gece olayları]] açı
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Henry'nin kızı, koyu saçlı, saçında yeşil bir toka bulunan ve kırmızı elbiseli küçük bir kız olarak gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

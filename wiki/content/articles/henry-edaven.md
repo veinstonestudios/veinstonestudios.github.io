@@ -16,7 +16,6 @@ infobox:
   Tam adı: Henry Adam Edaven
   Doğum yılı: 2009
   Yaşı: 46 (2055 itibarıyla)
-  Göz rengi: Yeşil-gri
   Durumu: Hayatta (oyunun başında)
   Yaşadığı yer: [[Facility 61]], ofisine açılan özel oda
   [Aile]
@@ -40,11 +39,6 @@ Yıllar sonra Henry, Facility 61'in Gardiyanlığını gönüllü olarak kabul e
 
 ## Temel bilgiler
 {{temelbilgiler}}
-
-## Fiziksel görünüm {{kesin}}
-Henry 40'lı yaşlarının ortasında olmasına rağmen oldukça **yorgun ve yaşlı** görünür; ağabeyi Arthur'dan bile daha yaşlı durur. Saçları seyrelmiştir, gözleri **yeşil-gridir**. Genellikle resmî Gardiyan üniforması giyer.
-
-Karakter portresinde Henry, kırlaşmış seyrek saçlı ve yorgun yüz ifadeli, koyu renk ceket ve kravatla gösterilir.
 
 ## Kişilik ve davranışlar {{kesin}}
 Henry **disiplinli, otoriter, mesafeli ve prosedürcü** bir karakterdir. Ancak bastırdığı korkular ve travmalar nedeniyle zaman zaman bu tavrının dışına çıkan davranışlar sergiler.

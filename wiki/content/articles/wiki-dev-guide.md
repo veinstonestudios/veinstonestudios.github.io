@@ -24,11 +24,9 @@ Wiki'deki her önemli bilgi dört durumdan biriyle işaretlenir. Etiketler böl�
 
 ## Sayfa yapısı
 ### Karakter sayfaları
-Her karakter sayfası şu bölümlerden oluşur: Genel bakış, Temel bilgiler, Fiziksel görünüm, Kişilik ve davranışlar, Biyografi, Geçmişi, Motivasyonları, Diğer karakterlerle ilişkileri, Hikâyedeki rolü, Bilinenler ve gizemler, Henüz karar verilmeyen özellikler. Bazı sayfalarda ekip için hazırlanmış tartışma soruları da bulunur.
+Her karakter sayfası şu bölümlerden oluşur: Genel bakış, Temel bilgiler, Kişilik ve davranışlar, Biyografi, Geçmişi, Motivasyonları, Diğer karakterlerle ilişkileri, Hikâyedeki rolü, Bilinenler ve gizemler, Henüz karar verilmeyen özellikler. Bazı sayfalarda ekip için hazırlanmış tartışma soruları da bulunur.
 
 **Temel bilgiler** bölümü bilgi kutusundaki maddeleri durum etiketleriyle birlikte otomatik gösterir.
-
-Karakter çiziminden yapılan görünüş tarifleri {{gelistiriliyor}} olarak işaretlidir: çizim resmîdir, ancak yazılı fiziksel özellikler proje tarafından ayrıca kesinleştirilmediyse kanon sayılmaz.
 
 ### Plot, evren ve mekanik sayfaları
 [[Ana Hikâye]], [[Dünya]], [[Facility Merkezleri]], [[Corrupted]], [[Technology Purge]], [[The Collapse]], [[CORE Programı]], [[Sonlar]], [[Oynanış]], [[Gece Olayları]] ve [[Zaman Çizelgesi]] gibi sayfalarda da bölüm başlıklarında durum etiketleri, sayfa sonunda **Henüz karar verilmeyen konular** bölümü bulunur.

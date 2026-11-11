@@ -29,11 +29,6 @@ B Block, Facility 61'in erkek mahkûmlara ayrılmış hücre bloğudur; bloğa g
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde B Block Subayı, kızıl saçlı ve sakallı, koyu yeşil üniformalı olarak, elinde bir kalemle oturur hâlde gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

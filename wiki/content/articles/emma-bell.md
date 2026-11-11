@@ -34,9 +34,6 @@ Emma, kadın mahkûmların bulunduğu A Block'ta görev yapar. Çalışma alanı
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{kesin}}
-Emma'nın kahverengi saçları vardır. A Block personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde saçında bir toka bulunur ve gülümser hâlde gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

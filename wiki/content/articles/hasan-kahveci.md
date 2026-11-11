@@ -33,11 +33,6 @@ Hasan, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendi
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Hasan, bıyıklı, kısa kahverengi saçlı, elinde dövme bulunan ve açık yeşil mahkûm kıyafetli olarak gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

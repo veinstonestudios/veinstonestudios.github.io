@@ -30,11 +30,6 @@ Janitor, tesisin temizlik görevlisidir. Adı henüz belirlenmemiştir.
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Janitor, kısa koyu saçlı ve gözlüklü, koyu yeşil bir kazakla, başını öne eğmiş hâlde gösterilir.
-
 ## Kişilik ve davranışlar {{kesin}}
 Janitor **arkadaş canlısı ve konuşkan** bir karakterdir. Tesisin diğer otoriter personelinin aksine daha rahat ve gündelik bir konuşma tarzı vardır.
 

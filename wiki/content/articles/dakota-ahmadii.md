@@ -33,11 +33,6 @@ Dakota, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlend
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Dakota, uzun düz siyah saçlı ve açık yeşil mahkûm kıyafetli olarak gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

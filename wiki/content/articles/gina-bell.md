@@ -34,9 +34,6 @@ Gina, kadın mahkûmların bulunduğu A Block'un personelindendir. Çalışma al
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{kesin}}
-Gina'nın koyu renkli, kısa saçları vardır. A Block personeli olarak açık mavi personel gömleği, siyah kravat ve koyu renk etek giyer. Karakter çiziminde elinde koyu renk bir şapka tutar.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

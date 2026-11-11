@@ -29,9 +29,6 @@ Henry'nin eşinin ölümü, Henry'nin geçmiş travmasının önemli bir parças
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{kararyok}}
-{{kararyok}}
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

@@ -33,11 +33,6 @@ Nina, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendir
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Nina, uzun kahverengi saçlı, turuncu mahkûm tulumlu ve mavi ayakkabılı olarak, yaslanır hâlde gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

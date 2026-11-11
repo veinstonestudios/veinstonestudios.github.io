@@ -37,12 +37,8 @@ Sessiz ve içine kapanık bir kadındır. Gardiyan [[Henry Edaven]]'ın değerle
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{kesin}}
+## Sağlık durumu {{kesin}}
 Evie **genetik açıdan fiziksel olarak zayıftır**.
-
-:::gelistiriliyor Karakter çizimine dayanan tarif
-Karakter çiziminde Evie, kısa sarı saçlı ve açık yeşil mahkûm kıyafetli olarak gösterilir. Yazılı görünüş özellikleri ayrıca kesinleşmemiştir.
-:::
 
 ## Kişilik ve alışkanlıklar {{kesin}}
 - Sessiz ve içine kapanıktır.

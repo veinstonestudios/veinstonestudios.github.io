@@ -35,11 +35,6 @@ Arthur, Henry'nin ağabeyidir ve Facility 60 ile bağlantılıdır. Facility 60,
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Arthur, kısa koyu saçlı ve zayıf yüzlü bir adam olarak, yeşil iş tulumuna benzer bir kıyafetle oturur hâlde gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

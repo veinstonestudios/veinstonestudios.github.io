@@ -28,11 +28,6 @@ Viktor, Henry'ye gardiyanlık görevini ve tesisin çalışma düzenini anlatan 
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Viktor, kısa koyu saçlı ve koyu renk üniformalı, belinde kılıf ve ayağında postallarla, elindeki not defterine bir şeyler yazarken gösterilir.
-
 ## Kişilik ve davranışlar {{kesin}}
 Viktor'un konuşmaları **doğrudan, profesyonel ve bilgilendiricidir**. Tesis içindeki herkesin insan olmayabileceğini ve bazı mahkûmların [[Corrupted]] olabileceğini açıklar.
 
@@ -72,12 +67,6 @@ Kaptan Viktor Hale, Facility 61'in **güvenlik ve operasyon düzeninden sorumlu 
 Oyundaki temel işlevi oyuncuyu tesisin günlük çalışma sistemine tanıtmaktır. İlk gün Henry'ye günlük fakslarla gelen görevleri, mahkûm seçme sorumluluğunu, Corrupted tehlikesini ve günlüğün temel kullanımını açıklar. Henry kararları verir; Viktor ve emrindeki subaylar bu kararların uygulanmasını sağlar.
 
 Karakter olarak **sakin, profesyonel ve kontrollüdür.** Teğmen [[Vera Collins]]'in üstüdür; Vera'nın kendini onun pozisyonuna layık görmesi nedeniyle aralarında **gizli bir profesyonel rekabet** vardır.
-
-### İlk gün diyaloğu (taslak)
-:::quote
-I'm Captain Viktor Hale. Since this is your first day at Facility 61, I thought I'd brief you on how things work around here.
-— Kaptan Viktor Hale
-:::
 
 Viktor'un ilk gün anlattıkları ve Henry'nin sorabileceği sorular için bkz. [[Oynanış#ilk-gun]].
 

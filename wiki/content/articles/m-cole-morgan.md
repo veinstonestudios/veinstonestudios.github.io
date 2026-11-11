@@ -30,11 +30,6 @@ infobox:
 ---
 **M. Cole Morgan**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Çevresinde **Cole** olarak bilinir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
-:::quote
-Yanlış adam olabilirim ama sözümü tutarım.
-— M. Cole Morgan
-:::
-
 ## Genel bakış {{kesin}}
 M. Cole Morgan, yoksul bir mahallede büyümüş, çocukluğundan itibaren kendi ayakları üzerinde durmaya çalışmış eski bir **oto tamircisidir**. Mahallesinde dürüstlüğü, çalışkanlığı ve yardımseverliğiyle tanınır: insanların arabalarını ve çocukların bisikletlerini çoğu zaman ücretsiz tamir eder. Çevresindekiler onu sever ve gerektiğinde arkasında durur.
 
@@ -42,11 +37,6 @@ Ailesine daha iyi bir hayat sunma arzusu ise zamanla onu yasa dışı işlere s�
 
 ## Temel bilgiler
 {{temelbilgiler}}
-
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Cole, geriye doğru örülmüş saçlı, ince sakallı ve boynunda dövme bulunan bir adam olarak, mahkûm tulumuyla, elleri kelepçeli ve oturur hâlde gösterilir. Çizimin turuncu ve yeşil tulumlu iki versiyonu vardır.
 
 ## Kişilik ve davranışlar {{kesin}}
 Cole'un en belirgin özellikleri **yardımseverliği, çalışkanlığı ve ailesine bağlılığıdır**. Kötü niyetli ya da doğuştan suça eğilimli biri değildir: hayatını kendi emeğiyle kazanmaya çalışmış, çevresine yardım etmiş ve ailesini geçindirmek için çabalamıştır.
@@ -89,12 +79,7 @@ Hayatını değiştiren olay, sıradan bir hırsızlık gecesinde yaşanır. Col
 Cole'un amacı birini öldürmek değildir, ancak mahkeme bunu yeterli görmez. Cole **hırsızlık ve cinayet** suçlarından hüküm giyer.
 
 ### Hapis ve suçluluk duygusu
-Hapse gönderildiğinde Cole'u en çok yıkan şey aldığı ceza değil, **henüz üç yaşındaki kızı Mary'nin büyüdüğünü göremeyecek olmasıdır**. İşlediği suçlardan çok, ailesine daha iyi bir hayat sunmaya çalışırken onları kendi elleriyle kaybetmiş olmasının yükünü taşır. İçten içe kendini sık sık aynı düşünceyle suçlar:
-
-:::quote
-Biraz daha sabretseydim... O kolay paranın peşinden gitmeseydim... Belki bugün hâlâ eve dönebileceğim bir ailem olurdu.
-— M. Cole Morgan
-:::
+Hapse gönderildiğinde Cole'u en çok yıkan şey aldığı ceza değil, **henüz üç yaşındaki kızı Mary'nin büyüdüğünü göremeyecek olmasıdır**. İşlediği suçlardan çok, ailesine daha iyi bir hayat sunmaya çalışırken onları kendi elleriyle kaybetmiş olmasının yükünü taşır. İçten içe kendini sık sık aynı düşünceyle suçlar: *"Biraz daha sabretseydim... O kolay paranın peşinden gitmeseydim... Belki bugün hâlâ eve dönebileceğim bir ailem olurdu."*
 
 Cole'un hikâyesindeki temel trajedi budur: ailesine daha iyi bir hayat sunmak isterken onların yanında olma şansını kaybetmiştir.
 
@@ -107,29 +92,6 @@ Cole'un kronolojisi ekibin hazırladığı bir zaman çizelgesi görselinde yer 
 - Kızı Mary'nin kendisinin büyüdüğü yoksul mahallede büyümemesi ve daha iyi bir hayat yaşaması.
 - Ailesine daha iyi bir gelecek sunmak; bunun için kendi tamirhanesini açmak.
 - Hapse girdikten sonra: yaptığı hatalarla yüzleşmek ve elinden geldiğince doğru olanı yapmaya çalışmak.
-
-## Önemli replikler {{kesin}}
-Cole'un kişiliğini ve kendini nasıl gördüğünü yansıtan replikler:
-
-:::quote
-Yanlış adam olabilirim ama sözümü tutarım.
-:::
-
-:::quote
-Ben iyi biri değilim... ama elimden geldiğince doğru olanı yapmaya çalışıyorum.
-:::
-
-:::quote
-İster uzaylı olsun ister şeytan... Kapıyı kilitliyorsan içeri giremez.
-:::
-
-:::quote
-Cole konuşmadığı şeylerle tanınan bir adam.
-:::
-
-:::quote
-İnsanları en çok bir hatasıyla tanımlayabilir miyiz?
-:::
 
 ## Diğer karakterlerle ilişkileri {{kesin}}
 | Kişi | İlişki |

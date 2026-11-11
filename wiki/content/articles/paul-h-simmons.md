@@ -33,11 +33,6 @@ Paul, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlendir
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Paul, dağınık koyu saçlı ve bıyıklı, açık yeşil mahkûm kıyafetli olarak, elleri önünde birleşik hâlde gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

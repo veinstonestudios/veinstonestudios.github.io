@@ -33,11 +33,6 @@ Father Gregory, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[G�
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Father Gregory, beyaz saçlı yaşlı bir adam olarak, boynunda haç kolye ve turuncu-kırmızı mahkûm tulumuyla oturur hâlde gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 

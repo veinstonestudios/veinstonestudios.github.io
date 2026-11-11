@@ -33,11 +33,6 @@ infobox:
 ---
 **Ted Karinsky**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. **Braxfor Research Institute (BRI)** bünyesinde davranış bilimleri ve hesaplamalı sistemler üzerine çalışmış bir akademisyendir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
-:::quote
-Onları gördüm.
-— Ted, bir geliştirme sürümü ekran görüntüsünde (İngilizce aslı: "I've seen *them*.")
-:::
-
 ## Genel bakış {{kesin}}
 Ted Karinsky, Braxfor Research Institute (BRI) bünyesinde davranış bilimleri ve bilişsel sistemler üzerine çalışan saygın bir akademisyendir. Kariyerini insan davranışlarını, algı mekanizmalarını ve karmaşık sistemlerin nasıl öngörülemez hâle geldiğini araştırmaya adamıştır. Anomalilerin ilk ortaya çıktığı yıllarda yayımladığı çalışmalar onu alanının en saygın isimlerinden biri hâline getirmiştir.
 
@@ -45,16 +40,6 @@ Araştırmaları ilerledikçe devletin baskısıyla karşılaşmaya başlamışt
 
 ## Temel bilgiler
 {{temelbilgiler}}
-
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Ted, gözlüklü, kısa koyu saçlı ve açık yeşil mahkûm kıyafetli olarak, bir eli belinde ayakta gösterilir.
-
-:::gallery
-assets/img/characters/ted-karinsky.jpg | Karakter çizimi
-assets/img/characters/ted-karinsky-green.jpg | Karakter çizimi (ekip notlarından)
-:::
 
 ## Kişilik ve düşünce yapısı {{kesin}}
 Ted'in düşünce yapısının merkezinde **sorgulama ve gözlem** vardır. İnsanların karmaşık olayları basit açıklamalara dönüştürmesinden hoşlanmaz; bir açıklamanın hızla kabul edilmesinin çoğu zaman gerçek araştırmanın sona ermesi anlamına geldiğini düşünür.
@@ -110,23 +95,6 @@ Ted'in savunduğu temel meselelerden biri, devletlerin bulguları elde eder etme
 [[Corrupted|Corrupted vakalarının]] neden ortaya çıktığı tam olarak bilinmemektedir. Mevcut bulgular yapay zekânın ileri düzeyde gelişmesinin bu oluşumu tetikleyebileceğine işaret etse de bu **kanıtlanmış bir gerçek değildir**. Bu bölüm Ted'in görüşlerini anlatır; Corruption'ın kesin nedeni ayrı bir konudur.
 :::
 
-## Önemli notlar ve replikler {{kesin}}
-Ted'in düşünce yapısını anlatan ekip notları:
-
-:::notkagidi Not 1
-Ted aslında anomalileri değil sistemleri inceliyor.
-
-Teknoloji problem değil. Onu kullanan insanlar problem.
-
-Ama insanlar bir açıklamayı çok hızlı kabul ettiğinde genellikle araştırmayı bırakırlar.
-
-Yani insanlar karmaşık olayları basit hikâyelere çevirmeyi seviyor. Ted bundan nefret ediyor.
-:::
-
-:::notkagidi Not 2
-"Bir sistemi, hata yapmadığı için güvenilir sanıyorsanız, muhtemelen sadece hatalarını ölçemiyorsunuz."
-:::
-
 ## Diğer karakterlerle ilişkileri {{kararyok}}
 | Kişi | İlişki |
 |---|---|
@@ -164,6 +132,8 @@ Ted'in kronolojisi henüz tamamlanmamıştır; tarihler belirlendiğinde bu böl
 
 ## Galeri
 :::gallery
+assets/img/characters/ted-karinsky.jpg | Karakter çizimi
+assets/img/characters/ted-karinsky-green.jpg | Karakter çizimi (ekip notlarından)
 assets/img/screens/ted-cell.jpg | Ted bir hücrede (geliştirme sürümü ekran görüntüsü)
 :::
 

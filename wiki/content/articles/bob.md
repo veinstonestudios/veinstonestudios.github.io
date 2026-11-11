@@ -30,11 +30,6 @@ infobox:
 ---
 **Bob**, *[[The Facility]]* oyununda **[[Facility 61]]**'de tutulan [[Kategori:Mahkûmlar|mahkûmlardan]] biridir. Oyunun **ilk gününde** karşılaşılan mahkûmlardandır.
 
-:::quote
-Partinin neşesi geldi!
-— Bob, bir geliştirme sürümü ekran görüntüsünde (İngilizce aslı: "The life of the party has arrived!")
-:::
-
 ## Genel bakış {{kesin}}
 Bob, Facility 61'de tutulan mahkûmlardan biridir. Yoksul bir ailede dünyaya gelmiş, çocukluğundan itibaren çeşitli zorluklarla karşılaşmış ve yeterli bakım ile desteği görememiştir.
 
@@ -45,18 +40,12 @@ Bütün bunlara rağmen Bob, çevresindeki insanlara karşı kötü niyet beslem
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm ve sağlık durumu {{kesin}}
-Bob'un fiziksel gelişimi, çocukluğunda yeterli bakım ve destek alamaması nedeniyle olumsuz etkilenmiştir. Bilinen fiziksel özellikleri:
+## Sağlık durumu {{kesin}}
+Bob'un fiziksel gelişimi, çocukluğunda yeterli bakım ve destek alamaması nedeniyle olumsuz etkilenmiştir:
 - Vücudunda çeşitli deformasyonlar bulunur.
 - Dik durmakta ve yürümekte zorlanır.
-- Omuzları dardır.
 - Ağır nesneleri kaldırabilecek fiziksel güce sahip değildir.
 - Kulaklarından biri ciddi derecede az işitir.
-- Saçları çocukluğundan beri seyrektir.
-
-Bob'un saçlarının seyrek olması sonradan yaşadığı bir olaydan kaynaklanmaz; genetik olarak saçsızlığın yaygın olduğu bir aileden gelmektedir.
-
-Karakter çiziminde Bob, geniş gülümsemeli ve koyu yeşil mahkûm kıyafetli olarak gösterilir.
 
 ## Kişilik ve davranışlar {{kesin}}
 Bob, çevresindeki insanlara kıyasla oldukça saf ve kolay güvenen biridir. Yaşadığı kötü olaylara rağmen insanlara karşı kötü niyet beslemez. Sahip olduğu eşyaları başkalarına vermekten çekinmez ve paylaşmayı sever.

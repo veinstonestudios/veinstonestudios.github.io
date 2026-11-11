@@ -33,11 +33,6 @@ Sergio, Gardiyan [[Henry Edaven]]'ın değerlendirdiği ve günlük [[Görevlend
 ## Temel bilgiler
 {{temelbilgiler}}
 
-## Fiziksel görünüm {{gelistiriliyor}}
-*Resmî karakter çizimine dayanan tarif. Karakterin yazılı fiziksel özellikleri henüz kesinleşmedi.*
-
-Karakter çiziminde Sergio, kısa koyu saçlı ve ince yapılı, açık yeşil tulum benzeri mahkûm kıyafetli olarak, elleri ceplerinde gösterilir.
-
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 
