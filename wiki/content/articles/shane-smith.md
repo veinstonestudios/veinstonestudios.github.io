@@ -65,6 +65,3 @@ Karakter çiziminde Shane, kazınmış yanları olan kısa saçlı ve yeşil mah
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

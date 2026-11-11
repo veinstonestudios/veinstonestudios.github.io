@@ -65,6 +65,3 @@ Karakter çiziminde Katarina, arkaya toplanmış koyu mor tonlu saçlı ve açı
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

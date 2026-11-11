@@ -78,6 +78,3 @@ Ekip sunumundaki personel tablosunda ikizlerden biri **kadınlar bloğunda günl
 - [[Gina Bell]]
 - [[Kategori:A Block Personeli]]
 - [[Facility 61#Hücre blokları]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

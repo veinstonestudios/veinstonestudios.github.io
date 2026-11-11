@@ -110,6 +110,3 @@ assets/img/screens/selecting-inmates.jpg | Mahkûmların seçildiği Gardiyan ma
 - [[Testler ve Tespit Yöntemleri]]
 - [[Gece Olayları]]
 - [[Sonlar]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

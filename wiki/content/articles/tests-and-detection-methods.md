@@ -101,6 +101,3 @@ assets/img/screens/tape-recorder.jpg | Kaydedilmiş bir sorgunun dinlenmesi
 - [[Corrupted]]
 - [[CORE Programı]]
 - [[Oynanış]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

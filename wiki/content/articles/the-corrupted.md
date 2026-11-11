@@ -136,5 +136,3 @@ assets/img/concept/faceless-figure.jpg | Yüzsüz figür (ekip sunumu)
 :::note Sunumdaki bir ekip görüşü
 "Bana göre anomaliler biraz daha kozmik varlıklar olmalı. Bir bedene sahip olmaya çalışan ve parazit mantığıyla yayılarak çevreye ve canlılara zarar veren kötücül bir varlık."
 :::
-
-{{oneriler}}

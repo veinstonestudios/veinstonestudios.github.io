@@ -54,6 +54,3 @@ Sunuma göre Purge üç aşamada gerçekleşti. Aşamaların süreleri Purge'ün
 ## Ayrıca bakınız
 - [[Dünya]]
 - [[Zaman Çizelgesi]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

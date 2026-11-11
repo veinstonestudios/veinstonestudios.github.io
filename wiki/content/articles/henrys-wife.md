@@ -66,6 +66,3 @@ assets/img/concept/eve-mary-scene.jpg | Eve ve Mary (ekip sunumundaki çizim)
 - Adı ve yaşı.
 - Görünüşü ve kişiliği.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

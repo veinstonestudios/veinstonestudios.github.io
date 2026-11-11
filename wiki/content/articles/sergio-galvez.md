@@ -65,6 +65,3 @@ Karakter çiziminde Sergio, kısa koyu saçlı ve ince yapılı, açık yeşil t
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

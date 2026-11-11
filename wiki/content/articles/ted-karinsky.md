@@ -78,6 +78,3 @@ Ted, oyunun ilk gününde değerlendirilen mahkûmlardan biridir. Bkz. [[Oynanı
 assets/img/characters/ted-karinsky.jpg | Karakter çizimi
 assets/img/screens/ted-cell.jpg | Ted bir hücrede (geliştirme sürümü ekran görüntüsü)
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

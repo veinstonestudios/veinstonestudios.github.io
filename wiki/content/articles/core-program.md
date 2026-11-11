@@ -44,6 +44,3 @@ Adı ve gözlem ve rehabilitasyon çerçevesiyle ilişkisi dışında CORE Progr
 ## Ayrıca bakınız
 - [[Corrupted]]
 - [[Testler ve Tespit Yöntemleri]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

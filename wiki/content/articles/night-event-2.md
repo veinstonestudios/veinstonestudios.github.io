@@ -41,6 +41,3 @@ assets/img/concept/night-event-2-door-48.jpg | Konsept görseli
 ## Ayrıca bakınız
 - [[Gece Olayları]]
 - [[Kategori:Night Events]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

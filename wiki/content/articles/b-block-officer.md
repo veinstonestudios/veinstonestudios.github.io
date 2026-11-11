@@ -61,6 +61,3 @@ Karakter çiziminde B Block Subayı, kızıl saçlı ve sakallı, koyu yeşil ü
 - Görevlerinin ayrıntıları.
 - Geçmişi, kişiliği ve diğer karakterlerle ilişkileri.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

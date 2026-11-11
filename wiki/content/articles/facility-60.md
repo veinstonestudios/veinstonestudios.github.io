@@ -66,6 +66,3 @@ assets/video/facility-60-logo-vhs.mp4 | Facility 60 amblemi, VHS görünümüyle
 - [[Facility 61]]
 - [[Corrupted]]
 - [[Zaman Çizelgesi]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

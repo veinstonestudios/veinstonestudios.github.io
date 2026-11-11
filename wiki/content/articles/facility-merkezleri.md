@@ -54,6 +54,3 @@ Bazı tesisler isyan, sabotaj veya Corruption yayılımı nedeniyle kapatıldı.
 - [[Facility 61]]
 - [[Corrupted]]
 - [[Zaman Çizelgesi]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

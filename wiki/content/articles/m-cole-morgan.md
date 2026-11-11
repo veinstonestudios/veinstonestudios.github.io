@@ -67,6 +67,3 @@ Morgan, oyunun ilk gününde değerlendirilen mahkûmlardan biridir. Bkz. [[Oyna
 - Kişiliği ve geçmişi.
 - Addaki "M." harfinin açılımı.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

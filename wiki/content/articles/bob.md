@@ -137,5 +137,3 @@ Bu bölüm Bob'un karakterini geliştirmek isteyen ekip üyelerinin fikirlerine 
 - Bob'un geçmişi hakkında daha fazla bilgi verilmeli mi?
 - Oyuncunun Bob ile kurduğu ilişki nasıl gelişebilir?
 :::
-
-{{oneriler}}

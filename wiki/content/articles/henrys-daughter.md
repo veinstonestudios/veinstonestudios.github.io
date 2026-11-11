@@ -75,6 +75,3 @@ assets/img/concept/eve-mary-scene.jpg | Eve ve Mary (ekip sunumundaki çizim)
 - Adı ve yaşı.
 - Gösterdiği Corruption belirtilerinin ayrıntıları.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

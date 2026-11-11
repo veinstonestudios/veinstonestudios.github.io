@@ -70,6 +70,3 @@ Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleşt
 - [[Corrupted]]
 - [[CORE Programı]]
 - [[Zaman Çizelgesi]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

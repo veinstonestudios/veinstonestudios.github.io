@@ -44,6 +44,3 @@ Her Night Event için ayrı bir sayfa bulunur: [[Night Event 1]] · [[Night Even
 ## Ayrıca bakınız
 - [[Oynanış]]
 - [[Sonlar]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

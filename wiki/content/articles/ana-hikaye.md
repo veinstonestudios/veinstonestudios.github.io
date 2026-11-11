@@ -62,6 +62,3 @@ Gece olaylarında Henry'nin geçmişine, ailesine, suçluluk duygusuna ve gerçe
 - [[Henry Edaven]]
 - [[Zaman Çizelgesi]]
 - [[Sonlar]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

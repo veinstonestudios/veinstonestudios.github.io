@@ -65,6 +65,3 @@ Karakter çiziminde Hasan, bıyıklı, kısa kahverengi saçlı, elinde dövme b
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

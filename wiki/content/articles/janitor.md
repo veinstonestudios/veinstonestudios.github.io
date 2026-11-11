@@ -65,6 +65,3 @@ Ekip sunumundaki ilk gün akışına göre Janitor, Henry'yle konuşarak **günd
 - Geçmişi.
 - Diğer karakterlerle ilişkileri.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

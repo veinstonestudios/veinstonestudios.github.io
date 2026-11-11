@@ -96,6 +96,3 @@ assets/img/characters/vera-collins-2.jpg | Ayakta, eliyle yön gösterirken
 assets/img/characters/vera-collins-3.jpg | Bacak bacak üstüne atmış otururken
 assets/img/characters/vera-collins-4.jpg | Masada, elleri önünde birleşik
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

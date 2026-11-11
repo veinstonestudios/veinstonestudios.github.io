@@ -68,6 +68,3 @@ Karakter çiziminde Milena, omuz hizasında koyu saçlı ve açık yeşil mahkû
 
 ## Bilgi notları
 - Karakter görselinin dosya adında soyadı "Slavkic" olarak geçer.
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

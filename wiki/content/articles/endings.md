@@ -46,6 +46,3 @@ Oyuncunun mahkûmlarla ilgili seçimleri, tesisteki insan ve anomali dengesini v
 - [[Henry Edaven#Olası sonlar]]
 - [[Oynanış]]
 - [[Gece Olayları]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

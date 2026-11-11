@@ -55,6 +55,3 @@ Bu bölüm ekibin Canva sunumundaki notlara dayanır. Proje sorumlusu kesinleşt
 ## Ayrıca bakınız
 - [[Dünya]]
 - [[Zaman Çizelgesi]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

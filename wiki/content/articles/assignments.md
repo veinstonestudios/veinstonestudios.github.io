@@ -86,6 +86,3 @@ assets/img/screens/selecting-inmates.jpg | Gardiyanın masası
 ## Ayrıca bakınız
 - [[Oynanış]]
 - [[Gece Olayları]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

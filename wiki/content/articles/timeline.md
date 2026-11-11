@@ -51,6 +51,3 @@ Aşağıdaki olaylar kanonda vardır, ancak tarihleri henüz belirlenmemiştir. 
 - [[Dünya]]
 - [[The Collapse]]
 - [[Facility Merkezleri]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

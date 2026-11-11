@@ -30,6 +30,3 @@ Bu Night Event'in içeriği henüz geliştirilmedi. Hikâyesi, sahneleri ve oyun
 ## Ayrıca bakınız
 - [[Gece Olayları]]
 - [[Kategori:Night Events]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

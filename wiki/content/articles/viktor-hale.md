@@ -95,6 +95,3 @@ assets/img/characters/viktor-hale-sitting-front.jpg | Önden, otururken
 assets/img/screens/viktor-hale-ingame-3.jpg | Oyun içi görüntü (geliştirme sürümü)
 assets/img/screens/viktor-hale-ingame-4.jpg | Oyun içi görüntü (geliştirme sürümü)
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

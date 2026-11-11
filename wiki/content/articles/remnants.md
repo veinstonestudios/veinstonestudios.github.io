@@ -48,6 +48,3 @@ Some people call them "Remnants." They believe they're a product of the technolo
 
 ## Henüz karar verilmeyen konular
 {{kararyok}}
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

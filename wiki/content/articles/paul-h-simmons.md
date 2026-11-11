@@ -69,6 +69,3 @@ Karakter çiziminde Paul, dağınık koyu saçlı ve bıyıklı, açık yeşil m
 
 ## Bilgi notları
 - Karakter görselinin dosya adında adı "Paul Harris" olarak geçer.
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

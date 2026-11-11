@@ -68,6 +68,3 @@ Karakter çiziminde Father Gregory, beyaz saçlı yaşlı bir adam olarak, boynu
 
 ## Bilgi notları
 - "Father" (peder) bir unvandır; bunun karakterin geçmişiyle ilgili ne ifade ettiği belgelenmemiştir.
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

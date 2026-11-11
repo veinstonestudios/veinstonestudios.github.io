@@ -78,6 +78,3 @@ Alicia'nın sorgusunda kullanılan başlıklardan biri **Current Situation** (Me
 - Nate ile ilişkisinin ayrıntıları.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

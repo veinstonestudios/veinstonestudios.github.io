@@ -65,6 +65,3 @@ Karakter çiziminde Dakota, uzun düz siyah saçlı ve açık yeşil mahkûm kı
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

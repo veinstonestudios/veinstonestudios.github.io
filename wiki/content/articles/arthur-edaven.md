@@ -88,6 +88,3 @@ Arthur **2006**'da doğdu. Henry'nin ağabeyidir; aralarında **3 yaş** fark va
 ## Ayrıca bakınız
 - [[Facility 60]]
 - [[Corrupted]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

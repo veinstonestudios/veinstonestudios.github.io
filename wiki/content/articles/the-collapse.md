@@ -33,6 +33,3 @@ Dönemin adı ve tarih aralığı kesinleşmiştir; dönemde neler yaşandığı
 - [[Zaman Çizelgesi]]
 - [[Henry Edaven#Kronoloji]]
 - [[Facility Merkezleri]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

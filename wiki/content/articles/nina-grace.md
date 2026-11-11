@@ -65,6 +65,3 @@ Karakter çiziminde Nina, uzun kahverengi saçlı, turuncu mahkûm tulumlu ve ma
 - Kişiliği.
 - İnsan mı yoksa Corrupted mı olduğu.
 :::
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

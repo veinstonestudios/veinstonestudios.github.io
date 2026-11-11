@@ -231,6 +231,3 @@ assets/img/screens/journal.jpg | Gardiyanın günlüğü (geliştirme sürümü 
 - [[Facility 60]]
 - [[Corrupted]]
 - [[Gece Olayları]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}
