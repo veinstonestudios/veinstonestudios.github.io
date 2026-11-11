@@ -1287,7 +1287,19 @@
     box.innerHTML = '<button type="button" class="cmt-sec-toggle" data-cmt-toggle aria-expanded="' + open + '">' +
         '<span class="cmt-sec-ico" aria-hidden="true">▸</span> Yorumlar' + (n ? ' <strong>(' + n + ')</strong>' : '') +
         '<span class="cmt-sec-for"> · ' + esc(box.getAttribute('data-label')) + '</span></button>' +
-      (open ? '<div class="cmt-sec-body">' + threadHtml(list, key, false) + commentForm(key, null) + '</div>' : '');
+      (open ? '<div class="cmt-sec-body">' + (cmtGate() || threadHtml(list, key, false) + commentForm(key, null)) + '</div>' : '');
+  }
+  // Yorumlar kullanılamıyorsa (bağlantı yok / ekip kodu girilmedi) panelde gösterilecek içerik; kullanılabiliyorsa ''
+  function notConnected() {
+    return '<div class="missing">' + statusTag('kararyok') + ' <strong>Yorum sistemi henüz bağlanmadı.</strong> ' +
+      'Yorumların kaydedilebilmesi için proje sorumlusunun Supabase veritabanı kurulumunu tamamlaması gerekiyor (bkz. <a href="' +
+      esc(pageUrl('The Facility Wiki:Geliştirme Rehberi', 'kurulum-proje-sorumlusu-icin')) + '" data-internal>Geliştirme Rehberi</a>). ' +
+      'Kurulum tamamlanınca bu panelden yorum yazılabilecek.</div>';
+  }
+  function cmtGate() {
+    if (!CMT_ON) return notConnected();
+    if (!teamCode()) return codeForm();
+    return '';
   }
   function adminBar() {
     return '<div class="cmt-admin">' + (isAdmin()
@@ -1318,14 +1330,13 @@
     var page = pageBox ? pageBox.getAttribute('data-page') : '';
     cmtOpen = {};
 
-    if (!CMT_ON) {
-      blocks.forEach(function (b) {
-        b.innerHTML = cmtNote() + '<div class="missing">' + statusTag('kararyok') + ' <strong>Yorum sistemi henüz bağlanmadı.</strong> ' +
-          'Proje sorumlusunun Supabase kurulumunu tamamlaması gerekiyor (bkz. <a href="' + esc(pageUrl('The Facility Wiki:Geliştirme Rehberi', 'kurulum-proje-sorumlusu-icin')) + '" data-internal>Geliştirme Rehberi</a>).</div>';
-      });
+    // Bağlantı yoksa veya ekip kodu girilmediyse paneller yine gösterilir; açıldıklarında nedenini söyler
+    var gate = cmtGate();
+    if (gate) {
+      blocks.forEach(function (b) { b.innerHTML = cmtNote() + gate; });
+      if (pageBox) attachSectionPanels(app).forEach(function (b) { renderSection(b, []); });
       return;
     }
-    if (!teamCode()) { blocks.forEach(function (b) { b.innerHTML = cmtNote() + codeForm(); }); return; }
 
     var onErr = function (box) {
       return function (e) {
@@ -1397,6 +1408,7 @@
     if ((t = e.target.closest('[data-cmt-toggle]'))) {
       var box = t.closest('.cmt-sec'), key = box.getAttribute('data-section');
       cmtOpen[key] = !cmtOpen[key];
+      if (cmtGate()) { renderSection(box, []); return true; }
       loadComments(currentPage()).then(function (list) {
         renderSection(box, list);
         if (cmtOpen[key]) { var ta = box.querySelector('.cmt-sec-body'); if (ta) ta.scrollIntoView({ block: 'nearest' }); }
