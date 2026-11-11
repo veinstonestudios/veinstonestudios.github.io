@@ -1081,9 +1081,12 @@
   }
   /* ---------- Ekip yorumları (Supabase) ----------
      Wiki statiktir; yorumlar Supabase veritabanında saklanır (kurulum:
-     supabase/yorumlar.sql ve Geliştirme Rehberi). Tarayıcı yalnızca iki
-     veritabanı fonksiyonunu çağırır: wiki_list_comments ve wiki_add_comment.
-     İkisi de ekip kodunu ister; kod ve ad bu tarayıcıda hatırlanır.
+     supabase/yorumlar.sql ve Geliştirme Rehberi). Her başlığın (h2/h3) altında
+     o başlığa ait bağımsız bir yorum paneli bulunur; sayfa sonunda ise sayfanın
+     geneline ait bir panel vardır.
+     Yetki: ekip kodu (okuma/yazma) · yorumun düzenleme anahtarı (yalnızca yazarın
+     tarayıcısında) · yönetici kodu (her yorumu yönetme).
+     Yorum metinleri her zaman kaçışlı düz metin olarak gösterilir.
      Yorumlar kanon bilgileri hiçbir zaman değiştirmez. */
   var CMT = CFG.comments || {};
   var CMT_ON = !!(CMT.supabaseUrl && CMT.supabaseAnonKey);
@@ -1099,13 +1102,22 @@
     red:               { label: 'Reddedildi',        cls: 'ps-rejected' },
     beklemede:         { label: 'Beklemede',         cls: 'ps-hold' }
   };
+  // Yorum paneli eklenmeyen başlıklar (bağlantı listeleri ve sayfa sonu yorum bölümü)
+  var CMT_SKIP = /^(ayrica-bakiniz|ilgili-maddeler|ilgili-olaylar|ilgili-karakterler-ve-mekanlar|ekip-onerileri-ve-tartisma|ekip-yorumlari|tum-oneriler|son-yorumlar)(-\d+)?$/;
   var cmtCache = {};          // sayfa başlığı → Promise<yorum[]>
   var cmtFilter = 'hepsi';
+  var cmtOpen = {};           // açık paneller: bölüm anahtarı → true
 
   function lsGet(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
   function lsSet(k, v) { try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); } catch (e) {} }
   function teamCode() { return lsGet('tfw-team-code'); }
+  function adminCode() { return lsGet('tfw-admin-code'); }
+  function isAdmin() { return !!adminCode(); }
   function authorName() { return lsGet('tfw-author'); }
+  function editTokens() { try { return JSON.parse(lsGet('tfw-edit-tokens') || '{}') || {}; } catch (e) { return {}; } }
+  function editToken(id) { return editTokens()[id] || ''; }
+  function saveEditToken(id, tok) { var t = editTokens(); t[id] = tok; lsSet('tfw-edit-tokens', JSON.stringify(t)); }
+  function canManage(c) { return !c.deleted && (isAdmin() || !!editToken(c.id)); }
 
   function rpc(fn, args) {
     return fetch(CMT.supabaseUrl.replace(/\/+$/, '') + '/rest/v1/rpc/' + fn, {
@@ -1117,7 +1129,8 @@
         var d = null; try { d = t ? JSON.parse(t) : null; } catch (e) {}
         if (!r.ok) {
           var msg = (d && (d.message || d.hint)) || ('HTTP ' + r.status);
-          var err = new Error(msg); err.code = /invalid_code/.test(msg) ? 'code' : /rate_limited/.test(msg) ? 'rate' : 'other';
+          var m = msg.match(/invalid_code|rate_limited|duplicate|forbidden|parent_not_found|empty|not_found/);
+          var err = new Error(msg); err.code = m ? m[0] : 'other';
           throw err;
         }
         return d;
@@ -1127,31 +1140,36 @@
   function loadComments(page, force) {
     var k = page || '*';
     if (!force && cmtCache[k]) return cmtCache[k];
-    cmtCache[k] = rpc('wiki_list_comments', { p_code: teamCode(), p_page: page || null, p_limit: page ? 1000 : 60 })
+    cmtCache[k] = rpc('wiki_list_comments', { p_code: teamCode(), p_page: page || null, p_limit: page ? 2000 : 60 })
       .catch(function (e) { delete cmtCache[k]; throw e; });
     return cmtCache[k];
   }
   function cmtErrorText(e) {
-    if (e.code === 'code') return 'Ekip kodu hatalı. Lütfen kodu kontrol edip yeniden gir.';
-    if (e.code === 'rate') return 'Kısa sürede çok fazla yorum gönderildi. Bir dakika sonra tekrar dene.';
-    return 'Yorum sunucusuna ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.';
+    return ({
+      invalid_code:     'Ekip kodu hatalı. Lütfen kodu kontrol edip yeniden gir.',
+      rate_limited:     'Kısa sürede çok fazla yorum gönderildi. Bir dakika sonra tekrar dene.',
+      duplicate:        'Aynı yorum bu başlığa az önce gönderildi.',
+      forbidden:        'Bu işlem için yetkin yok. Yalnızca kendi yorumlarını düzenleyebilir veya silebilirsin.',
+      parent_not_found: 'Cevap verdiğin yorum artık bulunmuyor.',
+      empty:            'Ad ve yorum metni gerekli.'
+    })[e.code] || 'Yorum sunucusuna ulaşılamadı. İnternet bağlantını kontrol edip tekrar dene.';
   }
   function fmtStamp(iso) {
     var d = new Date(iso);
     if (isNaN(d)) return '';
     try { return d.toLocaleString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
-    catch (e) { return iso.slice(0, 16).replace('T', ' '); }
+    catch (e) { return String(iso).slice(0, 16).replace('T', ' '); }
   }
   function cmtText(s) { return esc(s).replace(/\r?\n/g, '<br>'); }
 
-  // Sayfadaki yer tutucu: {{oneriler}} (bu sayfa) veya {{oneriler:tum}} (tüm sayfalardaki son yorumlar)
+  // Sayfa sonundaki genel panel: {{oneriler}} (bu sayfa) veya {{oneriler:tum}} (tüm sayfalardaki son yorumlar)
   function proposalsBlock(topic) {
     return '<div class="cmts" data-page="' + esc(topic) + '" data-mode="' + (topic ? 'page' : 'all') + '"></div>';
   }
 
   function cmtNote() {
-    return '<div class="cmt-note"><strong>Yorumlar kanon değildir.</strong> Buradaki yorum, soru ve öneriler mevcut bilgileri ' +
-      'kendiliğinden değiştirmez. Bir öneri ancak proje sorumlusu ilgili sayfayı güncelleyip bilgiyi <em>Kesinleştirildi</em> olarak işaretlediğinde kanonlaşır. ' +
+    return '<div class="cmt-note"><strong>Yorumlar kanon değildir.</strong> Her başlığın altındaki yorumlar yalnızca o başlıkla ilgili tartışma ve öneriler içindir; ' +
+      'mevcut bilgileri kendiliğinden değiştirmez. Bir öneri ancak proje sorumlusu sayfayı güncelleyip bilgiyi <em>Kesinleştirildi</em> olarak işaretlediğinde kanonlaşır. ' +
       '<a href="' + esc(pageUrl('The Facility Wiki:Geliştirme Rehberi', 'ekip-yorumlari-nasil-calisir')) + '" data-internal>Nasıl çalışır?</a></div>';
   }
   function codeForm(msg) {
@@ -1166,38 +1184,57 @@
       return '<option value="' + k + '"' + (k === sel ? ' selected' : '') + '>' + CMT_KINDS[k].label + '</option>';
     }).join('');
   }
-  function commentForm(section, parent, compact) {
-    return '<form class="cmt-form' + (compact ? ' compact' : '') + '" data-cmt-form data-section="' + esc(section || '') + '"' + (parent ? ' data-parent="' + esc(parent) + '"' : '') + '>' +
+  function commentForm(section, parent) {
+    return '<form class="cmt-form' + (parent ? ' compact' : '') + '" data-cmt-form data-section="' + esc(section || '') + '"' + (parent ? ' data-parent="' + esc(parent) + '"' : '') + '>' +
       '<div class="cmt-row">' +
         '<input name="author" required maxlength="60" placeholder="Adın" aria-label="Adın" value="' + esc(authorName()) + '">' +
         (parent ? '' : '<select name="kind" aria-label="Yorum türü">' + kindOptions('yorum') + '</select>') +
       '</div>' +
-      '<textarea name="body" required maxlength="4000" rows="' + (compact ? 2 : 3) + '" placeholder="' + (parent ? 'Cevabını yaz…' : 'Yorumunu, sorunu veya önerini yaz…') + '" aria-label="Yorum metni"></textarea>' +
+      // Bot tuzağı: insanlar görmez, botlar doldurur
+      '<input class="cmt-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+      '<textarea name="body" required maxlength="4000" rows="' + (parent ? 2 : 3) + '" placeholder="' + (parent ? 'Cevabını yaz…' : 'Bu başlık hakkında yorumunu, sorunu veya önerini yaz…') + '" aria-label="Yorum metni"></textarea>' +
       '<div class="cmt-row cmt-actions"><button type="submit" class="cmt-btn">' + (parent ? 'Cevapla' : 'Gönder') + '</button>' +
         (parent ? '<button type="button" class="cmt-link" data-cmt-cancel>Vazgeç</button>' : '') +
         '<span class="cmt-msg" aria-live="polite"></span></div>' +
     '</form>';
   }
   function commentCard(c, replies, opts) {
+    opts = opts || {};
     var k = CMT_KINDS[c.kind] || CMT_KINDS.yorum;
-    var st = c.kind === 'oneri' ? (PROP_STATUS[c.status] || PROP_STATUS.degerlendirilecek) : null;
+    var st = c.kind === 'oneri' && !c.parent_id ? (PROP_STATUS[c.status] || PROP_STATUS.degerlendirilecek) : null;
     var where = '';
-    if (opts && opts.showPage) {
+    if (opts.showPage) {
       var p = findPage(c.page);
-      where = '<span class="cmt-where">' + (p ? '<a href="' + esc(pageUrl(p.title, c.section || '')) + '" data-internal>' + esc(p.title) + (c.section ? ' › ' + esc(c.section) : '') + '</a>' : esc(c.page)) + '</span>';
+      where = '<span class="cmt-where">' + (p ? '<a href="' + esc(pageUrl(p.title, c.section || 'ekip-onerileri-ve-tartisma')) + '" data-internal>' + esc(p.title) + (c.section ? ' › ' + esc(c.section) : '') + '</a>' : esc(c.page)) + '</span>';
     }
-    return '<article class="cmt ' + k.cls + '" id="yorum-' + esc(c.id) + '">' +
-      '<header class="cmt-head">' +
+    var head, body;
+    if (c.deleted) {
+      head = '<header class="cmt-head"><span class="muted">Silinmiş yorum</span></header>';
+      body = '<div class="cmt-body muted">Bu yorum silindi.</div>';
+    } else {
+      head = '<header class="cmt-head">' +
         (c.parent_id ? '' : '<span class="cmt-kind">' + k.label + '</span>') +
         (st ? '<span class="prop-status ' + st.cls + '">' + st.label + '</span>' : '') +
         '<strong class="cmt-author">' + esc(c.author) + '</strong>' +
-        '<time class="cmt-time" datetime="' + esc(c.created_at) + '">' + esc(fmtStamp(c.created_at)) + '</time>' + where +
-      '</header>' +
-      '<div class="cmt-body">' + cmtText(c.body) + '</div>' +
-      (opts && opts.noReply ? '' :
-        '<div class="cmt-foot">' + (c.parent_id ? '' : '<button type="button" class="cmt-link" data-cmt-reply="' + esc(c.id) + '">Cevapla</button>') + '</div>') +
-      (replies && replies.length ? '<div class="cmt-replies">' + replies.map(function (r) { return commentCard(r, null, { noReply: true }); }).join('') + '</div>' : '') +
-      (c.parent_id ? '' : '<div class="cmt-reply-slot"></div>') +
+        '<time class="cmt-time" datetime="' + esc(c.created_at) + '">' + esc(fmtStamp(c.created_at)) + '</time>' +
+        (c.edited_at ? '<span class="cmt-edited" title="' + esc(fmtStamp(c.edited_at)) + '">(düzenlendi)</span>' : '') + where +
+      '</header>';
+      body = '<div class="cmt-body">' + cmtText(c.body) + '</div>';
+    }
+    var actions = '';
+    if (!opts.readOnly && !c.deleted) {
+      actions = '<div class="cmt-foot">' +
+        (c.parent_id ? '' : '<button type="button" class="cmt-link" data-cmt-reply="' + esc(c.id) + '">Cevapla</button>') +
+        (canManage(c) ? '<button type="button" class="cmt-link" data-cmt-edit="' + esc(c.id) + '">Düzenle</button>' +
+                        '<button type="button" class="cmt-link cmt-danger" data-cmt-delete="' + esc(c.id) + '">Sil</button>' : '') +
+        (isAdmin() && st ? '<label class="cmt-status-pick">Durum: <select data-cmt-status="' + esc(c.id) + '">' + Object.keys(PROP_STATUS).map(function (s) {
+            return '<option value="' + s + '"' + (s === c.status ? ' selected' : '') + '>' + PROP_STATUS[s].label + '</option>'; }).join('') + '</select></label>' : '') +
+      '</div>';
+    }
+    return '<article class="cmt ' + (c.deleted ? 'cmt-deleted' : k.cls) + '" id="yorum-' + esc(c.id) + '" data-id="' + esc(c.id) + '">' +
+      head + body + actions +
+      (replies && replies.length ? '<div class="cmt-replies">' + replies.map(function (r) { return commentCard(r, null, { readOnly: opts.readOnly }); }).join('') + '</div>' : '') +
+      (c.parent_id || opts.readOnly ? '' : '<div class="cmt-reply-slot"></div>') +
     '</article>';
   }
   function threadHtml(list, section, withFilter) {
@@ -1206,80 +1243,80 @@
     var replies = {};
     list.forEach(function (c) { if (c.parent_id) (replies[c.parent_id] = replies[c.parent_id] || []).push(c); });
     Object.keys(replies).forEach(function (k) { replies[k].sort(function (a, b) { return a.created_at.localeCompare(b.created_at); }); });
-    var shown = withFilter && cmtFilter !== 'hepsi' ? tops.filter(function (c) { return c.kind === cmtFilter; }) : tops;
+    var shown = withFilter && cmtFilter !== 'hepsi' ? tops.filter(function (c) { return c.kind === cmtFilter && !c.deleted; }) : tops;
     var filter = '';
-    if (withFilter && tops.length) {
+    if (withFilter && tops.length > 1) {
       filter = '<div class="cmt-filter" role="group" aria-label="Türe göre süz">' + ['hepsi'].concat(Object.keys(CMT_KINDS)).map(function (k) {
-        var n = k === 'hepsi' ? tops.length : tops.filter(function (c) { return c.kind === k; }).length;
+        var n = k === 'hepsi' ? tops.length : tops.filter(function (c) { return c.kind === k && !c.deleted; }).length;
         return '<button type="button" data-cmt-filter="' + k + '" class="' + (k === cmtFilter ? 'on' : '') + '">' + (k === 'hepsi' ? 'Tümü' : CMT_KINDS[k].label) + ' <span>' + n + '</span></button>';
       }).join('') + '</div>';
     }
     return filter + '<div class="cmt-list">' + (shown.length
       ? shown.map(function (c) { return commentCard(c, replies[c.id]); }).join('')
-      : '<p class="muted cmt-empty">' + (tops.length ? 'Bu türde yorum yok.' : 'Henüz yorum yok. İlk yorumu sen yazabilirsin.') + '</p>') + '</div>';
+      : '<p class="muted cmt-empty">' + (tops.length ? 'Bu türde yorum yok.' : 'Bu başlığa henüz yorum yazılmadı.') + '</p>') + '</div>';
+  }
+  function countFor(list, section) {
+    return list.filter(function (c) { return (c.section || '') === section && !c.deleted; }).length;
   }
 
-  // Kesinleştirilmiş bölümlerin ve kutuların altına yorum bağlantısı ekler
-  function attachSectionThreads(root) {
+  // Her h2/h3 başlığın bölümünün sonuna (bir sonraki başlıktan hemen önce) yorum paneli ekler
+  function attachSectionPanels(root) {
     var prose = root.querySelector('.prose');
     if (!prose) return [];
-    prose.querySelectorAll(".cmt-sec").forEach(function (b) { b.remove(); });
-    var keys = [];
-    prose.querySelectorAll('h2, h3').forEach(function (h) {
-      if (!h.querySelector('.st-kesin') || h.closest('.cmts')) return;
-      var lvl = +h.tagName[1], end = h.nextElementSibling;
-      while (end && !(/^H[1-6]$/.test(end.tagName) && +end.tagName[1] <= lvl) && !end.classList.contains('cmts')) {
-        if (end.tagName === 'H3' && lvl === 2 && end.querySelector('.st-kesin')) break; // alt bölümün kendi yorumu olur
-        end = end.nextElementSibling;
-      }
-      var key = h.id, label = (h.querySelector('.h-text') || h).textContent.trim();
-      var box = document.createElement('div');
-      box.className = 'cmt-sec'; box.setAttribute('data-section', key); box.setAttribute('data-label', label);
+    prose.querySelectorAll('.cmt-sec').forEach(function (b) { b.remove(); });
+    var heads = [].slice.call(prose.querySelectorAll('h2, h3')).filter(function (h) {
+      return h.id && !h.closest('.cmts, .callout, .toc') && h.parentNode === prose && !CMT_SKIP.test(h.id);
+    });
+    return heads.map(function (h) {
+      var end = h.nextElementSibling;
+      while (end && !/^H[23]$/.test(end.tagName) && !end.classList.contains('cmts')) end = end.nextElementSibling;
+      var box = document.createElement('section');
+      box.className = 'cmt-sec cmt-sec-' + h.tagName.toLowerCase();
+      box.setAttribute('data-section', h.id);
+      box.setAttribute('data-label', (h.querySelector('.h-text') || h).textContent.trim());
+      box.setAttribute('aria-label', 'Yorumlar: ' + box.getAttribute('data-label'));
       prose.insertBefore(box, end);
-      keys.push(box);
+      return box;
     });
-    var used = {};
-    prose.querySelectorAll('.callout-kesin').forEach(function (co) {
-      if (co.closest('.cmts')) return;
-      var sub = co.querySelector('.callout-sub'), prev = co.previousElementSibling;
-      while (prev && !/^H[23]$/.test(prev.tagName)) prev = prev.previousElementSibling;
-      var base = 'kutu-' + (slugify(sub ? sub.textContent : '') || (prev ? prev.id : 'kesin'));
-      var key = base, n = 2;
-      while (used[key]) key = base + '-' + (n++);
-      used[key] = 1;
-      var box = document.createElement('div');
-      box.className = 'cmt-sec cmt-sec-box'; box.setAttribute('data-section', key);
-      box.setAttribute('data-label', sub ? sub.textContent.trim() : 'Kesinleştirilmiş bilgi');
-      co.parentNode.insertBefore(box, co.nextSibling);
-      keys.push(box);
-    });
-    return keys;
   }
-  function renderSection(box, list, open) {
-    var key = box.getAttribute('data-section');
-    var n = list.filter(function (c) { return (c.section || '') === key; }).length;
-    box.innerHTML = '<button type="button" class="cmt-sec-toggle" data-cmt-toggle aria-expanded="' + (open ? 'true' : 'false') + '">' +
-        '<span class="cmt-sec-ico" aria-hidden="true">▸</span> Bu bilgiye yorum yap' + (n ? ' · <strong>' + n + ' yorum</strong>' : '') + '</button>' +
-      (open ? '<div class="cmt-sec-body">' + threadHtml(list, key, false) + commentForm(key, null, true) + '</div>' : '');
-    box.classList.toggle('open', !!open);
+  function renderSection(box, list) {
+    var key = box.getAttribute('data-section'), open = !!cmtOpen[key];
+    var n = countFor(list, key);
+    box.classList.toggle('open', open);
+    box.classList.toggle('has-cmts', n > 0);
+    box.innerHTML = '<button type="button" class="cmt-sec-toggle" data-cmt-toggle aria-expanded="' + open + '">' +
+        '<span class="cmt-sec-ico" aria-hidden="true">▸</span> Yorumlar' + (n ? ' <strong>(' + n + ')</strong>' : '') +
+        '<span class="cmt-sec-for"> · ' + esc(box.getAttribute('data-label')) + '</span></button>' +
+      (open ? '<div class="cmt-sec-body">' + threadHtml(list, key, false) + commentForm(key, null) + '</div>' : '');
+  }
+  function adminBar() {
+    return '<div class="cmt-admin">' + (isAdmin()
+      ? '<span class="cmt-admin-on">Yönetici modu açık</span> <button type="button" class="cmt-link" data-cmt-admin-out>Yönetici modundan çık</button>'
+      : '<button type="button" class="cmt-link" data-cmt-admin-in>Yönetici girişi</button>') + '</div>';
   }
   function renderPageBlock(box, list) {
-    var secN = list.filter(function (c) { return c.section; }).length;
+    var secN = list.filter(function (c) { return c.section && !c.deleted; }).length;
     box.innerHTML = cmtNote() +
+      '<h3 class="cmt-h">Sayfanın geneli hakkında</h3>' +
       threadHtml(list, '', true) +
-      (secN ? '<p class="muted cmt-secnote">Bu sayfadaki kesinleştirilmiş bölümlere ayrıca <strong>' + secN + '</strong> yorum yazıldı; ilgili bölümün altındaki “Bu bilgiye yorum yap” bağlantısından okuyabilirsin.</p>' : '') +
-      '<h3 class="cmt-h">Yorum yaz</h3>' + commentForm('', null, false);
+      (secN ? '<p class="muted cmt-secnote">Bu sayfadaki başlıkların altında ayrıca <strong>' + secN + '</strong> yorum var; her başlığın altındaki “Yorumlar” bağlantısından okuyabilirsin.</p>' : '') +
+      commentForm('', null) + adminBar();
+  }
+  function renderAll(list) {
+    var pb = document.querySelector('.cmts[data-mode="page"]');
+    if (pb) renderPageBlock(pb, list);
+    document.querySelectorAll('.cmt-sec').forEach(function (b) { renderSection(b, list); });
   }
 
   function hydrateProposals() {
     var app = document.getElementById('content');
     if (!app) return;
-    var article = app.querySelector('.article');
     var blocks = app.querySelectorAll('.cmts');
-    if (!blocks.length && !article) return;
+    if (!blocks.length) return;
     var pageBox = app.querySelector('.cmts[data-mode="page"]');
     var allBox = app.querySelector('.cmts[data-mode="all"]');
     var page = pageBox ? pageBox.getAttribute('data-page') : '';
+    cmtOpen = {};
 
     if (!CMT_ON) {
       blocks.forEach(function (b) {
@@ -1290,97 +1327,167 @@
     }
     if (!teamCode()) { blocks.forEach(function (b) { b.innerHTML = cmtNote() + codeForm(); }); return; }
 
+    var onErr = function (box) {
+      return function (e) {
+        if (e.code === 'invalid_code') { lsSet('tfw-team-code', ''); box.innerHTML = cmtNote() + codeForm(cmtErrorText(e)); }
+        else box.innerHTML = cmtNote() + '<p class="cmt-err">' + esc(cmtErrorText(e)) + ' <button type="button" class="cmt-link" data-cmt-retry>Tekrar dene</button></p>';
+      };
+    };
     if (allBox) {
       allBox.innerHTML = '<p class="muted">Yorumlar yükleniyor…</p>';
       loadComments('', true).then(function (list) {
+        list = list.filter(function (c) { return !c.deleted; });
         allBox.innerHTML = cmtNote() + (list.length
-          ? '<div class="cmt-list">' + list.map(function (c) { return commentCard(c, null, { showPage: true, noReply: true }); }).join('') + '</div>'
-          : '<p class="muted">Henüz hiç yorum yazılmadı.</p>');
-      }).catch(function (e) { if (e.code === 'code') { lsSet('tfw-team-code', ''); allBox.innerHTML = cmtNote() + codeForm(cmtErrorText(e)); } else allBox.innerHTML = '<p class="cmt-err">' + esc(cmtErrorText(e)) + '</p>'; });
+          ? '<div class="cmt-list">' + list.map(function (c) { return commentCard(c, null, { showPage: true, readOnly: true }); }).join('') + '</div>'
+          : '<p class="muted">Henüz hiç yorum yazılmadı.</p>') + adminBar();
+      }).catch(onErr(allBox));
     }
     if (!pageBox) return;
-    var secs = attachSectionThreads(app);
+    attachSectionPanels(app);
     pageBox.innerHTML = '<p class="muted">Yorumlar yükleniyor…</p>';
-    loadComments(page).then(function (list) {
-      renderPageBlock(pageBox, list);
-      secs.forEach(function (b) { renderSection(b, list, false); });
-      if (/^#yorum-/.test(location.hash)) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
-    }).catch(function (e) {
-      if (e.code === 'code') { lsSet('tfw-team-code', ''); pageBox.innerHTML = cmtNote() + codeForm(cmtErrorText(e)); }
-      else pageBox.innerHTML = cmtNote() + '<p class="cmt-err">' + esc(cmtErrorText(e)) + ' <button type="button" class="cmt-link" data-cmt-retry>Tekrar dene</button></p>';
+    loadComments(page, true).then(function (list) {
+      // bağlantıyla gelinen yorumun panelini aç
+      var m = location.hash.match(/^#yorum-([\w-]+)/);
+      if (m) list.forEach(function (c) { if (c.id === m[1] || c.parent_id === m[1]) { if (c.section) cmtOpen[c.section] = true; } });
+      renderAll(list);
+      if (m) { var t = document.getElementById('yorum-' + m[1]); if (t) t.scrollIntoView({ block: 'center' }); }
+    }).catch(onErr(pageBox));
+  }
+  function currentPage() {
+    var pb = document.querySelector('.cmts[data-mode="page"]');
+    return pb ? pb.getAttribute('data-page') : '';
+  }
+  function refresh(focusId) {
+    var page = currentPage();
+    if (!page) { hydrateProposals(); return Promise.resolve(); }
+    return loadComments(page, true).then(function (list) {
+      renderAll(list);
+      var el = focusId && document.getElementById('yorum-' + focusId);
+      if (el) { el.classList.add('cmt-new'); el.scrollIntoView({ block: 'nearest' }); }
     });
   }
-  function currentPageList() {
-    var pb = document.querySelector('.cmts[data-mode="page"]');
-    return pb ? loadComments(pb.getAttribute('data-page')) : Promise.resolve([]);
-  }
-  function rerenderAll(list, openKey) {
-    var pb = document.querySelector('.cmts[data-mode="page"]');
-    if (pb) renderPageBlock(pb, list);
-    document.querySelectorAll('.cmt-sec').forEach(function (b) {
-      var k = b.getAttribute('data-section');
-      renderSection(b, list, k === openKey || b.classList.contains('open'));
-    });
-  }
+  function handleAuthError(e) { if (e.code === 'invalid_code') { lsSet('tfw-team-code', ''); hydrateProposals(); } }
 
   function onCommentSubmit(form) {
     var msg = form.querySelector('.cmt-msg'), btn = form.querySelector('button[type=submit]');
     var author = form.author.value.trim(), body = form.body.value.trim();
     if (!author || !body) { msg.textContent = 'Ad ve yorum metni gerekli.'; return; }
-    var pb = document.querySelector('.cmts[data-mode="page"]');
-    if (!pb) return;
-    var page = pb.getAttribute('data-page');
+    if (form.website && form.website.value) { form.reset(); return; }        // bot tuzağı
+    var page = currentPage();
+    if (!page) return;
     lsSet('tfw-author', author);
+    var section = form.getAttribute('data-section') || '';
     btn.disabled = true; msg.textContent = 'Gönderiliyor…';
     rpc('wiki_add_comment', {
-      p_code: teamCode(), p_page: page, p_section: form.getAttribute('data-section') || '',
+      p_code: teamCode(), p_page: page, p_section: section,
       p_parent: form.getAttribute('data-parent') || null, p_author: author,
       p_kind: form.kind ? form.kind.value : 'yorum', p_body: body
-    }).then(function (row) {
-      return loadComments(page).then(function (list) {
-        var created = Array.isArray(row) ? row[0] : row;
-        list = list.concat(created ? [created] : []);
-        cmtCache[page] = Promise.resolve(list);
-        delete cmtCache['*'];
-        rerenderAll(list, created && created.section);
-        var el = created && document.getElementById('yorum-' + created.id);
-        if (el) { el.classList.add('cmt-new'); el.scrollIntoView({ block: 'nearest' }); }
-      });
-    }).catch(function (e) {
-      btn.disabled = false; msg.textContent = cmtErrorText(e);
-      if (e.code === 'code') { lsSet('tfw-team-code', ''); hydrateProposals(); }
-    });
+    }).then(function (rows) {
+      var row = Array.isArray(rows) ? rows[0] : rows;
+      if (row && row.edit_token) saveEditToken(row.id, row.edit_token);
+      if (section) cmtOpen[section] = true;
+      return refresh(row && row.id);
+    }).catch(function (e) { btn.disabled = false; msg.textContent = cmtErrorText(e); handleAuthError(e); });
+  }
+  function findCached(id) {
+    return loadComments(currentPage()).then(function (list) { return list.filter(function (c) { return c.id === id; })[0]; });
   }
   function onCommentClick(e) {
     var t;
     if ((t = e.target.closest('[data-cmt-toggle]'))) {
-      var box = t.closest('.cmt-sec'), open = !box.classList.contains('open');
-      currentPageList().then(function (list) { renderSection(box, list, open); });
+      var box = t.closest('.cmt-sec'), key = box.getAttribute('data-section');
+      cmtOpen[key] = !cmtOpen[key];
+      loadComments(currentPage()).then(function (list) {
+        renderSection(box, list);
+        if (cmtOpen[key]) { var ta = box.querySelector('.cmt-sec-body'); if (ta) ta.scrollIntoView({ block: 'nearest' }); }
+      });
       return true;
     }
     if ((t = e.target.closest('[data-cmt-reply]'))) {
       var art = t.closest('.cmt'), slot = art.querySelector('.cmt-reply-slot');
-      if (!slot.innerHTML) { slot.innerHTML = commentForm('', t.getAttribute('data-cmt-reply'), true); slot.querySelector('textarea').focus(); }
+      if (slot && !slot.innerHTML) { slot.innerHTML = commentForm('', t.getAttribute('data-cmt-reply')); slot.querySelector('textarea').focus(); }
       return true;
     }
     if ((t = e.target.closest('[data-cmt-cancel]'))) { t.closest('.cmt-reply-slot').innerHTML = ''; return true; }
-    if ((t = e.target.closest('[data-cmt-filter]'))) {
-      cmtFilter = t.getAttribute('data-cmt-filter');
-      currentPageList().then(function (list) { var pb = document.querySelector('.cmts[data-mode="page"]'); if (pb) renderPageBlock(pb, list); });
+    if ((t = e.target.closest('[data-cmt-edit]'))) {
+      var id = t.getAttribute('data-cmt-edit'), card = document.getElementById('yorum-' + id);
+      findCached(id).then(function (c) {
+        if (!c || !card) return;
+        var bodyEl = card.querySelector(':scope > .cmt-body');
+        bodyEl.innerHTML = '<form class="cmt-form compact" data-cmt-editform="' + esc(id) + '">' +
+          '<textarea name="body" required maxlength="4000" rows="3" aria-label="Yorumu düzenle">' + esc(c.body) + '</textarea>' +
+          '<div class="cmt-row cmt-actions"><button type="submit" class="cmt-btn">Kaydet</button>' +
+          '<button type="button" class="cmt-link" data-cmt-edit-cancel>Vazgeç</button><span class="cmt-msg" aria-live="polite"></span></div></form>';
+        bodyEl.querySelector('textarea').focus();
+      });
       return true;
     }
+    if ((t = e.target.closest('[data-cmt-edit-cancel]'))) { refresh(); return true; }
+    if ((t = e.target.closest('[data-cmt-delete]'))) {
+      var did = t.getAttribute('data-cmt-delete');
+      if (!window.confirm('Bu yorum silinsin mi? Bu işlem geri alınamaz.')) return true;
+      rpc('wiki_delete_comment', { p_code: teamCode(), p_id: did, p_token: editToken(did) || null, p_admin: adminCode() || null })
+        .then(function () { return refresh(); })
+        .catch(function (err) { window.alert(cmtErrorText(err)); handleAuthError(err); });
+      return true;
+    }
+    if ((t = e.target.closest('[data-cmt-filter]'))) {
+      cmtFilter = t.getAttribute('data-cmt-filter');
+      loadComments(currentPage()).then(function (list) { var pb = document.querySelector('.cmts[data-mode="page"]'); if (pb) renderPageBlock(pb, list); });
+      return true;
+    }
+    if ((t = e.target.closest('[data-cmt-admin-in]'))) {
+      var wrap = t.closest('.cmt-admin');
+      wrap.innerHTML = '<form class="cmt-codeform" data-cmt-adminform><div class="cmt-row">' +
+        '<input type="password" name="code" required autocomplete="off" placeholder="Yönetici kodu" aria-label="Yönetici kodu">' +
+        '<button type="submit" class="cmt-btn">Giriş</button><button type="button" class="cmt-link" data-cmt-retry>Vazgeç</button>' +
+        '<span class="cmt-msg" aria-live="polite"></span></div></form>';
+      wrap.querySelector('input').focus();
+      return true;
+    }
+    if ((t = e.target.closest('[data-cmt-admin-out]'))) { lsSet('tfw-admin-code', ''); refresh(); return true; }
     if ((t = e.target.closest('[data-cmt-retry]'))) { hydrateProposals(); return true; }
     return false;
   }
+  function onCommentChange(e) {
+    var s = e.target.closest && e.target.closest('[data-cmt-status]');
+    if (!s) return false;
+    rpc('wiki_set_status', { p_code: teamCode(), p_admin: adminCode(), p_id: s.getAttribute('data-cmt-status'), p_status: s.value })
+      .then(function () { return refresh(s.getAttribute('data-cmt-status')); })
+      .catch(function (err) { window.alert(cmtErrorText(err)); if (err.code === 'forbidden') { lsSet('tfw-admin-code', ''); refresh(); } });
+    return true;
+  }
   function onCommentFormSubmit(e) {
     var f = e.target;
-    if (f.matches && f.matches('[data-cmt-code]')) {
+    if (!f.matches) return false;
+    if (f.matches('[data-cmt-code]')) {
       e.preventDefault();
       var v = f.code.value.trim();
       if (v) { lsSet('tfw-team-code', v); cmtCache = {}; hydrateProposals(); }
       return true;
     }
-    if (f.matches && f.matches('[data-cmt-form]')) { e.preventDefault(); onCommentSubmit(f); return true; }
+    if (f.matches('[data-cmt-adminform]')) {
+      e.preventDefault();
+      var a = f.code.value.trim(), am = f.querySelector('.cmt-msg');
+      if (!a) return true;
+      am.textContent = 'Kontrol ediliyor…';
+      rpc('wiki_is_admin', { p_code: teamCode(), p_admin: a }).then(function (ok) {
+        if (ok === true) { lsSet('tfw-admin-code', a); refresh(); }
+        else am.textContent = 'Yönetici kodu hatalı.';
+      }).catch(function (err) { am.textContent = cmtErrorText(err); handleAuthError(err); });
+      return true;
+    }
+    if (f.matches('[data-cmt-editform]')) {
+      e.preventDefault();
+      var id = f.getAttribute('data-cmt-editform'), body = f.body.value.trim(), msg = f.querySelector('.cmt-msg');
+      if (!body) { msg.textContent = 'Yorum metni boş olamaz.'; return true; }
+      msg.textContent = 'Kaydediliyor…';
+      rpc('wiki_edit_comment', { p_code: teamCode(), p_id: id, p_token: editToken(id) || null, p_admin: adminCode() || null, p_body: body })
+        .then(function () { return refresh(id); })
+        .catch(function (err) { msg.textContent = cmtErrorText(err); handleAuthError(err); });
+      return true;
+    }
+    if (f.matches('[data-cmt-form]')) { e.preventDefault(); onCommentSubmit(f); return true; }
     return false;
   }
 
@@ -1551,6 +1658,8 @@
       if (e.key === 'Escape') { closeNav(); closeTopnav(); }
       if (e.key === '/' && document.activeElement === document.body) { e.preventDefault(); searchInput.focus(); }
     });
+
+    document.addEventListener('change', function (e) { onCommentChange(e); });
 
     document.addEventListener('submit', function (e) {
       if (onCommentFormSubmit(e)) return;
