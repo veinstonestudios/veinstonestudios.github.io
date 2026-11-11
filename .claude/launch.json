@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wiki",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:/Users/gulsu/AppData/Local/Temp/claude/f8a124a16a427cfd/8c5fdd00-bbcb-4175-8489-f073bf16ed3b/scratchpad/serve.ps1", "-Root", "C:/Users/gulsu/Documents/GitHub/veinstonestudios.github.io", "-Port", "8765"],
+      "port": 8765
+    }
+  ]
+}
