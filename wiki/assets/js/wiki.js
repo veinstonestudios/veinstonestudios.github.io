@@ -356,6 +356,12 @@
         i++;
         if (type === 'gallery') { out.push(renderGallery(inner)); continue; }
         if (type === 'timeline') { out.push(renderTimeline(inner)); continue; }
+        // Turuncu not kâğıdı: ":::notkagidi Başlık" — karakter notları ve önemli alıntılar için
+        if (type === 'notkagidi' || type === 'sticky') {
+          out.push('<aside class="sticky-note">' + (title ? '<div class="sticky-title">' + inline(title) + '</div>' : '') +
+            renderBlocks(inner.join('\n'), null) + '</aside>');
+          continue;
+        }
         if (type === 'quote') {
           var attr = '';
           inner = inner.filter(function (l) {

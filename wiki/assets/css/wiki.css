@@ -842,3 +842,21 @@ h2 .status, h3 .status, h4 .status { font-size: 10.5px; }
   .prose h2 { font-size: 21px; }
 }
 
+
+/* Turuncu not kâğıdı (karakter notları ve önemli alıntılar) */
+.sticky-note {
+  position: relative; max-width: 460px; margin: 14px 0 18px; padding: 16px 20px 22px;
+  background: #f4931f; color: #23160a; border-radius: 2px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.45), inset 0 -24px 30px -24px rgba(0,0,0,.18);
+  transform: rotate(-.6deg); font: 600 14px/1.6 var(--font);
+}
+.sticky-note:nth-of-type(even) { transform: rotate(.5deg); }
+.sticky-note::after { /* kıvrık köşe */
+  content: ''; position: absolute; right: 0; bottom: 0; width: 34px; height: 34px;
+  background: linear-gradient(135deg, #c4730f 0 50%, #eadfce 50% 100%); box-shadow: -2px -2px 4px rgba(0,0,0,.18);
+}
+.sticky-note p { margin: 0 0 .6em; max-width: none; }
+.sticky-note p:last-child { margin-bottom: 0; }
+.sticky-note strong { color: #160d04; }
+.sticky-note a { color: #3b1d05; text-decoration: underline; }
+.sticky-title { font: 700 11px var(--font); text-transform: uppercase; letter-spacing: .06em; color: #5a2f06; margin-bottom: 6px; }
