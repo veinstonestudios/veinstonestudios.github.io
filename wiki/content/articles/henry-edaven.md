@@ -20,7 +20,7 @@ infobox:
   Yaşadığı yer: [[Facility 61]], ofisine açılan özel oda
   [Aile]
   Eşi: [[Henry'nin Eşi|Eve Edaven]] (hayatını kaybetti)
-  Kızı: [[Henry'nin Kızı|Mary Edaven]] (hayatını kaybetti)
+  Kızı: [[Henry'nin Kızı|Mary Edaven]] (hayatını kaybetti; isim şimdilik)
   Ağabeyi: [[Arthur Edaven]] (kayıp)
   [Meslek]
   Görevi: Gardiyan (Warden), [[Facility 61]]

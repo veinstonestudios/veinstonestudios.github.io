@@ -3,26 +3,27 @@ title: Henry'nin Kızı
 type: character
 role: Hayatını kaybetti
 categories: Diğer Karakterler
-aliases: Henrynin Kızı, Henry Edaven'ın kızı, Henry's daughter, Daughter
-summary: Henry Edaven'ın, annesiyle birlikte bir yangında hayatını kaybeden ve ölümünden önce Corruption belirtileri gösteren kızı.
+aliases: Henrynin Kızı, Henry Edaven'ın kızı, Henry's daughter, Daughter, Mary, Mary Edaven
+summary: Henry Edaven'ın kızı Mary (isim şimdilik), Corruption belirtileri göstermeye başladıktan sonra 2052'de 11 yaşındayken annesiyle birlikte bir yangında hayatını kaybetmiştir.
 spoilers: true
 image: assets/img/characters/henrys-daughter.jpg
 caption: Karakter çizimi
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-11
 infobox:
   [Kişisel bilgiler]
-  Adı: Bilinmiyor
-  Yaşı: Bilinmiyor
-  Durumu: Hayatını kaybetti
+  Adı: Mary Edaven (isim şimdilik)
+  Doğum yılı: 2041
+  Öldüğündeki yaşı: 11
+  Durumu: Hayatını kaybetti (2052)
   [Aile]
   Babası: [[Henry Edaven]]
-  Annesi: [[Henry'nin Eşi]]
+  Annesi: [[Eve Edaven]]
   Amcası: [[Arthur Edaven]]
   [Oyunda]
   Oyun: [[The Facility]]
 ---
-**Henry'nin Kızı**, *[[The Facility]]* oyununun oyuncu karakteri **[[Henry Edaven]]**'ın kızıdır. [[Henry'nin Eşi|Annesiyle]] birlikte bir yangında hayatını kaybetmiştir. Ölümünden önce **[[Corrupted|Corruption]] belirtileri** göstermiştir.
+**Henry'nin Kızı** (şimdilik **Mary** olarak adlandırılır), *[[The Facility]]* oyununun oyuncu karakteri **[[Henry Edaven]]**'ın kızıdır. 2052'de, **11 yaşındayken**, annesi [[Eve Edaven|Eve]] ile birlikte evlerinde çıkan bir yangında hayatını kaybetmiştir. Ölümünden önce **[[Corrupted|Corruption]] belirtileri** göstermiştir.
 
 ## Genel bakış {{kesin}}
 Henry'nin kızı, Henry'nin geçmişi ve [[Gece Olayları|gece olayları]] açısından önemli bir karakterdir.
@@ -30,11 +31,16 @@ Henry'nin kızı, Henry'nin geçmişi ve [[Gece Olayları|gece olayları]] açı
 ## Temel bilgiler
 {{temelbilgiler}}
 
+## Adı {{gelistiriliyor}}
+Karakterin adı şimdilik **Mary** olarak kullanılmaktadır; isim henüz kesinleşmemiştir.
+
 ## Kişilik ve davranışlar {{kararyok}}
 {{kararyok}}
 
 ## Biyografi {{kesin}}
-Annesiyle birlikte bir yangında hayatını kaybetmiştir. Ölümünden önce Corruption belirtileri göstermeye başlamıştır.
+Mary 2041'de doğdu. 2051'de Corruption belirtileri göstermeye başladı; davranışları giderek korkutucu bir hâl aldı ve hem evin hem de ailenin düzenini sabote eden davranışlar sergiledi. Babası Henry onu uzmanlara götürmek isterken annesi Eve, kızının bilinmeyen yöntemlerin uygulandığı tesislere gönderilmesinden korktuğu için durumu gizlemek istedi.
+
+2052'de evlerinde çıkan yangında, **11 yaşındayken**, annesiyle birlikte hayatını kaybetti. Ayrıntılar için bkz. [[Henry Edaven#Biyografi]].
 
 ## Geçmişi {{kararyok}}
 {{kararyok}}
@@ -46,7 +52,7 @@ Annesiyle birlikte bir yangında hayatını kaybetmiştir. Ölümünden önce Co
 | Karakter | İlişki |
 |---|---|
 | [[Henry Edaven]] | Babası |
-| [[Henry'nin Eşi]] | Annesi. Aynı yangında hayatını kaybetti. |
+| [[Eve Edaven]] | Annesi. Aynı yangında hayatını kaybetti. |
 | [[Arthur Edaven]] | Babasının ağabeyi |
 
 ## Hikâyedeki rolü {{kesin}}
@@ -67,6 +73,6 @@ assets/img/concept/eve-mary-scene.jpg | Eve ve Mary (ekip sunumundaki çizim)
 
 ## Henüz karar verilmeyen özellikler
 :::kararyok
-- Adı ve yaşı.
+- Kesin adı (Mary şimdilik kullanılan isimdir).
 - Gösterdiği Corruption belirtilerinin ayrıntıları.
 :::
