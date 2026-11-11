@@ -82,7 +82,7 @@ Facility 61'de toplam **14 mahkûm** bulunmaktadır. Mahkûmlar, rehabilitasyon 
 - [[M. Cole Morgan]]
 - [[Alicia Winston]]
 - [[Bob]]
-- [[Evangelyn Hilton|Evangelyn "Evie" Hilton]]
+- [[Evie Hill]] (Evangelyn Hilton)
 - [[Dakota Ahmadii]]
 - [[Hasan Kahveci]]
 - [[Katarina Jovanovic]]
@@ -155,6 +155,3 @@ assets/img/screens/journal-2.jpg | Gardiyanın günlüğü
 - [[Facility 60]]
 - [[Corrupted]]
 - [[CORE Programı]]
-
-## Ekip önerileri ve tartışma
-{{oneriler}}

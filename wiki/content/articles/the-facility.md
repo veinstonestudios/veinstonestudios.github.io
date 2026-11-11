@@ -75,7 +75,7 @@ Oyundaki her gün dört aşamadan oluşur: **Emirler**, **Sorgu**, **Seçim** ve
 | [[Janitor]] | Tesisin temizlik görevlisi |
 | [[Emma Bell]], [[Gina Bell]] | İkiz kardeşler; A Block subayları |
 | [[B Block Subayı]] | B Block'ta görevli subay |
-| [[Ted Karinsky]], [[M. Cole Morgan]], [[Alicia Winston]], [[Bob]], [[Evangelyn Hilton]], [[Dakota Ahmadii]], [[Hasan Kahveci]], [[Katarina Jovanovic]], [[Shane Smith]], [[Milena Marvic]], [[Paul H. Simmons]], [[Sergio Galvez II]], [[Father Gregory]], [[Nina Grace]] | Facility 61'in 14 [[Kategori:Mahkûmlar|mahkûmu]] |
+| [[Ted Karinsky]], [[M. Cole Morgan]], [[Alicia Winston]], [[Bob]], [[Evie Hill]], [[Dakota Ahmadii]], [[Hasan Kahveci]], [[Katarina Jovanovic]], [[Shane Smith]], [[Milena Marvic]], [[Paul H. Simmons]], [[Sergio Galvez II]], [[Father Gregory]], [[Nina Grace]] | Facility 61'in 14 [[Kategori:Mahkûmlar|mahkûmu]] |
 | [[Henry'nin Eşi]], [[Henry'nin Kızı]] | Henry'nin bir yangında hayatını kaybeden ailesi |
 
 ## İçerik uyarıları
@@ -105,6 +105,3 @@ assets/img/screens/morning-shift.jpg | Vardiya başında uyanış
 ## Dış bağlantılar
 - [Steam'de The Facility](https://store.steampowered.com/app/3796790/The_Facility/)
 - [Resmî basın kiti](../presskit.html)
-
-## Ekip önerileri ve tartışma
-{{oneriler}}
