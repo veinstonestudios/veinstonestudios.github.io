@@ -5,18 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dosya bulunamadı | Veinstone Studios</title>
   <meta name="robots" content="noindex">
-  <script>
-    /* Kısa wiki adresleri: /wiki/Henry_Edaven  ->  /wiki/?page=Henry_Edaven
-       GitHub Pages eksik her adres için bu dosyayı sunar; bu yüzden wiki
-       madde adresleri hata gösterilmeden önce wiki uygulamasına yönlendirilir. */
-    (function () {
-      var m = location.pathname.match(/^(.*\/wiki)\/(?:wiki\/)?([^\/][^\/.]*(?:\.[^\/]*)?)\/?$/);
-      if (m && !/\.(html?|js|css|md|png|jpe?g|gif|webp|svg|otf|woff2?)$/i.test(m[2])) {
-        location.replace(m[1] + '/?page=' + m[2] + location.hash);
-      }
-    })();
-  </script>
-  <link rel="icon" href="/wiki/assets/img/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root { color-scheme: dark; --paper:#121110; --paper-2:#1b1917; --ink:#e7e0d1; --ink-3:#8c8476; --rule:#3b3631; --red:#b94a3c; --bar:#0b0a09; }
@@ -48,7 +36,6 @@
     <h1>İstenen kayıt mevcut değil.</h1>
     <p><code id="path"></code> adresinde kayıtlı bir dosya yok. Taşınmış, yeniden adlandırılmış ya da hiç var olmamış olabilir.</p>
     <div class="links">
-      <a href="/wiki/" lang="en">The Facility Wiki</a>
       <a href="/" lang="en">Veinstone Studios</a>
     </div>
   </main>
